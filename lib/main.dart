@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/modules/menu_layout.dart';
 
 void main() => runApp(const MyApp());
 
@@ -7,16 +8,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
-    );
+    return const MaterialApp(
+        title: 'Switrans 2.0',
+        debugShowCheckedModeBanner: false,
+        home: MenuLayout(
+          child: Text('Hola'),
+        ));
   }
 }
