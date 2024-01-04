@@ -12,5 +12,7 @@ class GetMenuEvent extends MenuEvent {
 }
 
 class ActiveteMenuEvent extends MenuEvent {
-  const ActiveteMenuEvent();
+  final bool isOpenMenu;
+  final bool isOpenMenuIcon;
+  const ActiveteMenuEvent({required this.isOpenMenu, required this.isOpenMenuIcon});
 }

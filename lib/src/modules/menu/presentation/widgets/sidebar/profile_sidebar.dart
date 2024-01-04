@@ -1,48 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
 
 class ProfileSidebar extends StatelessWidget {
-  const ProfileSidebar({super.key});
+  final bool isMenuIcon;
+  const ProfileSidebar({super.key, required this.isMenuIcon});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 30),
-      child: Stack(
-        children: [
-          const Image(
-            height: 160,
-            image: AssetImage('assets/background_profile.png'),
-            fit: BoxFit.fill,
-          ),
-          Container(
-            color: Colors.indigo.withOpacity(0.4),
-            height: 160,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 50),
+    return Stack(
+      children: [
+        Image(
+          height: isMenuIcon ? 94 : 160,
+          image: const AssetImage('assets/background_profile.png'),
+          fit: BoxFit.cover,
+        ),
+        Container(
+          color: Colors.indigo.withOpacity(0.4),
+          height: isMenuIcon ? 94 : 160,
+        ),
+        Center(
+          child: Padding(
+            padding: isMenuIcon ? const EdgeInsets.only(top: 20) : const EdgeInsets.only(top: 48),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //NavbarAvatar(),
-                SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Dr. Codex Lantem",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      "Toronto, Canada",
-                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
-                    ),
-                  ],
-                )
+                const AvatarNavbar(),
+                isMenuIcon ? const SizedBox() : const SizedBox(width: 8),
+                isMenuIcon
+                    ? const SizedBox()
+                    : const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Dr. Codex Lantem",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            "Toronto, Canada",
+                            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

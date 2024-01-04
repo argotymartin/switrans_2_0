@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogoSidebar extends StatelessWidget {
-  const LogoSidebar({super.key});
+  final bool isMenuIcon;
+  const LogoSidebar({super.key, required this.isMenuIcon});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 30),
+    return SizedBox(
+      height: 66,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -16,14 +17,16 @@ class LogoSidebar extends StatelessWidget {
             color: Color(0xff7a6bf5),
           ),
           const SizedBox(width: 10),
-          Text(
-            'SmartAdmin WebApp',
-            style: GoogleFonts.montserratAlternates(
-              fontSize: 16,
-              fontWeight: FontWeight.w200,
-              color: Colors.white,
-            ),
-          )
+          isMenuIcon
+              ? const SizedBox()
+              : Text(
+                  'SmartAdmin WebApp',
+                  style: GoogleFonts.montserratAlternates(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w200,
+                    color: Colors.white,
+                  ),
+                )
         ],
       ),
     );

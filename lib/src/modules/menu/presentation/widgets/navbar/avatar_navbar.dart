@@ -8,8 +8,8 @@ class AvatarNavbar extends StatelessWidget {
     return ClipOval(
       child: Image.network(
         'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352010-stock-illustration-default-placeholder-man-and-woman.jpg',
-        height: 30,
-        width: 30,
+        height: 48,
+        width: 48,
       ),
     );
   }

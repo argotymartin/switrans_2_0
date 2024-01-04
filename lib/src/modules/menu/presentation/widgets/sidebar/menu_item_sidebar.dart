@@ -5,12 +5,14 @@ class MenuItemSidebar extends StatefulWidget {
   final String text;
   final IconData icon;
   final bool isActive;
+  final bool isMenuIcon;
   final Function onPressed;
   const MenuItemSidebar({
     super.key,
-    required this.text,
+    this.text = '',
     required this.icon,
     this.isActive = false,
+    this.isMenuIcon = false,
     required this.onPressed,
   });
 
@@ -43,35 +45,42 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                     widget.onPressed();
                   }),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: MouseRegion(
                       onHover: (_) => setState(() => isHovered = true),
                       onExit: (_) => setState(() => isHovered = false),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                        Icon(
-                          widget.icon,
-                          color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 180,
-                          child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            widget.text,
-                            style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: isHovered || isEnter ? FontWeight.w400 : FontWeight.w300,
-                              color: Colors.white.withOpacity(0.8),
-                            ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            widget.icon,
+                            color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
+                            size: 20,
                           ),
-                        ),
-                        Icon(
-                          isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
-                          size: 16,
-                          color: isHovered || isEnter ? Colors.white : Colors.white.withOpacity(0.3),
-                        ),
-                      ]),
+                          widget.isMenuIcon ? const SizedBox() : const SizedBox(width: 10),
+                          widget.isMenuIcon
+                              ? const SizedBox()
+                              : SizedBox(
+                                  width: 172,
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    widget.text,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      fontWeight: isHovered || isEnter ? FontWeight.w400 : FontWeight.w300,
+                                      color: Colors.white.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ),
+                          widget.isMenuIcon
+                              ? const SizedBox()
+                              : Icon(
+                                  isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
+                                  size: 16,
+                                  color: isHovered || isEnter ? Colors.white : Colors.white.withOpacity(0.3),
+                                )
+                        ],
+                      ),
                     ),
                   ),
                 ),

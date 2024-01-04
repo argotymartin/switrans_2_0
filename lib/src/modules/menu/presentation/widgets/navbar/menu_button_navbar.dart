@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
 
 class MenuButtonNavar extends StatefulWidget {
   const MenuButtonNavar({
@@ -13,6 +15,8 @@ class _MenuButtonNavarState extends State<MenuButtonNavar> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
+    bool isOpenMenu = context.read<MenuBloc>().state.isOpenMenu;
+    bool isOpenMenuIcon = context.read<MenuBloc>().state.isOpenMenuIcon;
     return MouseRegion(
       onEnter: (event) => setState(() => isHover = true),
       onExit: (event) => setState(() => isHover = false),
@@ -23,8 +27,19 @@ class _MenuButtonNavarState extends State<MenuButtonNavar> {
         ),
         child: Column(
           children: [
-            _BuildButton(icon: Icons.menu_outlined, onPressed: () {}),
-            _BuildButton(icon: Icons.menu_open_outlined, isHover: isHover, onPressed: () {}),
+            _BuildButton(
+              icon: Icons.menu_outlined,
+              onPressed: () {
+                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: !isOpenMenu, isOpenMenuIcon: isOpenMenuIcon));
+              },
+            ),
+            _BuildButton(
+              icon: Icons.menu_open_outlined,
+              isHover: isHover,
+              onPressed: () {
+                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: isOpenMenu, isOpenMenuIcon: !isOpenMenuIcon));
+              },
+            ),
             _BuildButton(icon: Icons.lock_outlined, isHover: isHover, onPressed: () {}),
           ],
         ),
