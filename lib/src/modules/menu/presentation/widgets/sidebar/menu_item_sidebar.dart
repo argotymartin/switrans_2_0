@@ -26,6 +26,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
+      height: 46,
       duration: const Duration(microseconds: 250),
       color: isHovered
           ? Colors.white.withOpacity(0.1)

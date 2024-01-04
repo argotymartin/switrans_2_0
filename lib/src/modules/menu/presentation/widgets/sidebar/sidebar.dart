@@ -4,10 +4,7 @@ import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.
 import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
 
 class Sidebar extends StatelessWidget {
-  final bool isIcon;
-  const Sidebar({super.key, this.isIcon = false});
-
-  void navigateTo(String routeName) {}
+  const Sidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +87,6 @@ class Sidebar extends StatelessWidget {
                           onPressed: () {},
                         ),
                         MenuItemSidebar(
-                          //isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,
                           text: 'Black',
                           icon: Icons.post_add_outlined,
                           onPressed: () {},

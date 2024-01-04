@@ -10,13 +10,13 @@ class ProfileSidebar extends StatelessWidget {
     return Stack(
       children: [
         Image(
-          height: isMenuIcon ? 94 : 160,
+          height: isMenuIcon ? 94 : 152,
           image: const AssetImage('assets/background_profile.png'),
           fit: BoxFit.cover,
         ),
         Container(
           color: Colors.indigo.withOpacity(0.4),
-          height: isMenuIcon ? 94 : 160,
+          height: isMenuIcon ? 94 : 152,
         ),
         Center(
           child: Padding(
