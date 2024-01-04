@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TextSeparator extends StatelessWidget {
+class TextSeparatorSidebar extends StatelessWidget {
   final String text;
-  const TextSeparator({super.key, required this.text});
+  const TextSeparatorSidebar({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

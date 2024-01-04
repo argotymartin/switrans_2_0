@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/menu_button.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/notification_indicator.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
 
 class Navbar extends StatelessWidget {
   const Navbar({super.key});
@@ -17,7 +16,7 @@ class Navbar extends StatelessWidget {
             children: [
               SizedBox(width: 10),
               Spacer(),
-              NotificationIndicator(),
+              NotificationIndicatorNavbar(),
               SizedBox(width: 10),
               //NavbarAvatar(),
               SizedBox(width: 10),
@@ -27,7 +26,7 @@ class Navbar extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           width: 60,
-          child: const MenuButton(),
+          child: const MenuButtonNavar(),
         ),
       ],
     );

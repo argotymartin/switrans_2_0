@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/inputs/custom_inputs.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/inputs/custom_inputs.dart';
 
-class SerachText extends StatelessWidget {
-  const SerachText({super.key});
+class SerachTextNavbar extends StatelessWidget {
+  const SerachTextNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {

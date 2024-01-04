@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/shared/navbar.dart';
-import 'package:switrans_2_0/src/modules/shared/sidebar.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/widgets/navbar/navbar.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/widgets/sidebar/sidebar.dart';
 
 class MenuLayout extends StatefulWidget {
   final Widget child;

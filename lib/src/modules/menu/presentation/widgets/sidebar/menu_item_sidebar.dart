@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MenuItem extends StatefulWidget {
+class MenuItemSidebar extends StatefulWidget {
   final String text;
   final IconData icon;
   final bool isActive;
   final Function onPressed;
-  const MenuItem({
+  const MenuItemSidebar({
     super.key,
     required this.text,
     required this.icon,
@@ -15,10 +15,10 @@ class MenuItem extends StatefulWidget {
   });
 
   @override
-  State<MenuItem> createState() => _MenuItemState();
+  State<MenuItemSidebar> createState() => _MenuItemSidebarState();
 }
 
-class _MenuItemState extends State<MenuItem> {
+class _MenuItemSidebarState extends State<MenuItemSidebar> {
   bool isHovered = false;
   bool isEnter = false;
   @override
@@ -82,10 +82,10 @@ class _MenuItemState extends State<MenuItem> {
           isEnter
               ? const Column(
                   children: [
-                    SubMenuItem(text: 'Analitics Dasboard'),
-                    SubMenuItem(text: 'Marketing Dasboard'),
-                    SubMenuItem(text: 'Introduction'),
-                    SubMenuItem(text: 'Privacity'),
+                    SubMenuItemSidebar(text: 'Analitics Dasboard'),
+                    SubMenuItemSidebar(text: 'Marketing Dasboard'),
+                    SubMenuItemSidebar(text: 'Introduction'),
+                    SubMenuItemSidebar(text: 'Privacity'),
                   ],
                 )
               : const SizedBox()
@@ -95,15 +95,15 @@ class _MenuItemState extends State<MenuItem> {
   }
 }
 
-class SubMenuItem extends StatefulWidget {
+class SubMenuItemSidebar extends StatefulWidget {
   final String text;
-  const SubMenuItem({super.key, required this.text});
+  const SubMenuItemSidebar({super.key, required this.text});
 
   @override
-  State<SubMenuItem> createState() => _SubMenuItemState();
+  State<SubMenuItemSidebar> createState() => _SubMenuItemSidebarState();
 }
 
-class _SubMenuItemState extends State<SubMenuItem> {
+class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
   bool isHovered = false;
   bool isSelected = false;
   @override

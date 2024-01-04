@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NotificationIndicator extends StatelessWidget {
-  const NotificationIndicator({super.key});
+class NotificationIndicatorNavbar extends StatelessWidget {
+  const NotificationIndicatorNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {

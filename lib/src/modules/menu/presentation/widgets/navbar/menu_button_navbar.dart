@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MenuButton extends StatefulWidget {
-  const MenuButton({
+class MenuButtonNavar extends StatefulWidget {
+  const MenuButtonNavar({
     super.key,
   });
 
   @override
-  State<MenuButton> createState() => _MenuButtonState();
+  State<MenuButtonNavar> createState() => _MenuButtonNavarState();
 }
 
-class _MenuButtonState extends State<MenuButton> {
+class _MenuButtonNavarState extends State<MenuButtonNavar> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {

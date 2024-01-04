@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/menu_layout.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/layouts/menu_layout.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() => runApp(const MyApp());
 
@@ -8,11 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        title: 'Switrans 2.0',
-        debugShowCheckedModeBanner: false,
-        home: MenuLayout(
-          child: Text('Hola'),
-        ));
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
+      ],
+      child: const MaterialApp(
+          title: 'Switrans 2.0',
+          debugShowCheckedModeBanner: false,
+          home: MenuLayout(
+            child: Text('Hola'),
+          )),
+    );
   }
 }
