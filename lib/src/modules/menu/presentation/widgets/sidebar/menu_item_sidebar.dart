@@ -27,7 +27,6 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      height: 46,
       duration: const Duration(microseconds: 250),
       color: isHovered
           ? Colors.white.withOpacity(0.1)
@@ -36,83 +35,82 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
               : Colors.transparent,
       child: Column(
         children: [
-          Row(
-            children: [
-              widget.isActive ? Container(width: 4, height: 40, color: Colors.indigo.shade300) : const SizedBox(width: 4),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => setState(() {
-                    isEnter = !isEnter;
-                    widget.onPressed();
-                  }),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                    child: MouseRegion(
-                      onHover: (_) => setState(() {
-                        isHovered = true;
-                      }),
-                      onEnter: (_) => setState(() {
-                        widget.isMenuIcon
-                            ? showPopover(
-                                context: context,
-                                backgroundColor: Colors.indigo,
-                                direction: PopoverDirection.right,
-                                width: 250,
-                                height: 150,
-                                barrierLabel: 'Prueba',
-                                arrowWidth: 60,
-                                bodyBuilder: (context) => Column(
-                                  children: [
-                                    Container(child: Text("prueba"), height: 50),
-                                    //Container(color: Colors.yellow, height: 50),
-                                    //Container(color: Colors.red, height: 50),
-                                  ],
-                                ),
-                              )
-                            : null;
-                      }),
-                      onExit: (_) => setState(() => isHovered = false),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            widget.icon,
-                            color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
-                            size: 20,
-                          ),
-                          widget.isMenuIcon ? const SizedBox() : const SizedBox(width: 10),
-                          widget.isMenuIcon
-                              ? const SizedBox()
-                              : SizedBox(
-                                  width: 172,
-                                  child: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    widget.text,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 14,
-                                      fontWeight: isHovered || isEnter ? FontWeight.w400 : FontWeight.w300,
-                                      color: Colors.white.withOpacity(0.8),
+          SizedBox(
+            height: 46,
+            child: Row(
+              children: [
+                widget.isActive ? Container(width: 4, height: 40, color: Colors.red) : const SizedBox(width: 4),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => setState(() {
+                      isEnter = !isEnter;
+                      widget.onPressed();
+                      widget.isMenuIcon
+                          ? showPopover(
+                              context: context,
+                              backgroundColor: Colors.indigo,
+                              direction: PopoverDirection.right,
+                              width: 250,
+                              height: 150,
+                              barrierLabel: 'Prueba',
+                              arrowWidth: 60,
+                              bodyBuilder: (context) => Column(
+                                children: [
+                                  Container(child: Text("prueba"), height: 50),
+                                  //Container(color: Colors.yellow, height: 50),
+                                  //Container(color: Colors.red, height: 50),
+                                ],
+                              ),
+                            )
+                          : null;
+                    }),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      child: MouseRegion(
+                        onHover: (_) => setState(() => isHovered = true),
+                        onExit: (_) => setState(() => isHovered = false),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              widget.icon,
+                              color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
+                              size: 20,
+                            ),
+                            widget.isMenuIcon ? const SizedBox() : const SizedBox(width: 10),
+                            widget.isMenuIcon
+                                ? const SizedBox()
+                                : SizedBox(
+                                    width: 172,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      widget.text,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14,
+                                        fontWeight: isHovered || isEnter ? FontWeight.w400 : FontWeight.w300,
+                                        color: Colors.white.withOpacity(0.8),
+                                      ),
                                     ),
                                   ),
-                                ),
-                          widget.isMenuIcon
-                              ? const SizedBox()
-                              : Icon(
-                                  isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
-                                  size: 16,
-                                  color: isHovered || isEnter ? Colors.white : Colors.white.withOpacity(0.3),
-                                )
-                        ],
+                            widget.isMenuIcon
+                                ? const SizedBox()
+                                : Icon(
+                                    isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
+                                    size: 16,
+                                    color: isHovered || isEnter ? Colors.white : Colors.white.withOpacity(0.3),
+                                  )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           //isEnter & widget.isActive
-          isEnter & widget.isMenuIcon
+          isEnter & !widget.isMenuIcon
               ? const Column(
                   children: [
                     SubMenuItemSidebar(text: 'Analitics Dasboard'),

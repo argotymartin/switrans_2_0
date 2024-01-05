@@ -12,7 +12,18 @@ class FacturaView extends StatelessWidget {
       children: [
         Text('Dashboard', style: CustomLabels.h1),
         const SizedBox(height: 10),
-        const WhiteCard(title: 'Sales Statistics', child: Text('Hola Mundo')),
+        const WhiteCard(
+          title: 'Sales Statistics',
+          child: Column(
+            children: [
+              Icon(IconData(0xe03a, fontFamily: 'MaterialIcons')),
+              Icon(IconData(0xee2c, fontFamily: 'MaterialIcons')),
+              //Icon(),
+              //Icon(),
+              Text('Hola Mundo............'),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/widgets/navbar/navbar.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/widgets/sidebar/sidebar.dart';
 
@@ -14,6 +16,7 @@ class _MenuLayoutState extends State<MenuLayout> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
+    context.read<ModuloBloc>().add(const ActiveteModuloEvent());
   }
 
   @override
