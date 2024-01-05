@@ -16,7 +16,7 @@ class Sidebar extends StatelessWidget {
                 children: [
                   Container(
                     width: state.isOpenMenuIcon ? 80 : 270,
-                    height: size.height * 0.95,
+                    height: size.height * 0.92,
                     decoration: buildBoxDecoration(),
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
@@ -104,19 +104,21 @@ class Sidebar extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.05,
-                    width: state.isOpenMenuIcon ? 100 : 270,
+                    height: size.height * 0.08,
+                    padding: state.isOpenMenuIcon ? null : const EdgeInsets.symmetric(horizontal: 54),
+                    width: state.isOpenMenuIcon ? 80 : 270,
                     color: const Color(0xff2b4c81),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.message_outlined, color: Colors.white.withOpacity(0.3)),
-                        const SizedBox(width: 8),
-                        Icon(Icons.telegram_sharp, color: Colors.white.withOpacity(0.3)),
-                        const SizedBox(width: 8),
-                        Icon(Icons.call_outlined, color: Colors.white.withOpacity(0.3)),
-                      ],
-                    ),
+                    child: state.isOpenMenuIcon
+                        ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.forum_outlined, color: Colors.white.withOpacity(0.3), size: 20),
+                              Icon(Icons.telegram_sharp, color: Colors.white.withOpacity(0.3), size: 20),
+                              Icon(Icons.call_outlined, color: Colors.white.withOpacity(0.3), size: 20),
+                            ],
+                          ),
                   )
                 ],
               )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:popover/popover.dart';
 
 class MenuItemSidebar extends StatefulWidget {
   final String text;
@@ -48,7 +49,29 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: MouseRegion(
-                      onHover: (_) => setState(() => isHovered = true),
+                      onHover: (_) => setState(() {
+                        isHovered = true;
+                      }),
+                      onEnter: (_) => setState(() {
+                        widget.isMenuIcon
+                            ? showPopover(
+                                context: context,
+                                backgroundColor: Colors.indigo,
+                                direction: PopoverDirection.right,
+                                width: 250,
+                                height: 150,
+                                barrierLabel: 'Prueba',
+                                arrowWidth: 60,
+                                bodyBuilder: (context) => Column(
+                                  children: [
+                                    Container(child: Text("prueba"), height: 50),
+                                    //Container(color: Colors.yellow, height: 50),
+                                    //Container(color: Colors.red, height: 50),
+                                  ],
+                                ),
+                              )
+                            : null;
+                      }),
                       onExit: (_) => setState(() => isHovered = false),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -89,7 +112,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             ],
           ),
           //isEnter & widget.isActive
-          isEnter
+          isEnter & widget.isMenuIcon
               ? const Column(
                   children: [
                     SubMenuItemSidebar(text: 'Analitics Dasboard'),
