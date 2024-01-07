@@ -149,7 +149,9 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
     return Material(
       color: const Color(0xff284d80),
       child: InkWell(
-        onTap: () => setState(() => isSelected = !isSelected),
+        onTap: () => setState(() {
+          isSelected = !isSelected;
+        }),
         child: MouseRegion(
           onEnter: (_) => setState(() => isHovered = true),
           onHover: (_) => setState(() => isHovered = true),

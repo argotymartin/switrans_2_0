@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/modules/menu/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
@@ -36,7 +38,7 @@ class Sidebar extends StatelessWidget {
                                 modulo: modulo,
                                 onPressed: () {
                                   modulo.isSelected = true;
-                                  context.read<ModuloBloc>().add(const SelectedModuloEvent());
+                                  context.go(AppRouter.factura);
                                 },
                                 isMimimize: state.isMinimize,
                               ));
