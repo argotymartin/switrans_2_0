@@ -2,8 +2,8 @@ part of 'menu_bloc.dart';
 
 sealed class MenuState extends Equatable {
   final bool isOpenMenu;
-  final bool isOpenMenuIcon;
-  const MenuState({this.isOpenMenu = true, this.isOpenMenuIcon = false});
+  final bool isMinimize;
+  const MenuState({this.isOpenMenu = true, this.isMinimize = false});
 
   @override
   List<Object> get props => [];
@@ -26,7 +26,7 @@ class MenuLoadingState extends MenuState {
 }
 
 class MenuSuccesState extends MenuState {
-  const MenuSuccesState({super.isOpenMenu, super.isOpenMenuIcon});
+  const MenuSuccesState({super.isOpenMenu, super.isMinimize});
 
   @override
   List<Object> get props => [];

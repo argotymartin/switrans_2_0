@@ -12,3 +12,7 @@ class GetModuloEvent extends ModuloEvent {}
 class ActiveteModuloEvent extends ModuloEvent {
   const ActiveteModuloEvent();
 }
+
+class SelectedModuloEvent extends ModuloEvent {
+  const SelectedModuloEvent();
+}

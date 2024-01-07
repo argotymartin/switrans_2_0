@@ -10,7 +10,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     on<MenuEvent>((event, emit) {});
     on<ActiveteMenuEvent>((event, emit) {
       emit(const MenuLoadingState());
-      emit(MenuSuccesState(isOpenMenu: event.isOpenMenu, isOpenMenuIcon: event.isOpenMenuIcon));
+      emit(MenuSuccesState(isOpenMenu: event.isOpenMenu, isMinimize: event.isMinimize));
     });
   }
 }

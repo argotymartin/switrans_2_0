@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
@@ -17,49 +18,48 @@ class Sidebar extends StatelessWidget {
             ? Column(
                 children: [
                   Container(
-                    width: state.isOpenMenuIcon ? 80 : 270,
+                    width: state.isMinimize ? 80 : 270,
                     height: size.height * 0.92,
                     decoration: buildBoxDecoration(),
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       children: [
-                        LogoSidebar(isMenuIcon: state.isOpenMenuIcon),
-                        ProfileSidebar(isMenuIcon: state.isOpenMenuIcon),
-                        state.isOpenMenuIcon ? const SizedBox() : const SizedBox(height: 16),
+                        LogoSidebar(isMenuIcon: state.isMinimize),
+                        ProfileSidebar(isMenuIcon: state.isMinimize),
+                        state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
                         BlocBuilder<ModuloBloc, ModuloState>(
                           builder: (context, stateModulo) {
                             List<MenuItemSidebar> modulos = [];
                             for (Modulo modulo in stateModulo.modulos) {
+                              modulo.isSelected = false;
                               modulos.add(MenuItemSidebar(
-                                icon: IconData(int.parse(modulo.moduloIcono), fontFamily: 'MaterialIcons'),
-                                onPressed: () {},
-                                text: modulo.moduloTexto,
-                                isMenuIcon: state.isOpenMenuIcon,
-                                menuItems: modulo.paginas,
+                                modulo: modulo,
+                                onPressed: () {
+                                  modulo.isSelected = true;
+                                  context.read<ModuloBloc>().add(const SelectedModuloEvent());
+                                },
+                                isMimimize: state.isMinimize,
                               ));
                             }
-                            return Column(
-                              children: modulos,
-                            );
+                            return Column(children: modulos);
                           },
                         ),
-                        state.isOpenMenuIcon ? const SizedBox() : const SizedBox(height: 50),
-                        state.isOpenMenuIcon ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
+                        state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
+                        state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
                         MenuItemSidebar(
-                          text: 'Logout',
-                          icon: Icons.exit_to_app_outlined,
-                          isMenuIcon: state.isOpenMenuIcon,
+                          modulo: ModuloModel(moduloCodigo: 1, moduloIcono: "0xf031", moduloTexto: "Logout", moduloVisible: true),
                           onPressed: () {},
+                          isMimimize: state.isMinimize,
                         ),
                       ],
                     ),
                   ),
                   Container(
                     height: size.height * 0.08,
-                    padding: state.isOpenMenuIcon ? null : const EdgeInsets.symmetric(horizontal: 54),
-                    width: state.isOpenMenuIcon ? 80 : 270,
+                    padding: state.isMinimize ? null : const EdgeInsets.symmetric(horizontal: 54),
+                    width: state.isMinimize ? 80 : 270,
                     color: const Color(0xff2b4c81),
-                    child: state.isOpenMenuIcon
+                    child: state.isMinimize
                         ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

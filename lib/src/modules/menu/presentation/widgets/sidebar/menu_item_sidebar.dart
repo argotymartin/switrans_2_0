@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
-import 'package:switrans_2_0/src/modules/menu/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 
 class MenuItemSidebar extends StatefulWidget {
-  final String text;
-  final IconData icon;
   final bool isActive;
-  final bool isMenuIcon;
+  final bool isMimimize;
   final Function onPressed;
-  final List<Pagina> menuItems;
-  const MenuItemSidebar(
-      {super.key,
-      this.text = '',
-      required this.icon,
-      this.isActive = false,
-      this.isMenuIcon = false,
-      required this.onPressed,
-      this.menuItems = const []});
+  final Modulo modulo;
+  const MenuItemSidebar({
+    super.key,
+    required this.modulo,
+    this.isActive = false,
+    this.isMimimize = false,
+    required this.onPressed,
+  });
 
   @override
   State<MenuItemSidebar> createState() => _MenuItemSidebarState();
@@ -28,7 +27,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   bool isEnter = false;
   @override
   Widget build(BuildContext context) {
-    final paginas = widget.menuItems.map((item) => SubMenuItemSidebar(text: item.paginaTexto)).toList();
+    final paginas = widget.modulo.paginas.map((item) => SubMenuItemSidebar(text: item.paginaTexto)).toList();
     return AnimatedContainer(
       duration: const Duration(microseconds: 250),
       color: isHovered
@@ -47,22 +46,36 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () => setState(() {
+                      context.read<ModuloBloc>().add(const SelectedModuloEvent());
                       isEnter = !isEnter;
                       widget.onPressed();
-                      widget.isMenuIcon
+
+                      widget.isMimimize
                           ? showPopover(
                               context: context,
-                              backgroundColor: Colors.indigo,
+                              backgroundColor: const Color(0xff284d80),
                               direction: PopoverDirection.right,
                               width: 250,
-                              height: 150,
-                              barrierLabel: 'Prueba',
+                              height: (paginas.length * 42) + 32,
                               arrowWidth: 60,
                               bodyBuilder: (context) => Column(
                                 children: [
-                                  Container(child: Text("prueba"), height: 50),
-                                  //Container(color: Colors.yellow, height: 50),
-                                  //Container(color: Colors.red, height: 50),
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          widget.modulo.moduloTexto,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Column(children: paginas),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             )
@@ -77,18 +90,18 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Icon(
-                              widget.icon,
+                              IconData(int.parse(widget.modulo.moduloIcono), fontFamily: 'MaterialIcons'),
                               color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
                               size: 20,
                             ),
-                            widget.isMenuIcon ? const SizedBox() : const SizedBox(width: 10),
-                            widget.isMenuIcon
+                            widget.isMimimize ? const SizedBox() : const SizedBox(width: 10),
+                            widget.isMimimize
                                 ? const SizedBox()
                                 : SizedBox(
                                     width: 172,
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
-                                      widget.text,
+                                      widget.modulo.moduloTexto,
                                       style: GoogleFonts.roboto(
                                         fontSize: 14,
                                         fontWeight: isHovered || isEnter ? FontWeight.w400 : FontWeight.w300,
@@ -96,7 +109,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                                       ),
                                     ),
                                   ),
-                            widget.isMenuIcon
+                            widget.isMimimize
                                 ? const SizedBox()
                                 : Icon(
                                     isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
@@ -113,7 +126,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             ),
           ),
           //isEnter & widget.isActive
-          isEnter & !widget.isMenuIcon ? Column(children: paginas) : const SizedBox()
+          isEnter & !widget.isMimimize ? Column(children: paginas) : const SizedBox()
         ],
       ),
     );

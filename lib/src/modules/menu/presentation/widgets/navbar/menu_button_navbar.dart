@@ -16,7 +16,7 @@ class _MenuButtonNavarState extends State<MenuButtonNavar> {
   @override
   Widget build(BuildContext context) {
     bool isOpenMenu = context.read<MenuBloc>().state.isOpenMenu;
-    bool isOpenMenuIcon = context.read<MenuBloc>().state.isOpenMenuIcon;
+    bool isMinimize = context.read<MenuBloc>().state.isMinimize;
     return MouseRegion(
       onEnter: (event) => setState(() => isHover = true),
       onExit: (event) => setState(() => isHover = false),
@@ -30,14 +30,14 @@ class _MenuButtonNavarState extends State<MenuButtonNavar> {
             _BuildButton(
               icon: Icons.menu_outlined,
               onPressed: () {
-                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: !isOpenMenu, isOpenMenuIcon: isOpenMenuIcon));
+                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: !isOpenMenu, isMinimize: isMinimize));
               },
             ),
             _BuildButton(
               icon: Icons.menu_open_outlined,
               isHover: isHover,
               onPressed: () {
-                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: isOpenMenu, isOpenMenuIcon: !isOpenMenuIcon));
+                context.read<MenuBloc>().add(ActiveteMenuEvent(isOpenMenu: isOpenMenu, isMinimize: !isMinimize));
               },
             ),
             _BuildButton(icon: Icons.lock_outlined, isHover: isHover, onPressed: () {}),
@@ -93,7 +93,6 @@ class _BuildButtonState extends State<_BuildButton> {
                 ),
                 onPressed: () {
                   setState(() => isSeleted = !isSeleted);
-                  //SideMenuProvider.toggleMenu();
                   widget.onPressed();
                 },
                 icon: Icon(widget.icon),
