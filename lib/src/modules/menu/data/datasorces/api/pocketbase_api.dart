@@ -9,19 +9,14 @@ class PocketbaseAPI {
   Future<Response> getModulosAll() async {
     const url = '$kPocketBAseUrl/api/collections/modulo/records';
     final response = await _dio.get('$url/');
-    //final paginas = getPagesByModulo(response.data['items']['id']);
+
     final List<dynamic> items = response.data['items'];
 
-    List<Future<Response>> futures = [];
-
     for (var element in items) {
-      final responseP = getPagesByModulo(element["id"]);
-      futures.add(responseP);
+      final responseP = await getPagesByModulo(element["id"]);
+      element["paginas"] = responseP.data['items'];
     }
-    List<Response> responses = await Future.wait(futures);
-    //final response2 = items.map((x) => getPagesByModulo(x["id"])).toList();
-    final reponsePaginas = responses.map((res) => res.data).toList();
-    response.data['paginas'] = reponsePaginas[5];
+
     return response;
   }
 

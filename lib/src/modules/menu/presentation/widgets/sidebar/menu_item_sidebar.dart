@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
+import 'package:switrans_2_0/src/modules/menu/domain/entities/pagina.dart';
 
 class MenuItemSidebar extends StatefulWidget {
   final String text;
@@ -8,14 +9,15 @@ class MenuItemSidebar extends StatefulWidget {
   final bool isActive;
   final bool isMenuIcon;
   final Function onPressed;
-  const MenuItemSidebar({
-    super.key,
-    this.text = '',
-    required this.icon,
-    this.isActive = false,
-    this.isMenuIcon = false,
-    required this.onPressed,
-  });
+  final List<Pagina> menuItems;
+  const MenuItemSidebar(
+      {super.key,
+      this.text = '',
+      required this.icon,
+      this.isActive = false,
+      this.isMenuIcon = false,
+      required this.onPressed,
+      this.menuItems = const []});
 
   @override
   State<MenuItemSidebar> createState() => _MenuItemSidebarState();
@@ -26,6 +28,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   bool isEnter = false;
   @override
   Widget build(BuildContext context) {
+    final paginas = widget.menuItems.map((item) => SubMenuItemSidebar(text: item.paginaTexto)).toList();
     return AnimatedContainer(
       duration: const Duration(microseconds: 250),
       color: isHovered
@@ -110,16 +113,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             ),
           ),
           //isEnter & widget.isActive
-          isEnter & !widget.isMenuIcon
-              ? const Column(
-                  children: [
-                    SubMenuItemSidebar(text: 'Analitics Dasboard'),
-                    SubMenuItemSidebar(text: 'Marketing Dasboard'),
-                    SubMenuItemSidebar(text: 'Introduction'),
-                    SubMenuItemSidebar(text: 'Privacity'),
-                  ],
-                )
-              : const SizedBox()
+          isEnter & !widget.isMenuIcon ? Column(children: paginas) : const SizedBox()
         ],
       ),
     );

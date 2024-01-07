@@ -35,6 +35,7 @@ class Sidebar extends StatelessWidget {
                                 onPressed: () {},
                                 text: modulo.moduloTexto,
                                 isMenuIcon: state.isOpenMenuIcon,
+                                menuItems: modulo.paginas,
                               ));
                             }
                             return Column(
