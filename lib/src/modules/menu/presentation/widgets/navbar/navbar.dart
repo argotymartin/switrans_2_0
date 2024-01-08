@@ -10,7 +10,7 @@ class Navbar extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          height: 62,
+          height: 66,
           decoration: buidBoxDecoration(),
           child: const Row(
             children: [

@@ -6,7 +6,7 @@ import 'package:switrans_2_0/src/modules/views/factura/presentation/views/factur
 
 class AppRouter {
   static const root = "/";
-  static const factura = "/factura";
+  static const factura = "/prefactura";
   static const notaDebito = "/notaDebito";
   static const notaCredito = "/notaCredito";
 

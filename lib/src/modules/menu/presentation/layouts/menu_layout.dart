@@ -21,29 +21,32 @@ class _MenuLayoutState extends State<MenuLayout> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0x0ffefff2),
-      body: Stack(
-        children: [
-          Row(
-            children: [
-              const Sidebar(),
-              Expanded(
-                child: Column(
-                  children: [
-                    const Navbar(),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: widget.child,
-                      ),
+    return SelectionArea(
+      child: Scaffold(
+        backgroundColor: const Color(0x0ffefff2),
+        body: Row(
+          children: [
+            const Sidebar(),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Positioned(
+                    top: 66,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: widget.child,
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+                  ),
+                  const Positioned(top: 0, left: 0, right: 0, bottom: 0, child: Navbar()),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -16,11 +16,5 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
       final dataState = await _moduloRepository.getModulos();
       emit(ModuloSuccesState(modulos: dataState.data!));
     });
-
-    on<SelectedModuloEvent>((event, emit) {
-      List<Modulo> modulos = state.modulos;
-      emit(const ModuloLoadingState());
-      emit(ModuloSuccesState(modulos: modulos));
-    });
   }
 }

@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 
 class MenuItemSidebar extends StatefulWidget {
-  final bool isActive;
-  final bool isMimimize;
-  final Function onPressed;
   final Modulo modulo;
+  final Function onPressed;
+  final bool isMimimize;
+
   const MenuItemSidebar({
-    super.key,
     required this.modulo,
-    this.isActive = false,
-    this.isMimimize = false,
     required this.onPressed,
+    this.isMimimize = false,
+    super.key,
   });
 
   @override
@@ -27,12 +25,14 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   bool isEnter = false;
   @override
   Widget build(BuildContext context) {
+    final location = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final isActive = location == widget.modulo.moduloPath;
     final paginas = widget.modulo.paginas.map((item) => SubMenuItemSidebar(text: item.paginaTexto)).toList();
     return AnimatedContainer(
       duration: const Duration(microseconds: 250),
       color: isHovered
           ? Colors.white.withOpacity(0.1)
-          : widget.isActive
+          : isActive
               ? Colors.white.withOpacity(0.1)
               : Colors.transparent,
       child: Column(
@@ -41,15 +41,13 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             height: 46,
             child: Row(
               children: [
-                widget.isActive ? Container(width: 4, height: 40, color: Colors.red) : const SizedBox(width: 4),
+                isActive ? Container(width: 4, height: 48, color: Colors.indigo.shade100) : const SizedBox(width: 4),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () => setState(() {
-                      context.read<ModuloBloc>().add(const SelectedModuloEvent());
                       isEnter = !isEnter;
                       widget.onPressed();
-
                       widget.isMimimize
                           ? showPopover(
                               context: context,
@@ -82,7 +80,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                           : null;
                     }),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: MouseRegion(
                         onHover: (_) => setState(() => isHovered = true),
                         onExit: (_) => setState(() => isHovered = false),
@@ -94,9 +92,19 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                               color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
                               size: 20,
                             ),
-                            widget.isMimimize ? const SizedBox() : const SizedBox(width: 10),
+                            widget.isMimimize ? const SizedBox(width: 4) : const SizedBox(width: 10),
                             widget.isMimimize
-                                ? const SizedBox()
+                                ? SizedBox(
+                                    child: isActive
+                                        ? Container(
+                                            width: 8,
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius: BorderRadius.circular(100),
+                                            ),
+                                          )
+                                        : null)
                                 : SizedBox(
                                     width: 172,
                                     child: Text(

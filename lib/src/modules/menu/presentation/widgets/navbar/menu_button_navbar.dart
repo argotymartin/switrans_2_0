@@ -21,7 +21,9 @@ class _MenuButtonNavarState extends State<MenuButtonNavar> {
       onEnter: (event) => setState(() => isHover = true),
       onExit: (event) => setState(() => isHover = false),
       child: Container(
+        height: 134,
         decoration: BoxDecoration(
+          color: isHover ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(4.0),
           border: Border.all(color: isHover ? Colors.grey.shade400 : Colors.transparent),
         ),
