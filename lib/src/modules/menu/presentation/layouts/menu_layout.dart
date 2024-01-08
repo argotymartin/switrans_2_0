@@ -23,7 +23,7 @@ class _MenuLayoutState extends State<MenuLayout> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return SelectionArea(
       child: Scaffold(
-        backgroundColor: const Color(0x0ffefff2),
+        backgroundColor: const Color(0xffedf2f9),
         body: Row(
           children: [
             const Sidebar(),
@@ -37,7 +37,7 @@ class _MenuLayoutState extends State<MenuLayout> with SingleTickerProviderStateM
                     right: 0,
                     bottom: 0,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                       child: widget.child,
                     ),
                   ),

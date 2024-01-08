@@ -30,7 +30,7 @@ class Navbar extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           width: 60,
           child: const MenuButtonNavar(),
         ),
