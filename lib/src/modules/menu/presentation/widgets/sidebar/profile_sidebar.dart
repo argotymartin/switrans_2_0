@@ -24,7 +24,7 @@ class ProfileSidebar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const AvatarNavbar(),
+                const AvatarNavbar(size: 48),
                 isMenuIcon ? const SizedBox() : const SizedBox(width: 8),
                 isMenuIcon
                     ? const SizedBox()
