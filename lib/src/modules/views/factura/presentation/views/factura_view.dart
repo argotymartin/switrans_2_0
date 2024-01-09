@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
+import 'package:switrans_2_0/src/modules/views/factura/presentation/blocs/cliente/cliente_bloc.dart';
 
 class FacturaView extends StatelessWidget {
   const FacturaView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controllerCliente = TextEditingController();
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: [
@@ -46,35 +51,43 @@ class FacturaView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                        width: 400,
-                        height: 120,
-                        child: AutocompleteInput(
-                          labelText: "Cliente",
-                        )),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: 40,
-                      width: 80,
-                      color: Colors.red,
-                      child: const Text("MCT SAS"),
+                    SizedBox(
+                      width: 400,
+                      height: 120,
+                      child: BlocBuilder<ClienteBloc, ClienteState>(
+                        builder: (context, state) {
+                          Future<List<String?>> newMethod(String search) async {
+                            context.read<ClienteBloc>().add(ActiveteClienteEvent(search));
+                            final namesClientes = state.clientes.map((cliente) => cliente.nombre);
+                            return namesClientes.toList();
+                          }
+
+                          return AutocompleteInput(
+                            processFunction: newMethod,
+                            labelText: "Cliente",
+                            incomingController: controllerCliente,
+                          );
+                        },
+                      ),
                     ),
-                    Container(
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(horizontal: 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      width: 80,
-                      color: Colors.red,
-                      child: const Text("Marketing"),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: 40,
-                      width: 80,
-                      color: Colors.red,
-                      child: const Text("Ferricar"),
+                    SizedBox(
+                      width: 400,
+                      height: 120,
+                      child: BlocBuilder<ClienteBloc, ClienteState>(
+                        builder: (context, state) {
+                          Future<List<String?>> newMethod(String search) async {
+                            context.read<ClienteBloc>().add(ActiveteClienteEvent(search));
+                            final namesClientes = state.clientes.map((cliente) => cliente.nombre);
+                            return namesClientes.toList();
+                          }
+
+                          return AutocompleteInput(
+                            processFunction: newMethod,
+                            labelText: "Comercial",
+                            incomingController: controllerCliente,
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

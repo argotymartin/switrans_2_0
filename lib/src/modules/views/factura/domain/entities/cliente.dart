@@ -1,11 +1,11 @@
 class Cliente {
   final int codigo;
   final String nombre;
-  final String nit;
+  final String identificacion;
 
   Cliente({
     required this.codigo,
     required this.nombre,
-    required this.nit,
+    required this.identificacion,
   });
 }
