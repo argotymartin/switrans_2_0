@@ -11,7 +11,6 @@ class WhiteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      //margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(10),
       decoration: buildBoxDeoration(),
       child: Column(

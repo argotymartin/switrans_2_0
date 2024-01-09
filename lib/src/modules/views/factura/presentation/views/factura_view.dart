@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/input_search.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
 
 class FacturaView extends StatelessWidget {
@@ -40,12 +40,18 @@ class FacturaView extends StatelessWidget {
         WhiteCard(
           title: 'Sales Statistics',
           child: SizedBox(
+            width: double.infinity,
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const InputSearch(),
+                    const SizedBox(
+                        width: 400,
+                        height: 120,
+                        child: AutocompleteInput(
+                          labelText: "Cliente",
+                        )),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 40),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -72,11 +78,6 @@ class FacturaView extends StatelessWidget {
                     ),
                   ],
                 ),
-                Container(
-                  height: 800,
-                  width: double.infinity,
-                  color: Colors.blue,
-                )
               ],
             ),
           ),
