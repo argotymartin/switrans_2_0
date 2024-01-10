@@ -2,36 +2,42 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
 import 'package:switrans_2_0/src/modules/views/factura/domain/entities/cliente.dart';
-import 'package:switrans_2_0/src/modules/views/factura/presentation/blocs/cliente/cliente_bloc.dart';
+import 'package:switrans_2_0/src/modules/views/factura/domain/entities/empresa.dart';
+import 'package:switrans_2_0/src/modules/views/factura/presentation/blocs/factura/factura_bloc.dart';
+import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/breadcrumb_trail.dart';
+import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/card_empresa.dart';
 
 class FacturaView extends StatelessWidget {
   const FacturaView({super.key});
+
   @override
   Widget build(BuildContext context) {
     List<Cliente> clientes = [];
-    final clienteBloc = BlocProvider.of<ClienteBloc>(context);
     final size = MediaQuery.of(context).size;
     TextEditingController controllerCliente = TextEditingController();
+    final facturaBloc = BlocProvider.of<FacturaBloc>(context);
 
     Future<List<String?>> getClienteByParam(String search) async {
       await Future.delayed(const Duration(milliseconds: 500));
-      final clientes2 = await clienteBloc.getCliente(search);
+      final clientes2 = await facturaBloc.getCliente(search);
       final namesClientes = clientes2.map((cliente) => cliente.nombre);
       return namesClientes.toList();
     }
 
     Future<List<String?>> getClientesAll(String search) async {
-      final namesClientes = clientes.map((cliente) => cliente.nombre);
-      return namesClientes.where((cliente) {
-        final nameCliente = cliente.toLowerCase();
-        final query = search.toLowerCase();
-        return nameCliente.contains(query);
-      }).toList();
+      if (search.length >= 2) {
+        final namesClientes = clientes.map((cliente) => cliente.nombre);
+        return namesClientes.where((cliente) {
+          final nameCliente = cliente.toLowerCase();
+          final query = search.toLowerCase();
+          return nameCliente.contains(query);
+        }).toList();
+      }
+      return [];
     }
 
     return ListView(
@@ -66,9 +72,9 @@ class FacturaView extends StatelessWidget {
                         incomingController: controllerCliente,
                       ),
                     ),
-                    InkWell(
+                    /*InkWell(
                       onFocusChange: (value) async {
-                        if (value) clientes = await clienteBloc.getClientesAll();
+                        if (value) clientes = await facturaBloc.getClientesAll();
                       },
                       child: SizedBox(
                         width: size.width * 0.35,
@@ -78,48 +84,34 @@ class FacturaView extends StatelessWidget {
                           incomingController: controllerCliente,
                         ),
                       ),
-                    ),
+                    ),*/
+                    SizedBox(
+                      width: size.width * 0.35,
+                      height: 36,
+                      child: FutureBuilder(
+                        future: facturaBloc.getEmpresas(),
+                        builder: (context, AsyncSnapshot<List<Empresa>> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                final empresa = snapshot.data![i];
+                                return BuildCardEmpresa(empresa: empresa);
+                              },
+                            );
+                          } else {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
+                    )
                   ],
                 ),
               ],
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class BreadcrumbTrail extends StatelessWidget {
-  final List<String> elements;
-  const BreadcrumbTrail({
-    super.key,
-    required this.elements,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('EEEE, MMMM d, y').format(now);
-    List<Widget> result = [];
-    bool primeraIteracion = true;
-    for (var element in elements) {
-      if (primeraIteracion) {
-        result.add(Text(element, style: TextStyle(color: Colors.blue.shade500)));
-        primeraIteracion = false; // Cambiar la variable para evitar repetir la acción
-      } else {
-        result.add(Text(element, style: TextStyle(color: Colors.grey.shade500)));
-      }
-
-      result.add(const SizedBox(width: 4));
-      result.add(const Text("/"));
-      result.add(const SizedBox(width: 4));
-    }
-    return Row(
-      children: [
-        Row(children: result),
-        const Spacer(),
-        Text(formattedDate, style: TextStyle(color: Colors.grey.shade600)),
       ],
     );
   }

@@ -22,4 +22,10 @@ class ClientePocketbaseAPI {
     );
     return response;
   }
+
+  Future<Response> getDataEmpresas() async {
+    const url = '$kPocketBAseUrl/api/collections/empresa/records';
+    final response = await _dio.get('$url/');
+    return response;
+  }
 }

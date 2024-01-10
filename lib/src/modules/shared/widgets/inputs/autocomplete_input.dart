@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+// ignore: must_be_immutable
 class AutocompleteInput extends StatelessWidget {
   final String labelText;
   final Future<List<String?>> Function(String) processFunction;
@@ -9,8 +10,8 @@ class AutocompleteInput extends StatelessWidget {
   AutocompleteInput({
     Key? key,
     required this.labelText,
-    required this.incomingController,
     required this.processFunction,
+    required this.incomingController,
   }) : super(key: key);
 
   @override
@@ -35,7 +36,8 @@ class AutocompleteInput extends StatelessWidget {
                     controller: incomingController,
                     focusNode: focusNode,
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search_rounded, color: Colors.grey),
+                      prefixIconColor: Colors.grey,
+                      prefixIcon: const Icon(Icons.search_rounded),
                       border: const OutlineInputBorder(),
                       labelText: "Seleccione un $labelText",
                     ),
