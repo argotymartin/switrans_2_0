@@ -10,6 +10,7 @@ import 'package:switrans_2_0/src/modules/views/factura/domain/entities/empresa.d
 import 'package:switrans_2_0/src/modules/views/factura/presentation/blocs/factura/factura_bloc.dart';
 import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/breadcrumb_trail.dart';
 import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/card_empresa.dart';
+import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/datetime_input.dart';
 
 class FacturaView extends StatelessWidget {
   const FacturaView({super.key});
@@ -57,59 +58,138 @@ class FacturaView extends StatelessWidget {
         const SizedBox(height: 10),
         WhiteCard(
           title: 'Factura',
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.35,
-                      child: AutocompleteInput(
-                        processFunction: getClienteByParam,
-                        labelText: "Cliente",
-                        incomingController: controllerCliente,
-                      ),
-                    ),
-                    /*InkWell(
-                      onFocusChange: (value) async {
-                        if (value) clientes = await facturaBloc.getClientesAll();
-                      },
-                      child: SizedBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Cliente", style: CustomLabels.h3),
+                      const SizedBox(height: 8),
+                      SizedBox(
                         width: size.width * 0.35,
                         child: AutocompleteInput(
-                          processFunction: getClientesAll,
+                          processFunction: getClienteByParam,
                           labelText: "Cliente",
                           incomingController: controllerCliente,
                         ),
                       ),
-                    ),*/
-                    SizedBox(
+                    ],
+                  ),
+                  const SizedBox(width: 24),
+                  /*InkWell(
+                    onFocusChange: (value) async {
+                      if (value) clientes = await facturaBloc.getClientesAll();
+                    },
+                    child: SizedBox(
                       width: size.width * 0.35,
-                      height: 36,
-                      child: FutureBuilder(
+                      child: AutocompleteInput(
+                        processFunction: getClientesAll,
+                        labelText: "Cliente",
+                        incomingController: controllerCliente,
+                      ),
+                    ),
+                  ),*/
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Empresa", style: CustomLabels.h3),
+                      const SizedBox(height: 8),
+                      FutureBuilder(
                         future: facturaBloc.getEmpresas(),
                         builder: (context, AsyncSnapshot<List<Empresa>> snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, i) {
-                                final empresa = snapshot.data![i];
-                                return BuildCardEmpresa(empresa: empresa);
-                              },
+                            return SizedBox(
+                              width: size.width * 0.35,
+                              height: 56,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, i) {
+                                  final empresa = snapshot.data![i];
+                                  return BuildCardEmpresa(empresa: empresa);
+                                },
+                              ),
                             );
                           } else {
                             return const Center(child: CircularProgressIndicator());
                           }
                         },
                       ),
-                    )
-                  ],
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Remesas", style: CustomLabels.h3),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: size.width * 0.35,
+                        child: TextFormField(
+                          minLines: 4,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            alignLabelWithHint: true,
+                            border: OutlineInputBorder(),
+                            //labelText: 'Ingrese los numeros de Remesas',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(width: 24),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Inicio", style: CustomLabels.h3),
+                          const SizedBox(height: 8),
+                          SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                        ],
+                      ),
+                      const SizedBox(width: 24),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Fin", style: CustomLabels.h3),
+                          const SizedBox(height: 8),
+                          SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 24),
+              TextButton.icon(
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
+                  if (states.contains(MaterialState.hovered)) {
+                    return Colors.indigo.shade300;
+                  }
+                  return Colors.indigo;
+                })),
+                onPressed: () {
+                  print("Enviar peticion");
+                },
+                icon: const Icon(
+                  Icons.search_rounded,
+                  color: Colors.white,
                 ),
-              ],
-            ),
+                label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+              )
+            ],
           ),
         ),
       ],

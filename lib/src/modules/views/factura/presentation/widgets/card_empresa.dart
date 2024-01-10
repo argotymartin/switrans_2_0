@@ -21,10 +21,10 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
       child: InkWell(
         onTap: () => setState(() => isHovered = !isHovered),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: isHovered ? Colors.indigo : Colors.indigo.shade100,
+            color: isHovered ? Colors.indigo : Colors.indigo.shade50,
             boxShadow: const [
               BoxShadow(offset: Offset(-4, 0), color: Colors.indigo),
             ],
