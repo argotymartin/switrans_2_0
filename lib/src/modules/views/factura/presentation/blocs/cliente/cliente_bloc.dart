@@ -16,4 +16,8 @@ class ClienteBloc extends Bloc<ClienteEvent, ClienteState> {
       emit(ClienteSuccesState(clientes: dataState.data!));
     });
   }
+  Future<List<Cliente>> getCliente(String name) async {
+    final dataState = await _repository.getCliente(name);
+    return dataState.data!;
+  }
 }

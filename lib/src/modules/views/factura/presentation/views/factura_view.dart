@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
@@ -12,25 +13,20 @@ class FacturaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     TextEditingController controllerCliente = TextEditingController();
+    Future<List<String?>> getClientes(String search) async {
+      final clienteBloc = BlocProvider.of<ClienteBloc>(context);
+      await Future.delayed(const Duration(milliseconds: 500));
+      final clientes = await clienteBloc.getCliente(search);
+      final namesClientes = clientes.map((cliente) => cliente.nombre);
+      return namesClientes.toList();
+    }
+
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: [
-        Row(
-          children: [
-            Text("SmartAdmin", style: TextStyle(color: Colors.blue.shade500)),
-            const SizedBox(width: 4),
-            const Text("/"),
-            const SizedBox(width: 4),
-            Text("Theme Settings", style: TextStyle(color: Colors.grey.shade600)),
-            const SizedBox(width: 4),
-            const Text("/"),
-            const SizedBox(width: 4),
-            Text("How it works", style: TextStyle(color: Colors.grey.shade600)),
-            const Spacer(),
-            Text("Monday, January 8, 2024", style: TextStyle(color: Colors.grey.shade600)),
-          ],
-        ),
+        const BreadcrumbTrail(elements: ["SmartAdmin", "Admin", "Theme Settings"]),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -43,7 +39,7 @@ class FacturaView extends StatelessWidget {
             style: TextStyle(color: Colors.grey.shade600)),
         const SizedBox(height: 10),
         WhiteCard(
-          title: 'Sales Statistics',
+          title: 'Factura',
           child: SizedBox(
             width: double.infinity,
             child: Column(
@@ -52,27 +48,14 @@ class FacturaView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 400,
-                      height: 120,
-                      child: BlocBuilder<ClienteBloc, ClienteState>(
-                        builder: (context, state) {
-                          Future<List<String?>> newMethod(String search) async {
-                            context.read<ClienteBloc>().add(ActiveteClienteEvent(search));
-                            final namesClientes = state.clientes.map((cliente) => cliente.nombre);
-                            return namesClientes.toList();
-                          }
-
-                          return AutocompleteInput(
-                            processFunction: newMethod,
-                            labelText: "Cliente",
-                            incomingController: controllerCliente,
-                          );
-                        },
-                      ),
-                    ),
+                        width: size.width * 0.385,
+                        child: AutocompleteInput(
+                          processFunction: getClientes,
+                          labelText: "Cliente",
+                          incomingController: controllerCliente,
+                        )),
                     SizedBox(
-                      width: 400,
-                      height: 120,
+                      width: size.width * 0.385,
                       child: BlocBuilder<ClienteBloc, ClienteState>(
                         builder: (context, state) {
                           Future<List<String?>> newMethod(String search) async {
@@ -95,6 +78,41 @@ class FacturaView extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class BreadcrumbTrail extends StatelessWidget {
+  final List<String> elements;
+  const BreadcrumbTrail({
+    super.key,
+    required this.elements,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('EEEE, MMMM d, y').format(now);
+    List<Widget> result = [];
+    bool primeraIteracion = true;
+    for (var element in elements) {
+      if (primeraIteracion) {
+        result.add(Text(element, style: TextStyle(color: Colors.blue.shade500)));
+        primeraIteracion = false; // Cambiar la variable para evitar repetir la acción
+      } else {
+        result.add(Text(element, style: TextStyle(color: Colors.grey.shade500)));
+      }
+
+      result.add(const SizedBox(width: 4));
+      result.add(const Text("/"));
+      result.add(const SizedBox(width: 4));
+    }
+    return Row(
+      children: [
+        Row(children: result),
+        const Spacer(),
+        Text(formattedDate, style: TextStyle(color: Colors.grey.shade600)),
       ],
     );
   }

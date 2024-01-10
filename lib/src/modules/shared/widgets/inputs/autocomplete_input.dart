@@ -44,9 +44,15 @@ class AutocompleteInput extends StatelessWidget {
                 onSelected: (String? suggestion) {
                   incomingController.text = suggestion!;
                 },
-                loadingBuilder: (context) => const Text('Cargando.........'),
+                loadingBuilder: (context) => const Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Cargando.........'),
+                  ],
+                ),
                 errorBuilder: (context, error) => const Text('Ocurrio un error'),
                 emptyBuilder: (context) => Text('No se encontraron $labelText !'),
+                hideOnSelect: true,
                 decorationBuilder: (context, child) {
                   return Material(
                     type: MaterialType.card,
