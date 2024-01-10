@@ -15,7 +15,7 @@ class CustomLabels {
   );
   static TextStyle h3 = GoogleFonts.roboto(
     fontSize: 20,
-    fontWeight: FontWeight.w400,
-    color: Colors.black87,
+    fontWeight: FontWeight.w600,
+    color: Colors.black.withOpacity(0.7),
   );
 }

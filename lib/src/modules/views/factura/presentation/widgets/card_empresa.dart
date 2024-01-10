@@ -24,9 +24,10 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: isHovered ? Colors.indigo : Colors.indigo.shade50,
+            color: isHovered ? Colors.red : Colors.red.shade50,
+            borderRadius: BorderRadius.circular(8),
             boxShadow: const [
-              BoxShadow(offset: Offset(-4, 0), color: Colors.indigo),
+              BoxShadow(offset: Offset(-4, 0), color: Colors.red),
             ],
           ),
           child: Center(
