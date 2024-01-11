@@ -34,10 +34,10 @@ class AutocompleteInput extends StatelessWidget {
                 builder: (context, controller, focusNode) {
                   incomingController = controller;
                   return TextField(
-                    cursorHeight: 12,
+                    cursorHeight: 14,
                     controller: incomingController,
                     focusNode: focusNode,
-                    style: const TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 14),
                     decoration: InputDecoration(
                       prefixIconColor: Colors.grey,
                       prefixIcon: const Icon(Icons.search_rounded),

@@ -104,63 +104,46 @@ class BuildFiltros extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Cliente", style: CustomLabels.h3),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: size.width * 0.35,
-                  child: AutocompleteInput(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Cliente", style: CustomLabels.h3),
+                  const SizedBox(height: 8),
+                  AutocompleteInput(
                     processFunction: getClienteByParam,
                     labelText: "Cliente",
                     incomingController: controllerCliente,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(width: 24),
-            /*InkWell(
-              onFocusChange: (value) async {
-                if (value) clientes = await facturaBloc.getClientesAll();
-              },
-              child: SizedBox(
-                width: size.width * 0.35,
-                child: AutocompleteInput(
-                  processFunction: getClientesAll,
-                  labelText: "Cliente",
-                  incomingController: controllerCliente,
-                ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Empresa", style: CustomLabels.h3),
+                  const SizedBox(height: 8),
+                  FutureBuilder(
+                    future: facturaBloc.getEmpresas(),
+                    builder: (context, AsyncSnapshot<List<Empresa>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        final empresas = snapshot.data!.map((empresa) {
+                          return SizedBox(width: 160, child: BuildCardEmpresa(empresa: empresa));
+                        }).toList();
+                        return Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          spacing: 12,
+                          children: empresas,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ],
               ),
-            ),*/
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Empresa", style: CustomLabels.h3),
-                const SizedBox(height: 8),
-                FutureBuilder(
-                  future: facturaBloc.getEmpresas(),
-                  builder: (context, AsyncSnapshot<List<Empresa>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return SizedBox(
-                        width: size.width * 0.35,
-                        height: 56,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, i) {
-                            final empresa = snapshot.data![i];
-                            return BuildCardEmpresa(empresa: empresa);
-                          },
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ],
             )
           ],
         ),
@@ -168,14 +151,13 @@ class BuildFiltros extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Remesas", style: CustomLabels.h3),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: size.width * 0.35,
-                  child: TextFormField(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Remesas", style: CustomLabels.h3),
+                  const SizedBox(height: 8),
+                  TextFormField(
                     minLines: 4,
                     style: const TextStyle(fontSize: 12),
                     maxLines: null,
@@ -186,30 +168,38 @@ class BuildFiltros extends StatelessWidget {
                       //labelText: 'Ingrese los numeros de Remesas',
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              children: [
-                const SizedBox(width: 24),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Inicio", style: CustomLabels.h3),
-                    const SizedBox(height: 8),
-                    SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
-                  ],
-                ),
-                const SizedBox(width: 24),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Fin", style: CustomLabels.h3),
-                    const SizedBox(height: 8),
-                    SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
-                  ],
-                ),
-              ],
+            Expanded(
+              child: Wrap(
+                children: [
+                  //const SizedBox(width: 24),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Inicio", style: CustomLabels.h3),
+                        const SizedBox(height: 8),
+                        SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                      ],
+                    ),
+                  ),
+                  //const SizedBox(width: 24),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Fin", style: CustomLabels.h3),
+                        const SizedBox(height: 8),
+                        SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

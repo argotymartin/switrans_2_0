@@ -5,6 +5,7 @@ class FacturaDatasources extends DataTableSource {
   DataRow getRow(int index) {
     return DataRow.byIndex(
       color: const MaterialStatePropertyAll(Colors.white),
+      selected: true,
       index: index,
       cells: [
         DataCell(Text("$index")),
@@ -12,7 +13,7 @@ class FacturaDatasources extends DataTableSource {
         const DataCell(Text("\$ 280,000")),
         const DataCell(
           SizedBox(
-            width: 130,
+            width: 220,
             child: Text(
               "SERVICIO SOLICITADO POR NELSON MENDEZ PARA EL DIA 26-DICIEMBRE-23, SENCILLO DE PLACA WFV 844, CONDUCTOR FABIO ROJAS, GPS Y COMUNICACIONES.DO: 2 VIAJES A TIENDAS, BOGOTASIN VERIFICAR PESO NI CONTENIDO Origen: TENJO Destino: BOGOTA, D.C.",
               style: TextStyle(fontSize: 10),

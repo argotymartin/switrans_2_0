@@ -18,18 +18,19 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell(
-        onTap: () => setState(() => isHovered = !isHovered),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: isHovered ? Colors.red : Colors.red.shade50,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(offset: Offset(-4, 0), color: Colors.red),
-            ],
-          ),
+      child: Container(
+        height: 40,
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: isHovered ? Colors.red : Colors.red.shade50,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(offset: Offset(-4, 0), color: Colors.red),
+          ],
+        ),
+        child: InkWell(
+          onTap: () => setState(() => isHovered = !isHovered),
           child: Center(
               child: Text(widget.empresa.nombre,
                   style: isHovered
