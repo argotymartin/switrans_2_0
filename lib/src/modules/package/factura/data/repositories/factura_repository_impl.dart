@@ -1,9 +1,9 @@
-import 'package:switrans_2_0/src/modules/views/factura/data/datasorces/api/factura_pocketbase_api.dart';
-import 'package:switrans_2_0/src/modules/views/factura/data/models/cliente_model.dart';
-import 'package:switrans_2_0/src/modules/views/factura/data/models/empresa_model.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/cliente.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/empresa.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/repositories/abstract_factura_repository.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_pocketbase_api.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/models/cliente_model.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/models/empresa_model.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 

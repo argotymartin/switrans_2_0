@@ -1,20 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
-import 'package:switrans_2_0/src/modules/views/factura/data/datasorces/datatables/factura_datasorces.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/cliente.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/empresa.dart';
-import 'package:switrans_2_0/src/modules/views/factura/presentation/blocs/factura/factura_bloc.dart';
-import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/breadcrumb_trail.dart';
-import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/card_empresa.dart';
-import 'package:switrans_2_0/src/modules/views/factura/presentation/widgets/datetime_input.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/factura_datasorces.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/breadcrumb_trail.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/card_empresa.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/datetime_input.dart';
 
 class FacturaView extends StatelessWidget {
-  const FacturaView({super.key});
+  const FacturaView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,35 +69,33 @@ class FacturaView extends StatelessWidget {
   }
 }
 
-class BuildFiltros extends StatelessWidget {
+class BuildFiltros extends StatefulWidget {
   const BuildFiltros({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    List<Cliente> clientes = [];
-    final size = MediaQuery.of(context).size;
-    TextEditingController controllerCliente = TextEditingController();
-    final facturaBloc = BlocProvider.of<FacturaBloc>(context);
-    Future<List<String?>> getClienteByParam(String search) async {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final clientes2 = await facturaBloc.getCliente(search);
-      final namesClientes = clientes2.map((cliente) => cliente.nombre);
-      return namesClientes.toList();
-    }
+  State<BuildFiltros> createState() => _BuildFiltrosState();
+}
 
-    Future<List<String?>> getClientesAll(String search) async {
-      if (search.length >= 2) {
-        final namesClientes = clientes.map((cliente) => cliente.nombre);
-        return namesClientes.where((cliente) {
-          final nameCliente = cliente.toLowerCase();
-          final query = search.toLowerCase();
-          return nameCliente.contains(query);
-        }).toList();
-      }
-      return [];
-    }
+class _BuildFiltrosState extends State<BuildFiltros> {
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final facturaFilterBloc = BlocProvider.of<FiltersFacturaBloc>(context);
+    List<Cliente> clientes = facturaFilterBloc.state.clientes;
+    List<Empresa> empresas = facturaFilterBloc.state.empresas;
+    final empresasl = empresas.map((empresa) {
+      return SizedBox(width: 160, child: BuildCardEmpresa(empresa: empresa));
+    }).toList();
+
+    final suggestions = clientes.map((cliente) {
+      return SuggestionModel(
+          codigo: cliente.codigo.toString(),
+          title: cliente.nombre,
+          subTitle: cliente.identificacion,
+          details: Row(children: [const Icon(Icons.call_rounded), Text(cliente.identificacion)]));
+    }).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,10 +110,8 @@ class BuildFiltros extends StatelessWidget {
                   Text("Cliente", style: CustomLabels.h3),
                   const SizedBox(height: 8),
                   AutocompleteInput(
-                    processFunction: getClienteByParam,
-                    labelText: "Cliente",
-                    incomingController: controllerCliente,
-                  ),
+                    suggestions: suggestions,
+                  )
                 ],
               ),
             ),
@@ -125,22 +122,10 @@ class BuildFiltros extends StatelessWidget {
                 children: [
                   Text("Empresa", style: CustomLabels.h3),
                   const SizedBox(height: 8),
-                  FutureBuilder(
-                    future: facturaBloc.getEmpresas(),
-                    builder: (context, AsyncSnapshot<List<Empresa>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        final empresas = snapshot.data!.map((empresa) {
-                          return SizedBox(width: 160, child: BuildCardEmpresa(empresa: empresa));
-                        }).toList();
-                        return Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          spacing: 12,
-                          children: empresas,
-                        );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    },
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    spacing: 12,
+                    children: empresasl,
                   ),
                 ],
               ),
@@ -211,9 +196,7 @@ class BuildFiltros extends StatelessWidget {
             }
             return Colors.indigo;
           })),
-          onPressed: () {
-            print("Enviar peticion");
-          },
+          onPressed: () {},
           icon: const Icon(
             Icons.search_rounded,
             color: Colors.white,

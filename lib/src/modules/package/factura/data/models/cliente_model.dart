@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/cliente.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
 
 class ClienteModel extends Cliente {
   ClienteModel({required super.codigo, required super.nombre, required super.identificacion});

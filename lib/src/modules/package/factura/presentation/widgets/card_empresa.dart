@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/views/factura/domain/entities/empresa.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
 
 class BuildCardEmpresa extends StatefulWidget {
   const BuildCardEmpresa({

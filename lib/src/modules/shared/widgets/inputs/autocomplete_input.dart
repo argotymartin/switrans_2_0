@@ -1,84 +1,132 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:searchfield/searchfield.dart';
 
-// ignore: must_be_immutable
 class AutocompleteInput extends StatelessWidget {
-  final String labelText;
-  final Future<List<String?>> Function(String) processFunction;
-  late TextEditingController incomingController;
-  AutocompleteInput({
-    Key? key,
-    required this.labelText,
-    required this.processFunction,
-    required this.incomingController,
-  }) : super(key: key);
+  final List<SuggestionModel> suggestions;
+  const AutocompleteInput({super.key, required this.suggestions});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 40,
-              child: TypeAheadField<String?>(
-                autoFlipDirection: true,
-                suggestionsCallback: processFunction,
-                itemBuilder: (context, String? suggestion) => ListTile(
-                  title: Text(suggestion!),
-                  leading: const Icon(Icons.info),
-                  subtitle: const Text("80004861-4", style: TextStyle(fontSize: 12)),
-                ),
-                builder: (context, controller, focusNode) {
-                  incomingController = controller;
-                  return TextField(
-                    cursorHeight: 14,
-                    controller: incomingController,
-                    focusNode: focusNode,
-                    style: const TextStyle(fontSize: 14),
-                    decoration: InputDecoration(
-                      prefixIconColor: Colors.grey,
-                      prefixIcon: const Icon(Icons.search_rounded),
-                      border: const OutlineInputBorder(),
-                      labelText: "Seleccione un $labelText",
-                    ),
-                  );
-                },
-                onSelected: (String? suggestion) {
-                  incomingController.text = suggestion!;
-                },
-                loadingBuilder: (context) => const Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    Text('Cargando.........'),
-                  ],
-                ),
-                errorBuilder: (context, error) => const Text('Ocurrio un error'),
-                emptyBuilder: (context) => Text('No se encontraron $labelText !'),
-                hideOnSelect: true,
-                decorationBuilder: (context, child) {
-                  return Material(
-                    type: MaterialType.card,
-                    elevation: 4,
-                    borderRadius: BorderRadius.circular(8),
-                    child: child,
-                  );
-                },
-                offset: const Offset(0, 12),
-                constraints: const BoxConstraints(maxHeight: 500),
-                transitionBuilder: (context, animation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn),
-                    child: child,
-                  );
-                },
+    final focus = FocusNode();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SearchField(
+          suggestionItemDecoration: const BoxDecoration(),
+          onSearchTextChanged: (query) {
+            final filter = suggestions.where((element) => element.title.toLowerCase().contains(query.toLowerCase())).toList();
+            return filter.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList();
+          },
+          onTap: () {},
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null || value.length < 4) {
+              return 'error';
+            }
+            return null;
+          },
+          key: const Key('searchfield'),
+          hint: 'Search by country name',
+          itemHeight: 68,
+          scrollbarDecoration: ScrollbarDecoration(trackColor: Colors.red),
+          suggestionStyle: const TextStyle(fontSize: 24, color: Colors.black),
+          searchInputDecoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                width: 2,
+                color: Colors.indigo,
+                style: BorderStyle.solid,
               ),
-            )
-          ],
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                width: 1,
+                color: Colors.black,
+                style: BorderStyle.solid,
+              ),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+          ),
+          suggestionsDecoration: SuggestionDecoration(
+            border: Border.all(color: Colors.indigo, width: 1),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          suggestions: suggestions.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList(),
+          focusNode: focus,
+          suggestionState: Suggestion.expand,
+          onSuggestionTap: (SearchFieldListItem x) {
+            focus.unfocus();
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ItemAutoComplete extends StatefulWidget {
+  final SuggestionModel suggestionModel;
+  const _ItemAutoComplete({required this.suggestionModel});
+
+  @override
+  State<_ItemAutoComplete> createState() => _ItemAutoCompleteState();
+}
+
+class _ItemAutoCompleteState extends State<_ItemAutoComplete> {
+  bool isHovered = false;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+      child: MouseRegion(
+        onEnter: (event) => setState(() => isHovered = true),
+        onExit: (event) => setState(() => isHovered = false),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4),
+          color: isHovered ? Colors.blue : Colors.white,
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [BoxShadow(color: Colors.red, offset: Offset(1, 1))],
+                ),
+                child: Text(
+                  widget.suggestionModel.codigo,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.suggestionModel.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  Text(widget.suggestionModel.subTitle,
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200, color: Colors.black54)),
+                  SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: widget.suggestionModel.details))
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+class SuggestionModel {
+  final String title;
+  final String codigo;
+  final String subTitle;
+  final Widget details;
+  SuggestionModel({
+    required this.title,
+    required this.codigo,
+    required this.subTitle,
+    this.details = const SizedBox(),
+  });
 }
