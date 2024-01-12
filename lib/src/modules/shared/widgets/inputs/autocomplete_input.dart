@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 
@@ -13,7 +12,9 @@ class AutocompleteInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SearchField(
-          suggestionItemDecoration: const BoxDecoration(),
+          autoCorrect: true,
+          maxSuggestionsInViewPort: 4,
+          textCapitalization: TextCapitalization.sentences,
           onSearchTextChanged: (query) {
             final filter = suggestions.where((element) => element.title.toLowerCase().contains(query.toLowerCase())).toList();
             return filter.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList();
@@ -27,26 +28,18 @@ class AutocompleteInput extends StatelessWidget {
             return null;
           },
           key: const Key('searchfield'),
-          hint: 'Search by country name',
+          hint: 'Buscar Cliente',
           itemHeight: 68,
           scrollbarDecoration: ScrollbarDecoration(trackColor: Colors.red),
           suggestionStyle: const TextStyle(fontSize: 24, color: Colors.black),
           searchInputDecoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(
-                width: 2,
-                color: Colors.indigo,
-                style: BorderStyle.solid,
-              ),
+              borderSide: const BorderSide(),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(
-                width: 1,
-                color: Colors.black,
-                style: BorderStyle.solid,
-              ),
+              borderSide: const BorderSide(),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           ),

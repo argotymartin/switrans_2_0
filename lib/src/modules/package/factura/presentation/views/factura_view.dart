@@ -28,7 +28,7 @@ class FacturaView extends StatelessWidget {
           children: [
             Icon(Icons.document_scanner_outlined, color: Colors.grey.shade600),
             const SizedBox(width: 4),
-            Text('Factura', style: CustomLabels.h1),
+            Text('Factura', style: Theme.of(context).textTheme.headlineLarge),
           ],
         ),
         Text("Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
@@ -107,7 +107,7 @@ class _BuildFiltrosState extends State<BuildFiltros> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Cliente", style: CustomLabels.h3),
+                  Text("Cliente", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   AutocompleteInput(
                     suggestions: suggestions,
@@ -189,18 +189,9 @@ class _BuildFiltrosState extends State<BuildFiltros> {
           ],
         ),
         const SizedBox(height: 24),
-        TextButton.icon(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.hovered)) {
-              return Colors.indigo.shade300;
-            }
-            return Colors.indigo;
-          })),
+        FilledButton.icon(
           onPressed: () {},
-          icon: const Icon(
-            Icons.search_rounded,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.search_rounded),
           label: const Text("Buscar", style: TextStyle(color: Colors.white)),
         )
       ],
