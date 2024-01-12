@@ -7,27 +7,29 @@ class LogoSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 66,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.bubble_chart_outlined,
-            color: Color(0xff7a6bf5),
-          ),
-          const SizedBox(width: 10),
-          isMenuIcon
-              ? const SizedBox()
-              : Text(
-                  'SmartAdmin WebApp',
-                  style: GoogleFonts.montserratAlternates(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
-                  ),
-                )
-        ],
+    return Center(
+      child: SizedBox(
+        height: 66,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/logo_multicompany.png",
+              height: 48,
+            ),
+            const SizedBox(width: 10),
+            isMenuIcon
+                ? const SizedBox()
+                : Text(
+                    'SWITRANS 2.0',
+                    style: GoogleFonts.montserratAlternates(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w200,
+                      color: Colors.white,
+                    ),
+                  )
+          ],
+        ),
       ),
     );
   }

@@ -19,25 +19,21 @@ class _IconNavbarState extends State<IconNavbar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 38,
-      width: 38,
+      height: 48,
+      width: 48,
       child: Stack(
         children: [
           Positioned(
-            top: 6,
-            left: 6,
-            child: MouseRegion(
-              onHover: (event) => setState(() => isHovered = true),
-              onExit: (event) => setState(() => isHovered = false),
-              child: Icon(widget.icon, color: isHovered ? Colors.indigo : Colors.indigo.withOpacity(0.6), size: 28),
-            ),
+            top: 8,
+            left: 8,
+            child: IconButton(icon: Icon(widget.icon), onPressed: () {}),
           ),
           widget.title != ""
               ? Positioned(
-                  top: 4,
-                  right: 2,
+                  top: 8,
+                  right: 4,
                   child: Container(
-                    width: 18,
+                    width: 20,
                     height: 14,
                     decoration: bulidBoxDecoration(),
                     child: Center(child: Text(widget.title, style: const TextStyle(color: Colors.white, fontSize: 10))),

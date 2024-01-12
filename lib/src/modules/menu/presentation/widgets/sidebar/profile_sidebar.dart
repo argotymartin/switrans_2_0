@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
+import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class ProfileSidebar extends StatelessWidget {
   final bool isMenuIcon;
@@ -11,11 +12,12 @@ class ProfileSidebar extends StatelessWidget {
       children: [
         Image(
           height: isMenuIcon ? 94 : 152,
-          image: const AssetImage('assets/background_profile.png'),
+          width: kWidthSidebar,
+          image: const AssetImage('assets/cos_home.jpg'),
           fit: BoxFit.cover,
         ),
         Container(
-          color: Colors.indigo.withOpacity(0.4),
+          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
           height: isMenuIcon ? 94 : 152,
         ),
         Center(

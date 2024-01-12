@@ -6,6 +6,7 @@ import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
+import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -19,9 +20,9 @@ class Sidebar extends StatelessWidget {
             ? Column(
                 children: [
                   Container(
-                    width: state.isMinimize ? 80 : 270,
+                    width: state.isMinimize ? 80 : kWidthSidebar,
                     height: size.height * 0.92,
-                    decoration: buildBoxDecoration(),
+                    decoration: buildBoxDecoration(context),
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       children: [
@@ -55,16 +56,16 @@ class Sidebar extends StatelessWidget {
                     height: size.height * 0.08,
                     padding: state.isMinimize ? null : const EdgeInsets.symmetric(horizontal: 54),
                     width: state.isMinimize ? 80 : 270,
-                    color: const Color(0xff2b4c81),
+                    color: Theme.of(context).colorScheme.primary,
                     child: state.isMinimize
                         ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.forum_outlined, color: Colors.white.withOpacity(0.3), size: 20),
-                              Icon(Icons.telegram_sharp, color: Colors.white.withOpacity(0.3), size: 20),
-                              Icon(Icons.call_outlined, color: Colors.white.withOpacity(0.3), size: 20),
+                              Icon(Icons.forum_outlined, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
+                              Icon(Icons.telegram_sharp, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
+                              Icon(Icons.call_outlined, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
                             ],
                           ),
                   )
@@ -75,20 +76,15 @@ class Sidebar extends StatelessWidget {
     );
   }
 
-  BoxDecoration buildBoxDecoration() {
-    return const BoxDecoration(
-      gradient: LinearGradient(
-        colors: [
-          Color(0xff2b4c81),
-          Color.fromARGB(255, 56, 84, 129),
-        ],
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 10,
-        )
+  BoxDecoration buildBoxDecoration(BuildContext context) {
+    return BoxDecoration(
+        gradient: LinearGradient(
+      begin: Alignment.centerRight,
+      end: Alignment.centerLeft,
+      colors: [
+        Theme.of(context).colorScheme.primary,
+        Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
       ],
-    );
+    ));
   }
 }

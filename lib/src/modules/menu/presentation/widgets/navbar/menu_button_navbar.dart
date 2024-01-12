@@ -79,7 +79,7 @@ class _BuildButtonState extends State<_BuildButton> {
                 color: isSeleted
                     ? Colors.black87
                     : isHover
-                        ? Colors.indigo
+                        ? Theme.of(context).colorScheme.primary
                         : Colors.transparent,
                 borderRadius: BorderRadius.circular(4.0),
                 border: Border.all(color: Colors.grey.shade400),

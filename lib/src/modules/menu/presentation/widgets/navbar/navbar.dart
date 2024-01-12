@@ -11,7 +11,7 @@ class Navbar extends StatelessWidget {
         Container(
           width: double.infinity,
           height: 66,
-          decoration: buidBoxDecoration(),
+          decoration: buidBoxDecoration(context),
           child: const Row(
             children: [
               SizedBox(width: 10),
@@ -38,12 +38,12 @@ class Navbar extends StatelessWidget {
     );
   }
 
-  BoxDecoration buidBoxDecoration() => const BoxDecoration(
+  BoxDecoration buidBoxDecoration(BuildContext context) => BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
+            color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+            blurRadius: 22,
           )
         ],
       );

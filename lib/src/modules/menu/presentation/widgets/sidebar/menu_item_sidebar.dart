@@ -31,9 +31,9 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
     return AnimatedContainer(
       duration: const Duration(microseconds: 250),
       color: isHovered
-          ? Colors.white.withOpacity(0.1)
+          ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.2)
           : isActive
-              ? Colors.white.withOpacity(0.1)
+              ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.2)
               : Colors.transparent,
       child: Column(
         children: [
@@ -41,7 +41,9 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             height: 46,
             child: Row(
               children: [
-                isActive ? Container(width: 4, height: 48, color: Colors.indigo.shade100) : const SizedBox(width: 4),
+                isActive
+                    ? Container(width: 4, height: 48, color: Theme.of(context).colorScheme.primaryContainer)
+                    : const SizedBox(width: 4),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
@@ -51,7 +53,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                       widget.isMimimize
                           ? showPopover(
                               context: context,
-                              backgroundColor: const Color(0xff284d80),
+                              backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                               direction: PopoverDirection.right,
                               width: 250,
                               height: (paginas.length * 42) + 32,
@@ -89,7 +91,9 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                           children: [
                             Icon(
                               IconData(int.parse(widget.modulo.moduloIcono), fontFamily: 'MaterialIcons'),
-                              color: isHovered || isEnter ? Colors.white.withOpacity(0.8) : Colors.white.withOpacity(0.3),
+                              color: isHovered || isEnter
+                                  ? Theme.of(context).colorScheme.onTertiary
+                                  : Theme.of(context).colorScheme.onTertiary.withOpacity(0.6),
                               size: 20,
                             ),
                             widget.isMimimize ? const SizedBox(width: 4) : const SizedBox(width: 10),
@@ -99,10 +103,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                                         ? Container(
                                             width: 8,
                                             height: 8,
-                                            decoration: BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius: BorderRadius.circular(100),
-                                            ),
+                                            decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(100)),
                                           )
                                         : null)
                                 : SizedBox(
@@ -122,7 +123,9 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                                 : Icon(
                                     isEnter ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
                                     size: 16,
-                                    color: isHovered || isEnter ? Colors.white : Colors.white.withOpacity(0.3),
+                                    color: isHovered || isEnter
+                                        ? Theme.of(context).colorScheme.onTertiary
+                                        : Theme.of(context).colorScheme.onTertiary.withOpacity(0.6),
                                   )
                           ],
                         ),
@@ -155,7 +158,7 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: const Color(0xff284d80),
+      color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.3),
       child: InkWell(
         onTap: () => setState(() {
           isSelected = !isSelected;
@@ -167,10 +170,8 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
           child: Stack(
             children: [
               Container(
-                margin: const EdgeInsets.only(
-                  left: 33,
-                ),
-                color: Colors.grey,
+                margin: const EdgeInsets.only(left: 33),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 width: 1,
                 height: 40,
               ),
@@ -182,8 +183,8 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
                       width: isHovered ? 8 : 6,
                       height: isHovered ? 8 : 6,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(100),
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -193,7 +194,7 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
                       style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: isHovered ? FontWeight.w400 : FontWeight.w200,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                     ),
                     const Spacer(),
@@ -203,7 +204,7 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
                             height: 8,
                             decoration: BoxDecoration(
                               color: Colors.green,
-                              borderRadius: BorderRadius.circular(100),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           )
                         : const SizedBox()

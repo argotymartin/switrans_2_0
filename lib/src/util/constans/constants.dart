@@ -11,3 +11,5 @@ const String kPocketBAseUrl = 'http://192.168.102.34:8090';
 // API mongo - Node.
 //const String kJavaBaseUrl = 'http://192.168.24.214:8083';
 const String kJavaBaseUrl = 'http://192.168.24.11:8083';
+
+const double kWidthSidebar = 270;
