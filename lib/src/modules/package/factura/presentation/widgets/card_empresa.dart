@@ -20,13 +20,13 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
     return Material(
       child: Container(
         height: 40,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.only(bottom: 8, left: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: isHovered ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
-            BoxShadow(offset: Offset(-4, 0), color: Theme.of(context).colorScheme.primary),
+            BoxShadow(offset: const Offset(-4, 0), color: Theme.of(context).colorScheme.primary),
           ],
         ),
         child: InkWell(

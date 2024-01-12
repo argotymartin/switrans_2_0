@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/build_view_detail.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/pluto_grid_custom.dart';
 
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/factura_datasorces.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/breadcrumb_trail.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/card_empresa.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/datetime_input.dart';
 
@@ -20,80 +20,41 @@ class FacturaView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: const ClampingScrollPhysics(),
-      children: [
-        const BreadcrumbTrail(elements: ["SmartAdmin", "Admin", "Theme Settings"]),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Icon(Icons.document_scanner_outlined, color: Colors.grey.shade600),
-            const SizedBox(width: 4),
-            Text('Factura', style: Theme.of(context).textTheme.headlineLarge),
-          ],
+      children: const [
+        BuildViewDetail(
+          title: "Factura",
+          detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
+          breadcrumbTrails: ["SmartAdmin", "Admin", "Theme Settings"],
         ),
-        Text("Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
-            style: TextStyle(color: Colors.grey.shade600)),
-        const SizedBox(height: 10),
-        Column(
-          children: [
-            const WhiteCard(
-              title: 'Filtros',
-              child: BuildFiltros(),
-            ),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              child: PaginatedDataTable(
-                header: const Text("Remesas Disponibles"),
-                dataRowMaxHeight: 100,
-                showCheckboxColumn: true,
-                sortAscending: true,
-                columns: const [
-                  DataColumn(label: Text("Item")),
-                  DataColumn(label: Text("Remesa")),
-                  DataColumn(label: Text("Flete")),
-                  DataColumn(label: Text("Obs")),
-                  DataColumn(label: Text("Remision")),
-                  DataColumn(label: Text("Otros")),
-                  DataColumn(label: Text("Tarifa")),
-                  DataColumn(label: Text("Total")),
-                  DataColumn(label: Text("Accion")),
-                ],
-                headingRowColor: const MaterialStatePropertyAll(Colors.white),
-                source: FacturaDatasources(),
-              ),
-            ),
-          ],
-        ),
+        SizedBox(height: 10),
+        WhiteCard(title: 'Filtros', child: BuildFiltros()),
+        SizedBox(height: 10),
+        WhiteCard(title: "Resultado", child: BuildColumn()),
       ],
     );
   }
 }
 
-class BuildFiltros extends StatefulWidget {
+class BuildFiltros extends StatelessWidget {
   const BuildFiltros({
     super.key,
   });
 
-  @override
-  State<BuildFiltros> createState() => _BuildFiltrosState();
-}
-
-class _BuildFiltrosState extends State<BuildFiltros> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final facturaFilterBloc = BlocProvider.of<FiltersFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
-    final empresasl = empresas.map((empresa) {
-      return SizedBox(width: 200, child: BuildCardEmpresa(empresa: empresa));
-    }).toList();
+    final empresasl = empresas.map((empresa) => SizedBox(width: 180, child: BuildCardEmpresa(empresa: empresa))).toList();
 
     final suggestions = clientes.map((cliente) {
       return SuggestionModel(
-          codigo: cliente.codigo.toString(),
-          title: cliente.nombre,
-          subTitle: cliente.identificacion,
-          details: Row(children: [const Icon(Icons.call_rounded), Text(cliente.identificacion)]));
+        codigo: cliente.codigo.toString(),
+        title: cliente.nombre,
+        subTitle: cliente.identificacion,
+        details: Row(children: [const Icon(Icons.call_rounded), Text(cliente.identificacion)]),
+      );
     }).toList();
 
     return Column(
@@ -172,7 +133,6 @@ class _BuildFiltrosState extends State<BuildFiltros> {
                       ],
                     ),
                   ),
-                  //const SizedBox(width: 24),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -197,5 +157,16 @@ class _BuildFiltrosState extends State<BuildFiltros> {
         )
       ],
     );
+  }
+}
+
+class BuildColumn extends StatelessWidget {
+  const BuildColumn({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const PlutoGridCustom();
   }
 }
