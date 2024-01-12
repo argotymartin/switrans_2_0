@@ -12,7 +12,7 @@ class AppTheme {
         titleMedium: const TextStyle(fontSize: 12),
         titleLarge: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black54)),
       ),
-      colorSchemeSeed: customColorFuchsiaBlue,
+      colorSchemeSeed: customColorMct,
       iconTheme: IconThemeData(color: theme.primaryColor),
       inputDecorationTheme: const InputDecorationTheme(
         hintStyle: TextStyle(fontSize: 12),

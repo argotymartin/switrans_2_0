@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({super.key});
@@ -10,7 +9,7 @@ class MenuView extends StatelessWidget {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: [
-        Text('Menu Principal', style: CustomLabels.h1),
+        Text('Menu Principal', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 10),
         const WhiteCard(
           title: 'Menu',

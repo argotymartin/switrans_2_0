@@ -46,6 +46,7 @@ class MyMaterialApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       theme: AppTheme().getTheme(context),
+      darkTheme: ThemeData.dark(),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/labels/custom_label.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/factura_datasorces.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
@@ -86,7 +85,7 @@ class _BuildFiltrosState extends State<BuildFiltros> {
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
     final empresasl = empresas.map((empresa) {
-      return SizedBox(width: 160, child: BuildCardEmpresa(empresa: empresa));
+      return SizedBox(width: 200, child: BuildCardEmpresa(empresa: empresa));
     }).toList();
 
     final suggestions = clientes.map((cliente) {
@@ -102,14 +101,17 @@ class _BuildFiltrosState extends State<BuildFiltros> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text("Cliente", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   AutocompleteInput(
+                    title: "Cliente",
                     suggestions: suggestions,
                   )
                 ],
@@ -120,7 +122,7 @@ class _BuildFiltrosState extends State<BuildFiltros> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Empresa", style: CustomLabels.h3),
+                  Text("Empresa", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
@@ -140,7 +142,7 @@ class _BuildFiltrosState extends State<BuildFiltros> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Remesas", style: CustomLabels.h3),
+                  Text("Remesas", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   TextFormField(
                     minLines: 4,
@@ -159,13 +161,12 @@ class _BuildFiltrosState extends State<BuildFiltros> {
             Expanded(
               child: Wrap(
                 children: [
-                  //const SizedBox(width: 24),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Inicio", style: CustomLabels.h3),
+                        Text("Inicio", style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 8),
                         SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
                       ],
@@ -177,7 +178,7 @@ class _BuildFiltrosState extends State<BuildFiltros> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Fin", style: CustomLabels.h3),
+                        Text("Fin", style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 8),
                         SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
                       ],

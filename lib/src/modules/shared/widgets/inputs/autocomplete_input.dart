@@ -1,9 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 
 class AutocompleteInput extends StatelessWidget {
   final List<SuggestionModel> suggestions;
-  const AutocompleteInput({super.key, required this.suggestions});
+  final String title;
+
+  const AutocompleteInput({
+    Key? key,
+    required this.suggestions,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +19,7 @@ class AutocompleteInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SearchField(
+          searchStyle: const TextStyle(fontSize: 12),
           autoCorrect: true,
           maxSuggestionsInViewPort: 4,
           textCapitalization: TextCapitalization.sentences,
@@ -22,17 +30,16 @@ class AutocompleteInput extends StatelessWidget {
           onTap: () {},
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
-            if (value == null || value.length < 4) {
+            if (value == null) {
               return 'error';
             }
             return null;
           },
           key: const Key('searchfield'),
-          hint: 'Buscar Cliente',
+          hint: 'Buscar $title',
           itemHeight: 68,
-          scrollbarDecoration: ScrollbarDecoration(trackColor: Colors.red),
-          suggestionStyle: const TextStyle(fontSize: 24, color: Colors.black),
           searchInputDecoration: InputDecoration(
+            constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(),
@@ -44,7 +51,7 @@ class AutocompleteInput extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           ),
           suggestionsDecoration: SuggestionDecoration(
-            border: Border.all(color: Colors.indigo, width: 1),
+            border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
             borderRadius: BorderRadius.circular(4),
           ),
           suggestions: suggestions.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList(),
@@ -72,13 +79,12 @@ class _ItemAutoCompleteState extends State<_ItemAutoComplete> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
       child: MouseRegion(
         onEnter: (event) => setState(() => isHovered = true),
         onExit: (event) => setState(() => isHovered = false),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4),
-          color: isHovered ? Colors.blue : Colors.white,
+          color: isHovered ? Theme.of(context).colorScheme.primaryContainer : Colors.white,
           child: Row(
             children: [
               Container(
@@ -87,7 +93,7 @@ class _ItemAutoCompleteState extends State<_ItemAutoComplete> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: const [BoxShadow(color: Colors.red, offset: Offset(1, 1))],
+                  boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(1, 1))],
                 ),
                 child: Text(
                   widget.suggestionModel.codigo,
