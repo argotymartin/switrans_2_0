@@ -9,7 +9,7 @@ import 'package:switrans_2_0/src/modules/package/factura/presentation/views/fact
 
 class AppRouter {
   static const root = "/";
-  static const factura = "/prefactura";
+  static const factura = "/factura";
   static const notaDebito = "/notaDebito";
   static const notaCredito = "/notaCredito";
 
@@ -23,9 +23,7 @@ class AppRouter {
         routes: [
           GoRoute(
             path: root,
-            builder: (_, GoRouterState state) {
-              return const MenuView();
-            },
+            builder: (_, GoRouterState state) => const MenuView(),
           ),
           GoRoute(
             path: factura,

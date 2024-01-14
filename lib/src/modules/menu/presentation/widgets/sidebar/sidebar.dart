@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/modules/menu/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
@@ -35,7 +34,6 @@ class Sidebar extends StatelessWidget {
                             for (Modulo modulo in stateModulo.modulos) {
                               modulos.add(MenuItemSidebar(
                                 modulo: modulo,
-                                onPressed: () => context.go(modulo.moduloPath),
                                 isMimimize: state.isMinimize,
                               ));
                             }
@@ -46,7 +44,6 @@ class Sidebar extends StatelessWidget {
                         state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
                         MenuItemSidebar(
                           modulo: ModuloModel(moduloCodigo: 1, moduloIcono: "0xf031", moduloTexto: "Logout", moduloPath: "/logout"),
-                          onPressed: () {},
                           isMimimize: state.isMinimize,
                         ),
                       ],
