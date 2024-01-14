@@ -43,7 +43,7 @@ class Sidebar extends StatelessWidget {
                         state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
                         state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
                         MenuItemSidebar(
-                          modulo: ModuloModel(moduloCodigo: 1, moduloIcono: "0xf031", moduloTexto: "Logout", moduloPath: "/logout"),
+                          modulo: ModuloModel(codigo: 1, icono: "0xf031", texto: "Logout", path: "/logout"),
                           isMimimize: state.isMinimize,
                         ),
                       ],

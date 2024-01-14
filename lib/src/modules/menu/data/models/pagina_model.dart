@@ -4,14 +4,16 @@ class PaginaModel extends Pagina {
   PaginaModel({
     required super.id,
     required super.modulo,
-    required super.paginaCodigo,
-    required super.paginaTexto,
+    required super.codigo,
+    required super.texto,
+    required super.path,
   });
 
   factory PaginaModel.fromJson(Map<String, dynamic> json) => PaginaModel(
         id: json["id"],
         modulo: json["modulo"],
-        paginaCodigo: json["pagina_codigo"],
-        paginaTexto: json["pagina_texto"],
+        codigo: json["pagina_codigo"],
+        texto: json["pagina_texto"],
+        path: json["pagina_path"],
       );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 
@@ -26,7 +27,6 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
   bool isEntered = false;
   @override
   Widget build(BuildContext context) {
-    final paginas2 = widget.modulo.paginas;
     final paginas = widget.modulo.paginas.map((item) => SubMenuItemSidebar(pagina: item, modulo: widget.modulo)).toList();
     final colorScheme = Theme.of(context).colorScheme;
     return AnimatedContainer(
@@ -94,7 +94,7 @@ class BuildOptionModuloMenu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  IconData(int.parse(modulo.moduloIcono), fontFamily: 'MaterialIcons'),
+                  IconData(int.parse(modulo.icono), fontFamily: 'MaterialIcons'),
                   color: isHovered || isEntered ? colorScheme.onTertiary : colorScheme.onTertiary.withOpacity(0.6),
                   size: 20,
                 ),
@@ -112,7 +112,7 @@ class BuildOptionModuloMenu extends StatelessWidget {
                         width: 172,
                         child: Text(
                           overflow: TextOverflow.ellipsis,
-                          modulo.moduloTexto,
+                          modulo.texto,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             fontWeight: isHovered || isEntered ? FontWeight.w400 : FontWeight.w300,
@@ -156,6 +156,8 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
       child: InkWell(
         onTap: () => setState(() {
           context.read<ModuloBloc>().add(ChangedModuloEvent(widget.modulo, widget.pagina));
+          final path = "${widget.modulo.path}${widget.pagina.path}";
+          context.go(path);
         }),
         child: MouseRegion(
           onEnter: (_) => setState(() => isHovered = true),
@@ -183,7 +185,7 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
                     const SizedBox(width: 10),
                     Text(
                       overflow: TextOverflow.ellipsis,
-                      widget.pagina.paginaTexto,
+                      widget.pagina.texto,
                       style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: isHovered ? FontWeight.w400 : FontWeight.w200,
@@ -227,7 +229,7 @@ Future<Object?> showPopoverImpl(BuildContext context, List<SubMenuItemSidebar> p
           child: Column(
             children: [
               Text(
-                modulo.moduloTexto,
+                modulo.texto,
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Colors.white,

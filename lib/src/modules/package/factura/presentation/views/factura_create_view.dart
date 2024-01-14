@@ -11,8 +11,8 @@ import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filt
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/card_empresa.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/datetime_input.dart';
 
-class FacturaView extends StatelessWidget {
-  const FacturaView({
+class FacturaCreateView extends StatelessWidget {
+  const FacturaCreateView({
     Key? key,
   }) : super(key: key);
 
