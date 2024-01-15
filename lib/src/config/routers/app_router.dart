@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/layouts/auth_layout.dart';
+import 'package:switrans_2_0/src/modules/login/ui/layouts/views/auth_view.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/error.layout.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/views/menu_view.dart';
@@ -21,9 +23,16 @@ class AppRouter {
     routes: <RouteBase>[
       ShellRoute(
         builder: (context, state, child) {
-          context.read<ModuloBloc>().add(const ActiveteModuloEvent());
-          context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
-          return MenuLayout(child: child);
+          return BlocBuilder<UsuarioBloc, UsuarioState>(
+            builder: (context, usuarioState) {
+              if (usuarioState is UsuarioSuccesState) {
+                context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
+                return MenuLayout(child: child);
+              } else {
+                return const AuthLayout(child: AuthView());
+              }
+            },
+          );
         },
         routes: [
           GoRoute(

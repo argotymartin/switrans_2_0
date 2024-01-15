@@ -5,6 +5,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/factura/factura_bloc.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
+        BlocProvider<UsuarioBloc>(create: (_) => injector()..add((const GetUsuarioEvent()))),
         BlocProvider<ModuloBloc>(create: (_) => injector()..add((GetModuloEvent()))),
         BlocProvider<FacturaBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
         BlocProvider<FiltersFacturaBloc>(create: (_) => injector()..add((const GetFiltersFacturaEvent()))),
