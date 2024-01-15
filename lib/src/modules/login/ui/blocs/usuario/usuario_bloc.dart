@@ -22,7 +22,7 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
     emit(const UsuarioLoadInProgressState());
     final dataState = await _repository.getUsuario(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
-      emit(UsuarioSuccesState(usuario: dataState.data));
+      emit(UsuarioSuccesState(usuario: dataState.data, isSignedIn: true));
     }
     if (dataState.error != null) {
       emit(UsuarioErrorState(error: dataState.error));

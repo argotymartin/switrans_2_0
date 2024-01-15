@@ -3,7 +3,8 @@ part of 'usuario_bloc.dart';
 abstract class UsuarioState extends Equatable {
   final Usuario? usuario;
   final DioException? error;
-  const UsuarioState({this.usuario, this.error});
+  final bool isSignedIn;
+  const UsuarioState({this.usuario, this.error, this.isSignedIn = false});
 }
 
 class UsuarioInitialState extends UsuarioState {
@@ -25,7 +26,7 @@ class UsuarioUpdateState extends UsuarioState {
 }
 
 class UsuarioSuccesState extends UsuarioState {
-  const UsuarioSuccesState({super.usuario});
+  const UsuarioSuccesState({super.usuario, super.isSignedIn});
 
   @override
   List<Object?> get props => [super.usuario];

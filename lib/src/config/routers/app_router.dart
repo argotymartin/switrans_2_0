@@ -1,8 +1,9 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/auth_layout.dart';
-import 'package:switrans_2_0/src/modules/login/ui/layouts/views/auth_view.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/error.layout.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/views/menu_view.dart';
@@ -14,25 +15,21 @@ import 'package:switrans_2_0/src/modules/package/factura/presentation/views/fact
 
 class AppRouter {
   static const root = "/";
+  static const login = "/sign-in";
   static const factura = "/factura";
   static const notaDebito = "/notaDebito";
   static const notaCredito = "/notaCredito";
-
+  bool isSignedIn = false;
   static final GoRouter router = GoRouter(
-    initialLocation: root,
+    initialLocation: login,
     routes: <RouteBase>[
+      GoRoute(
+        path: login,
+        builder: (_, __) => const AuthLayout(),
+      ),
       ShellRoute(
         builder: (context, state, child) {
-          return BlocBuilder<UsuarioBloc, UsuarioState>(
-            builder: (context, usuarioState) {
-              if (usuarioState is UsuarioSuccesState) {
-                context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
-                return MenuLayout(child: child);
-              } else {
-                return const AuthLayout(child: AuthView());
-              }
-            },
-          );
+          return MenuLayout(child: child);
         },
         routes: [
           GoRoute(
@@ -55,18 +52,26 @@ class AppRouter {
           GoRoute(
             path: "/factura/registrar",
             builder: (_, __) => const FacturaCreateView(),
+            redirect: onValidateAuth,
           ),
           GoRoute(
             path: "/factura/buscar",
             builder: (_, __) => const FacturaSearchView(),
+            redirect: onValidateAuth,
           ),
           GoRoute(
             path: "/factura/editar",
             builder: (_, __) => const FacturaEditView(),
+            redirect: onValidateAuth,
           ),
         ],
       ),
     ],
-    errorBuilder: (context, state) => const ErrorLayout(),
+    errorBuilder: (_, state) => ErrorLayout(goRouterState: state),
   );
+
+  static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
+    final bool isSignedIn = BlocProvider.of<UsuarioBloc>(context).state.isSignedIn;
+    return isSignedIn ? state.path : login;
+  }
 }
