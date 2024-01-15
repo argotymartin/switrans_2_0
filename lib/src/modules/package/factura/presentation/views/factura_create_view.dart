@@ -119,19 +119,17 @@ class BuildFiltros extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(width: 24),
             Expanded(
               child: Wrap(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Inicio", style: Theme.of(context).textTheme.titleLarge),
-                        const SizedBox(height: 8),
-                        SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
-                      ],
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Inicio", style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 8),
+                      SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                    ],
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 24),

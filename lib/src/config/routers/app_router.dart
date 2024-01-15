@@ -37,23 +37,24 @@ class AppRouter {
             builder: (_, GoRouterState state) => const MenuView(),
           ),
           GoRoute(
-            path: factura,
+            path: "/factura/registrar",
             builder: (context, GoRouterState state) {
+              context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
               return BlocBuilder<FiltersFacturaBloc, FiltersFacturaState>(
-                builder: (context, state) {
-                  if (state is FiltersFacturaInitialState) {
-                    return const FacturaCreateView();
-                  }
-                  return const LoadingView();
+                builder: (context, stateFactura) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: (stateFactura is FiltersFacturaInitialState) ? const FacturaCreateView() : const LoadingView(),
+                  );
                 },
               );
             },
           ),
-          GoRoute(
+          /*GoRoute(
             path: "/factura/registrar",
             builder: (_, __) => const FacturaCreateView(),
             redirect: onValidateAuth,
-          ),
+          ),*/
           GoRoute(
             path: "/factura/buscar",
             builder: (_, __) => const FacturaSearchView(),

@@ -52,7 +52,7 @@ class AuthView extends StatelessWidget {
                     obscureText: true,
                     style: const TextStyle(color: Colors.white),
                     decoration: CustomInputs.authInputDecoration(
-                      hintText: "*************",
+                      hintText: "******",
                       labelText: "Contraseña",
                       icon: Icons.lock_outline_rounded,
                     ),
