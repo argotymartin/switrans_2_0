@@ -41,3 +41,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Compilacion de Node y Express
+/web/node_modules/
+/web/package-lock.json
+/web/package.json
+/web/server.js
+
