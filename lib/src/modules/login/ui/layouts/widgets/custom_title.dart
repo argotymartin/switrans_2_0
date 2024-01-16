@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomTitle extends StatelessWidget {
   const CustomTitle({super.key});
@@ -9,16 +8,15 @@ class CustomTitle extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.asset('assets/logo_multicompany.png', width: 50, height: 50),
+        Image.asset('assets/logo_multicompany.png', width: 60, height: 60),
         const SizedBox(height: 20),
         FittedBox(
           fit: BoxFit.contain,
           child: Text(
-            'Ingresar Ahora',
-            style: GoogleFonts.montserratAlternates(
-              fontSize: 60,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+            'Ingreso Switrans 2.0',
+            style: TextStyle(
+              fontSize: 32,
+              color: Colors.white.withOpacity(0.8),
             ),
           ),
         )

@@ -29,7 +29,7 @@ class _LinkTextState extends State<LinkText> {
             widget.text,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[700],
+              color: Colors.grey[400],
               decoration: isHover ? TextDecoration.underline : TextDecoration.none,
             ),
           ),

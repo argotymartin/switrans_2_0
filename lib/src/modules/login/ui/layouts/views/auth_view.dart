@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/domain/entities/request/usuario.request.dart';
 import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_outlined_button.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/buttons/link_text.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/custom_inputs.dart';
 
 class AuthView extends StatelessWidget {
@@ -23,7 +22,7 @@ class AuthView extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 370),
             child: Form(
               key: formKey,
-              autovalidateMode: AutovalidateMode.always,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
                   TextFormField(
@@ -31,14 +30,14 @@ class AuthView extends StatelessWidget {
                     validator: (value) {
                       RegExp regExp = RegExp(r'^[a-zA-Z]+\.[a-zA-Z]+$');
                       if (value == null || value.isEmpty) return "Ingrese su usuario";
-                      if (!regExp.hasMatch(value)) return "No es un usuario valido";
+                      if (!regExp.hasMatch(value)) return "No es un usuario valido (usuario.nombre)";
                       return null;
                     },
                     style: const TextStyle(color: Colors.white),
                     decoration: CustomInputs.authInputDecoration(
                       hintText: "Ingrese su correo",
-                      labelText: "Email",
-                      icon: Icons.email_outlined,
+                      labelText: "Usuario",
+                      icon: Icons.person_2_outlined,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -57,23 +56,19 @@ class AuthView extends StatelessWidget {
                       icon: Icons.lock_outline_rounded,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 40),
                   CustomOutlinedButton(
-                      onPressed: () async {
-                        final isValid = formKey.currentState!.validate();
-                        if (isValid) {
-                          final params = UsuarioRequest(identity: emailController.text, password: passController.text);
-                          context.read<UsuarioBloc>().add(LoginUsuarioEvent(params: params));
-                        }
-                      },
-                      text: "Ingresar"),
-                  const SizedBox(height: 20),
-                  LinkText(
-                    text: "Nueva Cuenta",
-                    onPressed: () {
-                      // Navigator.pushNamed(context, Flurorouter.registerRoute);
+                    color: Colors.white.withOpacity(0.8),
+                    onPressed: () async {
+                      final isValid = formKey.currentState!.validate();
+                      if (isValid) {
+                        final params = UsuarioRequest(identity: emailController.text, password: passController.text);
+                        context.read<UsuarioBloc>().add(LoginUsuarioEvent(params: params));
+                      }
                     },
-                  )
+                    text: "Ingresar",
+                    colorText: const Color(0xff183650),
+                  ),
                 ],
               ),
             ),
