@@ -10,6 +10,7 @@ import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.
 import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/factura/factura_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   usePathUrlStrategy();
@@ -48,7 +49,13 @@ class MyMaterialApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       theme: AppTheme().getTheme(context),
-      darkTheme: ThemeData.dark(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', 'ES'), // Español
+      ],
     );
   }
 }

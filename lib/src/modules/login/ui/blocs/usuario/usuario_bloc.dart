@@ -14,6 +14,10 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
 
   UsuarioBloc(this._repository) : super(const UsuarioInitialState()) {
     on<UsuarioEvent>((event, emit) {});
+    on<GetUsuarioEvent>((event, emit) {
+      emit(const UsuarioLoadInProgressState());
+      emit(const UsuarioInitialState());
+    });
     on<LoginUsuarioEvent>(_onActivateUser);
     on<LogoutUsuarioEvent>(((event, emit) => emit(const UsuarioInitialState())));
   }
