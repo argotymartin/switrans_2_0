@@ -11,11 +11,13 @@ import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_b
 class MenuItemSidebar extends StatefulWidget {
   final Modulo modulo;
   final bool isMimimize;
+  final Function onPressed;
 
   const MenuItemSidebar({
     required this.modulo,
     this.isMimimize = false,
     super.key,
+    required this.onPressed,
   });
 
   @override
@@ -39,6 +41,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
             child: InkWell(
               onTap: () {
                 setState(() {
+                  widget.onPressed();
                   isEntered = !isEntered;
                   widget.isMimimize ? showPopoverImpl(context, paginas, widget.modulo) : null;
                 });

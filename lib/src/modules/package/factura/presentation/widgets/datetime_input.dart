@@ -49,6 +49,7 @@ class _DatetimeInput extends State<DatetimeInput> {
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
               lastDate: DateTime(2101),
+              locale: const Locale('es', 'ES'),
             );
 
             if (pickedDate != null) {

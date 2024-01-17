@@ -88,12 +88,13 @@ class _DesktopBody extends StatelessWidget {
             top: 200,
             left: size.width < 780 ? (size.width - width) / 2 : 80,
             child: Container(
+              constraints: const BoxConstraints(minHeight: 460),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: const Color(0xff183650).withOpacity(0.5),
               ),
               width: width,
-              height: size.height * 0.5,
+              height: size.height * 0.2,
               child: Column(
                 children: [
                   const SizedBox(height: 20),
