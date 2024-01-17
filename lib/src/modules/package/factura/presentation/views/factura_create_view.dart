@@ -105,17 +105,7 @@ class BuildFiltros extends StatelessWidget {
                 children: [
                   Text("Remesas", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
-                  TextFormField(
-                    minLines: 4,
-                    style: const TextStyle(fontSize: 12),
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(),
-                      //labelText: 'Ingrese los numeros de Remesas',
-                    ),
-                  ),
+                  const _TextAreaRemesas(),
                 ],
               ),
             ),
@@ -155,6 +145,63 @@ class BuildFiltros extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class _TextAreaRemesas extends StatelessWidget {
+  const _TextAreaRemesas();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      autovalidateMode: AutovalidateMode.always,
+      validator: onValidator,
+      minLines: 4,
+      style: const TextStyle(fontSize: 12),
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(),
+        labelText: 'Numeros de remesa (General / Impreso) separados por (,)',
+      ),
+    );
+  }
+
+  String? onValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    RegExp regexCon = RegExp(r'^\d+$');
+    RegExp regexImp = RegExp(r'^\d{2,5}-\d+$');
+    RegExp regex = RegExp(r'^[0-9,-]+$');
+
+    if (!regex.hasMatch(value)) {
+      return "No se permiten valores de texto";
+    }
+
+    List<String> remesas = value.split(",").map((remesa) => remesa.trim()).toList();
+
+    String title = "";
+
+    RegExp regexRemesas = (regexCon.hasMatch(remesas.first))
+        ? regexCon
+        : (regexImp.hasMatch(remesas.first))
+            ? regexImp
+            : RegExp("");
+
+    List<String> remesasDiferentes = remesas.where((elemento) => !regexRemesas.hasMatch(elemento)).toList();
+
+    if (remesasDiferentes.isNotEmpty) {
+      if (remesasDiferentes.first != "" && remesasDiferentes.length > 1) {
+        return "Las remesas (${remesasDiferentes.toList()}) No son válidas para el tipo $title";
+      } else {
+        //return "La remesa (${remesasDiferentes.first.replaceAll(",", "")}) No es valida para el conjunto de códigos con formato $title";
+      }
+    }
+
+    return null;
   }
 }
 

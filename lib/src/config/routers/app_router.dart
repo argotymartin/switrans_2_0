@@ -21,7 +21,7 @@ class AppRouter {
   static const notaCredito = "/notaCredito";
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
-    initialLocation: login,
+    initialLocation: "/factura/registrar",
     routes: <RouteBase>[
       GoRoute(
         path: login,
