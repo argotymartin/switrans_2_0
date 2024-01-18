@@ -161,6 +161,7 @@ class _TextAreaRemesas extends StatelessWidget {
       maxLines: null,
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
+        errorMaxLines: 2,
         alignLabelWithHint: true,
         border: OutlineInputBorder(),
         labelText: 'Numeros de remesa (General / Impreso) separados por (,)',
@@ -169,35 +170,37 @@ class _TextAreaRemesas extends StatelessWidget {
   }
 
   String? onValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return null;
-    }
+    if (value == null || value.isEmpty) return null;
+    RegExp regexRemesas = RegExp("");
 
-    RegExp regexCon = RegExp(r'^\d+$');
-    RegExp regexImp = RegExp(r'^\d{2,5}-\d+$');
-    RegExp regex = RegExp(r'^[0-9,-]+$');
-
-    if (!regex.hasMatch(value)) {
-      return "No se permiten valores de texto";
-    }
-
-    List<String> remesas = value.split(",").map((remesa) => remesa.trim()).toList();
-
+    RegExp regex = RegExp(r'^[0-9, -]+$');
+    if (!regex.hasMatch(value)) return "Los valores de texto no estan permitidos";
+    List<String> remesas = value
+        .split(",")
+        .map((remesa) => remesa.trim())
+        .takeWhile((remesa) => remesa != value.split(",").last.trim())
+        .where((remesa) => regexRemesas.hasMatch(remesa))
+        .toList();
+    if (remesas.isEmpty) return null;
     String title = "";
+    RegExp regexGeneral = RegExp(r'^\d+$');
+    RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
-    RegExp regexRemesas = (regexCon.hasMatch(remesas.first))
-        ? regexCon
-        : (regexImp.hasMatch(remesas.first))
-            ? regexImp
-            : RegExp("");
+    if (regexGeneral.hasMatch(remesas.first)) {
+      regexRemesas = regexGeneral;
+      title = "General";
+    }
 
-    List<String> remesasDiferentes = remesas.where((elemento) => !regexRemesas.hasMatch(elemento)).toList();
+    if (regexImpreso.hasMatch(remesas.first)) {
+      regexRemesas = regexImpreso;
+      title = "Impreso";
+    }
+
+    List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
 
     if (remesasDiferentes.isNotEmpty) {
-      if (remesasDiferentes.first != "" && remesasDiferentes.length > 1) {
+      if (remesasDiferentes.first != "") {
         return "Las remesas (${remesasDiferentes.toList()}) No son válidas para el tipo $title";
-      } else {
-        //return "La remesa (${remesasDiferentes.first.replaceAll(",", "")}) No es valida para el conjunto de códigos con formato $title";
       }
     }
 
