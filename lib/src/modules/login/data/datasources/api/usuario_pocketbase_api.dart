@@ -9,14 +9,14 @@ class UsuarioPocketbaseApi {
   UsuarioPocketbaseApi(this._dio);
 
   Future<Response> getinfoUser(UsuarioRequest params) async {
-    const url = '$kPocketBAseUrl/api/collections/usuario_nedimo/auth-with-password';
+    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
     String jsonRequest = jsonEncode(params.toJson());
     final response = await _dio.post(url, data: jsonRequest);
     return response;
   }
 
   Future<Response> setUser(UsuarioRequest params) async {
-    const url = '$kPocketBAseUrl/api/collections/usuario_nedimo/records';
+    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/records';
     final response = await _dio.patch(
       '$url/${params.identity}',
       data: {"usunedPhoneId": params.token},
@@ -28,7 +28,7 @@ class UsuarioPocketbaseApi {
   }
 
   Future<Response> getUsuarioByID(UsuarioRequest params) async {
-    const url = '$kPocketBAseUrl/api/collections/usuario_nedimo/auth-with-password';
+    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
     String jsonRequest = jsonEncode(params.toJson());
     final response = await _dio.post(url, data: jsonRequest);
     return response;

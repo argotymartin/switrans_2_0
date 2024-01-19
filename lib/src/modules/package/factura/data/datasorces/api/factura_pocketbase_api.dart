@@ -7,13 +7,13 @@ class ClientePocketbaseAPI {
   ClientePocketbaseAPI(this._dio);
 
   Future<Response> getClienteAll() async {
-    const url = '$kPocketBAseUrl/api/collections/cliente/records';
+    const url = '$kPocketBaseUrl/api/collections/cliente/records';
     final response = await _dio.get('$url/');
     return response;
   }
 
   Future<Response> getCliente(String parm) async {
-    const url = '$kPocketBAseUrl/api/collections/cliente/records';
+    const url = '$kPocketBaseUrl/api/collections/cliente/records';
     final response = await _dio.get(
       '$url/',
       queryParameters: {
@@ -24,7 +24,7 @@ class ClientePocketbaseAPI {
   }
 
   Future<Response> getDataEmpresas() async {
-    const url = '$kPocketBAseUrl/api/collections/empresa/records';
+    const url = '$kPocketBaseUrl/api/collections/empresa/records';
     final response = await _dio.get('$url/');
     return response;
   }
