@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/data_dumy.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_datasources.dart';
 
 class PlutoGridCustom extends StatefulWidget {
   const PlutoGridCustom({Key? key}) : super(key: key);
@@ -88,6 +88,8 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
         title: 'Remesa',
         field: 'remesa',
         enableEditingMode: false,
+        width: 200,
+        minWidth: 120,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
           return const SizedBox(
@@ -129,30 +131,100 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
       PlutoColumn(
         title: 'Obs',
         field: 'obs',
+        minWidth: 200,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
-          return const SizedBox(
-            child: Text(
-              "SERVICIO SOLICITADO POR NELSON MENDEZ PARA EL DIA 26-DICIEMBRE-23, SENCILLO DE PLACA WFV 844, CONDUCTOR FABIO ROJAS, GPS Y COMUNICACIONES.DO: 2 VIAJES A TIENDAS, BOGOTASIN VERIFICAR PESO NI CONTENIDO Origen: TENJO Destino: BOGOTA, D.C.",
-              style: TextStyle(fontSize: 10),
-            ),
+          return Text(
+            rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
+            maxLines: 8,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 10),
           );
         },
       ),
       PlutoColumn(
-        suppressedAutoSize: true,
-        title: 'column5',
-        field: 'column5',
-        type: PlutoColumnType.text(),
-        enableEditingMode: false,
+        title: 'Adiciones',
+        field: 'adiciones',
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        enableEditingMode: true,
         renderer: (rendererContext) {
-          return const SizedBox(
-            height: 200,
-            width: 400,
+          return Text(
+            rendererContext.column.type.applyFormat(rendererContext.cell.value),
+            style: TextStyle(color: Colors.green.shade700),
+            textAlign: TextAlign.end,
+          );
+        },
+      ),
+      PlutoColumn(
+        title: 'Descuentos',
+        field: 'descuentos',
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.column.type.applyFormat(rendererContext.cell.value),
+            style: TextStyle(color: Colors.red.shade700),
+          );
+        },
+      ),
+      PlutoColumn(
+        title: 'Flete',
+        field: 'flete',
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.column.type.applyFormat(rendererContext.cell.value),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.red.shade700),
+          );
+        },
+      ),
+      PlutoColumn(
+        title: 'Tarifa Base',
+        field: 'tarifaBase',
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.column.type.applyFormat(rendererContext.cell.value),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.green.shade700),
+          );
+        },
+      ),
+      PlutoColumn(
+        title: 'R.C.P',
+        field: 'rcp',
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.column.type.applyFormat(rendererContext.cell.value),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.green.shade900, fontWeight: FontWeight.bold),
           );
         },
       ),
     ]);
-    rows.addAll(DummyData.rowsByColumns(length: 2, columns: columns));
+    //rows.addAll(DummyData.rowsByColumns(length: 2, columns: columns));
+    rows.addAll(RemesasDatasources.rowsByColumns(columns: columns));
+  }
+
+  Widget currencyRenderer(PlutoColumnRendererContext ctx) {
+    assert(ctx.column.type.isCurrency);
+
+    Color color = Colors.black;
+
+    if (ctx.cell.value > 0) {
+      color = Colors.green;
+    } else if (ctx.cell.value < 0) {
+      color = Colors.red;
+    }
+
+    return Text(
+      ctx.column.type.applyFormat(ctx.cell.value),
+      style: TextStyle(color: color),
+      textAlign: TextAlign.end,
+    );
   }
 }
