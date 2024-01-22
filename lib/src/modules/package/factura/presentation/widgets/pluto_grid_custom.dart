@@ -23,7 +23,7 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 310,
+      height: 600,
       padding: const EdgeInsets.all(15),
       child: PlutoGrid(
         columns: columns,
@@ -32,17 +32,16 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
           stateManager = event.stateManager;
           stateManager.setShowColumnFilter(true);
         },
-        onChanged: (PlutoGridOnChangedEvent event) {
-          print(event);
-        },
-        onRowChecked: (event) {
-          print(event);
-        },
+        onChanged: (PlutoGridOnChangedEvent event) {},
+        onRowChecked: (event) {},
         configuration: PlutoGridConfiguration(
           style: PlutoGridStyleConfig(
             checkedColor: Theme.of(context).colorScheme.primaryContainer,
             activatedColor: Theme.of(context).colorScheme.onPrimary,
             activatedBorderColor: Theme.of(context).colorScheme.primary,
+            columnHeight: 48,
+            columnFilterHeight: 60,
+            rowHeight: 120,
           ),
           columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
           scrollbar: const PlutoGridScrollbarConfig(
@@ -60,11 +59,13 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
       PlutoColumn(
         title: 'Item',
         field: 'item',
+        suppressedAutoSize: true,
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableRowChecked: true,
         minWidth: 60,
         width: 100,
+        enableEditingMode: false,
         renderer: (rendererContext) {
           return Container(
             width: 12,
@@ -76,7 +77,7 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             ),
             child: Center(
               child: Text(
-                "${rendererContext.rowIdx}",
+                rendererContext.rowIdx.toString(),
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -86,13 +87,16 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
       PlutoColumn(
         title: 'Remesa',
         field: 'remesa',
+        enableEditingMode: false,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
           return const SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("01051-22845 (734778)"),
+                Text(
+                  "01051-22845 (734778)",
+                ),
                 Row(
                   children: [
                     Text(
@@ -142,28 +146,9 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
         type: PlutoColumnType.text(),
         enableEditingMode: false,
         renderer: (rendererContext) {
-          return Container(
+          return const SizedBox(
             height: 200,
             width: 400,
-            color: Colors.red,
-            child: Column(
-              children: [
-                Container(
-                  width: 180,
-                  height: 20,
-                  color: Colors.white,
-                  child: Column(
-                    children: [Text("hola")],
-                  ),
-                ),
-                Container(
-                  width: 180,
-                  height: 10,
-                  color: Colors.yellow,
-                  child: Column(),
-                )
-              ],
-            ),
           );
         },
       ),

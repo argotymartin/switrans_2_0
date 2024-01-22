@@ -118,7 +118,7 @@ class DummyData {
   }) {
     final Completer<List<PlutoRow>> completer = Completer();
 
-    final List<PlutoRow> _rows = [];
+    final List<PlutoRow> rows = [];
 
     int count = 0;
 
@@ -134,10 +134,10 @@ class DummyData {
       Future(() {
         return DummyData.rowsByColumns(length: chunkSize, columns: columns);
       }).then((value) {
-        _rows.addAll(value);
+        rows.addAll(value);
 
-        if (_rows.length == totalRows) {
-          completer.complete(_rows);
+        if (rows.length == totalRows) {
+          completer.complete(rows);
 
           timer.cancel();
         }
