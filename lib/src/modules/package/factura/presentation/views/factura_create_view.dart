@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/remesa_filter_request.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/build_view_detail.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/table_remesas.dart';
 
@@ -43,10 +44,22 @@ class BuildFiltros extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final clienteController = TextEditingController();
+    final remesasController = TextEditingController();
+    final fechaInicioController = TextEditingController();
+    final fechaFinController = TextEditingController();
+    List<int> empresasSelect = [];
     final facturaFilterBloc = BlocProvider.of<FiltersFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
-    final empresasl = empresas.map((empresa) => SizedBox(width: 180, child: BuildCardEmpresa(empresa: empresa))).toList();
+    final empresasl = empresas
+        .map((empresa) => SizedBox(
+            width: 180,
+            child: BuildCardEmpresa(
+              empresa: empresa,
+              empresasSelect: empresasSelect,
+            )))
+        .toList();
 
     final suggestions = clientes.map((cliente) {
       return SuggestionModel(
@@ -74,6 +87,7 @@ class BuildFiltros extends StatelessWidget {
                   AutocompleteInput(
                     title: "Cliente",
                     suggestions: suggestions,
+                    controller: clienteController,
                   )
                 ],
               ),
@@ -105,7 +119,7 @@ class BuildFiltros extends StatelessWidget {
                 children: [
                   Text("Remesas", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
-                  const _TextAreaRemesas(),
+                  _TextAreaRemesas(controller: remesasController),
                 ],
               ),
             ),
@@ -118,7 +132,7 @@ class BuildFiltros extends StatelessWidget {
                     children: [
                       Text("Inicio", style: Theme.of(context).textTheme.titleLarge),
                       const SizedBox(height: 8),
-                      SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                      SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaInicioController)),
                     ],
                   ),
                   Container(
@@ -128,7 +142,7 @@ class BuildFiltros extends StatelessWidget {
                       children: [
                         Text("Fin", style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 8),
-                        SizedBox(width: size.width * 0.15, height: 56, child: const DatetimeInput()),
+                        SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaFinController)),
                       ],
                     ),
                   ),
@@ -139,7 +153,16 @@ class BuildFiltros extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         FilledButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            final remesasFilter = RemesaFilterRequest(
+              cliente: int.parse(clienteController.text),
+              empresas: empresasSelect,
+              remesas: remesasController.text,
+              inicio: fechaInicioController.text,
+              fin: fechaInicioController.text,
+            );
+            print(remesasFilter);
+          },
           icon: const Icon(Icons.search_rounded),
           label: const Text("Buscar", style: TextStyle(color: Colors.white)),
         )
@@ -149,11 +172,13 @@ class BuildFiltros extends StatelessWidget {
 }
 
 class _TextAreaRemesas extends StatelessWidget {
-  const _TextAreaRemesas();
+  final TextEditingController controller;
+  const _TextAreaRemesas({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       autovalidateMode: AutovalidateMode.always,
       validator: onValidator,
       minLines: 4,

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DatetimeInput extends StatefulWidget {
-  const DatetimeInput({super.key});
+  final TextEditingController controller;
+  const DatetimeInput({super.key, required this.controller});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +25,7 @@ class _DatetimeInput extends State<DatetimeInput> {
       child: SizedBox(
         height: 40,
         child: TextField(
-          controller: dateinput,
+          controller: widget.controller,
           style: const TextStyle(fontSize: 14),
           decoration: const InputDecoration(
             icon: Icon(Icons.calendar_today),
@@ -55,7 +56,7 @@ class _DatetimeInput extends State<DatetimeInput> {
             if (pickedDate != null) {
               String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
               setState(() {
-                dateinput.text = formattedDate;
+                widget.controller.text = formattedDate;
               });
             }
           },

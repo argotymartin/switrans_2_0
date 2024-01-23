@@ -5,11 +5,13 @@ import 'package:searchfield/searchfield.dart';
 class AutocompleteInput extends StatelessWidget {
   final List<SuggestionModel> suggestions;
   final String title;
+  final TextEditingController controller;
 
   const AutocompleteInput({
     Key? key,
     required this.suggestions,
     required this.title,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,9 @@ class AutocompleteInput extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
           onSearchTextChanged: (query) {
             final filter = suggestions.where((element) => element.title.toLowerCase().contains(query.toLowerCase())).toList();
-            return filter.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList();
+            return filter
+                .map((e) => SearchFieldListItem<String>(e.title, item: e.codigo, child: _ItemAutoComplete(suggestionModel: e)))
+                .toList();
           },
           onTap: () {},
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -54,11 +58,16 @@ class AutocompleteInput extends StatelessWidget {
             border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
             borderRadius: BorderRadius.circular(4),
           ),
-          suggestions: suggestions.map((e) => SearchFieldListItem<String>(e.title, child: _ItemAutoComplete(suggestionModel: e))).toList(),
+          suggestions: suggestions
+              .map((e) => SearchFieldListItem<String>(e.title, item: e.codigo, child: _ItemAutoComplete(suggestionModel: e)))
+              .toList(),
           focusNode: focus,
           suggestionState: Suggestion.expand,
           onSuggestionTap: (SearchFieldListItem x) {
-            focus.unfocus();
+            if (x.item != null) {
+              controller.text = x.item;
+            }
+            //focus.unfocus();
           },
         ),
       ],

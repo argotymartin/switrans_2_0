@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
 
 class BuildCardEmpresa extends StatefulWidget {
+  final Empresa empresa;
+  final List<int> empresasSelect;
   const BuildCardEmpresa({
     super.key,
     required this.empresa,
+    required this.empresasSelect,
   });
-
-  final Empresa empresa;
 
   @override
   State<BuildCardEmpresa> createState() => _BuildCardEmpresaState();
@@ -30,7 +31,15 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
           ],
         ),
         child: InkWell(
-          onTap: () => setState(() => isHovered = !isHovered),
+          onTap: () {
+            setState(() => isHovered = !isHovered);
+            if (isHovered && !widget.empresasSelect.contains(widget.empresa.codigo)) {
+              widget.empresasSelect.add(widget.empresa.codigo);
+            }
+            if (!isHovered) {
+              widget.empresasSelect.removeWhere((element) => element == widget.empresa.codigo);
+            }
+          },
           child: Center(
             child: Row(
               children: [
