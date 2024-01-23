@@ -11,6 +11,7 @@ import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa
 import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/card_empresa.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/datetime_input.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/panels/custom_expansion_panel.dart';
 
 class FacturaCreateView extends StatelessWidget {
   const FacturaCreateView({
@@ -28,7 +29,7 @@ class FacturaCreateView extends StatelessWidget {
           breadcrumbTrails: ["SmartAdmin", "Admin", "Theme Settings"],
         ),
         SizedBox(height: 10),
-        WhiteCard(title: 'Filtros', child: BuildFiltros()),
+        CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
         SizedBox(height: 10),
         WhiteCard(title: "Resultado", child: TableRemesas()),
       ],
@@ -53,12 +54,15 @@ class BuildFiltros extends StatelessWidget {
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
     final empresasl = empresas
-        .map((empresa) => SizedBox(
+        .map(
+          (empresa) => SizedBox(
             width: 180,
             child: BuildCardEmpresa(
               empresa: empresa,
               empresasSelect: empresasSelect,
-            )))
+            ),
+          ),
+        )
         .toList();
 
     final suggestions = clientes.map((cliente) {
