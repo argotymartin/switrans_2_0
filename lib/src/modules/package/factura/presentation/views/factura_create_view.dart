@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/build_view_detail.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/pluto_grid_custom.dart';
+import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/table_remesas.dart';
 
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
@@ -29,7 +29,7 @@ class FacturaCreateView extends StatelessWidget {
         SizedBox(height: 10),
         WhiteCard(title: 'Filtros', child: BuildFiltros()),
         SizedBox(height: 10),
-        WhiteCard(title: "Resultado", child: BuildColumn()),
+        WhiteCard(title: "Resultado", child: TableRemesas()),
       ],
     );
   }
@@ -205,16 +205,5 @@ class _TextAreaRemesas extends StatelessWidget {
     }
 
     return null;
-  }
-}
-
-class BuildColumn extends StatelessWidget {
-  const BuildColumn({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlutoGridCustom();
   }
 }

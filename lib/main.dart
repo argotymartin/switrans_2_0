@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+//import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
@@ -14,7 +14,7 @@ import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filt
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
-  usePathUrlStrategy();
+  //usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   runApp(const MyApp());
