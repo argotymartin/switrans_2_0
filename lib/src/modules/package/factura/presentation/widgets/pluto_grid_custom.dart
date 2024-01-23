@@ -23,7 +23,7 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      height: (120 * 3) + (48 + 60 + 36),
       padding: const EdgeInsets.all(15),
       child: PlutoGrid(
         columns: columns,
@@ -63,9 +63,8 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableRowChecked: true,
-        minWidth: 60,
-        width: 100,
-        enableEditingMode: false,
+        minWidth: 120,
+        width: 124,
         renderer: (rendererContext) {
           return Container(
             width: 12,
@@ -77,7 +76,7 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             ),
             child: Center(
               child: Text(
-                rendererContext.rowIdx.toString(),
+                rendererContext.cell.value.toString(),
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -87,51 +86,67 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
       PlutoColumn(
         title: 'Remesa',
         field: 'remesa',
-        enableEditingMode: false,
-        width: 200,
-        minWidth: 120,
+        width: 160,
+        minWidth: 160,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
-          return const SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "01051-22845 (734778)",
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "CC: ",
-                      style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black, fontSize: 10),
+          final cellValue = rendererContext.cell.value.toString();
+          final valRemesa = cellValue.split("CC:")[0];
+          final valAdicional = cellValue.split("CC:")[1].trim(); // Trim para eliminar espacios adicionales
+
+          final ccParts = valAdicional.split("Tipo:");
+          final cc = ccParts[0].trim(); // Trim para eliminar espacios adicionales
+          final tipo = ccParts[1].trim();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                valRemesa,
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.monetization_on_outlined, size: 16),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 12),
+                      children: [
+                        const TextSpan(
+                          text: 'CC: ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: cc)
+                      ],
                     ),
-                    Text(
-                      "TENJO MCT SAS",
-                      style: TextStyle(fontSize: 10),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Tipo: ",
-                      style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black, fontSize: 10),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.fire_truck_outlined, size: 16),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 12),
+                      children: [
+                        const TextSpan(
+                          text: 'Tipo: ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: tipo)
+                      ],
                     ),
-                    Text(
-                      "Provincia",
-                      style: TextStyle(fontSize: 10),
-                    )
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           );
         },
       ),
       PlutoColumn(
         title: 'Obs',
         field: 'obs',
-        minWidth: 200,
+        minWidth: 220,
+        width: 250,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
           return Text(
@@ -154,6 +169,25 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             textAlign: TextAlign.end,
           );
         },
+        footerRenderer: (rendererContext) {
+          return PlutoAggregateColumnFooter(
+            filter: (cell) => cell.row.checked == true,
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            format: '#,###',
+            alignment: Alignment.center,
+            titleSpanBuilder: (text) {
+              return [
+                const TextSpan(
+                  text: 'Sum',
+                  style: TextStyle(color: Colors.red),
+                ),
+                const TextSpan(text: ' : '),
+                TextSpan(text: text),
+              ];
+            },
+          );
+        },
       ),
       PlutoColumn(
         title: 'Descuentos',
@@ -163,6 +197,25 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
           return Text(
             rendererContext.column.type.applyFormat(rendererContext.cell.value),
             style: TextStyle(color: Colors.red.shade700),
+          );
+        },
+        footerRenderer: (rendererContext) {
+          return PlutoAggregateColumnFooter(
+            filter: (cell) => cell.row.checked == true,
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            format: '#,###',
+            alignment: Alignment.center,
+            titleSpanBuilder: (text) {
+              return [
+                const TextSpan(
+                  text: 'Sum',
+                  style: TextStyle(color: Colors.red),
+                ),
+                const TextSpan(text: ' : '),
+                TextSpan(text: text),
+              ];
+            },
           );
         },
       ),
@@ -178,6 +231,25 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             style: TextStyle(color: Colors.red.shade700),
           );
         },
+        footerRenderer: (rendererContext) {
+          return PlutoAggregateColumnFooter(
+            filter: (cell) => cell.row.checked == true,
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            format: '#,###',
+            alignment: Alignment.center,
+            titleSpanBuilder: (text) {
+              return [
+                const TextSpan(
+                  text: 'Sum',
+                  style: TextStyle(color: Colors.red),
+                ),
+                const TextSpan(text: ' : '),
+                TextSpan(text: text),
+              ];
+            },
+          );
+        },
       ),
       PlutoColumn(
         title: 'Tarifa Base',
@@ -189,6 +261,25 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.green.shade700),
+          );
+        },
+        footerRenderer: (rendererContext) {
+          return PlutoAggregateColumnFooter(
+            filter: (cell) => cell.row.checked == true,
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            format: '#,###',
+            alignment: Alignment.center,
+            titleSpanBuilder: (text) {
+              return [
+                const TextSpan(
+                  text: 'Sum',
+                  style: TextStyle(color: Colors.red),
+                ),
+                const TextSpan(text: ' : '),
+                TextSpan(text: text),
+              ];
+            },
           );
         },
       ),
@@ -204,27 +295,27 @@ class _PlutoGridCustomState extends State<PlutoGridCustom> {
             style: TextStyle(color: Colors.green.shade900, fontWeight: FontWeight.bold),
           );
         },
+        footerRenderer: (rendererContext) {
+          return PlutoAggregateColumnFooter(
+            filter: (cell) => cell.row.checked == true,
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            format: '#,###',
+            alignment: Alignment.center,
+            titleSpanBuilder: (text) {
+              return [
+                const TextSpan(
+                  text: 'Sum',
+                  style: TextStyle(color: Colors.red),
+                ),
+                const TextSpan(text: ' : '),
+                TextSpan(text: text),
+              ];
+            },
+          );
+        },
       ),
     ]);
-    //rows.addAll(DummyData.rowsByColumns(length: 2, columns: columns));
     rows.addAll(RemesasDatasources.rowsByColumns(columns: columns));
-  }
-
-  Widget currencyRenderer(PlutoColumnRendererContext ctx) {
-    assert(ctx.column.type.isCurrency);
-
-    Color color = Colors.black;
-
-    if (ctx.cell.value > 0) {
-      color = Colors.green;
-    } else if (ctx.cell.value < 0) {
-      color = Colors.red;
-    }
-
-    return Text(
-      ctx.column.type.applyFormat(ctx.cell.value),
-      style: TextStyle(color: color),
-      textAlign: TextAlign.end,
-    );
   }
 }

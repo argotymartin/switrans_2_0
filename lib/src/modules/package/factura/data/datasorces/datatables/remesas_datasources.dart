@@ -26,9 +26,9 @@ class RemesasDatasources {
 
   static dynamic valueByColumnType(PlutoColumn column, Remesa remesa) {
     if (column.field == "item") {
-      return column.frozen.index;
+      return remesa.item;
     } else if (column.field == "remesa") {
-      return remesa.remesa;
+      return "${remesa.remesa} CC: ${remesa.centroCosto} Tipo: ${remesa.tipo}";
     } else if (column.field == "obs") {
       return remesa.obervaciones;
     } else if (column.field == "adiciones") {
@@ -46,7 +46,10 @@ class RemesasDatasources {
 
   static List<Remesa> remesas = [
     Remesa(
+      item: 1,
       remesa: "01051-22845 (734778)",
+      centroCosto: "Tenjo Mct SAs",
+      tipo: "Provincia",
       obervaciones:
           "SERVICIO SOLICITADO POR NELSON MENDEZ PARA EL DIA 26-DICIEMBRE-23, SENCILLO DE PLACA WFV 844, CONDUCTOR FABIO ROJAS, GPS Y COMUNICACIONES.DO: 2 VIAJES A TIENDAS, BOGOTASIN VERIFICAR PESO NI CONTENIDO Origen: TENJO Destino: BOGOTA, D.C.",
       adiciones: "2000",
@@ -56,7 +59,10 @@ class RemesasDatasources {
       rcp: "4800",
     ),
     Remesa(
+      item: 2,
       remesa: "01045-54214 (458541)",
+      centroCosto: "Funza Mct SA",
+      tipo: "Urbano",
       obervaciones:
           "SERVICIO SOLICITADO POR CARLOS PEREZ PARA EL DIA 15-ENERO-24, SENCILLO DE PLACA ABC 123, CONDUCTOR JUAN GOMEZ, GPS Y COMUNICACIONES.DO: 3 VIAJES A TIENDAS, MEDELLÍNSIN VERIFICAR PESO NI CONTENIDO Origen: RIONEGRO Destino: MEDELLÍN, ANTIOQUIA",
       adiciones: "25000",
@@ -66,7 +72,10 @@ class RemesasDatasources {
       rcp: "42000",
     ),
     Remesa(
+      item: 3,
       remesa: "01045-22845 (459321)",
+      centroCosto: "Yumbo MCT",
+      tipo: "Nacional",
       obervaciones:
           "SERVICIO SOLICITADO POR MARÍA RAMIREZ PARA EL DIA 10-FEBRERO-24, SENCILLO DE PLACA XYZ 789, CONDUCTOR LUIS MARTÍNEZ, GPS Y COMUNICACIONES.DO: 4 VIAJES A TIENDAS, CALISIN VERIFICAR PESO NI CONTENIDO Origen: PALMIRA Destino: CALI, VALLE DEL CAUCA",
       adiciones: "10000",
@@ -79,7 +88,10 @@ class RemesasDatasources {
 }
 
 class Remesa {
+  final int item;
   final String remesa;
+  final String centroCosto;
+  final String tipo;
   final String obervaciones;
   final String adiciones;
   final String descuentos;
@@ -87,6 +99,9 @@ class Remesa {
   final String tarifaBase;
   final String rcp;
   Remesa({
+    required this.item,
+    required this.centroCosto,
+    required this.tipo,
     required this.remesa,
     required this.obervaciones,
     required this.adiciones,
