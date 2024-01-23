@@ -11,7 +11,7 @@ class CustomExpansionPanel extends StatefulWidget {
 }
 
 class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
-  bool active = true;
+  bool active = false;
   @override
   Widget build(BuildContext context) {
     return Column(

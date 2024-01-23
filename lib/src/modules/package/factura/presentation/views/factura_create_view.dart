@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/remesa_filter_request.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/build_view_detail.dart';
 import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/table_remesas.dart';
-
 import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
@@ -31,7 +30,9 @@ class FacturaCreateView extends StatelessWidget {
         SizedBox(height: 10),
         CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
         SizedBox(height: 10),
-        WhiteCard(title: "Resultado", child: TableRemesas()),
+        WhiteCard(title: "Item Factura", child: _BuildItemFactura()),
+        SizedBox(height: 10),
+        WhiteCard(title: "Factura Documentos", child: TableRemesas()),
       ],
     );
   }
@@ -234,5 +235,58 @@ class _TextAreaRemesas extends StatelessWidget {
     }
 
     return null;
+  }
+}
+
+class _BuildItemFactura extends StatelessWidget {
+  const _BuildItemFactura();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Table(
+            border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+            children: const [
+              TableRow(
+                children: [
+                  _CellTitle(title: "Item"),
+                  _CellTitle(title: "Documento"),
+                  _CellTitle(title: "Descripcion"),
+                  _CellTitle(title: "Valor"),
+                  _CellTitle(title: "Cantidad"),
+                  _CellTitle(title: "Total"),
+                  _CellTitle(title: "Accion"),
+                ],
+              )
+            ],
+          ),
+        ),
+        Expanded(child: Container(height: 200, color: Colors.black)),
+      ],
+    );
+  }
+}
+
+class _CellTitle extends StatelessWidget {
+  final String title;
+  const _CellTitle({
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCell(
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    );
   }
 }
