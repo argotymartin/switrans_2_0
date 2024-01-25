@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/auth_layout.dart';
 import 'package:switrans_2_0/src/modules/menu/presentation/layouts/error.layout.dart';
@@ -32,29 +33,29 @@ class AppRouter {
           return MenuLayout(child: child);
         },
         routes: [
+          
           GoRoute(
+            
             path: root,
             builder: (_, GoRouterState state) => const MenuView(),
           ),
           GoRoute(
             path: "/factura/registrar",
-            builder: (context, GoRouterState state) {
+            pageBuilder: (context, GoRouterState state) {
               context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
-              return BlocBuilder<FiltersFacturaBloc, FiltersFacturaState>(
-                builder: (context, stateFactura) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 200),
-                    child: (stateFactura is FiltersFacturaInitialState) ? const FacturaCreateView() : const LoadingView(),
-                  );
-                },
+              return MaterialPage(
+                child: BlocBuilder<FiltersFacturaBloc, FiltersFacturaState>(
+                  builder: (context, stateFactura) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: (stateFactura is FiltersFacturaInitialState) ? const FacturaCreateView() : const LoadingView(),
+                    );
+                  },
+                ),
               );
             },
-          ),
-          /*GoRoute(
-            path: "/factura/registrar",
-            builder: (_, __) => const FacturaCreateView(),
             redirect: onValidateAuth,
-          ),*/
+          ),
           GoRoute(
             path: "/factura/buscar",
             builder: (_, __) => const FacturaSearchView(),
@@ -72,7 +73,9 @@ class AppRouter {
   );
 
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
-    final bool isSignedIn = BlocProvider.of<UsuarioBloc>(context).state.isSignedIn;
-    return isSignedIn ? state.path : login;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token') ?? '';
+    //final bool isSignedIn = BlocProvider.of<UsuarioBloc>(context).state.isSignedIn;
+    return stringValue != "" ? state.path : login;
   }
 }
