@@ -34,9 +34,9 @@ class AppRouter {
           GoRoute(
             path: "/factura/registrar",
             pageBuilder: (context, GoRouterState state) {
-              context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
+              context.read<FilterFacturaBloc>().add(const ActiveteFilterFacturaEvent());
               return MaterialPage(
-                child: BlocBuilder<FiltersFacturaBloc, FiltersFacturaState>(
+                child: BlocBuilder<FilterFacturaBloc, FilterFacturaState>(
                   builder: (context, stateFactura) {
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),

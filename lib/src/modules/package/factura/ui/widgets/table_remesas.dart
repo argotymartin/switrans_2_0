@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_datasources.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/item_factura/item_factura_bloc.dart';
 
 class TableRemesas extends StatefulWidget {
   const TableRemesas({Key? key}) : super(key: key);
@@ -22,6 +25,7 @@ class _TableRemesasState extends State<TableRemesas> {
 
   @override
   Widget build(BuildContext context) {
+    final remesas = RemesasDatasources.remesas;
     return Container(
       height: (120 * 3) + (48 + 60 + 80),
       padding: const EdgeInsets.all(15),
@@ -33,7 +37,24 @@ class _TableRemesasState extends State<TableRemesas> {
           stateManager.setShowColumnFilter(true);
         },
         onChanged: (PlutoGridOnChangedEvent event) {},
-        onRowChecked: (event) {},
+        onRowChecked: (event) {
+          if (event.isAll && event.isChecked != null) {
+            for (final remesa in remesas) {
+              if (event.isChecked!) {
+                context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+              } else {
+                context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+              }
+            }
+          } else if (event.rowIdx != null && event.isChecked != null) {
+            final Remesa remesa = remesas[event.rowIdx!];
+            if (event.isChecked!) {
+              context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+            } else {
+              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+            }
+          }
+        },
         configuration: PlutoGridConfiguration(
           style: PlutoGridStyleConfig(
             checkedColor: Theme.of(context).colorScheme.primaryContainer,

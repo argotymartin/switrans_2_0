@@ -26,10 +26,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
+        BlocProvider<ItemFacturaBloc>(create: (_) => ItemFacturaBloc()),
         BlocProvider<UsuarioBloc>(create: (_) => injector()..add((const GetUsuarioEvent()))),
         BlocProvider<ModuloBloc>(create: (_) => injector()..add((GetModuloEvent()))),
         BlocProvider<FacturaBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
-        BlocProvider<FiltersFacturaBloc>(create: (_) => injector()..add((const GetFiltersFacturaEvent()))),
+        BlocProvider<FilterFacturaBloc>(create: (_) => injector()..add((const GetFilterFacturaEvent()))),
       ],
       child: const MyMaterialApp(),
     );

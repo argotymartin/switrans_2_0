@@ -8,4 +8,5 @@ export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_create
 export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_edit_view.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_search_view.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/factura/factura_bloc.dart';
-export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/filters_factura/filters_factura_bloc.dart';
+export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/filter_factura/filter_factura_bloc.dart';
+export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/item_factura/item_factura_bloc.dart';

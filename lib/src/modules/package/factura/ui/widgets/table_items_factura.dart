@@ -1,69 +1,59 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_datasources.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
+  final List<Remesa> remesas;
   const TableItemsFactura({
     super.key,
+    required this.remesas,
   });
 
   @override
   Widget build(BuildContext context) {
-    final remesas = RemesasDatasources.remesas;
-    final valorController = TextEditingController();
-    final valor2Controller = TextEditingController();
-    final cantidadController = TextEditingController();
-    valorController.text = remesas[0].tarifaBase;
-    valor2Controller.text = remesas[0].tarifaBase;
-    cantidadController.text = "2";
+    final tableRowsTitle = TableRow(
+      decoration: BoxDecoration(color: Colors.grey.shade100),
+      children: const [
+        _CellTitle(title: "Item"),
+        _CellTitle(title: "Documento"),
+        _CellTitle(title: "Descripcion"),
+        _CellTitle(title: "Valor"),
+        _CellTitle(title: "Cantidad"),
+        _CellTitle(title: "Total"),
+        _CellTitle(title: "Accion"),
+      ],
+    );
+    List<TableRow> buildTableRows = remesas.map(
+      (remesa) {
+        final valorController = TextEditingController(text: remesa.tarifaBase);
+        final cantidadController = TextEditingController(text: '0');
+        return TableRow(
+          children: [
+            const _BuildFieldItem(),
+            _CellContent(child: _BuildFiledDocumento(remesas: remesas)),
+            _CellContent(child: _BuildFieldDescription(title: remesa.obervaciones)),
+            _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
+            _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
+            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: remesa.rcp)),
+            const _CellContent(child: _BuildFiledAccion()),
+          ],
+        );
+      },
+    ).toList();
+
+    const columnWidth = {
+      0: FlexColumnWidth(0.6),
+      1: FractionColumnWidth(0.2),
+      2: FractionColumnWidth(0.25),
+      3: FractionColumnWidth(0.15),
+      6: FractionColumnWidth(0.15),
+    };
     return Table(
       border: TableBorder.all(color: Colors.grey.shade200, width: 1),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {
-        0: FlexColumnWidth(0.6),
-        1: FractionColumnWidth(0.2),
-        2: FractionColumnWidth(0.25),
-        3: FractionColumnWidth(0.15),
-        6: FractionColumnWidth(0.15),
-      },
-      children: [
-        TableRow(
-          decoration: BoxDecoration(color: Colors.grey.shade100),
-          children: const [
-            _CellTitle(title: "Item"),
-            _CellTitle(title: "Documento"),
-            _CellTitle(title: "Descripcion"),
-            _CellTitle(title: "Valor"),
-            _CellTitle(title: "Cantidad"),
-            _CellTitle(title: "Total"),
-            _CellTitle(title: "Accion"),
-          ],
-        ),
-        TableRow(
-          children: [
-            const _BuildFieldItem(),
-            _CellContent(child: _BuildFiledDocumento(remesas: remesas)),
-            _CellContent(child: _BuildFieldDescription(title: remesas[0].obervaciones)),
-            _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
-            _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
-            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: remesas[0].rcp)),
-            const _CellContent(child: _BuildFiledAccion()),
-          ],
-        ),
-        TableRow(
-          children: [
-            const _BuildFieldItem(),
-            _CellContent(child: _BuildFiledDocumento(remesas: remesas)),
-            _CellContent(child: _BuildFieldDescription(title: remesas[0].obervaciones)),
-            _CellContent(child: CurrencyInput(controller: valor2Controller, color: Colors.blue.shade800)),
-            _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
-            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: remesas[0].rcp)),
-            const _CellContent(child: _BuildFiledAccion()),
-          ],
-        )
-      ],
+      columnWidths: columnWidth,
+      children: [tableRowsTitle, ...buildTableRows],
     );
   }
 }

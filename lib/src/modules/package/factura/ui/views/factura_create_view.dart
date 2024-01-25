@@ -45,20 +45,9 @@ class BuildFiltros extends StatelessWidget {
     final fechaInicioController = TextEditingController();
     final fechaFinController = TextEditingController();
     List<int> empresasSelect = [];
-    final facturaFilterBloc = BlocProvider.of<FiltersFacturaBloc>(context);
+    final facturaFilterBloc = BlocProvider.of<FilterFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
-    final empresasl = empresas
-        .map(
-          (empresa) => SizedBox(
-            width: 180,
-            child: BuildCardEmpresa(
-              empresa: empresa,
-              empresasSelect: empresasSelect,
-            ),
-          ),
-        )
-        .toList();
 
     final suggestions = clientes.map((cliente) {
       return SuggestionModel(
@@ -101,7 +90,16 @@ class BuildFiltros extends StatelessWidget {
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
                     spacing: 12,
-                    children: empresasl,
+                    children: List.generate(
+                      empresas.length,
+                      (index) => SizedBox(
+                        width: 180,
+                        child: BuildCardEmpresa(
+                          empresa: empresas[index],
+                          empresasSelect: empresasSelect,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -237,16 +235,23 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Expanded(
-          flex: 2,
-          child: TableItemsFactura(),
-        ),
-        Expanded(child: Container(height: 200, color: Colors.black)),
-      ],
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+      builder: (context, state) {
+        if (state is ItemFacturaSuccesState) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: TableItemsFactura(remesas: state.remesas),
+              ),
+              Expanded(child: Container(height: 200, color: Colors.black)),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
