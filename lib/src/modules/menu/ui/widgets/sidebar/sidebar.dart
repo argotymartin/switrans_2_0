@@ -5,9 +5,7 @@ import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class Sidebar extends StatelessWidget {

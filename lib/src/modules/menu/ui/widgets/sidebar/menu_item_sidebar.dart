@@ -6,7 +6,7 @@ import 'package:popover/popover.dart';
 
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/pagina.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/blocs/modulo/modulo_bloc.dart';
 
 class MenuItemSidebar extends StatefulWidget {
   final Modulo modulo;

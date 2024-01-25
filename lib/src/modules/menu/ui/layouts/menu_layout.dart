@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/widgets/navbar/navbar.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/widgets/sidebar/sidebar.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 
 class MenuLayout extends StatelessWidget {
   final Widget child;

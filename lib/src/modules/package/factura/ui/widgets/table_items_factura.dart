@@ -1,11 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_datasources.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_size_button.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/currency_input.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/number_input.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/labels/currency_label.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
   const TableItemsFactura({

@@ -7,12 +7,11 @@ import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dar
 import 'package:switrans_2_0/src/modules/menu/data/datasorces/api/pocketbase_api.dart';
 import 'package:switrans_2_0/src/modules/menu/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/repositories/abstract_modulo_repository.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/repositories/factura_repository_impl.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/factura/factura_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 final injector = GetIt.instance;
 

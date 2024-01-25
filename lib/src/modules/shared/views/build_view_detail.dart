@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/breadcrumb_trail.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class BuildViewDetail extends StatelessWidget {
   final String title;

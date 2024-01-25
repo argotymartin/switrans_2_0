@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/remesa_filter_request.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/build_view_detail.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/table_items_factura.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/table_remesas.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/card_empresa.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/widgets/datetime_input.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/panels/custom_expansion_panel.dart';
+
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+
+import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
   const FacturaCreateView({

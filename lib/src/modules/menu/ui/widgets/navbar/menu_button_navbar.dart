@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/menu/menu_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 
 class MenuButtonNavar extends StatefulWidget {
   const MenuButtonNavar({

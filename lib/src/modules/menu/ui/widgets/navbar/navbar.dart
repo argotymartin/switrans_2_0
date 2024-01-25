@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/widgets/widgets.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 
 class Navbar extends StatelessWidget {
   const Navbar({super.key});

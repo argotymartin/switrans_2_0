@@ -7,7 +7,7 @@ import 'package:switrans_2_0/src/modules/login/ui/layouts/views/auth_view.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_background.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_title.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/links_bar.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
