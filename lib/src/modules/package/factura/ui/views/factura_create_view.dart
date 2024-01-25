@@ -246,7 +246,7 @@ class _BuildItemFactura extends StatelessWidget {
                 flex: 2,
                 child: TableItemsFactura(remesas: state.remesas),
               ),
-              Expanded(child: Container(height: 200, color: Colors.black)),
+              //Expanded(child: Container(height: 200, color: Colors.black)),
             ],
           );
         }

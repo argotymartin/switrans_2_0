@@ -1,38 +1,38 @@
-part of 'usuario_bloc.dart';
+part of 'auth_bloc.dart';
 
-abstract class UsuarioState extends Equatable {
+abstract class AuthState extends Equatable {
   final Usuario? usuario;
   final DioException? error;
   final bool isSignedIn;
-  const UsuarioState({this.usuario, this.error, this.isSignedIn = false});
+  const AuthState({this.usuario, this.error, this.isSignedIn = false});
 }
 
-class UsuarioInitialState extends UsuarioState {
-  const UsuarioInitialState();
+class AuthStateState extends AuthState {
+  const AuthStateState();
   @override
   List<Object> get props => [];
 }
 
-class UsuarioLoadInProgressState extends UsuarioState {
+class UsuarioLoadInProgressState extends AuthState {
   const UsuarioLoadInProgressState();
   @override
   List<Object> get props => [];
 }
 
-class UsuarioUpdateState extends UsuarioState {
+class UsuarioUpdateState extends AuthState {
   const UsuarioUpdateState();
   @override
   List<Object> get props => [];
 }
 
-class UsuarioSuccesState extends UsuarioState {
+class UsuarioSuccesState extends AuthState {
   const UsuarioSuccesState({super.usuario, super.isSignedIn});
 
   @override
   List<Object?> get props => [super.usuario];
 }
 
-class UsuarioErrorState extends UsuarioState {
+class UsuarioErrorState extends AuthState {
   const UsuarioErrorState({super.error});
 
   @override

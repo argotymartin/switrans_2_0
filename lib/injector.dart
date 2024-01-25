@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:switrans_2_0/src/modules/login/data/datasources/api/usuario_pocketbase_api.dart';
-import 'package:switrans_2_0/src/modules/login/data/repositories/usuario_repository_impl.dart';
-import 'package:switrans_2_0/src/modules/login/domain/repositories/abstract_usuario_repository.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/data/datasources/api/auth_pocketbase_api.dart';
+import 'package:switrans_2_0/src/modules/login/data/repositories/auth_repository_impl.dart';
+import 'package:switrans_2_0/src/modules/login/domain/repositories/abstract_auth_repository.dart';
+import 'package:switrans_2_0/src/modules/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/modules/menu/data/datasorces/api/pocketbase_api.dart';
 import 'package:switrans_2_0/src/modules/menu/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/repositories/abstract_modulo_repository.dart';
@@ -18,9 +18,9 @@ final injector = GetIt.instance;
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
-  injector.registerSingleton<UsuarioPocketbaseApi>(UsuarioPocketbaseApi(injector()));
-  injector.registerSingleton<AbstractUsuarioRepository>(UsuarioRepositoryImpl(injector()));
-  injector.registerSingleton<UsuarioBloc>(UsuarioBloc(injector()));
+  injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
+  injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));
+  injector.registerSingleton<AuthBloc>(AuthBloc(injector()));
 
   injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
   injector.registerSingleton<AbstractModuloRepository>(ModuloRespositoryImpl(injector()));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/domain/entities/request/usuario.request.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_outlined_button.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/inputs/custom_inputs.dart';
 
@@ -63,7 +63,7 @@ class AuthView extends StatelessWidget {
                       final isValid = formKey.currentState!.validate();
                       if (isValid) {
                         final params = UsuarioRequest(identity: emailController.text, password: passController.text);
-                        context.read<UsuarioBloc>().add(LoginUsuarioEvent(params: params));
+                        context.read<AuthBloc>().add(LoginAuthEvent(params: params));
                       }
                     },
                     text: "Ingresar",

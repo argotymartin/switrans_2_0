@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/modules/menu/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/modules/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
@@ -48,7 +48,7 @@ class Sidebar extends StatelessWidget {
                           modulo: ModuloModel(codigo: 1, icono: "0xf031", texto: "Logout", path: "/logout"),
                           isMimimize: state.isMinimize,
                           onPressed: () {
-                            context.read<UsuarioBloc>().add(const GetUsuarioEvent());
+                            context.read<AuthBloc>().add(const GetAuthEvent());
                             context.go(AppRouter.login);
                           },
                         ),

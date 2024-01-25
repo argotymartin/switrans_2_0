@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/views/auth_view.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_background.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_title.dart';
@@ -16,7 +16,7 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: BlocListener<UsuarioBloc, UsuarioState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UsuarioErrorState) {
             alertDialog(size, context, state).show();

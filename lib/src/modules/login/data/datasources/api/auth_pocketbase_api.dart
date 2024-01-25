@@ -4,9 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/modules/login/domain/entities/request/usuario.request.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
-class UsuarioPocketbaseApi {
+class AuthPocketbaseApi {
   final Dio _dio;
-  UsuarioPocketbaseApi(this._dio);
+  AuthPocketbaseApi(this._dio);
 
   Future<Response> getinfoUser(UsuarioRequest params) async {
     const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';

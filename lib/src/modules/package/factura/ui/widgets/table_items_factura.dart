@@ -113,8 +113,8 @@ class _BuildFieldDescription extends StatelessWidget {
     return TextFormField(
       initialValue: title,
       autovalidateMode: AutovalidateMode.always,
-      minLines: 4,
-      style: const TextStyle(fontSize: 10),
+      minLines: 2,
+      style: const TextStyle(fontSize: 8.5),
       maxLines: null,
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
