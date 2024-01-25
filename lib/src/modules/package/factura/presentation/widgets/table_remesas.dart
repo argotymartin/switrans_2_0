@@ -128,11 +128,12 @@ class _TableRemesasState extends State<TableRemesas> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.delete_forever_outlined,
-                    color: Colors.red,
-                  )),
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.delete_forever_outlined,
+                  color: Colors.red,
+                ),
+              ),
               IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
             ],
           );
