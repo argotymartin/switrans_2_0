@@ -49,8 +49,8 @@ app.*.map.json
 /web/server.js
 
 
-# Compilacion de Node y Express
-/linux/flutter/
-/macos/Flutter/
-/windows/flutter/
+# plugins para sitemas operativos
+linux/flutter/*
+macos/Flutter/*
+windows/flutter/*
 
