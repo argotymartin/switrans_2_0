@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/modules/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 Future<void> main() async {

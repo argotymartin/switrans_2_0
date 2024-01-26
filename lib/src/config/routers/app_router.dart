@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:switrans_2_0/src/modules/login/ui/layouts/auth_layout.dart';
-import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/globals/login/ui/layouts/auth_layout.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/layouts/error.layout.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
 

@@ -32,3 +32,19 @@ MaterialColor customColorFuchsiaBlue = const MaterialColor(
     900: Color(0xFF533C76),
   },
 );
+
+MaterialColor customPinkMaterial = const MaterialColor(
+  0xFFF83B53,
+  <int, Color>{
+    50: Color(0xFFFFF1F1),
+    100: Color(0xFFFFE3E4),
+    200: Color(0xFFFFCCD0),
+    300: Color(0xFFFF9BA3),
+    400: Color(0xFFFE6E7D),
+    500: Color(0xFFF83B53),
+    600: Color(0xFFE5193D),
+    700: Color(0xFFC20E32),
+    800: Color(0xFFA20F32),
+    900: Color(0xFF8B1031),
+  },
+);
