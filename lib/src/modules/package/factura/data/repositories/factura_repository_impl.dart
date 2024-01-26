@@ -1,6 +1,7 @@
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/cliente_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/empresa_model.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/models/remesa_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
@@ -38,5 +39,16 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   @override
   Future<DataState<List<Cliente>>> getCliente(String param) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<DataState<List<Remesa>>> getRemesasService() async {
+    final httpResponse = await getStateOf(request: () => _api.getRemesaApi());
+    if (httpResponse.data != null) {
+      final List<dynamic> items = httpResponse.data['items'];
+      final List<Remesa> response = items.cast<Map<String, dynamic>>().map((x) => RemesaModel.fromJson(x)).toList();
+      return DataSuccess(response);
+    }
+    return DataFailed(httpResponse.error!);
   }
 }

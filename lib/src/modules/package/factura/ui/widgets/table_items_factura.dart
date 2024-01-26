@@ -28,7 +28,7 @@ class TableItemsFactura extends StatelessWidget {
     );
     List<TableRow> buildTableRows = remesas.map(
       (remesa) {
-        final valorController = TextEditingController(text: remesa.tarifaBase);
+        final valorController = TextEditingController(text: '${remesa.tarifaBase}');
         final cantidadController = TextEditingController(text: '0');
         return TableRow(
           children: [
@@ -37,7 +37,7 @@ class TableItemsFactura extends StatelessWidget {
             _CellContent(child: _BuildFieldDescription(title: remesa.obervaciones)),
             _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
-            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: remesa.rcp)),
+            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: '${remesa.rcp}')),
             _CellContent(child: _BuildFiledAccion(onPressed: () {
               context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
             })),
@@ -142,8 +142,8 @@ class _BuildFiledDocumento extends StatelessWidget {
 
     final suggestions = remesas.map((remesa) {
       return SuggestionModel(
-        title: remesa.remesa.split("(")[1].replaceAll(")", ""),
-        subTitle: remesa.remesa.split("(")[0].replaceAll(")", ""),
+        title: '${remesa.numero}',
+        subTitle: '(${remesa.impreso})',
         details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.centroCosto)]),
       );
     }).toList();

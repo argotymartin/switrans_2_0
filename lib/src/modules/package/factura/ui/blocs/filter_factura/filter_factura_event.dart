@@ -14,3 +14,7 @@ class GetFilterFacturaEvent extends FilterFacturaEvent {
 class ActiveteFilterFacturaEvent extends FilterFacturaEvent {
   const ActiveteFilterFacturaEvent();
 }
+
+class PanelFilterFacturaEvent extends FilterFacturaEvent {
+  const PanelFilterFacturaEvent();
+}

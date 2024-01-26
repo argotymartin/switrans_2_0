@@ -33,9 +33,7 @@ class FacturaCreateView extends StatelessWidget {
 }
 
 class BuildFiltros extends StatelessWidget {
-  const BuildFiltros({
-    super.key,
-  });
+  const BuildFiltros({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -151,14 +149,17 @@ class BuildFiltros extends StatelessWidget {
         const SizedBox(height: 24),
         FilledButton.icon(
           onPressed: () {
-            final remesasFilter = RemesaFilterRequest(
+            /*final remesasFilter = RemesaFilterRequest(
               cliente: int.parse(clienteController.text),
               empresas: empresasSelect,
               remesas: remesasController.text,
               inicio: fechaInicioController.text,
               fin: fechaInicioController.text,
             );
-            print(remesasFilter);
+            print(remesasFilter);*/
+
+            context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
+            //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
           },
           icon: const Icon(Icons.search_rounded),
           label: const Text("Buscar", style: TextStyle(color: Colors.white)),

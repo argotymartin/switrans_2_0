@@ -17,4 +17,10 @@ class FacturaAPI {
     final response = await _dio.get('$url/');
     return response;
   }
+
+  Future<Response> getRemesaApi() async {
+    const url = '$kPocketBaseUrl/api/collections/remesa/records';
+    final response = await _dio.get('$url/');
+    return response;
+  }
 }

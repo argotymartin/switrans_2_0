@@ -4,21 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
-  const CustomExpansionPanel({super.key, required this.title, required this.child});
+  final bool active;
+  const CustomExpansionPanel({super.key, required this.title, required this.child, this.active = true});
 
   @override
   State<CustomExpansionPanel> createState() => _CustomExpansionPanelState();
 }
 
 class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
-  bool active = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ExpansionPanelList(
           expansionCallback: (panelIndex, isExpanded) {
-            active = !active;
+            //widget.active = !widget.active;
             setState(() {});
           },
           children: <ExpansionPanel>[
@@ -29,7 +29,7 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      active ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
+                      widget.active ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
                       SizedBox(
                         height: 24,
                         child: FittedBox(
@@ -51,7 +51,7 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
                 padding: const EdgeInsets.all(10.0),
                 child: widget.child,
               ),
-              isExpanded: active,
+              isExpanded: widget.active,
               canTapOnHeader: true,
             )
           ],

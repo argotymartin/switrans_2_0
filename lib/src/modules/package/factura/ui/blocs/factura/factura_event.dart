@@ -12,11 +12,5 @@ class GetFacturaEvent extends FacturaEvent {
 }
 
 class ActiveteFacturaEvent extends FacturaEvent {
-  final String cliente;
-  const ActiveteFacturaEvent(this.cliente);
-}
-
-class ActiveteClienteEvent extends FacturaEvent {
-  final String cliente;
-  const ActiveteClienteEvent(this.cliente);
+  const ActiveteFacturaEvent();
 }

@@ -3,7 +3,8 @@ part of 'filter_factura_bloc.dart';
 sealed class FilterFacturaState extends Equatable {
   final List<Cliente> clientes;
   final List<Empresa> empresas;
-  const FilterFacturaState({this.clientes = const [], this.empresas = const []});
+  final bool isPanelOpen;
+  const FilterFacturaState({this.clientes = const [], this.empresas = const [], this.isPanelOpen = true});
 
   @override
   List<Object> get props => [];
@@ -27,6 +28,13 @@ class FiltersFacturaLoadingState extends FilterFacturaState {
 
 class FiltersFacturaSuccesState extends FilterFacturaState {
   const FiltersFacturaSuccesState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class FiltersFacturaPanelOpenState extends FilterFacturaState {
+  const FiltersFacturaPanelOpenState({super.isPanelOpen});
 
   @override
   List<Object> get props => [];

@@ -18,5 +18,9 @@ class FilterFacturaBloc extends Bloc<FilterFacturaEvent, FilterFacturaState> {
       final dataStateEmpresas = await _repository.getEmpresasService();
       emit(FiltersFacturaInitialState(clientes: dataStateClientes.data!, empresas: dataStateEmpresas.data!));
     });
+
+    on<PanelFilterFacturaEvent>((event, emit) {
+      emit(const FiltersFacturaPanelOpenState(isPanelOpen: false));
+    });
   }
 }

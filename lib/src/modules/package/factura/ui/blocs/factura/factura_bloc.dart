@@ -10,19 +10,10 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
   final AbstractFacturaRepository _repository;
   FacturaBloc(this._repository) : super(FacturaInitial()) {
     on<FacturaEvent>((event, emit) {});
-  }
-  Future<List<Cliente>> getCliente(String name) async {
-    final dataState = await _repository.getCliente(name);
-    return dataState.data!;
-  }
-
-  Future<List<Cliente>> getClientesAll() async {
-    final dataState = await _repository.getClientes();
-    return dataState.data!;
-  }
-
-  Future<List<Empresa>> getEmpresas() async {
-    final dataState = await _repository.getEmpresasService();
-    return dataState.data!;
+    on<ActiveteFacturaEvent>((event, emit) async {
+      emit(const FacturaLoadingState());
+      final resp = await _repository.getRemesasService();
+      emit(FacturaSuccesState(remesas: resp.data!));
+    });
   }
 }
