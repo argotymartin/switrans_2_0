@@ -1,18 +1,12 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/auth_layout.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/layouts/error.layout.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/layouts/menu_layout.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/layouts/views/menu_view.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/views/factura_edit_view.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/views/factura_search_view.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/blocs/filters_factura/filters_factura_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/presentation/views/factura_create_view.dart';
 
 class AppRouter {
   static const root = "/";
@@ -33,25 +27,21 @@ class AppRouter {
           return MenuLayout(child: child);
         },
         routes: [
-          
           GoRoute(
-            
             path: root,
             builder: (_, GoRouterState state) => const MenuView(),
           ),
           GoRoute(
             path: "/factura/registrar",
-            pageBuilder: (context, GoRouterState state) {
-              context.read<FiltersFacturaBloc>().add(const ActiveteFiltersFacturaEvent());
-              return MaterialPage(
-                child: BlocBuilder<FiltersFacturaBloc, FiltersFacturaState>(
-                  builder: (context, stateFactura) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: (stateFactura is FiltersFacturaInitialState) ? const FacturaCreateView() : const LoadingView(),
-                    );
-                  },
-                ),
+            builder: (context, GoRouterState state) {
+              context.read<FilterFacturaBloc>().add(const ActiveteFilterFacturaEvent());
+              return BlocBuilder<FilterFacturaBloc, FilterFacturaState>(
+                builder: (context, stateFactura) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: (stateFactura is FiltersFacturaInitialState) ? const FacturaCreateView() : const LoadingView(),
+                  );
+                },
               );
             },
             redirect: onValidateAuth,

@@ -1,4 +1,5 @@
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
 class RemesasDatasources {
   late List<PlutoColumn> columns;
@@ -85,29 +86,4 @@ class RemesasDatasources {
       rcp: "45856",
     )
   ];
-}
-
-class Remesa {
-  final int item;
-  final String remesa;
-  final String centroCosto;
-  final String tipo;
-  final String obervaciones;
-  final String adiciones;
-  final String descuentos;
-  final String flete;
-  final String tarifaBase;
-  final String rcp;
-  Remesa({
-    required this.item,
-    required this.centroCosto,
-    required this.tipo,
-    required this.remesa,
-    required this.obervaciones,
-    required this.adiciones,
-    required this.descuentos,
-    required this.flete,
-    required this.tarifaBase,
-    required this.rcp,
-  });
 }

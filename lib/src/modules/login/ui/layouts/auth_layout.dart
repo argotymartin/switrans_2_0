@@ -2,12 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/modules/login/ui/blocs/usuario/usuario_bloc.dart';
+import 'package:switrans_2_0/src/modules/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/views/auth_view.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_background.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/custom_title.dart';
 import 'package:switrans_2_0/src/modules/login/ui/layouts/widgets/links_bar.dart';
-import 'package:switrans_2_0/src/modules/menu/presentation/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/menu/ui/menu_ui.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
@@ -16,12 +16,12 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: BlocListener<UsuarioBloc, UsuarioState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is UsuarioErrorState) {
+          if (state is AuthErrorState) {
             alertDialog(size, context, state).show();
           }
-          if (state is UsuarioSuccesState) {
+          if (state is AuthSuccesState) {
             context.read<ModuloBloc>().add(const ActiveteModuloEvent());
             context.go("/");
           }
@@ -37,7 +37,7 @@ class AuthLayout extends StatelessWidget {
     );
   }
 
-  AwesomeDialog alertDialog(Size size, BuildContext context, UsuarioErrorState state) {
+  AwesomeDialog alertDialog(Size size, BuildContext context, AuthErrorState state) {
     return AwesomeDialog(
       bodyHeaderDistance: 0,
       btnOk: FilledButton.icon(

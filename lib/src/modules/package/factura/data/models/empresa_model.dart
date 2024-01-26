@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
 class EmpresaModel extends Empresa {
   EmpresaModel({required super.codigo, required super.nombre, required super.nit});
