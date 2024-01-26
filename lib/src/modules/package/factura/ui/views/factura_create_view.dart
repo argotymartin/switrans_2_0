@@ -24,9 +24,9 @@ class FacturaCreateView extends StatelessWidget {
         SizedBox(height: 10),
         CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
         SizedBox(height: 10),
-        WhiteCard(title: "Item Factura", child: _BuildItemFactura()),
+        WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
         SizedBox(height: 10),
-        WhiteCard(title: "Factura Documentos", child: TableRemesas()),
+        WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
       ],
     );
   }

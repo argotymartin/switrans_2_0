@@ -6,11 +6,13 @@ class CustomSizeButton extends StatelessWidget {
   final IconData icon;
   final Color? color;
   final Color? iconColor;
+  final VoidCallback onPressed;
 
   const CustomSizeButton({
     Key? key,
     required this.width,
     required this.icon,
+    required this.onPressed,
     this.color,
     this.iconColor,
   }) : super(key: key);
@@ -26,7 +28,7 @@ class CustomSizeButton extends StatelessWidget {
           shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0))),
           backgroundColor: MaterialStatePropertyAll(color),
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Icon(icon, color: iconColor),
       ),
     );

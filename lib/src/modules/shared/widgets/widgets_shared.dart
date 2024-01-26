@@ -8,3 +8,4 @@ export 'package:switrans_2_0/src/modules/shared/widgets/inputs/custom_inputs.dar
 export 'package:switrans_2_0/src/modules/shared/widgets/inputs/number_input.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/labels/currency_label.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/panels/custom_expansion_panel.dart';
+export 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';

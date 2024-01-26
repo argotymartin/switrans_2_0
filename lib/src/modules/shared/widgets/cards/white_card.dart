@@ -5,7 +5,8 @@ class WhiteCard extends StatelessWidget {
   final String? title;
   final double? width;
   final Widget child;
-  const WhiteCard({super.key, this.title, this.width, required this.child});
+  final IconData icon;
+  const WhiteCard({super.key, this.title, this.width, required this.child, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +18,21 @@ class WhiteCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title != null) ...[
-            FittedBox(
-              fit: BoxFit.contain,
-              child: Text(
-                title!,
-                style: GoogleFonts.roboto(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                Icon(icon),
+                const SizedBox(width: 4),
+                FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(
+                    title!,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             const Divider()
           ],

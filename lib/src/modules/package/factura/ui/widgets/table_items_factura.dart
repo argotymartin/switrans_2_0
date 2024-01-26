@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
@@ -36,7 +38,9 @@ class TableItemsFactura extends StatelessWidget {
             _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
             _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: remesa.rcp)),
-            const _CellContent(child: _BuildFiledAccion()),
+            _CellContent(child: _BuildFiledAccion(onPressed: () {
+              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+            })),
           ],
         );
       },
@@ -84,7 +88,8 @@ class _BuildFieldItem extends StatelessWidget {
 }
 
 class _BuildFiledAccion extends StatelessWidget {
-  const _BuildFiledAccion();
+  final VoidCallback onPressed;
+  const _BuildFiledAccion({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +97,14 @@ class _BuildFiledAccion extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomSizeButton(
+          onPressed: onPressed,
           width: 32,
           icon: Icons.remove_circle_outline,
           color: Colors.red.shade800,
           iconColor: Colors.white,
         ),
         const SizedBox(width: 4),
-        const CustomSizeButton(width: 32, icon: Icons.refresh_outlined),
+        CustomSizeButton(width: 32, icon: Icons.refresh_outlined, onPressed: onPressed),
       ],
     );
   }
@@ -161,12 +167,13 @@ class _CellTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return TableCell(
       child: Container(
-          width: 4,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          )),
+        width: 4,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }

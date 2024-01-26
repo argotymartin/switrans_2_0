@@ -12,6 +12,7 @@ class MenuView extends StatelessWidget {
         Text('Menu Principal', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 10),
         const WhiteCard(
+          icon: Icons.menu,
           title: 'Menu',
           child: Column(
             children: [

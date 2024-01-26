@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_datasources.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/remesas_data.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/item_factura/item_factura_bloc.dart';
 
@@ -25,52 +26,57 @@ class _TableRemesasState extends State<TableRemesas> {
 
   @override
   Widget build(BuildContext context) {
-    final remesas = RemesasDatasources.remesas;
+    final remesas = remesasData;
     return Container(
       height: (120 * 3) + (48 + 60 + 80),
       padding: const EdgeInsets.all(15),
-      child: PlutoGrid(
-        columns: columns,
-        rows: rows,
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          stateManager = event.stateManager;
-          stateManager.setShowColumnFilter(true);
-        },
-        onChanged: (PlutoGridOnChangedEvent event) {},
-        onRowChecked: (event) {
-          if (event.isAll && event.isChecked != null) {
-            for (final remesa in remesas) {
-              if (event.isChecked!) {
-                context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
-              } else {
-                context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+      child: BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+        builder: (context, state) {
+          //getData();
+          return PlutoGrid(
+            columns: columns,
+            rows: rows,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
+            onRowChecked: (event) {
+              if (event.isAll && event.isChecked != null) {
+                for (final remesa in remesas) {
+                  if (event.isChecked!) {
+                    context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+                  } else {
+                    context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+                  }
+                }
+              } else if (event.rowIdx != null && event.isChecked != null) {
+                final Remesa remesa = remesas[event.rowIdx!];
+                if (event.isChecked!) {
+                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+                } else {
+                  context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+                }
               }
-            }
-          } else if (event.rowIdx != null && event.isChecked != null) {
-            final Remesa remesa = remesas[event.rowIdx!];
-            if (event.isChecked!) {
-              context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
-            } else {
-              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
-            }
-          }
+            },
+            configuration: PlutoGridConfiguration(
+              style: PlutoGridStyleConfig(
+                checkedColor: Theme.of(context).colorScheme.primaryContainer,
+                activatedColor: Theme.of(context).colorScheme.onPrimary,
+                activatedBorderColor: Theme.of(context).colorScheme.primary,
+                columnHeight: 48,
+                columnFilterHeight: 60,
+                rowHeight: 120,
+              ),
+              columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
+              scrollbar: const PlutoGridScrollbarConfig(
+                longPressDuration: Duration.zero,
+                onlyDraggingThumb: false,
+              ),
+              localeText: const PlutoGridLocaleText.spanish(),
+            ),
+          );
         },
-        configuration: PlutoGridConfiguration(
-          style: PlutoGridStyleConfig(
-            checkedColor: Theme.of(context).colorScheme.primaryContainer,
-            activatedColor: Theme.of(context).colorScheme.onPrimary,
-            activatedBorderColor: Theme.of(context).colorScheme.primary,
-            columnHeight: 48,
-            columnFilterHeight: 60,
-            rowHeight: 120,
-          ),
-          columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
-          scrollbar: const PlutoGridScrollbarConfig(
-            longPressDuration: Duration.zero,
-            onlyDraggingThumb: false,
-          ),
-          localeText: const PlutoGridLocaleText.spanish(),
-        ),
       ),
     );
   }
@@ -144,24 +150,32 @@ class _TableRemesasState extends State<TableRemesas> {
         field: 'accion',
         minWidth: 120,
         type: PlutoColumnType.text(),
-        renderer: (rendererContext) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.delete_forever_outlined,
-                  color: Colors.red,
-                ),
-              ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
-            ],
-          );
-        },
+        renderer: buildFieldAccion,
       ),
     ]);
-    rows.addAll(RemesasDatasources.rowsByColumns(columns: columns));
+
+    List<Remesa> remesasState = context.read<ItemFacturaBloc>().state.remesas;
+
+    final dataRows = remesasData.map((remesa) {
+      bool isSelected = false;
+      if (remesasState.contains(remesa)) {
+        isSelected = true;
+      }
+      final Map<String, dynamic> dataColumn = {
+        'item': remesa.item,
+        'remesa': "${remesa.remesa} CC: ${remesa.centroCosto} Tipo: ${remesa.tipo}",
+        'obs': remesa.obervaciones,
+        'adiciones': remesa.adiciones,
+        'descuentos': remesa.descuentos,
+        'flete': remesa.flete,
+        'tarifaBase': remesa.tarifaBase,
+        'rcp': remesa.rcp,
+      };
+
+      return TablePlutoGridDataSource.rowByColumns(columns, isSelected, dataColumn);
+    });
+
+    rows.addAll(dataRows);
   }
 
   Widget buildRenderSumFooter(rendererContext) {
@@ -268,6 +282,22 @@ class _TableRemesasState extends State<TableRemesas> {
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget buildFieldAccion(rendererContext) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.delete_forever_outlined,
+            color: Colors.red,
+          ),
+        ),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
       ],
     );
   }
