@@ -14,25 +14,56 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 Future<void> main() async {
   usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+
   await initializeDependencies();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _loading = true;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _init();
+    });
+    super.initState();
+  }
+
+  Future<void> _init() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (mounted) {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
-        BlocProvider<ItemFacturaBloc>(create: (_) => ItemFacturaBloc()),
-        BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
-        BlocProvider<ModuloBloc>(create: (_) => injector()..add((GetModuloEvent()))),
-        BlocProvider<FacturaBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
-        BlocProvider<FilterFacturaBloc>(create: (_) => injector()..add((const GetFilterFacturaEvent()))),
-      ],
-      child: const MyMaterialApp(),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: _loading
+          ? const Material(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : MultiBlocProvider(
+              providers: [
+                BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
+                BlocProvider<ItemFacturaBloc>(create: (_) => ItemFacturaBloc()),
+                BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
+                BlocProvider<ModuloBloc>(create: (_) => injector()..add((GetModuloEvent()))),
+                BlocProvider<FacturaBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
+                BlocProvider<FilterFacturaBloc>(create: (_) => injector()..add((const GetFilterFacturaEvent()))),
+              ],
+              child: const MyMaterialApp(),
+            ),
     );
   }
 }
