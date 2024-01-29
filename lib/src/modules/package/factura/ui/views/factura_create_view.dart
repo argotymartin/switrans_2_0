@@ -22,12 +22,28 @@ class FacturaCreateView extends StatelessWidget {
           breadcrumbTrails: ["SmartAdmin", "Admin", "Theme Settings"],
         ),
         SizedBox(height: 10),
-        CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
-        SizedBox(height: 10),
-        WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
+        _BuildFiltros(),
         SizedBox(height: 10),
         WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
+        SizedBox(height: 10),
+        WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
       ],
+    );
+  }
+}
+
+class _BuildFiltros extends StatelessWidget {
+  const _BuildFiltros();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (context, state) {
+        if (state is FacturaSuccesState) {
+          return CustomExpansionPanel(active: false, title: "Filtros", child: const BuildFiltros());
+        }
+        return CustomExpansionPanel(active: true, title: "Filtros", child: BuildFiltros());
+      },
     );
   }
 }

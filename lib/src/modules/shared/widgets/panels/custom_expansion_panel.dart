@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
-  final bool active;
-  const CustomExpansionPanel({super.key, required this.title, required this.child, this.active = true});
+  bool active;
+  CustomExpansionPanel({super.key, required this.title, required this.child, this.active = true});
 
   @override
   State<CustomExpansionPanel> createState() => _CustomExpansionPanelState();
@@ -18,7 +18,7 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
       children: [
         ExpansionPanelList(
           expansionCallback: (panelIndex, isExpanded) {
-            //widget.active = !widget.active;
+            widget.active = !widget.active;
             setState(() {});
           },
           children: <ExpansionPanel>[
