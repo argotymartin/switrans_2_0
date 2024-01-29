@@ -22,4 +22,14 @@ class AuthRepositoryImpl extends BaseApiRepository implements AbstractAuthReposi
       return DataFailed(httpResponse.error!);
     }
   }
+
+  @override
+  Future<bool> validateToken(UsuarioRequest request) async {
+    final httpResponse = await getStateOf(request: () => _api.refreshToken(request));
+    if (httpResponse.data != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

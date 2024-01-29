@@ -7,7 +7,9 @@ sealed class ModuloEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetModuloEvent extends ModuloEvent {}
+class GetModuloEvent extends ModuloEvent {
+  const GetModuloEvent();
+}
 
 class ActiveteModuloEvent extends ModuloEvent {
   const ActiveteModuloEvent();

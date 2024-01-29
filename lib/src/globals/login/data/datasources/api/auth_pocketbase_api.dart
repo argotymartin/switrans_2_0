@@ -33,4 +33,12 @@ class AuthPocketbaseApi {
     final response = await _dio.post(url, data: jsonRequest);
     return response;
   }
+
+  Future<Response> refreshToken(UsuarioRequest params) async {
+    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-refresh';
+    final headers = {'Authorization': params.token};
+
+    final response = await _dio.post(url, options: Options(headers: headers));
+    return response;
+  }
 }

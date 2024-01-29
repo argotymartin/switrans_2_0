@@ -1,10 +1,10 @@
 part of 'auth_bloc.dart';
 
 abstract class AuthState extends Equatable {
-  final Usuario? usuario;
+  final Auth? auth;
   final DioException? error;
   final bool isSignedIn;
-  const AuthState({this.usuario, this.error, this.isSignedIn = false});
+  const AuthState({this.auth, this.error, this.isSignedIn = false});
 }
 
 class AuthInitialState extends AuthState {
@@ -26,10 +26,10 @@ class AuthUpdateState extends AuthState {
 }
 
 class AuthSuccesState extends AuthState {
-  const AuthSuccesState({super.usuario, super.isSignedIn});
+  const AuthSuccesState({super.auth, super.isSignedIn});
 
   @override
-  List<Object?> get props => [super.usuario];
+  List<Object?> get props => [super.auth];
 }
 
 class AuthErrorState extends AuthState {

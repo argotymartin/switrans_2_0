@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:switrans_2_0/src/globals/login/ui/layouts/auth_layout.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/layouts/error.layout.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
 
@@ -19,6 +17,7 @@ class AppRouter {
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
     initialLocation: "/factura/registrar",
+    debugLogDiagnostics: true,
     routes: <RouteBase>[
       GoRoute(
         path: login,
@@ -65,9 +64,20 @@ class AppRouter {
   );
 
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
+    final moduloBloc = context.read<ModuloBloc>();
+    final authBloc = context.read<AuthBloc>();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token') ?? '';
-    //final bool isSignedIn = BlocProvider.of<UsuarioBloc>(context).state.isSignedIn;
-    return stringValue != "" ? state.path : login;
+    //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJ5ZmtieTdiNG84N3RrOGwiLCJleHAiOjE3MDY1NTI3MzcsImlkIjoiMHNzdDB0a3pwZDMyN2JkIiwidHlwZSI6ImF1dGhSZWNvcmQifQ.BqKKZKSAA1g7esh47sJkUzUSAvtJVqLc0VYptBq8Y6s"
+
+    final isTokenValid = await authBloc.onValidateToken(stringValue);
+    if (isTokenValid) {
+      int lengthModulos = moduloBloc.state.modulos.length;
+      if (lengthModulos < 1) {
+        moduloBloc.add(const ActiveteModuloEvent());
+      }
+    }
+    return isTokenValid ? state.path : login;
   }
 }
