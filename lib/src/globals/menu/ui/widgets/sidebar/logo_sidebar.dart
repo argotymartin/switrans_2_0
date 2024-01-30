@@ -22,9 +22,9 @@ class LogoSidebar extends StatelessWidget {
                 ? const SizedBox()
                 : Text(
                     'SWITRANS 2.0',
-                    style: GoogleFonts.montserratAlternates(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w200,
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
                       color: Colors.white,
                     ),
                   )

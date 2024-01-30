@@ -1,11 +1,12 @@
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
 
 class ClienteModel extends Cliente {
-  ClienteModel({required super.codigo, required super.nombre, required super.identificacion});
+  ClienteModel({required super.codigo, required super.nombre, required super.identificacion, required super.telefono});
 
   factory ClienteModel.fromJson(Map<String, dynamic> json) => ClienteModel(
-        codigo: json["cliente_codigo"],
-        nombre: json["cliente_nombre"],
-        identificacion: json["cliente_identificacion"],
+        codigo: json["codigo"],
+        nombre: json["nombre"],
+        identificacion: json["identificacion"],
+        telefono: json["telefono"],
       );
 }

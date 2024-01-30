@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/expansion_panel/expansion_panel_cubit.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
-
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -57,6 +55,7 @@ class BuildFiltros extends StatelessWidget {
       );
     }).toList();
 
+    final titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -69,7 +68,7 @@ class BuildFiltros extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Cliente", style: Theme.of(context).textTheme.titleLarge),
+                  Text("Cliente", style: titleStyle),
                   const SizedBox(height: 8),
                   AutocompleteInput(
                     title: "Cliente",
@@ -84,7 +83,7 @@ class BuildFiltros extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Empresa", style: Theme.of(context).textTheme.titleLarge),
+                  Text("Empresa", style: titleStyle),
                   const SizedBox(height: 8),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
@@ -113,7 +112,7 @@ class BuildFiltros extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Remesas", style: Theme.of(context).textTheme.titleLarge),
+                  Text("Remesas", style: titleStyle),
                   const SizedBox(height: 8),
                   _TextAreaRemesas(controller: remesasController),
                 ],
@@ -126,7 +125,7 @@ class BuildFiltros extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Inicio", style: Theme.of(context).textTheme.titleLarge),
+                      Text("Inicio", style: titleStyle),
                       const SizedBox(height: 8),
                       SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaInicioController)),
                     ],
@@ -136,7 +135,10 @@ class BuildFiltros extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Fin", style: Theme.of(context).textTheme.titleLarge),
+                        Text(
+                          "Fin",
+                          style: titleStyle,
+                        ),
                         const SizedBox(height: 8),
                         SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaFinController)),
                       ],

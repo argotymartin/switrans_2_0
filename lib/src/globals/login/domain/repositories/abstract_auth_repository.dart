@@ -4,5 +4,5 @@ import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractAuthRepository {
   Future<DataState<Auth>> signin(UsuarioRequest request);
-  Future<bool> validateToken(UsuarioRequest request);
+  Future<DataState<Auth>> validateToken(UsuarioRequest request);
 }

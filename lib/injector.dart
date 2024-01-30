@@ -18,6 +18,11 @@ final injector = GetIt.instance;
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
+  injector.registerSingleton<MenuBloc>(MenuBloc());
+  injector.registerSingleton<ThemeCubit>(ThemeCubit());
+  injector.registerSingleton<ItemFacturaBloc>(ItemFacturaBloc());
+  injector.registerSingleton<ExpansionPanelCubit>(ExpansionPanelCubit());
+
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
   injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));
   injector.registerSingleton<AuthBloc>(AuthBloc(injector()));

@@ -9,6 +9,7 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
 
 class AppRouter {
+  static String initialRoute = "/";
   static const root = "/";
   static const login = "/sign-in";
   static const factura = "/factura";
@@ -16,7 +17,7 @@ class AppRouter {
   static const notaCredito = "/notaCredito";
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
-    initialLocation: "/factura/registrar",
+    initialLocation: initialRoute,
     routes: <RouteBase>[
       GoRoute(
         path: login,
@@ -30,6 +31,7 @@ class AppRouter {
           GoRoute(
             path: root,
             builder: (_, GoRouterState state) => const MenuView(),
+            redirect: onValidateAuth,
           ),
           GoRoute(
             path: "/factura/registrar",
@@ -68,8 +70,6 @@ class AppRouter {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token') ?? '';
-    //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJ5ZmtieTdiNG84N3RrOGwiLCJleHAiOjE3MDY1NTI3MzcsImlkIjoiMHNzdDB0a3pwZDMyN2JkIiwidHlwZSI6ImF1dGhSZWNvcmQifQ.BqKKZKSAA1g7esh47sJkUzUSAvtJVqLc0VYptBq8Y6s"
-
     final isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
       int lengthModulos = moduloBloc.state.modulos.length;

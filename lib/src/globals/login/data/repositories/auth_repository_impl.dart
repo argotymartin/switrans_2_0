@@ -24,12 +24,14 @@ class AuthRepositoryImpl extends BaseApiRepository implements AbstractAuthReposi
   }
 
   @override
-  Future<bool> validateToken(UsuarioRequest request) async {
+  Future<DataState<Auth>> validateToken(UsuarioRequest request) async {
     final httpResponse = await getStateOf(request: () => _api.refreshToken(request));
     if (httpResponse.data != null) {
-      return true;
+      final PocketBaseResponse response = PocketBaseResponse.fromJson(httpResponse.data);
+      final resp = AuthModel.fromPocketbase(response);
+      return DataSuccess(resp);
     } else {
-      return false;
+      return DataFailed(httpResponse.error!);
     }
   }
 }

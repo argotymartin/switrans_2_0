@@ -19,3 +19,8 @@ class LoginAuthEvent extends AuthEvent {
 class LogoutAuthEvent extends AuthEvent {
   const LogoutAuthEvent();
 }
+
+class ValidateAuthEvent extends AuthEvent {
+  final Auth auth;
+  const ValidateAuthEvent(this.auth);
+}

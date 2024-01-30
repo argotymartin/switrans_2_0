@@ -29,8 +29,9 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   Future<DataState<List<Cliente>>> getClientes() async {
     final httpResponse = await getStateOf(request: () => _api.getClienteApi());
     if (httpResponse.data != null) {
-      final List<dynamic> items = httpResponse.data['items'];
-      final List<Cliente> response = items.cast<Map<String, dynamic>>().map((x) => ClienteModel.fromJson(x)).toList();
+      final resp = BackendResponse.fromJson(httpResponse.data);
+      final List<Cliente> response = resp.data.cast<Map<String, dynamic>>().map((x) => ClienteModel.fromJson(x)).toList();
+
       return DataSuccess(response);
     }
     return DataFailed(httpResponse.error!);

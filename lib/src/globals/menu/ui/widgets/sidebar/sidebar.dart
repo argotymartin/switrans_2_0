@@ -48,7 +48,7 @@ class Sidebar extends StatelessWidget {
                           modulo: ModuloModel(codigo: 1, icono: "0xf031", texto: "Logout", path: "/logout"),
                           isMimimize: state.isMinimize,
                           onPressed: () {
-                            context.read<AuthBloc>().add(const GetAuthEvent());
+                            context.read<AuthBloc>().onLogoutAuthEvent();
                             context.go(AppRouter.login);
                           },
                         ),

@@ -7,6 +7,7 @@ class AppTheme {
     final theme = Theme.of(context);
     return ThemeData(
       useMaterial3: true,
+      //brightness: Brightness.dark,
       textTheme: GoogleFonts.robotoTextTheme(theme.textTheme).copyWith(
         bodyMedium: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 12)),
         titleMedium: const TextStyle(fontSize: 12),

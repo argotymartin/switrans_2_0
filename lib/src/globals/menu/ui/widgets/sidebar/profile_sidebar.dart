@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
@@ -30,18 +32,25 @@ class ProfileSidebar extends StatelessWidget {
                 isMenuIcon ? const SizedBox() : const SizedBox(width: 8),
                 isMenuIcon
                     ? const SizedBox()
-                    : const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Dr. Codex Lantem",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            "Toronto, Canada",
-                            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
-                          ),
-                        ],
+                    : BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthSuccesState) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.auth!.usuario.nombre,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                Text(
+                                  state.auth!.usuario.telefonoContacto,
+                                  style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
+                                ),
+                              ],
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       )
               ],
             ),

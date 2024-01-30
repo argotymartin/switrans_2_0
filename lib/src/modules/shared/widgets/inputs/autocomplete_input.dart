@@ -45,17 +45,12 @@ class AutocompleteInput extends StatelessWidget {
           itemHeight: 68,
           searchInputDecoration: InputDecoration(
             suffixIcon: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(8),
-                    topRight: Radius.circular(8),
-                  ),
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                child: const Icon(
-                  Icons.filter_list_rounded,
-                  color: Colors.white,
-                )),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(8), topRight: Radius.circular(8)),
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              child: const Icon(Icons.filter_list_rounded, color: Colors.white),
+            ),
             constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -88,54 +83,51 @@ class AutocompleteInput extends StatelessWidget {
   }
 }
 
-class _ItemAutoComplete extends StatefulWidget {
+class _ItemAutoComplete extends StatelessWidget {
   final SuggestionModel suggestionModel;
   const _ItemAutoComplete({required this.suggestionModel});
 
   @override
-  State<_ItemAutoComplete> createState() => _ItemAutoCompleteState();
-}
-
-class _ItemAutoCompleteState extends State<_ItemAutoComplete> {
-  bool isHovered = false;
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
-      child: MouseRegion(
-        onEnter: (event) => setState(() => isHovered = true),
-        onExit: (event) => setState(() => isHovered = false),
-        child: Container(
-          color: isHovered ? Theme.of(context).colorScheme.primaryContainer : Colors.white,
-          child: Row(
+      child: Row(
+        children: [
+          const SizedBox(width: 4),
+          suggestionModel.codigo != "" ? _BuildSuggestionCodigo(codigo: suggestionModel.codigo) : const SizedBox(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(width: 4),
-              widget.suggestionModel.codigo != ""
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      margin: const EdgeInsets.only(right: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(1, 1))],
-                      ),
-                      child: Text(
-                        widget.suggestionModel.codigo,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(widget.suggestionModel.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                        Text(widget.suggestionModel.subTitle,
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200, color: Colors.black54)),
-                        SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: widget.suggestionModel.details))
-                      ],
-                    ),
+              Text(suggestionModel.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+              Text(suggestionModel.subTitle, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200, color: Colors.black54)),
+              SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: suggestionModel.details))
             ],
           ),
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BuildSuggestionCodigo extends StatelessWidget {
+  final String codigo;
+  const _BuildSuggestionCodigo({
+    required this.codigo,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(1, 1))],
+      ),
+      child: Text(
+        codigo,
+        style: const TextStyle(fontSize: 12),
       ),
     );
   }
