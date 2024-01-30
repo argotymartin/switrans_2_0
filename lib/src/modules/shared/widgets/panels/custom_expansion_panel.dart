@@ -1,25 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomExpansionPanel extends StatefulWidget {
+import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/expansion_panel/expansion_panel_cubit.dart';
+
+class CustomExpansionPanel extends StatelessWidget {
   final String title;
   final Widget child;
-  bool active;
-  CustomExpansionPanel({super.key, required this.title, required this.child, this.active = true});
+  const CustomExpansionPanel({
+    Key? key,
+    required this.title,
+    required this.child,
+  }) : super(key: key);
 
-  @override
-  State<CustomExpansionPanel> createState() => _CustomExpansionPanelState();
-}
-
-class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
   @override
   Widget build(BuildContext context) {
+    final expansionPanelCubit = context.watch<ExpansionPanelCubit>();
     return Column(
       children: [
         ExpansionPanelList(
           expansionCallback: (panelIndex, isExpanded) {
-            widget.active = !widget.active;
-            setState(() {});
+            expansionPanelCubit.setStatePanel(isExpanded);
           },
           children: <ExpansionPanel>[
             ExpansionPanel(
@@ -29,13 +31,13 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      widget.active ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
+                      isExpanded ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
                       SizedBox(
                         height: 24,
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Text(
-                            widget.title,
+                            title,
                             style: GoogleFonts.roboto(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -49,9 +51,9 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
               },
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: widget.child,
+                child: child,
               ),
-              isExpanded: widget.active,
+              isExpanded: expansionPanelCubit.state,
               canTapOnHeader: true,
             )
           ],

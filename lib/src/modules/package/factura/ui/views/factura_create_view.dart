@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/expansion_panel/expansion_panel_cubit.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
@@ -22,28 +23,12 @@ class FacturaCreateView extends StatelessWidget {
           breadcrumbTrails: ["SmartAdmin", "Admin", "Theme Settings"],
         ),
         SizedBox(height: 10),
-        _BuildFiltros(),
+        CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
         SizedBox(height: 10),
         WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
         SizedBox(height: 10),
         WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
       ],
-    );
-  }
-}
-
-class _BuildFiltros extends StatelessWidget {
-  const _BuildFiltros();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<FacturaBloc, FacturaState>(
-      builder: (context, state) {
-        if (state is FacturaSuccesState) {
-          return CustomExpansionPanel(active: false, title: "Filtros", child: const BuildFiltros());
-        }
-        return CustomExpansionPanel(active: true, title: "Filtros", child: BuildFiltros());
-      },
     );
   }
 }
@@ -175,6 +160,7 @@ class BuildFiltros extends StatelessWidget {
             print(remesasFilter);*/
 
             context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
+            context.read<ExpansionPanelCubit>().setStatePanel(false);
             //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
           },
           icon: const Icon(Icons.search_rounded),

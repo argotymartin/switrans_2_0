@@ -9,6 +9,7 @@ import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/expansion_panel/expansion_panel_cubit.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 Future<void> main() async {
@@ -56,6 +57,7 @@ class _MyAppState extends State<MyApp> {
           : MultiBlocProvider(
               providers: [
                 BlocProvider<MenuBloc>(create: (_) => MenuBloc()),
+                BlocProvider<ExpansionPanelCubit>(create: (_) => ExpansionPanelCubit()),
                 BlocProvider<ItemFacturaBloc>(create: (_) => ItemFacturaBloc()),
                 BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
                 BlocProvider<ModuloBloc>(create: (_) => injector()..add((const GetModuloEvent()))),

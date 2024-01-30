@@ -17,7 +17,6 @@ class AppRouter {
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
     initialLocation: "/factura/registrar",
-    debugLogDiagnostics: true,
     routes: <RouteBase>[
       GoRoute(
         path: login,
