@@ -23,7 +23,7 @@ class MenuLayout extends StatelessWidget {
                     right: 0,
                     bottom: 0,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      padding: const EdgeInsets.only(bottom: 4, left: 24, top: 4, right: 4),
                       child: child,
                     ),
                   ),

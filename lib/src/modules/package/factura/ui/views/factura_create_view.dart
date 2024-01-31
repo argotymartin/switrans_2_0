@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
@@ -12,20 +13,23 @@ class FacturaCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    List<String> names = fullPath.split("/");
     return ListView(
+      padding: const EdgeInsets.only(right: 24, top: 8),
       physics: const ClampingScrollPhysics(),
-      children: const [
+      children: [
         BuildViewDetail(
           title: "Factura",
           detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
-          breadcrumbTrails: ["SmartAdmin", "Admin", "Theme Settings"],
+          breadcrumbTrails: names,
         ),
-        SizedBox(height: 10),
-        CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
-        SizedBox(height: 10),
-        WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
-        SizedBox(height: 10),
-        WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
+        const SizedBox(height: 10),
+        const CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
+        const SizedBox(height: 10),
+        const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
+        const SizedBox(height: 10),
+        const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
       ],
     );
   }

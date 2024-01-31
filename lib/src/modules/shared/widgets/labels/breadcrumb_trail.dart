@@ -11,15 +11,16 @@ class BreadcrumbTrail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('EEEE, MMMM d, y').format(now);
+    String formattedDate = DateFormat('EEEE, MMMM d \'del\' y', 'es').format(now);
+
     List<Widget> result = [];
     bool primeraIteracion = true;
     for (var element in elements) {
       if (primeraIteracion) {
-        result.add(Text(element, style: TextStyle(color: Colors.blue.shade500)));
+        result.add(Text("Switrans", style: TextStyle(color: Colors.blue.shade500)));
         primeraIteracion = false; // Cambiar la variable para evitar repetir la acción
       } else {
-        result.add(Text(element, style: TextStyle(color: Colors.grey.shade500)));
+        result.add(Text("${element[0].toUpperCase()}${element.substring(1)}", style: TextStyle(color: Colors.grey.shade500)));
       }
 
       result.add(const SizedBox(width: 4));
