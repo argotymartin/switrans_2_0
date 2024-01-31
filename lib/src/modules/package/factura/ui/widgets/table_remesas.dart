@@ -126,6 +126,7 @@ class TableRemesas extends StatelessWidget {
                 if (event.isAll && event.isChecked != null) {
                   for (final remesa in state.remesas) {
                     if (event.isChecked!) {
+                      context.read<FormularioFacturaCubit>().animationController.forward();
                       context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
                     } else {
                       context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
@@ -135,6 +136,7 @@ class TableRemesas extends StatelessWidget {
                   final Remesa remesa = state.remesas[event.rowIdx!];
                   if (event.isChecked!) {
                     context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+                    context.read<FormularioFacturaCubit>().animationController.forward();
                   } else {
                     context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
                   }
@@ -169,7 +171,7 @@ class TableRemesas extends StatelessWidget {
 
   Widget buildRenderSumFooter(rendererContext) {
     return PlutoAggregateColumnFooter(
-      filter: (cell) => cell.row.checked == true,
+      //filter: (cell) => cell.row.checked == true,
       rendererContext: rendererContext,
       type: PlutoAggregateColumnType.sum,
       format: '#,###',

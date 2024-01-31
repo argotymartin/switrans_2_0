@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:switrans_2_0/src/modules/package/factura/ui/blocs/expansion_panel/expansion_panel_cubit.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class CustomExpansionPanel extends StatelessWidget {
   final String title;
@@ -16,7 +15,7 @@ class CustomExpansionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final expansionPanelCubit = context.watch<ExpansionPanelCubit>();
+    final expansionPanelCubit = context.watch<FormularioFacturaCubit>();
     return Column(
       children: [
         ExpansionPanelList(

@@ -15,24 +15,105 @@ class FacturaCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     List<String> names = fullPath.split("/");
-    final panel = context.read<ExpansionPanelCubit>();
-    return ListView(
-      controller: panel.controller,
-      padding: const EdgeInsets.only(right: 24, top: 8),
-      physics: const ClampingScrollPhysics(),
+    final formularioCubit = context.read<FormularioFacturaCubit>();
+    formularioCubit.controller.addListener(() {
+      if (formularioCubit.controller.offset >= 120) formularioCubit.animationController.reset();
+    });
+    return Stack(
       children: [
-        BuildViewDetail(
-          title: "Factura",
-          detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
-          breadcrumbTrails: names,
+        ListView(
+          controller: formularioCubit.controller,
+          padding: const EdgeInsets.only(right: 24, top: 8),
+          physics: const ClampingScrollPhysics(),
+          children: [
+            BuildViewDetail(
+              title: "Factura",
+              detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
+              breadcrumbTrails: names,
+            ),
+            const SizedBox(height: 10),
+            const CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
+            const SizedBox(height: 10),
+            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
+            const SizedBox(height: 10),
+            const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
+            const SizedBox(height: 120),
+          ],
         ),
-        const SizedBox(height: 10),
-        const CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
-        const SizedBox(height: 10),
-        const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
-        const SizedBox(height: 10),
-        const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
+        const Positioned(left: 0, right: 0, bottom: -24, child: _ModalItemDocumento()),
       ],
+    );
+  }
+}
+
+class _ModalItemDocumento extends StatefulWidget {
+  const _ModalItemDocumento();
+
+  @override
+  State<_ModalItemDocumento> createState() => _ModalItemDocumentoState();
+}
+
+class _ModalItemDocumentoState extends State<_ModalItemDocumento> with SingleTickerProviderStateMixin {
+  late Animation<double> tralateAnimation;
+  late FormularioFacturaCubit formulario;
+  @override
+  void initState() {
+    formulario = context.read<FormularioFacturaCubit>();
+    formulario.animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    tralateAnimation =
+        Tween<double>(begin: 50, end: -20).animate(CurvedAnimation(parent: formulario.animationController, curve: Curves.bounceOut));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.only(right: 24),
+      height: 64,
+      width: size.width,
+      child: AnimatedBuilder(
+        animation: formulario.animationController,
+        builder: (context, child) => Transform.translate(
+          offset: Offset(0, tralateAnimation.value),
+          child: InkWell(
+            onTap: () {
+              formulario.moveBottomAllScroll();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.remesas.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
+                        child: Center(
+                            child: Row(
+                          children: [
+                            const Icon(Icons.file_copy),
+                            Text("${state.remesas[index].impreso}  (${state.remesas[index].numero})"),
+                          ],
+                        )),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -168,7 +249,7 @@ class BuildFiltros extends StatelessWidget {
             print(remesasFilter);*/
 
             context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
-            context.read<ExpansionPanelCubit>().setStatePanel(false);
+            context.read<FormularioFacturaCubit>().setStatePanel(false);
             //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
           },
           icon: const Icon(Icons.search_rounded),
