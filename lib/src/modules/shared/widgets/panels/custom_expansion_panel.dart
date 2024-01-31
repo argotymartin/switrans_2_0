@@ -52,7 +52,7 @@ class CustomExpansionPanel extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: child,
               ),
-              isExpanded: expansionPanelCubit.state,
+              isExpanded: expansionPanelCubit.state.expanded,
               canTapOnHeader: true,
             )
           ],

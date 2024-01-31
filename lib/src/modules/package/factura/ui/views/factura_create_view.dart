@@ -128,7 +128,6 @@ class BuildFiltros extends StatelessWidget {
     final remesasController = TextEditingController();
     final fechaInicioController = TextEditingController();
     final fechaFinController = TextEditingController();
-    List<int> empresasSelect = [];
     final facturaFilterBloc = BlocProvider.of<FilterFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
@@ -181,7 +180,6 @@ class BuildFiltros extends StatelessWidget {
                         width: 180,
                         child: BuildCardEmpresa(
                           empresa: empresas[index],
-                          empresasSelect: empresasSelect,
                         ),
                       ),
                     ),
@@ -238,20 +236,21 @@ class BuildFiltros extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         FilledButton.icon(
-          onPressed: () {
-            /*final remesasFilter = RemesaFilterRequest(
-              cliente: int.parse(clienteController.text),
-              empresas: empresasSelect,
-              remesas: remesasController.text,
-              inicio: fechaInicioController.text,
-              fin: fechaInicioController.text,
-            );
-            print(remesasFilter);*/
-
-            context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
-            context.read<FormularioFacturaCubit>().setStatePanel(false);
-            //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
-          },
+          onPressed: context.read<FormularioFacturaCubit>().state.isValid
+              ? () {
+                  /* final empresa = context.read<FormularioFacturaCubit>().state.empresa;
+                  final FormularioFilterRequest request = FormularioFilterRequest(
+                    empresa: int.parse(empresa),
+                    cliente: int.parse(clienteController.text),
+                    inicio: fechaInicioController.text,
+                    fin: fechaInicioController.text,
+                    remesas: remesasController.text,
+                  );*/
+                  context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
+                  context.read<FormularioFacturaCubit>().setStatePanel(false);
+                  //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
+                }
+              : null,
           icon: const Icon(Icons.search_rounded),
           label: const Text("Buscar", style: TextStyle(color: Colors.white)),
         )

@@ -1,11 +1,11 @@
-class RemesaFilterRequest {
-  final List<int> empresas;
+class FormularioFilterRequest {
+  final int empresa;
   final int cliente;
   final String remesas;
   final String inicio;
   final String fin;
-  RemesaFilterRequest({
-    required this.empresas,
+  FormularioFilterRequest({
+    required this.empresa,
     required this.cliente,
     required this.remesas,
     required this.inicio,

@@ -4,15 +4,24 @@ import 'package:flutter/material.dart';
 
 part 'formulario_factura_state.dart';
 
-class FormularioFacturaCubit extends Cubit<bool> {
-  FormularioFacturaCubit() : super(true);
+class FormularioFacturaCubit extends Cubit<FormularioFacturaState> {
+  FormularioFacturaCubit() : super(const FormularioFacturaInitial());
   final ScrollController controller = ScrollController();
   late AnimationController animationController;
 
-  void setStatePanel(bool state) async {
+  void remesafilter(String empresa) {
+    emit(const FormularioFacturaLoading());
+    emit(FormularioFacturaRequestState(empresa: empresa, expanded: state.expanded));
+  }
+
+  void setStatePanel(bool isExpanded) async {
     moveScroll();
     await Future.delayed(const Duration(milliseconds: 200));
-    emit(state);
+    emit(FormularioFacturaRequestState(expanded: isExpanded, empresa: state.empresa));
+  }
+
+  void onFormIsValid() async {
+    emit(const FormularioFacturaRequestState(isValid: true));
   }
 
   void moveScroll() {
