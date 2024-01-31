@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
@@ -158,7 +159,10 @@ class TableRemesas extends StatelessWidget {
             ),
           );
         }
-        return const Text("Tabla vacia");
+        if (state is FacturaLoadingState) {
+          return Center(child: Lottie.asset("animations/loading.json", height: 200));
+        }
+        return const SizedBox();
       },
     );
   }

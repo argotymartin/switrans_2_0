@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({
@@ -7,6 +8,6 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Material(child: Center(child: CircularProgressIndicator()));
+    return Material(child: Center(child: Lottie.asset("animations/loading.json", height: 200)));
   }
 }
