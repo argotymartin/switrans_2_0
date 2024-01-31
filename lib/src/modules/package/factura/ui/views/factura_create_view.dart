@@ -15,7 +15,9 @@ class FacturaCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     List<String> names = fullPath.split("/");
+    final panel = context.read<ExpansionPanelCubit>();
     return ListView(
+      controller: panel.controller,
       padding: const EdgeInsets.only(right: 24, top: 8),
       physics: const ClampingScrollPhysics(),
       children: [
