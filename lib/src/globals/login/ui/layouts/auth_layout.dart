@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/modulo/modulo_bloc.dart';
+import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
@@ -15,11 +16,18 @@ class AuthLayout extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthErrorState) {
+            context.pop();
             alertDialog(size, context, state).show();
           }
           if (state is AuthSuccesState) {
             context.read<ModuloBloc>().add(const ActiveteModuloEvent());
             context.go("/");
+          }
+          if (state is AuthLoadInProgressState) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(content: SizedBox(height: 260, child: LoadingView())),
+            );
           }
         },
         child: ListView(
@@ -55,8 +63,12 @@ class AuthLayout extends StatelessWidget {
       desc: state.error!.response!.data.toString(),
       buttonsTextStyle: const TextStyle(color: Colors.black),
       showCloseIcon: true,
-      btnCancelOnPress: () {},
-      btnOkOnPress: () {},
+      btnCancelOnPress: () {
+        context.go("/");
+      },
+      btnOkOnPress: () {
+        context.go("/");
+      },
     );
   }
 }

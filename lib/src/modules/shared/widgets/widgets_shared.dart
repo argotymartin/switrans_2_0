@@ -4,7 +4,6 @@ export 'package:switrans_2_0/src/modules/shared/widgets/buttons/link_text.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/inputs/currency_input.dart';
-export 'package:switrans_2_0/src/modules/shared/widgets/inputs/custom_inputs.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/inputs/number_input.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/labels/currency_label.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/panels/custom_expansion_panel.dart';

@@ -13,7 +13,7 @@ class LoadingView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset("animations/loading.json", height: 200),
-            const SizedBox(height: 40),
+            const SizedBox(height: 24),
             const Text("Cargando ......."),
           ],
         ),

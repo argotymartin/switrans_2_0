@@ -2,7 +2,6 @@ export 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/navbar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/menu_button_navbar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/avatar_navbar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/icon_navbar.dart';
-export 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/serach_text_navbar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/logo_sidebar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/menu_item_sidebar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/profile_sidebar.dart';
