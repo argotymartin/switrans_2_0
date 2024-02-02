@@ -14,24 +14,19 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final TextEditingController fechaFinController = TextEditingController();
 
   FormFacturaBloc() : super(const FormFacturaInitialState()) {
-    bool isEnabledTextRemesas = false;
     on<EmpresaFormFacturaEvent>((event, emit) {
       emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(empresa: event.empresa, remesasEnabled: isEnabledTextRemesas));
+      emit(FormFacturaRequestState(empresa: event.empresa));
     });
 
     on<PanelFormFacturaEvent>((event, emit) async {
       moveScroll();
-      await Future.delayed(const Duration(milliseconds: 1000));
-      emit(FormFacturaRequestState(expanded: event.isActive, empresa: state.empresa, remesasEnabled: state.remesasEnabled));
+      await Future.delayed(const Duration(milliseconds: 250));
+      emit(FormFacturaRequestState(expanded: event.isActive, empresa: state.empresa));
     });
 
-    on<RemesasFormFacturaEvent>((event, emit) async {
-      emit(FormFacturaRequestState(remesasEnabled: event.remesasEnabled));
-    });
-
-    clienteController.addListener(() {
-      if (clienteController.text != "") isEnabledTextRemesas = true;
+    on<ErrorFormFacturaEvent>((event, emit) async {
+      emit(FormFacturaRequestState(error: event.error));
     });
 
     scrollController.addListener(() {
@@ -39,13 +34,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
   }
 
-  void moveScroll() {
-    scrollController.animateTo(
-      100,
-      duration: kThemeAnimationDuration,
-      curve: Curves.easeIn,
-    );
-  }
+  void moveScroll() => scrollController.animateTo(100, duration: kThemeAnimationDuration, curve: Curves.easeIn);
 
   void moveBottomAllScroll() {
     animationController.reset();
@@ -54,9 +43,5 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       duration: kThemeAnimationDuration,
       curve: Curves.easeIn,
     );
-  }
-
-  bool isFormValid() {
-    return false;
   }
 }

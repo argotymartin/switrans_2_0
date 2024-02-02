@@ -2,16 +2,12 @@ part of 'form_factura_bloc.dart';
 
 abstract class FormFacturaState extends Equatable {
   final bool expanded;
-  final bool isValid;
-  final bool remesasEnabled;
-  final bool remesasfechasEnabled;
   final String empresa;
+  final String error;
   const FormFacturaState({
     this.expanded = true,
-    this.isValid = false,
     this.empresa = "",
-    this.remesasEnabled = false,
-    this.remesasfechasEnabled = false,
+    this.error = "",
   });
 }
 
@@ -30,9 +26,13 @@ class FormFacturaLoadingState extends FormFacturaState {
 }
 
 class FormFacturaRequestState extends FormFacturaState {
-  const FormFacturaRequestState({super.empresa, super.expanded, super.isValid, super.remesasEnabled, super.remesasfechasEnabled});
+  const FormFacturaRequestState({
+    super.empresa,
+    super.expanded,
+    super.error,
+  });
   @override
-  List<Object> get props => [empresa, expanded, isValid, remesasEnabled, remesasfechasEnabled];
+  List<Object> get props => [empresa, expanded, error];
 }
 
 class FormFacturaSuccesState extends FormFacturaState {

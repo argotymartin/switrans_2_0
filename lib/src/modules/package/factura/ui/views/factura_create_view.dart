@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/modals/error_modal.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -234,17 +235,30 @@ class BuildFiltros extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           FilledButton.icon(
-            onPressed: () {
+            onPressed: () async {
               final isValid = formKey.currentState!.validate();
-              if (isValid) {
-                /* final empresa = context.read<FormularioFacturaCubit>().state.empresa;
-                    final FormularioFilterRequest request = FormularioFilterRequest(
-                      empresa: int.parse(empresa),
-                      cliente: int.parse(clienteController.text),
-                      inicio: fechaInicioController.text,
-                      fin: fechaInicioController.text,
-                      remesas: remesasController.text,
-                    );*/
+              final empresa = formFacturaBloc.state.empresa;
+              final cliente = formFacturaBloc.clienteController.text;
+              final remesas = formFacturaBloc.remesasController.text;
+              final inicio = formFacturaBloc.fechaInicioController.text;
+              final fin = formFacturaBloc.fechaFinController.text;
+              if (empresa == "") formFacturaBloc.add(const ErrorFormFacturaEvent("El campo Empresa no puede ser vacio"));
+              if (cliente == "") formFacturaBloc.add(const ErrorFormFacturaEvent("El campo Cliente no puede ser vacio"));
+              if (remesas == "" && inicio == "") {
+                formFacturaBloc.add(const ErrorFormFacturaEvent("Se deben agregar remesas al filtro o un intervalo de fechas"));
+              }
+
+              if (inicio != "" && fin == "") {
+                formFacturaBloc.add(const ErrorFormFacturaEvent("Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin"));
+              }
+              if (isValid && formFacturaBloc.state is FormFacturaRequestState && formFacturaBloc.state.error == "") {
+                /*final FormularioFilterRequest request = FormularioFilterRequest(
+                  empresa: int.parse(empresa),
+                  cliente: int.parse(cliente),
+                  inicio: inicio,
+                  fin: fin,
+                  remesas: remesas,
+                );*/
                 context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
                 context.read<FormFacturaBloc>().add(const PanelFormFacturaEvent(false));
                 //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
@@ -252,6 +266,12 @@ class BuildFiltros extends StatelessWidget {
             },
             icon: const Icon(Icons.search_rounded),
             label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(height: 8),
+          BlocBuilder<FormFacturaBloc, FormFacturaState>(
+            builder: (context, state) {
+              return (state.error != "") ? ErrorModal(title: state.error) : const SizedBox();
+            },
           )
         ],
       ),
@@ -266,7 +286,6 @@ class _TextAreaRemesas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      enabled: context.watch<FormFacturaBloc>().state.remesasEnabled,
       controller: controller,
       autovalidateMode: AutovalidateMode.always,
       validator: onValidator,
@@ -297,17 +316,17 @@ class _TextAreaRemesas extends StatelessWidget {
         .toList();
     if (remesas.isEmpty) return null;
     String title = "";
-    RegExp regexGeneral = RegExp(r'^\d[6]+$');
+    RegExp regexGeneral = RegExp(r'^\d{7}$');
     RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
     if (regexGeneral.hasMatch(remesas.first)) {
       regexRemesas = regexGeneral;
       title = "General";
-    }
-
-    if (regexImpreso.hasMatch(remesas.first)) {
+    } else if (regexImpreso.hasMatch(remesas.first)) {
       regexRemesas = regexImpreso;
       title = "Impreso";
+    } else {
+      return "Los valores digitados no parecen ser remesas validas";
     }
 
     List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
