@@ -15,14 +15,11 @@ class FacturaCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     List<String> names = fullPath.split("/");
-    final formularioCubit = context.read<FormularioFacturaCubit>();
-    formularioCubit.controller.addListener(() {
-      if (formularioCubit.controller.offset >= 120) formularioCubit.animationController.reset();
-    });
+    final formularioBloc = context.read<FormFacturaBloc>();
     return Stack(
       children: [
         ListView(
-          controller: formularioCubit.controller,
+          controller: formularioBloc.scrollController,
           padding: const EdgeInsets.only(right: 24, top: 8),
           physics: const ClampingScrollPhysics(),
           children: [
@@ -55,10 +52,10 @@ class _ModalItemDocumento extends StatefulWidget {
 
 class _ModalItemDocumentoState extends State<_ModalItemDocumento> with SingleTickerProviderStateMixin {
   late Animation<double> tralateAnimation;
-  late FormularioFacturaCubit formulario;
+  late FormFacturaBloc formulario;
   @override
   void initState() {
-    formulario = context.read<FormularioFacturaCubit>();
+    formulario = context.read<FormFacturaBloc>();
     formulario.animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
     tralateAnimation =
         Tween<double>(begin: 50, end: -20).animate(CurvedAnimation(parent: formulario.animationController, curve: Curves.bounceOut));
@@ -77,9 +74,7 @@ class _ModalItemDocumentoState extends State<_ModalItemDocumento> with SingleTic
         builder: (context, child) => Transform.translate(
           offset: Offset(0, tralateAnimation.value),
           child: InkWell(
-            onTap: () {
-              formulario.moveBottomAllScroll();
-            },
+            onTap: () => formulario.moveBottomAllScroll(),
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -99,12 +94,13 @@ class _ModalItemDocumentoState extends State<_ModalItemDocumento> with SingleTic
                         padding: const EdgeInsets.all(8),
                         margin: const EdgeInsets.all(8),
                         child: Center(
-                            child: Row(
-                          children: [
-                            const Icon(Icons.file_copy),
-                            Text("${state.remesas[index].impreso}  (${state.remesas[index].numero})"),
-                          ],
-                        )),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.file_copy),
+                              Text("${state.remesas[index].impreso}  (${state.remesas[index].numero})"),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   );
@@ -124,11 +120,8 @@ class BuildFiltros extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final clienteController = TextEditingController();
-    final remesasController = TextEditingController();
-    final fechaInicioController = TextEditingController();
-    final fechaFinController = TextEditingController();
     final facturaFilterBloc = BlocProvider.of<FilterFacturaBloc>(context);
+    final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
 
@@ -142,119 +135,126 @@ class BuildFiltros extends StatelessWidget {
     }).toList();
 
     final titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("Cliente", style: titleStyle),
-                  const SizedBox(height: 8),
-                  AutocompleteInput(
-                    title: "Cliente",
-                    suggestions: suggestions,
-                    controller: clienteController,
-                  )
-                ],
+    final formKey = GlobalKey<FormState>();
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Cliente", style: titleStyle),
+                    const SizedBox(height: 8),
+                    AutocompleteInput(
+                      title: "Cliente",
+                      suggestions: suggestions,
+                      controller: formFacturaBloc.clienteController,
+                    )
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 24),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Empresa", style: titleStyle),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.start,
-                    spacing: 12,
-                    children: List.generate(
-                      empresas.length,
-                      (index) => SizedBox(
-                        width: 180,
-                        child: BuildCardEmpresa(
-                          empresa: empresas[index],
+              const SizedBox(width: 24),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Empresa", style: titleStyle),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 12,
+                      children: List.generate(
+                        empresas.length,
+                        (index) => SizedBox(
+                          width: 180,
+                          child: BuildCardEmpresa(
+                            empresa: empresas[index],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Remesas", style: titleStyle),
+                    const SizedBox(height: 8),
+                    _TextAreaRemesas(controller: formFacturaBloc.remesasController),
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
-        const SizedBox(height: 24),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Remesas", style: titleStyle),
-                  const SizedBox(height: 8),
-                  _TextAreaRemesas(controller: remesasController),
-                ],
-              ),
-            ),
-            const SizedBox(width: 24),
-            Expanded(
-              child: Wrap(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Inicio", style: titleStyle),
-                      const SizedBox(height: 8),
-                      SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaInicioController)),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
+              const SizedBox(width: 24),
+              Expanded(
+                child: Wrap(
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Fin",
-                          style: titleStyle,
-                        ),
+                        Text("Inicio", style: titleStyle),
                         const SizedBox(height: 8),
-                        SizedBox(width: size.width * 0.15, height: 56, child: DatetimeInput(controller: fechaFinController)),
+                        SizedBox(
+                            width: size.width * 0.15, height: 56, child: DatetimeInput(controller: formFacturaBloc.fechaInicioController)),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 24),
-        FilledButton.icon(
-          onPressed: context.read<FormularioFacturaCubit>().state.isValid
-              ? () {
-                  /* final empresa = context.read<FormularioFacturaCubit>().state.empresa;
-                  final FormularioFilterRequest request = FormularioFilterRequest(
-                    empresa: int.parse(empresa),
-                    cliente: int.parse(clienteController.text),
-                    inicio: fechaInicioController.text,
-                    fin: fechaInicioController.text,
-                    remesas: remesasController.text,
-                  );*/
-                  context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
-                  context.read<FormularioFacturaCubit>().setStatePanel(false);
-                  //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
-                }
-              : null,
-          icon: const Icon(Icons.search_rounded),
-          label: const Text("Buscar", style: TextStyle(color: Colors.white)),
-        )
-      ],
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Fin",
+                            style: titleStyle,
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                              width: size.width * 0.15, height: 56, child: DatetimeInput(controller: formFacturaBloc.fechaFinController)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: () {
+              final isValid = formKey.currentState!.validate();
+              if (isValid) {
+                /* final empresa = context.read<FormularioFacturaCubit>().state.empresa;
+                    final FormularioFilterRequest request = FormularioFilterRequest(
+                      empresa: int.parse(empresa),
+                      cliente: int.parse(clienteController.text),
+                      inicio: fechaInicioController.text,
+                      fin: fechaInicioController.text,
+                      remesas: remesasController.text,
+                    );*/
+                context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
+                context.read<FormFacturaBloc>().add(const PanelFormFacturaEvent(false));
+                //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
+              }
+            },
+            icon: const Icon(Icons.search_rounded),
+            label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+          )
+        ],
+      ),
     );
   }
 }
@@ -266,6 +266,7 @@ class _TextAreaRemesas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: context.watch<FormFacturaBloc>().state.remesasEnabled,
       controller: controller,
       autovalidateMode: AutovalidateMode.always,
       validator: onValidator,
@@ -296,7 +297,7 @@ class _TextAreaRemesas extends StatelessWidget {
         .toList();
     if (remesas.isEmpty) return null;
     String title = "";
-    RegExp regexGeneral = RegExp(r'^\d+$');
+    RegExp regexGeneral = RegExp(r'^\d[6]+$');
     RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
     if (regexGeneral.hasMatch(remesas.first)) {

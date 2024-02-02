@@ -10,7 +10,7 @@ class BuildCardEmpresa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormularioFacturaCubit, FormularioFacturaState>(
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (context, state) {
         final bool isActive = state.empresa == empresa.codigo.toString();
 
@@ -28,7 +28,7 @@ class BuildCardEmpresa extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                context.read<FormularioFacturaCubit>().remesafilter(empresa.codigo.toString());
+                context.read<FormFacturaBloc>().add(EmpresaFormFacturaEvent(empresa.codigo.toString()));
               },
               child: Center(
                 child: Row(

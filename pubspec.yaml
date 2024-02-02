@@ -45,7 +45,7 @@ dependencies:
   lottie: ^3.0.0
   pluto_grid: ^7.0.2
   popover: ^0.2.9
-  searchfield: ^0.9.0
+  #searchfield: ^0.9.0
   shared_preferences: ^2.2.2
 
 dev_dependencies:

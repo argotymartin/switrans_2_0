@@ -15,12 +15,12 @@ class CustomExpansionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final expansionPanelCubit = context.watch<FormularioFacturaCubit>();
+    final expansionPanelCubit = context.watch<FormFacturaBloc>();
     return Column(
       children: [
         ExpansionPanelList(
           expansionCallback: (panelIndex, isExpanded) {
-            expansionPanelCubit.setStatePanel(isExpanded);
+            expansionPanelCubit.add(PanelFormFacturaEvent(isExpanded));
           },
           children: <ExpansionPanel>[
             ExpansionPanel(
