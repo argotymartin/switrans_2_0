@@ -1,7 +1,7 @@
 part of 'item_factura_bloc.dart';
 
 sealed class ItemFacturaState extends Equatable {
-  final List<Remesa> remesas;
+  final List<Documento> remesas;
   const ItemFacturaState({this.remesas = const []});
 
   @override

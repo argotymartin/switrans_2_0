@@ -6,7 +6,7 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
-  final List<Remesa> remesas;
+  final List<Documento> remesas;
   const TableItemsFactura({
     super.key,
     required this.remesas,
@@ -28,13 +28,13 @@ class TableItemsFactura extends StatelessWidget {
     );
     List<TableRow> buildTableRows = remesas.map(
       (remesa) {
-        final valorController = TextEditingController(text: '${remesa.tarifaBase}');
+        final valorController = TextEditingController(text: '${remesa.total}');
         final cantidadController = TextEditingController(text: '0');
         return TableRow(
           children: [
             const _BuildFieldItem(),
             _CellContent(child: _BuildFiledDocumento(remesas: remesas)),
-            _CellContent(child: _BuildFieldDescription(title: remesa.obervaciones)),
+            _CellContent(child: _BuildFieldDescription(title: remesa.observacion)),
             _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
             _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: '${remesa.rcp}')),
@@ -132,7 +132,7 @@ class _BuildFieldDescription extends StatelessWidget {
 }
 
 class _BuildFiledDocumento extends StatelessWidget {
-  final List<Remesa> remesas;
+  final List<Documento> remesas;
 
   const _BuildFiledDocumento({required this.remesas});
 
@@ -142,9 +142,9 @@ class _BuildFiledDocumento extends StatelessWidget {
 
     final suggestions = remesas.map((remesa) {
       return SuggestionModel(
-        title: '${remesa.numero}',
+        title: '${remesa.remesa}',
         subTitle: '(${remesa.impreso})',
-        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.centroCosto)]),
+        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.cencosNombre)]),
       );
     }).toList();
     return SizedBox(

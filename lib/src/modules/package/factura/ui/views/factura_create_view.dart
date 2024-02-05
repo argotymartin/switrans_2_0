@@ -98,7 +98,7 @@ class _ModalItemDocumentoState extends State<_ModalItemDocumento> with SingleTic
                           child: Row(
                             children: [
                               const Icon(Icons.file_copy),
-                              Text("${state.remesas[index].impreso}  (${state.remesas[index].numero})"),
+                              Text("${state.remesas[index].impreso}  (${state.remesas[index].remesa})"),
                             ],
                           ),
                         ),
@@ -252,15 +252,19 @@ class BuildFiltros extends StatelessWidget {
                 formFacturaBloc.add(ErrorFormFacturaEvent(error));
               }
               if (isValid && formFacturaBloc.state is FormFacturaRequestState && error.isEmpty) {
-                /*final FormularioFilterRequest request = FormularioFilterRequest(
-                            empresa: int.parse(empresa),
-                            cliente: int.parse(cliente),
-                            inicio: inicio,
-                            fin: fin,
-                            remesas: remesas,
-                          );*/
-                context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
+                final FacturaRequest request = FacturaRequest(
+                  //empresa: int.parse(empresa),
+                  empresa: 1,
+                  //cliente: int.parse(cliente),
+                  cliente: 1409,
+                  //remesas: remesas,
+                  remesas: "01035-3378,01035-3379,01035-3380,01039-3069",
+                  //inicio: inicio,
+                  //fin: fin,
+                );
+                context.read<FacturaBloc>().add(ActiveteFacturaEvent(request));
                 formFacturaBloc.add(const PanelFormFacturaEvent(false));
+
                 //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
               }
             },

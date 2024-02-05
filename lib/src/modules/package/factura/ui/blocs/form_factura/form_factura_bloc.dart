@@ -45,8 +45,4 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       curve: Curves.easeIn,
     );
   }
-
-  Future<bool> isValid() async {
-    return await state.error == "";
-  }
 }

@@ -10,7 +10,7 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
     on<ItemFacturaEvent>((event, emit) {});
 
     on<AddItemFacturaEvent>((event, emit) {
-      final List<Remesa> remesasState = List.from(state.remesas);
+      final List<Documento> remesasState = List.from(state.remesas);
       if (!remesasState.contains(event.remesa)) {
         remesasState.add(event.remesa);
       }
@@ -19,7 +19,7 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
     });
 
     on<RemoveItemFacturaEvent>((event, emit) {
-      final List<Remesa> remesasState = List.from(state.remesas)..remove(event.remesa);
+      final List<Documento> remesasState = List.from(state.remesas)..remove(event.remesa);
       emit(const ItemFacturaLoadingState());
       emit(ItemFacturaSuccesState(remesas: remesasState));
     });

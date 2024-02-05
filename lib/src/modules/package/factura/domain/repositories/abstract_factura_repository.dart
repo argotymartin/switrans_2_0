@@ -5,5 +5,5 @@ abstract class AbstractFacturaRepository {
   Future<DataState<List<Cliente>>> getClientes();
   Future<DataState<List<Cliente>>> getCliente(String param);
   Future<DataState<List<Empresa>>> getEmpresasService();
-  Future<DataState<List<Remesa>>> getRemesasService();
+  Future<DataState<List<Documento>>> getDocumentosService(FacturaRequest request);
 }

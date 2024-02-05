@@ -12,5 +12,6 @@ class GetFacturaEvent extends FacturaEvent {
 }
 
 class ActiveteFacturaEvent extends FacturaEvent {
-  const ActiveteFacturaEvent();
+  final FacturaRequest request;
+  const ActiveteFacturaEvent(this.request);
 }

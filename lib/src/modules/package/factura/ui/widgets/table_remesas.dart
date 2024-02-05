@@ -87,7 +87,7 @@ class TableRemesas extends StatelessWidget {
             ),
           ]);
 
-          List<Remesa> remesasState = context.read<ItemFacturaBloc>().state.remesas;
+          List<Documento> remesasState = context.read<ItemFacturaBloc>().state.remesas;
 
           final dataRows = <PlutoRow>[];
 
@@ -98,12 +98,12 @@ class TableRemesas extends StatelessWidget {
             }
             final Map<String, dynamic> dataColumn = {
               'item': index + 1, // Asignamos el valor del índice más 1 como 'item'
-              'remesa': "${remesa.numero} CC: ${remesa.centroCosto} Tipo: ${remesa.tipo}",
-              'obs': remesa.obervaciones,
+              'remesa': "${remesa.remesa} CC: ${remesa.cencosNombre} Tipo: ${remesa.tipoRemesa}",
+              'obs': remesa.observacion,
               'adiciones': remesa.adiciones,
               'descuentos': remesa.descuentos,
               'flete': remesa.flete,
-              'tarifaBase': remesa.tarifaBase,
+              'tarifaBase': remesa.flete,
               'rcp': remesa.rcp,
             };
 
@@ -133,7 +133,7 @@ class TableRemesas extends StatelessWidget {
                     }
                   }
                 } else if (event.rowIdx != null && event.isChecked != null) {
-                  final Remesa remesa = state.remesas[event.rowIdx!];
+                  final Documento remesa = state.remesas[event.rowIdx!];
                   if (event.isChecked!) {
                     context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
                     context.read<FormFacturaBloc>().animationController.forward();

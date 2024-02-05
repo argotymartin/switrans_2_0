@@ -12,11 +12,11 @@ class GetItemFacturaEvent extends ItemFacturaEvent {
 }
 
 class AddItemFacturaEvent extends ItemFacturaEvent {
-  final Remesa remesa;
+  final Documento remesa;
   const AddItemFacturaEvent({required this.remesa});
 }
 
 class RemoveItemFacturaEvent extends ItemFacturaEvent {
-  final Remesa remesa;
+  final Documento remesa;
   const RemoveItemFacturaEvent({required this.remesa});
 }
