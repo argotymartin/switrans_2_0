@@ -27,6 +27,7 @@ class AutocompleteInput extends StatelessWidget {
           maxSuggestionsInViewPort: 4,
           textCapitalization: TextCapitalization.sentences,
           onSearchTextChanged: (query) {
+            controller.text = "";
             final filter = suggestions.where((element) => element.title.toLowerCase().contains(query.toLowerCase())).toList();
             return filter
                 .map((e) => SearchFieldListItem<String>(e.title, item: e.codigo, child: _ItemAutoComplete(suggestionModel: e)))

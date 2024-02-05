@@ -16,17 +16,18 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   FormFacturaBloc() : super(const FormFacturaInitialState()) {
     on<EmpresaFormFacturaEvent>((event, emit) {
       emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(empresa: event.empresa));
+      emit(FormFacturaRequestState(empresa: event.empresa, error: state.error));
     });
 
     on<PanelFormFacturaEvent>((event, emit) async {
       moveScroll();
       await Future.delayed(const Duration(milliseconds: 250));
-      emit(FormFacturaRequestState(expanded: event.isActive, empresa: state.empresa));
+      emit(FormFacturaRequestState(expanded: event.isActive, empresa: state.empresa, error: state.error));
     });
 
     on<ErrorFormFacturaEvent>((event, emit) async {
-      emit(FormFacturaRequestState(error: event.error));
+      emit(const FormFacturaLoadingState());
+      emit(FormFacturaRequestState(error: event.error, empresa: state.empresa, expanded: state.expanded));
     });
 
     scrollController.addListener(() {
@@ -43,5 +44,9 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       duration: kThemeAnimationDuration,
       curve: Curves.easeIn,
     );
+  }
+
+  Future<bool> isValid() async {
+    return await state.error == "";
   }
 }

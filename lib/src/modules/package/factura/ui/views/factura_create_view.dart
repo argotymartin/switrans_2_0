@@ -235,32 +235,32 @@ class BuildFiltros extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           FilledButton.icon(
-            onPressed: () async {
+            onPressed: () {
               final isValid = formKey.currentState!.validate();
               final empresa = formFacturaBloc.state.empresa;
               final cliente = formFacturaBloc.clienteController.text;
               final remesas = formFacturaBloc.remesasController.text;
               final inicio = formFacturaBloc.fechaInicioController.text;
               final fin = formFacturaBloc.fechaFinController.text;
-              if (empresa == "") formFacturaBloc.add(const ErrorFormFacturaEvent("El campo Empresa no puede ser vacio"));
-              if (cliente == "") formFacturaBloc.add(const ErrorFormFacturaEvent("El campo Cliente no puede ser vacio"));
-              if (remesas == "" && inicio == "") {
-                formFacturaBloc.add(const ErrorFormFacturaEvent("Se deben agregar remesas al filtro o un intervalo de fechas"));
-              }
+              String error = "";
+              if (empresa.isEmpty) error += " El campo Empresa no puede ser vacio";
+              if (cliente.isEmpty) error += " El campo Cliente no puede ser vacio";
+              if (remesas.isEmpty && inicio.isEmpty) error += " Se deben agregar remesas al filtro o un intervalo de fechas";
+              if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
 
-              if (inicio != "" && fin == "") {
-                formFacturaBloc.add(const ErrorFormFacturaEvent("Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin"));
+              if (error.isNotEmpty) {
+                formFacturaBloc.add(ErrorFormFacturaEvent(error));
               }
-              if (isValid && formFacturaBloc.state is FormFacturaRequestState && formFacturaBloc.state.error == "") {
+              if (isValid && formFacturaBloc.state is FormFacturaRequestState && error.isEmpty) {
                 /*final FormularioFilterRequest request = FormularioFilterRequest(
-                  empresa: int.parse(empresa),
-                  cliente: int.parse(cliente),
-                  inicio: inicio,
-                  fin: fin,
-                  remesas: remesas,
-                );*/
+                            empresa: int.parse(empresa),
+                            cliente: int.parse(cliente),
+                            inicio: inicio,
+                            fin: fin,
+                            remesas: remesas,
+                          );*/
                 context.read<FacturaBloc>().add(const ActiveteFacturaEvent());
-                context.read<FormFacturaBloc>().add(const PanelFormFacturaEvent(false));
+                formFacturaBloc.add(const PanelFormFacturaEvent(false));
                 //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
               }
             },
