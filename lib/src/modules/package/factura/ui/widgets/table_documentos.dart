@@ -6,6 +6,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 
 class TableDocumentos extends StatelessWidget {
   const TableDocumentos({Key? key}) : super(key: key);
@@ -25,18 +26,17 @@ class TableDocumentos extends StatelessWidget {
               title: 'Item',
               field: 'item',
               type: PlutoColumnType.text(),
-              enableRowDrag: true,
               enableRowChecked: true,
-              minWidth: 120,
-              width: 100,
+              minWidth: 88,
+              width: 80,
               renderer: (renderContext) => buildFiledItem(renderContext, Theme.of(context).colorScheme.primary),
             ),
             PlutoColumn(
               title: 'Remesa',
               field: 'remesa',
               applyFormatterInEditing: false,
-              width: 200,
-              minWidth: 200,
+              width: 240,
+              minWidth: 240,
               type: PlutoColumnType.text(),
               renderer: (renderContext) => buildFiledRemesa(renderContext, context),
             ),
@@ -103,7 +103,8 @@ class TableDocumentos extends StatelessWidget {
               enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
-              minWidth: 120,
+              minWidth: 100,
+              width: 120,
               type: PlutoColumnType.text(),
               renderer: buildFieldAccion,
             ),
@@ -208,7 +209,6 @@ class TableDocumentos extends StatelessWidget {
 
   Widget buildRenderSumFooter(rendererContext) {
     return PlutoAggregateColumnFooter(
-      //filter: (cell) => cell.row.checked == true,
       rendererContext: rendererContext,
       type: PlutoAggregateColumnType.sum,
       format: '#,###',
@@ -249,11 +249,10 @@ class TableDocumentos extends StatelessWidget {
   }
 
   Widget buildFiledObservaciones(rendererContext) {
-    return Container(
-      padding: const EdgeInsets.only(top: 4),
-      alignment: Alignment.center,
-      child: SelectableText(
-        rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
+    return SelectionArea(
+      child: Text(
+        textAlign: TextAlign.justify,
+        CustomFunctions.limpiarTexto(rendererContext.row.cells[rendererContext.column.field]!.value.toString()),
         maxLines: 8,
         style: const TextStyle(fontSize: 10),
       ),
@@ -295,7 +294,7 @@ class TableDocumentos extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Container(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Colors.white,
         width: double.infinity,
         height: 1,
       ),
@@ -337,8 +336,8 @@ class _DetailRemesa extends StatelessWidget {
         Icon(icon, size: 16),
         Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         Container(
-          constraints: const BoxConstraints(maxWidth: 140),
-          child: Text(subtitle, style: const TextStyle(color: Colors.black, fontSize: 10)),
+          constraints: const BoxConstraints(maxWidth: 180),
+          child: FittedBox(child: Text(subtitle, style: const TextStyle(color: Colors.black, fontSize: 10))),
         )
       ],
     );

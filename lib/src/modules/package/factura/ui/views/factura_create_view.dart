@@ -352,16 +352,20 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+    return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (context, state) {
         if (state is ItemFacturaSuccesState) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 2,
-                child: TableItemsFactura(remesas: state.remesas),
+              BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+                builder: (context, itemState) {
+                  return Expanded(
+                    flex: 2,
+                    child: TableItemsFactura(remesas: itemState.remesas),
+                  );
+                },
               ),
               //Expanded(child: Container(height: 200, color: Colors.black)),
             ],
