@@ -1,3 +1,5 @@
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/adicion.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/descuento.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
 class DocumentoModel extends Documento {
@@ -21,6 +23,8 @@ class DocumentoModel extends Documento {
     required super.total,
     required super.flete,
     required super.anulacionTrafico,
+    super.adiciones = const [],
+    super.descuentos = const [],
   });
 
   factory DocumentoModel.fromJson(Map<String, dynamic> json) => DocumentoModel(
@@ -36,12 +40,14 @@ class DocumentoModel extends Documento {
         tipoRemesa: json['tipoRemesa'],
         origen: json['origen'],
         destino: json['destino'],
-        observacion: json['observacion'],
-        observacionFactura: json['observacionFactura'],
+        observacion: json['observacion'] ?? '',
+        observacionFactura: json['observacionFactura'] ?? '',
         remision: json['remision'],
         rcp: json['rcp'],
         total: json['total'],
         flete: json['flete'],
         anulacionTrafico: json['anulacionTrafico'],
+        adiciones: List<Adicion>.from(json["adiciones"].map((x) => Adicion.fromJson(x))),
+        descuentos: List<Descuento>.from(json["descuentos"].map((x) => Descuento.fromJson(x))),
       );
 }

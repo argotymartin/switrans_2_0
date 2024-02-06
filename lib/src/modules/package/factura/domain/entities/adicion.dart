@@ -8,4 +8,10 @@ class Adicion {
     required this.tipo,
     required this.valor,
   });
+
+  factory Adicion.fromJson(Map<String, dynamic> json) => Adicion(
+        codigo: json['codigo'],
+        tipo: json['tipo'],
+        valor: json['valor'],
+      );
 }

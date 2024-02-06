@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -13,13 +14,16 @@ class TableDocumentos extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (context, state) {
+        final size = MediaQuery.of(context).size;
+        final double rowHeight = size.height * 0.16;
+        const double titleHeight = 48;
+        const double columnFilterHeight = 36;
         if (state is FacturaSuccesState) {
           late PlutoGridStateManager stateManager;
           final List<PlutoColumn> columns = ([
             PlutoColumn(
               title: 'Item',
               field: 'item',
-              suppressedAutoSize: true,
               type: PlutoColumnType.text(),
               enableRowDrag: true,
               enableRowChecked: true,
@@ -31,25 +35,24 @@ class TableDocumentos extends StatelessWidget {
               title: 'Remesa',
               field: 'remesa',
               applyFormatterInEditing: false,
-              width: 180,
-              minWidth: 140,
+              width: 200,
+              minWidth: 200,
               type: PlutoColumnType.text(),
-              renderer: buildFiledRemesa,
+              renderer: (renderContext) => buildFiledRemesa(renderContext, context),
             ),
             PlutoColumn(
               title: 'Obs',
               field: 'obs',
-              minWidth: 280,
+              minWidth: 300,
               width: 300,
               type: PlutoColumnType.text(),
-              renderer: buildFiledObserrvaciones,
+              renderer: buildFiledObservaciones,
             ),
             PlutoColumn(
               title: 'Adiciones',
               field: 'adiciones',
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
-              enableEditingMode: true,
-              enableAutoEditing: false,
+              enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
               renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
@@ -58,7 +61,7 @@ class TableDocumentos extends StatelessWidget {
             PlutoColumn(
               title: 'Descuentos',
               field: 'descuentos',
-              enableAutoEditing: false,
+              enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
@@ -68,7 +71,7 @@ class TableDocumentos extends StatelessWidget {
             PlutoColumn(
               title: 'Flete',
               field: 'flete',
-              enableAutoEditing: false,
+              enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
@@ -78,7 +81,7 @@ class TableDocumentos extends StatelessWidget {
             PlutoColumn(
                 title: 'Tarifa Base',
                 field: 'tarifaBase',
-                enableAutoEditing: false,
+                enableEditingMode: false,
                 enableContextMenu: false,
                 enableDropToResize: false,
                 type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
@@ -87,7 +90,7 @@ class TableDocumentos extends StatelessWidget {
             PlutoColumn(
               title: 'R.C.P',
               field: 'rcp',
-              enableAutoEditing: false,
+              enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
@@ -97,7 +100,7 @@ class TableDocumentos extends StatelessWidget {
             PlutoColumn(
               title: 'Accion',
               field: 'accion',
-              enableAutoEditing: false,
+              enableEditingMode: false,
               enableContextMenu: false,
               enableDropToResize: false,
               minWidth: 120,
@@ -107,20 +110,25 @@ class TableDocumentos extends StatelessWidget {
           ]);
 
           List<Documento> remesasState = context.read<ItemFacturaBloc>().state.remesas;
-
           final dataRows = <PlutoRow>[];
-
           state.remesas.asMap().forEach((index, remesa) {
-            bool isSelected = false;
-            if (remesasState.contains(remesa)) {
-              isSelected = true;
-            }
+            bool isSelected = (remesasState.contains(remesa));
+            int totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
+            int totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
+            Map<String, String> infoRemesa = {
+              'remesa': "${remesa.impreso} (${remesa.remesa})",
+              'centroCosto': remesa.cencosNombre,
+              'tipo': remesa.tipoRemesa,
+              'origen': remesa.origen,
+              'destino': remesa.destino,
+            };
+
             final Map<String, dynamic> dataColumn = {
-              'item': index + 1, // Asignamos el valor del índice más 1 como 'item'
-              'remesa': "${remesa.remesa} CC: ${remesa.cencosNombre} Tipo: ${remesa.tipoRemesa}",
+              'item': index + 1,
+              'remesa': jsonEncode(infoRemesa),
               'obs': remesa.observacion,
-              'adiciones': remesa.adiciones,
-              'descuentos': remesa.descuentos,
+              'adiciones': totalAdiciones,
+              'descuentos': totalDescuentos,
               'flete': remesa.flete,
               'tarifaBase': remesa.flete,
               'rcp': remesa.rcp,
@@ -131,7 +139,7 @@ class TableDocumentos extends StatelessWidget {
           });
           final List<PlutoRow> rows = dataRows.toList();
           return Container(
-            height: (120 * 3) + (48 + 60 + 80),
+            height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
             padding: const EdgeInsets.all(15),
             child: PlutoGrid(
               columns: columns,
@@ -140,7 +148,17 @@ class TableDocumentos extends StatelessWidget {
                 stateManager = event.stateManager;
                 stateManager.setShowColumnFilter(true);
               },
-              onChanged: (PlutoGridOnChangedEvent event) {},
+              onRowDoubleTap: (event) {
+                final Documento remesa = state.remesas[event.rowIdx];
+                if (event.row.checked!) {
+                  context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+                  stateManager.setRowChecked(event.row, false);
+                } else {
+                  stateManager.setRowChecked(event.row, true);
+                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
+                  context.read<FormFacturaBloc>().animationController.forward();
+                }
+              },
               onRowChecked: (event) {
                 if (event.isAll && event.isChecked != null) {
                   for (final remesa in state.remesas) {
@@ -165,10 +183,10 @@ class TableDocumentos extends StatelessWidget {
                 style: PlutoGridStyleConfig(
                   checkedColor: Theme.of(context).colorScheme.primaryContainer,
                   activatedColor: Theme.of(context).colorScheme.onPrimary,
-                  activatedBorderColor: Theme.of(context).colorScheme.primary,
-                  columnHeight: 48,
-                  columnFilterHeight: 36,
-                  rowHeight: 120,
+                  activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                  columnHeight: titleHeight,
+                  columnFilterHeight: columnFilterHeight,
+                  rowHeight: rowHeight,
                 ),
                 columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
                 scrollbar: const PlutoGridScrollbarConfig(
@@ -197,12 +215,7 @@ class TableDocumentos extends StatelessWidget {
       alignment: Alignment.center,
       titleSpanBuilder: (text) {
         return [
-          const TextSpan(
-            text: 'Total',
-            style: TextStyle(color: Colors.grey),
-          ),
-          const TextSpan(text: ' : '),
-          TextSpan(text: text),
+          TextSpan(text: text, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
         ];
       },
     );
@@ -228,82 +241,70 @@ class TableDocumentos extends StatelessWidget {
   }
 
   Widget buildFieldValuesCurrency(rendererContext, Color color) {
-    return Text(
+    return SelectableText(
       rendererContext.column.type.applyFormat(rendererContext.cell.value),
       style: TextStyle(color: color, fontSize: 14),
       textAlign: TextAlign.end,
     );
   }
 
-  Widget buildFiledObserrvaciones(rendererContext) {
-    return SelectableText(
-      rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
-      maxLines: 8,
-      style: const TextStyle(fontSize: 10),
+  Widget buildFiledObservaciones(rendererContext) {
+    return Container(
+      padding: const EdgeInsets.only(top: 4),
+      alignment: Alignment.center,
+      child: SelectableText(
+        rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
+        maxLines: 8,
+        style: const TextStyle(fontSize: 10),
+      ),
     );
   }
 
-  Widget buildFiledRemesa(rendererContext) {
+  Widget buildFiledRemesa(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
-    final valRemesa = cellValue.split("CC:")[0];
-    final valAdicional = cellValue.split("CC:")[1].trim(); // Trim para eliminar espacios adicionales
+    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final remesaText = remesaMap['remesa'];
+    final centroCosto = remesaMap['centroCosto'];
+    final tipo = remesaMap['tipo'];
+    final origen = remesaMap['origen'];
+    final destino = remesaMap['destino'];
 
-    final ccParts = valAdicional.split("Tipo:");
-    final cc = ccParts[0].trim(); // Trim para eliminar espacios adicionales
-    final tipo = ccParts[1].trim();
     return SelectionArea(
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              valRemesa,
-            ),
-            Row(
-              children: [
-                const Icon(Icons.monetization_on_outlined, size: 16),
-                RichText(
-                  text: TextSpan(
-                    style: const TextStyle(fontSize: 12),
-                    children: [
-                      const TextSpan(
-                        text: 'CC: ',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      TextSpan(text: cc, style: const TextStyle(color: Colors.black))
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Icon(Icons.fire_truck_outlined, size: 16),
-                RichText(
-                  text: TextSpan(
-                    style: const TextStyle(fontSize: 12),
-                    children: [
-                      const TextSpan(
-                        text: 'Tipo: ',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      TextSpan(text: tipo, style: const TextStyle(color: Colors.black))
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            remesaText,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          _DetailRemesa(title: 'CC', subtitle: centroCosto, icon: Icons.monetization_on_outlined),
+          divider(context),
+          _DetailRemesa(title: 'Tipo', subtitle: tipo, icon: Icons.fire_truck_outlined),
+          divider(context),
+          _DetailRemesa(title: 'Origen', subtitle: origen, icon: Icons.crop_original),
+          divider(context),
+          _DetailRemesa(title: 'Destino', subtitle: destino, icon: Icons.location_on_outlined),
+        ],
+      ),
+    );
+  }
+
+  Padding divider(context) {
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: Container(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        width: double.infinity,
+        height: 1,
       ),
     );
   }
 
   Widget buildFieldAccion(rendererContext) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           onPressed: () {},
@@ -313,6 +314,32 @@ class TableDocumentos extends StatelessWidget {
           ),
         ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
+      ],
+    );
+  }
+}
+
+class _DetailRemesa extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  const _DetailRemesa({
+    required this.subtitle,
+    required this.title,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(icon, size: 16),
+        Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        Container(
+          constraints: const BoxConstraints(maxWidth: 140),
+          child: Text(subtitle, style: const TextStyle(color: Colors.black, fontSize: 10)),
+        )
       ],
     );
   }

@@ -237,9 +237,13 @@ class BuildFiltros extends StatelessWidget {
           FilledButton.icon(
             onPressed: () {
               final isValid = formKey.currentState!.validate();
-              final empresa = formFacturaBloc.state.empresa;
-              final cliente = formFacturaBloc.clienteController.text;
-              final remesas = formFacturaBloc.remesasController.text;
+              //final empresa = formFacturaBloc.state.empresa;
+              const empresa = "1";
+              //final cliente = formFacturaBloc.clienteController.text;
+              const cliente = "1409";
+              //final remesas = formFacturaBloc.remesasController.text;
+              //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
+              const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
               final inicio = formFacturaBloc.fechaInicioController.text;
               final fin = formFacturaBloc.fechaFinController.text;
               String error = "";
@@ -251,16 +255,14 @@ class BuildFiltros extends StatelessWidget {
               if (error.isNotEmpty) {
                 formFacturaBloc.add(ErrorFormFacturaEvent(error));
               }
-              if (isValid && formFacturaBloc.state is FormFacturaRequestState && error.isEmpty) {
+              //if (isValid && formFacturaBloc.state is FormFacturaRequestState && error.isEmpty) {
+              if (isValid && error.isEmpty) {
                 final FacturaRequest request = FacturaRequest(
-                  //empresa: int.parse(empresa),
-                  empresa: 1,
-                  //cliente: int.parse(cliente),
-                  cliente: 1409,
-                  //remesas: remesas,
-                  remesas: "01035-3378,01035-3379,01035-3380,01039-3069",
-                  //inicio: inicio,
-                  //fin: fin,
+                  empresa: int.parse(empresa),
+                  cliente: int.parse(cliente),
+                  remesas: remesas,
+                  inicio: inicio,
+                  fin: fin,
                 );
                 context.read<FacturaBloc>().add(ActiveteFacturaEvent(request));
                 formFacturaBloc.add(const PanelFormFacturaEvent(false));

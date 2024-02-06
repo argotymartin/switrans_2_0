@@ -44,7 +44,7 @@ class Documento {
     required this.total,
     required this.flete,
     required this.anulacionTrafico,
-    this.adiciones = const [],
-    this.descuentos = const [],
+    required this.adiciones,
+    required this.descuentos,
   });
 }
