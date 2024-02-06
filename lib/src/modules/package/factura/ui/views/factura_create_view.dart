@@ -32,7 +32,7 @@ class FacturaCreateView extends StatelessWidget {
             const SizedBox(height: 10),
             const CustomExpansionPanel(title: "Filtros", child: BuildFiltros()),
             const SizedBox(height: 10),
-            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableRemesas()),
+            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableDocumentos()),
             const SizedBox(height: 10),
             const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
             const SizedBox(height: 120),

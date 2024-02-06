@@ -26,7 +26,13 @@ class AuthLayout extends StatelessWidget {
           if (state is AuthLoadInProgressState) {
             showDialog(
               context: context,
-              builder: (_) => const AlertDialog(content: SizedBox(height: 260, child: LoadingView())),
+              builder: (_) => AlertDialog(
+                backgroundColor: Colors.white.withOpacity(0.4),
+                content: const SizedBox(
+                  height: 260,
+                  child: LoadingView(),
+                ),
+              ),
             );
           }
         },

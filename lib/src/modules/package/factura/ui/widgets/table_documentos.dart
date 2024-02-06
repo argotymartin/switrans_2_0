@@ -6,8 +6,8 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
-class TableRemesas extends StatelessWidget {
-  const TableRemesas({Key? key}) : super(key: key);
+class TableDocumentos extends StatelessWidget {
+  const TableDocumentos({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +24,23 @@ class TableRemesas extends StatelessWidget {
               enableRowDrag: true,
               enableRowChecked: true,
               minWidth: 120,
-              width: 124,
+              width: 100,
               renderer: (renderContext) => buildFiledItem(renderContext, Theme.of(context).colorScheme.primary),
             ),
             PlutoColumn(
               title: 'Remesa',
               field: 'remesa',
-              width: 160,
-              minWidth: 160,
+              applyFormatterInEditing: false,
+              width: 180,
+              minWidth: 140,
               type: PlutoColumnType.text(),
               renderer: buildFiledRemesa,
             ),
             PlutoColumn(
               title: 'Obs',
               field: 'obs',
-              minWidth: 220,
-              width: 250,
+              minWidth: 280,
+              width: 300,
               type: PlutoColumnType.text(),
               renderer: buildFiledObserrvaciones,
             ),
@@ -48,12 +49,18 @@ class TableRemesas extends StatelessWidget {
               field: 'adiciones',
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
               enableEditingMode: true,
+              enableAutoEditing: false,
+              enableContextMenu: false,
+              enableDropToResize: false,
               renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
               footerRenderer: buildRenderSumFooter,
             ),
             PlutoColumn(
               title: 'Descuentos',
               field: 'descuentos',
+              enableAutoEditing: false,
+              enableContextMenu: false,
+              enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
               renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
               footerRenderer: buildRenderSumFooter,
@@ -61,6 +68,9 @@ class TableRemesas extends StatelessWidget {
             PlutoColumn(
               title: 'Flete',
               field: 'flete',
+              enableAutoEditing: false,
+              enableContextMenu: false,
+              enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
               renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
               footerRenderer: buildRenderSumFooter,
@@ -68,12 +78,18 @@ class TableRemesas extends StatelessWidget {
             PlutoColumn(
                 title: 'Tarifa Base',
                 field: 'tarifaBase',
+                enableAutoEditing: false,
+                enableContextMenu: false,
+                enableDropToResize: false,
                 type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
                 renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
                 footerRenderer: buildRenderSumFooter),
             PlutoColumn(
               title: 'R.C.P',
               field: 'rcp',
+              enableAutoEditing: false,
+              enableContextMenu: false,
+              enableDropToResize: false,
               type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
               renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
               footerRenderer: buildRenderSumFooter,
@@ -81,6 +97,9 @@ class TableRemesas extends StatelessWidget {
             PlutoColumn(
               title: 'Accion',
               field: 'accion',
+              enableAutoEditing: false,
+              enableContextMenu: false,
+              enableDropToResize: false,
               minWidth: 120,
               type: PlutoColumnType.text(),
               renderer: buildFieldAccion,
@@ -148,7 +167,7 @@ class TableRemesas extends StatelessWidget {
                   activatedColor: Theme.of(context).colorScheme.onPrimary,
                   activatedBorderColor: Theme.of(context).colorScheme.primary,
                   columnHeight: 48,
-                  columnFilterHeight: 60,
+                  columnFilterHeight: 36,
                   rowHeight: 120,
                 ),
                 columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
@@ -217,10 +236,9 @@ class TableRemesas extends StatelessWidget {
   }
 
   Widget buildFiledObserrvaciones(rendererContext) {
-    return Text(
+    return SelectableText(
       rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
       maxLines: 8,
-      overflow: TextOverflow.ellipsis,
       style: const TextStyle(fontSize: 10),
     );
   }
@@ -233,48 +251,53 @@ class TableRemesas extends StatelessWidget {
     final ccParts = valAdicional.split("Tipo:");
     final cc = ccParts[0].trim(); // Trim para eliminar espacios adicionales
     final tipo = ccParts[1].trim();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          valRemesa,
-        ),
-        Row(
+    return SelectionArea(
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.monetization_on_outlined, size: 16),
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(fontSize: 12),
-                children: [
-                  const TextSpan(
-                    text: 'CC: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            Text(
+              valRemesa,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.monetization_on_outlined, size: 16),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 12),
+                    children: [
+                      const TextSpan(
+                        text: 'CC: ',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      TextSpan(text: cc, style: const TextStyle(color: Colors.black))
+                    ],
                   ),
-                  TextSpan(text: cc, style: const TextStyle(color: Colors.black))
-                ],
-              ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(Icons.fire_truck_outlined, size: 16),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 12),
+                    children: [
+                      const TextSpan(
+                        text: 'Tipo: ',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      TextSpan(text: tipo, style: const TextStyle(color: Colors.black))
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        Row(
-          children: [
-            const Icon(Icons.fire_truck_outlined, size: 16),
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(fontSize: 12),
-                children: [
-                  const TextSpan(
-                    text: 'Tipo: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  TextSpan(text: tipo, style: const TextStyle(color: Colors.black))
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 
