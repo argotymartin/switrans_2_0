@@ -112,7 +112,7 @@ class TableDocumentos extends StatelessWidget {
 
           List<Documento> remesasState = context.read<ItemFacturaBloc>().state.remesas;
           final dataRows = <PlutoRow>[];
-          state.remesas.asMap().forEach((index, remesa) {
+          state.documentos.asMap().forEach((index, remesa) {
             bool isSelected = (remesasState.contains(remesa));
             int totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
             int totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
@@ -150,7 +150,7 @@ class TableDocumentos extends StatelessWidget {
                 stateManager.setShowColumnFilter(true);
               },
               onRowDoubleTap: (event) {
-                final Documento remesa = state.remesas[event.rowIdx];
+                final Documento remesa = state.documentos[event.rowIdx];
                 if (event.row.checked!) {
                   context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
                   stateManager.setRowChecked(event.row, false);
@@ -162,7 +162,7 @@ class TableDocumentos extends StatelessWidget {
               },
               onRowChecked: (event) {
                 if (event.isAll && event.isChecked != null) {
-                  for (final remesa in state.remesas) {
+                  for (final remesa in state.documentos) {
                     if (event.isChecked!) {
                       context.read<FormFacturaBloc>().animationController.forward();
                       context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
@@ -171,7 +171,7 @@ class TableDocumentos extends StatelessWidget {
                     }
                   }
                 } else if (event.rowIdx != null && event.isChecked != null) {
-                  final Documento remesa = state.remesas[event.rowIdx!];
+                  final Documento remesa = state.documentos[event.rowIdx!];
                   if (event.isChecked!) {
                     context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(remesa: remesa));
                     context.read<FormFacturaBloc>().animationController.forward();

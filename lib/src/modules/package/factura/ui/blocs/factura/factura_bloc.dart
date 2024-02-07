@@ -13,7 +13,7 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     on<ActiveteFacturaEvent>((event, emit) async {
       emit(const FacturaLoadingState());
       final resp = await _repository.getDocumentosService(event.request);
-      emit(FacturaSuccesState(remesas: resp.data!));
+      emit(FacturaSuccesState(documentos: resp.data!));
     });
   }
 }

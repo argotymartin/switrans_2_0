@@ -1,8 +1,8 @@
 part of 'factura_bloc.dart';
 
 sealed class FacturaState extends Equatable {
-  final List<Documento> remesas;
-  const FacturaState({this.remesas = const []});
+  final List<Documento> documentos;
+  const FacturaState({this.documentos = const []});
 
   @override
   List<Object> get props => [];
@@ -25,7 +25,7 @@ class FacturaLoadingState extends FacturaState {
 }
 
 class FacturaSuccesState extends FacturaState {
-  const FacturaSuccesState({super.remesas});
+  const FacturaSuccesState({super.documentos});
 
   @override
   List<Object> get props => [];

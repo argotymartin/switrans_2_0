@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/modals/error_modal.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
@@ -352,65 +353,35 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FacturaBloc, FacturaState>(
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
-        if (state is FacturaSuccesState) {
+        if (state is ItemFacturaSuccesState) {
+          final documentos = context.read<FacturaBloc>().state.documentos;
+          final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
+          final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(16)),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 400,
-                          height: 300,
-                          child: Column(
-                            children: [
-                              const Text("Adiciones", style: TextStyle(color: Colors.white, fontSize: 32)),
-                              ...state.remesas.map((remesa) {
-                                if (remesa.adiciones.isNotEmpty) {
-                                  return ListTile(
-                                    title: Text(remesa.remesa.toString()),
-                                    trailing: SizedBox(
-                                        width: 280,
-                                        child: Column(
-                                            children: remesa.adiciones
-                                                .map(
-                                                  (e) => Row(
-                                                    children: [
-                                                      Text("Tipo: ${e.tipo}"),
-                                                      Text(" \$${e.valor}"),
-                                                    ],
-                                                  ),
-                                                )
-                                                .toList())),
-                                  );
-                                }
-                                return const SizedBox();
-                              }).toList()
-                            ],
-                          ),
-                        ),
-                        const Icon(Icons.add_alert_outlined, color: Colors.white, size: 80)
-                      ],
-                    ),
+                  CardAdicionesAndDescuentos(
+                    documentos: documentosAdicion,
+                    title: 'ADICIONES',
+                    color: Colors.green,
                   ),
-                  Container(
+                  const SizedBox(width: 24),
+                  CardAdicionesAndDescuentos(
+                    documentos: documentosDescuentos,
+                    title: 'DESCUENTOS',
                     color: Colors.red,
-                    width: 100,
-                    height: 100,
-                  )
+                  ),
                 ],
               ),
-              BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
-                builder: (_, itemState) {
-                  return (itemState is ItemFacturaSuccesState) ? TableItemsFactura(remesas: itemState.remesas) : const SizedBox();
-                },
-              ),
+              const SizedBox(height: 24),
+              TableItemsFactura(remesas: state.remesas)
             ],
           );
         }
