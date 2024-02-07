@@ -48,9 +48,9 @@ class AutocompleteInput extends StatelessWidget {
             suffixIcon: Container(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(bottomRight: Radius.circular(8), topRight: Radius.circular(8)),
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.outlineVariant,
               ),
-              child: const Icon(Icons.filter_list_rounded, color: Colors.white),
+              child: Icon(Icons.filter_list_rounded, color: Theme.of(context).colorScheme.outline),
             ),
             constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
             focusedBorder: OutlineInputBorder(

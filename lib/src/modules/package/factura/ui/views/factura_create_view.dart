@@ -354,20 +354,63 @@ class _BuildItemFactura extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (context, state) {
-        if (state is ItemFacturaSuccesState) {
-          return Row(
+        if (state is FacturaSuccesState) {
+          return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(16)),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                          height: 300,
+                          child: Column(
+                            children: [
+                              const Text("Adiciones", style: TextStyle(color: Colors.white, fontSize: 32)),
+                              ...state.remesas.map((remesa) {
+                                if (remesa.adiciones.isNotEmpty) {
+                                  return ListTile(
+                                    title: Text(remesa.remesa.toString()),
+                                    trailing: SizedBox(
+                                        width: 280,
+                                        child: Column(
+                                            children: remesa.adiciones
+                                                .map(
+                                                  (e) => Row(
+                                                    children: [
+                                                      Text("Tipo: ${e.tipo}"),
+                                                      Text(" \$${e.valor}"),
+                                                    ],
+                                                  ),
+                                                )
+                                                .toList())),
+                                  );
+                                }
+                                return const SizedBox();
+                              }).toList()
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.add_alert_outlined, color: Colors.white, size: 80)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.red,
+                    width: 100,
+                    height: 100,
+                  )
+                ],
+              ),
               BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
-                builder: (context, itemState) {
-                  return Expanded(
-                    flex: 2,
-                    child: TableItemsFactura(remesas: itemState.remesas),
-                  );
+                builder: (_, itemState) {
+                  return (itemState is ItemFacturaSuccesState) ? TableItemsFactura(remesas: itemState.remesas) : const SizedBox();
                 },
               ),
-              //Expanded(child: Container(height: 200, color: Colors.black)),
             ],
           );
         }
