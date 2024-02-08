@@ -274,30 +274,11 @@ class _BuildItemFactura extends StatelessWidget {
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
         if (state is ItemFacturaSuccesState) {
-          final documentos = context.read<FacturaBloc>().state.documentos;
-          final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
-          final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
-
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardAdicionesAndDescuentos(
-                    documentos: documentosAdicion,
-                    title: 'ADICIONES',
-                    color: Colors.green,
-                  ),
-                  const SizedBox(width: 24),
-                  CardAdicionesAndDescuentos(
-                    documentos: documentosDescuentos,
-                    title: 'DESCUENTOS',
-                    color: Colors.red,
-                  ),
-                ],
-              ),
+              //_BuildDitailsDocumentos(),
               const SizedBox(height: 24),
               TableItemsFactura(remesas: state.remesas)
             ],
@@ -305,6 +286,33 @@ class _BuildItemFactura extends StatelessWidget {
         }
         return const SizedBox();
       },
+    );
+  }
+}
+
+class _BuildDitailsDocumentos extends StatelessWidget {
+  const _BuildDitailsDocumentos();
+
+  @override
+  Widget build(BuildContext context) {
+    final documentos = context.read<FacturaBloc>().state.documentos;
+    final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
+    final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CardAdicionesAndDescuentos(
+          documentos: documentosAdicion,
+          title: 'ADICIONES',
+          color: Colors.green,
+        ),
+        const SizedBox(width: 24),
+        CardAdicionesAndDescuentos(
+          documentos: documentosDescuentos,
+          title: 'DESCUENTOS',
+          color: Colors.red,
+        ),
+      ],
     );
   }
 }

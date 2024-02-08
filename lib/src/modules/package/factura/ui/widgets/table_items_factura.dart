@@ -1,8 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
@@ -26,14 +26,16 @@ class TableItemsFactura extends StatelessWidget {
         _CellTitle(title: "Accion"),
       ],
     );
+    int index = 0;
     List<TableRow> buildTableRows = remesas.map(
       (remesa) {
         final valorController = TextEditingController(text: '${remesa.total}');
         final cantidadController = TextEditingController(text: '0');
+        index++;
         return TableRow(
           children: [
-            const _BuildFieldItem(),
-            _CellContent(child: _BuildFiledDocumento(remesas: remesas)),
+            _BuildFieldItem(index),
+            _CellContent(child: _BuildFiledDocumento(documento: remesa)),
             _CellContent(child: _BuildFieldDescription(title: remesa.observacion)),
             _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
@@ -63,7 +65,8 @@ class TableItemsFactura extends StatelessWidget {
 }
 
 class _BuildFieldItem extends StatelessWidget {
-  const _BuildFieldItem();
+  final int index;
+  const _BuildFieldItem(this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +78,48 @@ class _BuildFieldItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             color: Theme.of(context).colorScheme.primary,
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              "1",
-              style: TextStyle(color: Colors.white),
+              index.toString(),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _BuildFiledDocumento extends StatelessWidget {
+  final Documento documento;
+
+  const _BuildFiledDocumento({required this.documento});
+
+  @override
+  Widget build(BuildContext context) {
+    final documentosAll = context.read<FacturaBloc>().state.documentos;
+    final documentoController = TextEditingController(text: documento.toString());
+    final suggestionSeleted = SuggestionModel(title: documento.remesa.toString(), subTitle: "");
+    final suggestions = documentosAll.map((remesa) {
+      return SuggestionModel(
+        title: '${remesa.remesa}',
+        subTitle: '(${remesa.impreso})',
+        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.cencosNombre)]),
+      );
+    }).toList();
+    return Column(
+      children: [
+        AutocompleteInput(
+          title: "Documento",
+          suggestions: suggestions,
+          controller: documentoController,
+          suggestionSelected: suggestionSeleted,
+        ),
+
+        const RadioButtons(),
+
+        //
+      ],
     );
   }
 }
@@ -126,32 +163,6 @@ class _BuildFieldDescription extends StatelessWidget {
       decoration: const InputDecoration(
         alignLabelWithHint: true,
         border: OutlineInputBorder(),
-      ),
-    );
-  }
-}
-
-class _BuildFiledDocumento extends StatelessWidget {
-  final List<Documento> remesas;
-
-  const _BuildFiledDocumento({required this.remesas});
-
-  @override
-  Widget build(BuildContext context) {
-    final documentoController = TextEditingController();
-
-    final suggestions = remesas.map((remesa) {
-      return SuggestionModel(
-        title: '${remesa.remesa}',
-        subTitle: '(${remesa.impreso})',
-        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.cencosNombre)]),
-      );
-    }).toList();
-    return SizedBox(
-      child: AutocompleteInput(
-        title: "Documento",
-        suggestions: suggestions,
-        controller: documentoController,
       ),
     );
   }
