@@ -280,7 +280,38 @@ class _BuildItemFactura extends StatelessWidget {
             children: [
               //_BuildDitailsDocumentos(),
               const SizedBox(height: 24),
-              TableItemsFactura(remesas: state.remesas)
+              TableItemsFactura(remesas: state.documentosTransporte),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: () {
+                  final doc = Documento(
+                    remesa: 0,
+                    impreso: "",
+                    fechaCreacion: "",
+                    estadoCodigo: 0,
+                    estadoNombre: "",
+                    empresa: 1,
+                    cierreTarifa: false,
+                    cencosCodigo: 0,
+                    cencosNombre: "cencosNombre",
+                    tipoRemesa: "",
+                    origen: "",
+                    destino: "",
+                    observacion: "",
+                    observacionFactura: "",
+                    remision: "",
+                    rcp: 0,
+                    total: 0,
+                    flete: 0,
+                    anulacionTrafico: false,
+                    adiciones: [],
+                    descuentos: [],
+                  );
+                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(documento: doc));
+                },
+                icon: const Icon(Icons.add_card_rounded),
+                label: const Text("Adicionar"),
+              )
             ],
           );
         }

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 enum Option { option1, option2 }
 
 class RadioButtons extends StatefulWidget {
-  const RadioButtons({super.key});
+  const RadioButtons({super.key, required this.onSelected});
+  final bool onSelected;
 
   @override
   State<RadioButtons> createState() => _MyAppState();
@@ -11,6 +12,11 @@ class RadioButtons extends StatefulWidget {
 
 class _MyAppState extends State<RadioButtons> {
   Option? selectedOption;
+  @override
+  void initState() {
+    if (widget.onSelected) selectedOption = Option.option1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class _MyAppState extends State<RadioButtons> {
                   value: Option.option1,
                   groupValue: selectedOption,
                   splashRadius: 2,
-                  onChanged: (Option? value) => setState(() => selectedOption = value),
+                  onChanged: widget.onSelected ? (Option? value) => setState(() => selectedOption = value) : null,
                 ),
               ),
             ],
@@ -47,7 +53,7 @@ class _MyAppState extends State<RadioButtons> {
                   value: Option.option2,
                   groupValue: selectedOption,
                   splashRadius: 2,
-                  onChanged: (Option? value) => setState(() => selectedOption = value),
+                  onChanged: !widget.onSelected ? (Option? value) => setState(() => selectedOption = value) : null,
                 ),
               ),
             ],

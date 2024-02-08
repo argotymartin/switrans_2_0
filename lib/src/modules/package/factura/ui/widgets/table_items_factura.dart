@@ -41,7 +41,7 @@ class TableItemsFactura extends StatelessWidget {
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
             _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: '${remesa.rcp}')),
             _CellContent(child: _BuildFiledAccion(onPressed: () {
-              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(remesa: remesa));
+              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: remesa));
             })),
           ],
         );
@@ -116,7 +116,7 @@ class _BuildFiledDocumento extends StatelessWidget {
           suggestionSelected: suggestionSeleted,
         ),
 
-        const RadioButtons(),
+        const RadioButtons(onSelected: true),
 
         //
       ],
