@@ -23,4 +23,6 @@ class AppTheme {
       dataTableTheme: const DataTableThemeData(checkboxHorizontalMargin: 20),
     );
   }
+
+  static final titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
 }
