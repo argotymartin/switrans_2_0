@@ -15,5 +15,11 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
       final resp = await _repository.getDocumentosService(event.request);
       emit(FacturaSuccesState(documentos: resp.data!));
     });
+
+    on<ChangedFacturaEvent>((event, emit) async {
+      emit(const FacturaInitialState());
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(FacturaSuccesState(documentos: event.documentos));
+    });
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 
 class TableItemsFactura extends StatelessWidget {
   final List<PreFactura> prefacturas;
@@ -116,11 +116,30 @@ class _BuildFiledDocumento extends StatelessWidget {
           controller: documentoController,
           suggestionSelected: suggestionSeleted,
         ),
-
-        const RadioButtons(onSelected: true),
-
-        //
+        RadioButtons(tipo: preFactura.tipo),
       ],
+    );
+  }
+}
+
+class _BuildFieldDescription extends StatelessWidget {
+  final String title;
+  const _BuildFieldDescription({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      initialValue: CustomFunctions.limpiarTexto(title),
+      autovalidateMode: AutovalidateMode.always,
+      maxLines: 7,
+      minLines: 5,
+      textAlign: TextAlign.justify,
+      style: const TextStyle(fontSize: 8.5),
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }
@@ -144,27 +163,6 @@ class _BuildFiledAccion extends StatelessWidget {
         const SizedBox(width: 4),
         CustomSizeButton(width: 32, icon: Icons.refresh_outlined, onPressed: onPressed),
       ],
-    );
-  }
-}
-
-class _BuildFieldDescription extends StatelessWidget {
-  final String title;
-  const _BuildFieldDescription({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      initialValue: title,
-      autovalidateMode: AutovalidateMode.always,
-      minLines: 2,
-      style: const TextStyle(fontSize: 8.5),
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
-        alignLabelWithHint: true,
-        border: OutlineInputBorder(),
-      ),
     );
   }
 }

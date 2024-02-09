@@ -16,14 +16,20 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       if (!preFacturas.contains(event.preFactura)) {
         preFacturas.add(event.preFactura);
       }
+
       emit(const ItemFacturaLoadingState());
       emit(ItemFacturaSuccesState(preFacturas: preFacturas));
+      //final documentos = facturaBloc.state.documentos;
+      //facturaBloc.add(ChangedFacturaEvent(documentos));
     });
 
     on<RemoveItemFacturaEvent>((event, emit) {
-      final List<PreFactura> prefacturas = List.from(state.preFacturas)..remove(event.preFactura);
+      final List<PreFactura> prefacturas = List.from(state.preFacturas)
+        ..removeWhere((element) => element.documento == event.preFactura.documento);
       emit(const ItemFacturaLoadingState());
       emit(ItemFacturaSuccesState(preFacturas: prefacturas));
+      final documentos = facturaBloc.state.documentos;
+      facturaBloc.add(ChangedFacturaEvent(documentos));
     });
   }
 }

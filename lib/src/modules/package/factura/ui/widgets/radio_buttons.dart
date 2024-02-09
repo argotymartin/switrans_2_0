@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 enum Option { option1, option2 }
 
 class RadioButtons extends StatefulWidget {
-  const RadioButtons({super.key, required this.onSelected});
-  final bool onSelected;
+  const RadioButtons({
+    super.key,
+    required this.tipo,
+  });
+  final String tipo;
 
   @override
   State<RadioButtons> createState() => _MyAppState();
@@ -14,7 +17,11 @@ class _MyAppState extends State<RadioButtons> {
   Option? selectedOption;
   @override
   void initState() {
-    if (widget.onSelected) selectedOption = Option.option1;
+    if (widget.tipo == "TR") {
+      selectedOption = Option.option1;
+    } else if (widget.tipo == "SA") {
+      selectedOption = Option.option2;
+    }
     super.initState();
   }
 
@@ -35,7 +42,7 @@ class _MyAppState extends State<RadioButtons> {
                   value: Option.option1,
                   groupValue: selectedOption,
                   splashRadius: 2,
-                  onChanged: widget.onSelected ? (Option? value) => setState(() => selectedOption = value) : null,
+                  onChanged: widget.tipo.isEmpty ? (Option? value) => setState(() => selectedOption = value) : null,
                 ),
               ),
             ],
@@ -53,13 +60,12 @@ class _MyAppState extends State<RadioButtons> {
                   value: Option.option2,
                   groupValue: selectedOption,
                   splashRadius: 2,
-                  onChanged: !widget.onSelected ? (Option? value) => setState(() => selectedOption = value) : null,
+                  onChanged: widget.tipo.isEmpty ? (Option? value) => setState(() => selectedOption = value) : null,
                 ),
               ),
             ],
           ),
         ),
-        // Text('Selected Option: ${selectedOption ?? 'None'}'),
       ],
     );
   }

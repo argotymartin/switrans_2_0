@@ -93,7 +93,8 @@ class _BuildFiltros extends StatelessWidget {
               const cliente = "1409";
               //final remesas = formFacturaBloc.remesasController.text;
               //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
-              const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
+              //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
+              const remesas = "736801,736978,443534";
               final inicio = formFacturaBloc.fechaInicioController.text;
               final fin = formFacturaBloc.fechaFinController.text;
               String error = "";

@@ -112,10 +112,15 @@ class TableDocumentos extends StatelessWidget {
             ),
           ]);
 
-          List<PreFactura> documentosTransporte = context.read<ItemFacturaBloc>().state.preFacturas;
+          List<PreFactura> preFacturas = context.watch<ItemFacturaBloc>().state.preFacturas;
           final dataRows = <PlutoRow>[];
           state.documentos.asMap().forEach((index, remesa) {
-            bool isSelected = (documentosTransporte.contains(remesa));
+            bool isSelected = false;
+            final doc = PreFacturaModel.toDocumetno(remesa);
+            if (preFacturas.contains(doc)) {
+              isSelected = true;
+            }
+
             int totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
             int totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
             Map<String, String> infoRemesa = {
@@ -138,8 +143,10 @@ class TableDocumentos extends StatelessWidget {
             };
 
             final row = TablePlutoGridDataSource.rowByColumns(columns, isSelected, dataColumn);
-            dataRows.add(row); // Agregamos la fila de datos a la lista
+
+            dataRows.add(row);
           });
+
           final List<PlutoRow> rows = dataRows.toList();
           return Container(
             height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
@@ -164,10 +171,10 @@ class TableDocumentos extends StatelessWidget {
                 }
               },
               onRowChecked: (event) {
-                final Documento doc = state.documentos[event.rowIdx!];
-                final prefactura = PreFacturaModel.toDocumetno(doc);
                 if (event.isAll && event.isChecked != null) {
                   for (final remesa in state.documentos) {
+                    final prefactura = PreFacturaModel.toDocumetno(remesa);
+                    prefactura.tipo = "TR";
                     if (event.isChecked!) {
                       context.read<FormFacturaBloc>().animationController.forward();
                       context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
@@ -176,6 +183,9 @@ class TableDocumentos extends StatelessWidget {
                     }
                   }
                 } else if (event.rowIdx != null && event.isChecked != null) {
+                  final Documento doc = state.documentos[event.rowIdx!];
+                  final prefactura = PreFacturaModel.toDocumetno(doc);
+                  prefactura.tipo = "TR";
                   if (event.isChecked!) {
                     context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
                     context.read<FormFacturaBloc>().animationController.forward();
@@ -225,14 +235,13 @@ class TableDocumentos extends StatelessWidget {
     );
   }
 
-  Widget buildFiledItem(rendererContext, Color color) {
+  Widget buildFiledItem(PlutoColumnRendererContext rendererContext, Color color) {
     return Container(
       width: 12,
       height: 20,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        //color: Theme.of(context).colorScheme.primary,
         color: color,
       ),
       child: Center(
@@ -296,11 +305,9 @@ class TableDocumentos extends StatelessWidget {
 
   Padding divider(context) {
     return Padding(
-      padding: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(2.0),
       child: Container(
-        color: Colors.white,
         width: double.infinity,
-        height: 1,
       ),
     );
   }
