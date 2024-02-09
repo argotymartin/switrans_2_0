@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/models/pre_factura_model.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
@@ -110,7 +112,7 @@ class TableDocumentos extends StatelessWidget {
             ),
           ]);
 
-          List<Documento> documentosTransporte = context.read<ItemFacturaBloc>().state.documentosTransporte;
+          List<PreFactura> documentosTransporte = context.read<ItemFacturaBloc>().state.preFacturas;
           final dataRows = <PlutoRow>[];
           state.documentos.asMap().forEach((index, remesa) {
             bool isSelected = (documentosTransporte.contains(remesa));
@@ -150,33 +152,35 @@ class TableDocumentos extends StatelessWidget {
                 stateManager.setShowColumnFilter(true);
               },
               onRowDoubleTap: (event) {
-                final Documento remesa = state.documentos[event.rowIdx];
+                final Documento doc = state.documentos[event.rowIdx];
+                final prefactura = PreFacturaModel.toDocumetno(doc);
                 if (event.row.checked!) {
-                  context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: remesa));
+                  context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
                   stateManager.setRowChecked(event.row, false);
                 } else {
                   stateManager.setRowChecked(event.row, true);
-                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(documento: remesa));
+                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
                   context.read<FormFacturaBloc>().animationController.forward();
                 }
               },
               onRowChecked: (event) {
+                final Documento doc = state.documentos[event.rowIdx!];
+                final prefactura = PreFacturaModel.toDocumetno(doc);
                 if (event.isAll && event.isChecked != null) {
                   for (final remesa in state.documentos) {
                     if (event.isChecked!) {
                       context.read<FormFacturaBloc>().animationController.forward();
-                      context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(documento: remesa));
+                      context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
                     } else {
-                      context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: remesa));
+                      context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
                     }
                   }
                 } else if (event.rowIdx != null && event.isChecked != null) {
-                  final Documento remesa = state.documentos[event.rowIdx!];
                   if (event.isChecked!) {
-                    context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(documento: remesa));
+                    context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
                     context.read<FormFacturaBloc>().animationController.forward();
                   } else {
-                    context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: remesa));
+                    context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
                   }
                 }
               },

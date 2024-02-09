@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/models/pre_factura_model.dart';
 
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/modal_item_documento.dart';
@@ -280,34 +282,12 @@ class _BuildItemFactura extends StatelessWidget {
             children: [
               //_BuildDitailsDocumentos(),
               const SizedBox(height: 24),
-              TableItemsFactura(remesas: state.documentosTransporte),
+              TableItemsFactura(prefacturas: state.preFacturas),
               const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: () {
-                  final doc = Documento(
-                    remesa: 0,
-                    impreso: "",
-                    fechaCreacion: "",
-                    estadoCodigo: 0,
-                    estadoNombre: "",
-                    empresa: 1,
-                    cierreTarifa: false,
-                    cencosCodigo: 0,
-                    cencosNombre: "cencosNombre",
-                    tipoRemesa: "",
-                    origen: "",
-                    destino: "",
-                    observacion: "",
-                    observacionFactura: "",
-                    remision: "",
-                    rcp: 0,
-                    total: 0,
-                    flete: 0,
-                    anulacionTrafico: false,
-                    adiciones: [],
-                    descuentos: [],
-                  );
-                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(documento: doc));
+                  PreFactura preFactura = PreFacturaModel.init();
+                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: preFactura));
                 },
                 icon: const Icon(Icons.add_card_rounded),
                 label: const Text("Adicionar"),

@@ -43,7 +43,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                 builder: (context, state) {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: state.documentosTransporte.length,
+                    itemCount: state.preFacturas.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                           child: Row(
                             children: [
                               const Icon(Icons.file_copy),
-                              Text("${state.documentosTransporte[index].impreso}  (${state.documentosTransporte[index].remesa})"),
+                              Text("${state.preFacturas[index].documentoImpreso}  (${state.preFacturas[index].documento})"),
                             ],
                           ),
                         ),

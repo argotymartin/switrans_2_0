@@ -12,15 +12,11 @@ class GetItemFacturaEvent extends ItemFacturaEvent {
 }
 
 class AddItemFacturaEvent extends ItemFacturaEvent {
-  final Documento documento;
-  const AddItemFacturaEvent({required this.documento});
+  final PreFactura preFactura;
+  const AddItemFacturaEvent({required this.preFactura});
 }
 
 class RemoveItemFacturaEvent extends ItemFacturaEvent {
-  final Documento documento;
-  const RemoveItemFacturaEvent({required this.documento});
-}
-
-class AddServicioAdicionalItemFacturaEvent extends ItemFacturaEvent {
-  const AddServicioAdicionalItemFacturaEvent();
+  final PreFactura preFactura;
+  const RemoveItemFacturaEvent({required this.preFactura});
 }

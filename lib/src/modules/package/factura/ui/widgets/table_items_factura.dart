@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class TableItemsFactura extends StatelessWidget {
-  final List<Documento> remesas;
+  final List<PreFactura> prefacturas;
   const TableItemsFactura({
     super.key,
-    required this.remesas,
+    required this.prefacturas,
   });
 
   @override
@@ -27,21 +28,21 @@ class TableItemsFactura extends StatelessWidget {
       ],
     );
     int index = 0;
-    List<TableRow> buildTableRows = remesas.map(
-      (remesa) {
-        final valorController = TextEditingController(text: '${remesa.total}');
+    List<TableRow> buildTableRows = prefacturas.map(
+      (prefactura) {
+        final valorController = TextEditingController(text: '${prefactura.valor}');
         final cantidadController = TextEditingController(text: '0');
         index++;
         return TableRow(
           children: [
             _BuildFieldItem(index),
-            _CellContent(child: _BuildFiledDocumento(documento: remesa)),
-            _CellContent(child: _BuildFieldDescription(title: remesa.observacion)),
+            _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
+            _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
             _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
             _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
-            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: '${remesa.rcp}')),
+            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: "200")),
             _CellContent(child: _BuildFiledAccion(onPressed: () {
-              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: remesa));
+              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
             })),
           ],
         );
@@ -91,15 +92,15 @@ class _BuildFieldItem extends StatelessWidget {
 }
 
 class _BuildFiledDocumento extends StatelessWidget {
-  final Documento documento;
+  final PreFactura preFactura;
 
-  const _BuildFiledDocumento({required this.documento});
+  const _BuildFiledDocumento({required this.preFactura});
 
   @override
   Widget build(BuildContext context) {
     final documentosAll = context.read<FacturaBloc>().state.documentos;
-    final documentoController = TextEditingController(text: documento.toString());
-    final suggestionSeleted = SuggestionModel(title: documento.remesa.toString(), subTitle: "");
+    final documentoController = TextEditingController(text: preFactura.toString());
+    final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
         title: '${remesa.remesa}',
