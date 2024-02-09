@@ -31,7 +31,13 @@ class TableDocumentos extends StatelessWidget {
               enableRowChecked: true,
               minWidth: 88,
               width: 80,
-              renderer: (renderContext) => buildFiledItem(renderContext, Theme.of(context).colorScheme.primary),
+              renderer: (renderContext) => buildFiledItem(renderContext, context),
+            ),
+            PlutoColumn(
+              title: 'Documento',
+              field: 'documento',
+              hide: true,
+              type: PlutoColumnType.number(),
             ),
             PlutoColumn(
               title: 'Remesa',
@@ -108,19 +114,12 @@ class TableDocumentos extends StatelessWidget {
               minWidth: 100,
               width: 120,
               type: PlutoColumnType.text(),
-              renderer: buildFieldAccion,
+              renderer: (rendererContext) => buildFieldAccion(rendererContext, context),
             ),
           ]);
 
-          List<PreFactura> preFacturas = context.watch<ItemFacturaBloc>().state.preFacturas;
           final dataRows = <PlutoRow>[];
           state.documentos.asMap().forEach((index, remesa) {
-            bool isSelected = false;
-            final doc = PreFacturaModel.toDocumetno(remesa);
-            if (preFacturas.contains(doc)) {
-              isSelected = true;
-            }
-
             int totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
             int totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
             Map<String, String> infoRemesa = {
@@ -133,6 +132,7 @@ class TableDocumentos extends StatelessWidget {
 
             final Map<String, dynamic> dataColumn = {
               'item': index + 1,
+              'documento': remesa.remesa,
               'remesa': jsonEncode(infoRemesa),
               'obs': remesa.observacion,
               'adiciones': totalAdiciones,
@@ -142,75 +142,79 @@ class TableDocumentos extends StatelessWidget {
               'rcp': remesa.rcp,
             };
 
-            final row = TablePlutoGridDataSource.rowByColumns(columns, isSelected, dataColumn);
+            final row = TablePlutoGridDataSource.rowByColumns(columns, dataColumn);
 
             dataRows.add(row);
           });
 
           final List<PlutoRow> rows = dataRows.toList();
-          return Container(
-            height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              columns: columns,
-              rows: rows,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onRowDoubleTap: (event) {
-                final Documento doc = state.documentos[event.rowIdx];
-                final prefactura = PreFacturaModel.toDocumetno(doc);
-                if (event.row.checked!) {
-                  context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
-                  stateManager.setRowChecked(event.row, false);
-                } else {
-                  stateManager.setRowChecked(event.row, true);
-                  context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
-                  context.read<FormFacturaBloc>().animationController.forward();
-                }
-              },
-              onRowChecked: (event) {
-                if (event.isAll && event.isChecked != null) {
-                  for (final remesa in state.documentos) {
-                    final prefactura = PreFacturaModel.toDocumetno(remesa);
-                    prefactura.tipo = "TR";
-                    if (event.isChecked!) {
-                      context.read<FormFacturaBloc>().animationController.forward();
-                      context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
-                    } else {
+          return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+            builder: (context, itemstate) {
+              return Container(
+                height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
+                padding: const EdgeInsets.all(15),
+                child: PlutoGrid(
+                  columns: columns,
+                  rows: rows,
+                  onLoaded: (PlutoGridOnLoadedEvent event) {
+                    stateManager = event.stateManager;
+                    stateManager.setShowColumnFilter(true);
+                  },
+                  onRowDoubleTap: (event) {
+                    final Documento doc = state.documentos[event.rowIdx];
+                    final prefactura = PreFacturaModel.toDocumetno(doc);
+                    if (event.row.checked!) {
                       context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
+                      stateManager.setRowChecked(event.row, false);
+                    } else {
+                      stateManager.setRowChecked(event.row, true);
+                      context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
+                      context.read<FormFacturaBloc>().animationController.forward();
                     }
-                  }
-                } else if (event.rowIdx != null && event.isChecked != null) {
-                  final Documento doc = state.documentos[event.rowIdx!];
-                  final prefactura = PreFacturaModel.toDocumetno(doc);
-                  prefactura.tipo = "TR";
-                  if (event.isChecked!) {
-                    context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
-                    context.read<FormFacturaBloc>().animationController.forward();
-                  } else {
-                    context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
-                  }
-                }
-              },
-              configuration: PlutoGridConfiguration(
-                style: PlutoGridStyleConfig(
-                  checkedColor: Theme.of(context).colorScheme.primaryContainer,
-                  activatedColor: Theme.of(context).colorScheme.onPrimary,
-                  activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  columnHeight: titleHeight,
-                  columnFilterHeight: columnFilterHeight,
-                  rowHeight: rowHeight,
+                  },
+                  onRowChecked: (event) {
+                    if (event.isAll && event.isChecked != null) {
+                      for (final remesa in state.documentos) {
+                        final prefactura = PreFacturaModel.toDocumetno(remesa);
+                        prefactura.tipo = "TR";
+                        if (event.isChecked!) {
+                          context.read<FormFacturaBloc>().animationController.forward();
+                          context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
+                        } else {
+                          context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
+                        }
+                      }
+                    } else if (event.rowIdx != null && event.isChecked != null) {
+                      final Documento doc = state.documentos[event.rowIdx!];
+                      final prefactura = PreFacturaModel.toDocumetno(doc);
+                      prefactura.tipo = "TR";
+                      if (event.isChecked!) {
+                        context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
+                        context.read<FormFacturaBloc>().animationController.forward();
+                      } else {
+                        context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
+                      }
+                    }
+                  },
+                  configuration: PlutoGridConfiguration(
+                    style: PlutoGridStyleConfig(
+                      checkedColor: Theme.of(context).colorScheme.primaryContainer,
+                      activatedColor: Theme.of(context).colorScheme.onPrimary,
+                      activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      columnHeight: titleHeight,
+                      columnFilterHeight: columnFilterHeight,
+                      rowHeight: rowHeight,
+                    ),
+                    columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
+                    scrollbar: const PlutoGridScrollbarConfig(
+                      longPressDuration: Duration.zero,
+                      onlyDraggingThumb: false,
+                    ),
+                    localeText: const PlutoGridLocaleText.spanish(),
+                  ),
                 ),
-                columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
-                scrollbar: const PlutoGridScrollbarConfig(
-                  longPressDuration: Duration.zero,
-                  onlyDraggingThumb: false,
-                ),
-                localeText: const PlutoGridLocaleText.spanish(),
-              ),
-            ),
+              );
+            },
           );
         }
         if (state is FacturaLoadingState) {
@@ -221,53 +225,29 @@ class TableDocumentos extends StatelessWidget {
     );
   }
 
-  Widget buildRenderSumFooter(rendererContext) {
-    return PlutoAggregateColumnFooter(
-      rendererContext: rendererContext,
-      type: PlutoAggregateColumnType.sum,
-      format: '#,###',
-      alignment: Alignment.center,
-      titleSpanBuilder: (text) {
-        return [
-          TextSpan(text: text, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-        ];
+  Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    return BlocListener<ItemFacturaBloc, ItemFacturaState>(
+      listener: (context, state) {
+        List<PreFactura> preFacturas = state.preFacturas;
+        final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
+        bool isPresent = preFacturas.any((pre) => pre.documento == docuemnto);
+
+        rendererContext.cell.row.setChecked(isPresent);
       },
-    );
-  }
-
-  Widget buildFiledItem(PlutoColumnRendererContext rendererContext, Color color) {
-    return Container(
-      width: 12,
-      height: 20,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: color,
-      ),
-      child: Center(
-        child: Text(
-          rendererContext.cell.value.toString(),
-          style: const TextStyle(color: Colors.white),
+      child: Container(
+        width: 12,
+        height: 20,
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.primary,
         ),
-      ),
-    );
-  }
-
-  Widget buildFieldValuesCurrency(rendererContext, Color color) {
-    return SelectableText(
-      rendererContext.column.type.applyFormat(rendererContext.cell.value),
-      style: TextStyle(color: color, fontSize: 14),
-      textAlign: TextAlign.end,
-    );
-  }
-
-  Widget buildFiledObservaciones(rendererContext) {
-    return SelectionArea(
-      child: Text(
-        textAlign: TextAlign.justify,
-        CustomFunctions.limpiarTexto(rendererContext.row.cells[rendererContext.column.field]!.value.toString()),
-        maxLines: 8,
-        style: const TextStyle(fontSize: 10),
+        child: Center(
+          child: Text(
+            rendererContext.cell.value.toString(),
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       ),
     );
   }
@@ -303,6 +283,25 @@ class TableDocumentos extends StatelessWidget {
     );
   }
 
+  Widget buildFiledObservaciones(rendererContext) {
+    return SelectionArea(
+      child: Text(
+        textAlign: TextAlign.justify,
+        CustomFunctions.limpiarTexto(rendererContext.row.cells[rendererContext.column.field]!.value.toString()),
+        maxLines: 8,
+        style: const TextStyle(fontSize: 10),
+      ),
+    );
+  }
+
+  Widget buildFieldValuesCurrency(rendererContext, Color color) {
+    return SelectableText(
+      rendererContext.column.type.applyFormat(rendererContext.cell.value),
+      style: TextStyle(color: color, fontSize: 14),
+      textAlign: TextAlign.end,
+    );
+  }
+
   Padding divider(context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -312,12 +311,20 @@ class TableDocumentos extends StatelessWidget {
     );
   }
 
-  Widget buildFieldAccion(rendererContext) {
+  Widget buildFieldAccion(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            rendererContext.stateManager.removeRows([rendererContext.row]);
+            final documentosAll = context.read<FacturaBloc>().state.documentos;
+            final documento = documentosAll[rendererContext.rowIdx];
+            final List<Documento> documentos = List.from(documentosAll)..remove(documento);
+            context.read<FacturaBloc>().add(ChangedFacturaEvent(documentos));
+            final preFactuta = PreFacturaModel.toDocumetno(documento);
+            context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: preFactuta));
+          },
           icon: const Icon(
             Icons.delete_forever_outlined,
             color: Colors.red,
@@ -327,6 +334,20 @@ class TableDocumentos extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget buildRenderSumFooter(rendererContext) {
+  return PlutoAggregateColumnFooter(
+    rendererContext: rendererContext,
+    type: PlutoAggregateColumnType.sum,
+    format: '#,###',
+    alignment: Alignment.center,
+    titleSpanBuilder: (text) {
+      return [
+        TextSpan(text: text, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+      ];
+    },
+  );
 }
 
 class _DetailRemesa extends StatelessWidget {
