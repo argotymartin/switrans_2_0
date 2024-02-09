@@ -148,7 +148,7 @@ class BuildTitle extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Image.asset(
-              "assets/logo_multicompany.png",
+              "assets/empresas/icon-multicompany.png",
               width: 36,
             )
           ],

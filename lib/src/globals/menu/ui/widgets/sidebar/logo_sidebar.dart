@@ -14,7 +14,7 @@ class LogoSidebar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/logo_multicompany.png",
+              "assets/empresas/icon-multicompany.png",
               height: 48,
             ),
             const SizedBox(width: 10),

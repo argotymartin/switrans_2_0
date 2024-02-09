@@ -13,6 +13,22 @@ class BuildCardEmpresa extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (context, state) {
         final bool isActive = state.empresa == empresa.codigo.toString();
+        String rutaImagen = "assets/empresas/icon-multicompany.png";
+        Color color = Theme.of(context).colorScheme.primary;
+        if (empresa.codigo == 1) {
+          rutaImagen = "assets/empresas/icon-mct.png";
+          color = Colors.red;
+        }
+
+        if (empresa.codigo == 2) {
+          rutaImagen = "assets/empresas/icon-marketing.png";
+          color = Colors.green;
+        }
+
+        if (empresa.codigo == 12) {
+          rutaImagen = "assets/empresas/icon-ferricar.png";
+          color = Colors.orange;
+        }
 
         return Material(
           child: Container(
@@ -20,10 +36,10 @@ class BuildCardEmpresa extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 8, left: 8),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: isActive ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondaryContainer,
+              color: isActive ? color : Theme.of(context).colorScheme.secondaryContainer,
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
-                BoxShadow(offset: const Offset(-4, 0), color: Theme.of(context).colorScheme.primary),
+                BoxShadow(offset: const Offset(-4, 0), color: color),
               ],
             ),
             child: InkWell(
@@ -33,11 +49,11 @@ class BuildCardEmpresa extends StatelessWidget {
               child: Center(
                 child: Row(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 24,
                       width: 24,
                       child: CircleAvatar(
-                        backgroundImage: AssetImage("assets/logo_multicompany.png"),
+                        backgroundImage: AssetImage(rutaImagen),
                         radius: 48,
                       ),
                     ),

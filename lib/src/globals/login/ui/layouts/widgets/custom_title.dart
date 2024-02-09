@@ -8,7 +8,7 @@ class CustomTitle extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.asset('assets/logo_multicompany.png', width: 60, height: 60),
+        Image.asset('assets/empresas/icon-multicompany.png', width: 60, height: 60),
         const SizedBox(height: 20),
         FittedBox(
           fit: BoxFit.contain,

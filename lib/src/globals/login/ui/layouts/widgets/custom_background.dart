@@ -11,7 +11,7 @@ class CustomBackground extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [Color(0xff183650), Colors.white]),
         image: DecorationImage(
-          image: AssetImage('assets/slider_1.jpg'),
+          image: AssetImage('assets/login_background.jpg'),
           fit: BoxFit.cover,
           opacity: 0.8,
         ),
