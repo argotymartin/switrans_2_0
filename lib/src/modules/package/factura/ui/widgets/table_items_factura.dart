@@ -119,7 +119,6 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
     void setValueFactura(String value) {
       if (value.isNotEmpty) {
         widget.preFactura.documento = int.parse(value);
-        //setState(() {});
       }
     }
 

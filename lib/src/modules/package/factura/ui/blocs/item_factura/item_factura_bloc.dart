@@ -15,14 +15,20 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       }
 
       emit(const ItemFacturaLoadingState());
-      emit(ItemFacturaSuccesState(preFacturas: preFacturas));
+      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: state.centroCosto));
     });
 
     on<RemoveItemFacturaEvent>((event, emit) {
       final List<PreFactura> prefacturas = List.from(state.preFacturas)
         ..removeWhere((element) => element.documento == event.preFactura.documento);
       emit(const ItemFacturaLoadingState());
-      emit(ItemFacturaSuccesState(preFacturas: prefacturas));
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: state.centroCosto));
+    });
+
+    on<SelectCentroCostoItemFacturaEvent>((event, emit) {
+      final List<PreFactura> prefacturas = List.from(state.preFacturas);
+      emit(const ItemFacturaLoadingState());
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: event.centroCosto));
     });
   }
 }

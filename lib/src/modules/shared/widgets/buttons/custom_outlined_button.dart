@@ -6,6 +6,7 @@ class CustomOutlinedButton extends StatelessWidget {
   final Color color;
   final Color colorText;
   final bool isFilled;
+  final IconData? icon;
 
   const CustomOutlinedButton({
     super.key,
@@ -14,23 +15,38 @@ class CustomOutlinedButton extends StatelessWidget {
     this.colorText = Colors.black,
     this.color = Colors.blue,
     this.isFilled = false,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(color),
-        foregroundColor: MaterialStatePropertyAll(color),
-      ),
-      onPressed: () => onPressed(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16, color: colorText),
-        ),
-      ),
-    );
+    return icon == null
+        ? OutlinedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(color),
+              foregroundColor: MaterialStatePropertyAll(color),
+            ),
+            onPressed: () => onPressed(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 16, color: colorText),
+              ),
+            ),
+          )
+        : OutlinedButton.icon(
+            icon: Icon(icon, color: colorText),
+            style: ButtonStyle(
+              side: MaterialStateProperty.all(BorderSide(color: color)),
+              backgroundColor: MaterialStatePropertyAll(color),
+              foregroundColor: MaterialStatePropertyAll(color),
+            ),
+            onPressed: () => onPressed(),
+            label: Text(
+              text,
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+          );
   }
 }

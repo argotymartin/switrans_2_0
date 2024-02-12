@@ -22,50 +22,44 @@ class AutocompleteInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final focus = FocusNode();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SearchField(
-          initialValue: suggestionSelected != null
-              ? SearchFieldListItem<String>(
-                  suggestionSelected!.title,
-                  item: suggestionSelected!.codigo,
-                )
-              : null,
-          readOnly: suggestionSelected != null ? true : false,
-          searchStyle: const TextStyle(fontSize: 12),
-          autoCorrect: true,
-          maxSuggestionsInViewPort: 4,
-          textCapitalization: TextCapitalization.sentences,
-          onSearchTextChanged: onTextChanged,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => (value == null) ? 'error' : null,
-          key: const Key('searchfield'),
-          hint: suggestionSelected == null ? 'Buscar $title' : '',
-          itemHeight: 68,
-          searchInputDecoration: inputDecoration(context),
-          suggestionsDecoration: SuggestionDecoration(
-            border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          suggestions: suggestions
-              .map((e) => SearchFieldListItem<String>(
-                    e.title,
-                    item: e.codigo,
-                    child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
-                  ))
-              .toList(),
-          focusNode: focus,
-          suggestionState: Suggestion.expand,
-          onSuggestionTap: (SearchFieldListItem x) {
-            if (x.item != null) controller.text = x.item;
-            if (onPressed != null && x.item != null) {
-              onPressed?.call(x.item);
-            }
-          },
-        ),
-      ],
+    return SearchField(
+      initialValue: suggestionSelected != null
+          ? SearchFieldListItem<String>(
+              suggestionSelected!.title,
+              item: suggestionSelected!.codigo,
+            )
+          : null,
+      readOnly: suggestionSelected != null ? true : false,
+      searchStyle: const TextStyle(fontSize: 12),
+      autoCorrect: true,
+      maxSuggestionsInViewPort: 4,
+      textCapitalization: TextCapitalization.sentences,
+      onSearchTextChanged: onTextChanged,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) => (value == null) ? 'error' : null,
+      key: const Key('searchfield'),
+      hint: suggestionSelected == null ? 'Buscar $title' : '',
+      itemHeight: 68,
+      searchInputDecoration: inputDecoration(context),
+      suggestionsDecoration: SuggestionDecoration(
+        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      suggestions: suggestions
+          .map((e) => SearchFieldListItem<String>(
+                e.title,
+                item: e.codigo,
+                child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
+              ))
+          .toList(),
+      focusNode: focus,
+      suggestionState: Suggestion.expand,
+      onSuggestionTap: (SearchFieldListItem x) {
+        if (x.item != null) controller.text = x.item;
+        if (onPressed != null && x.item != null) {
+          onPressed?.call(x.item);
+        }
+      },
     );
   }
 
@@ -167,7 +161,7 @@ class SuggestionModel {
   SuggestionModel({
     required this.title,
     required this.subTitle,
-    this.details = const SizedBox(),
+    this.details = const SizedBox(width: 1, height: 1),
     this.codigo = "",
   });
 }

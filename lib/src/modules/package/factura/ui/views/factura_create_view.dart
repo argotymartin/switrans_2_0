@@ -42,7 +42,7 @@ class FacturaCreateView extends StatelessWidget {
             const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableDocumentos()),
             const SizedBox(height: 10),
             const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
-            const SizedBox(height: 120),
+            const SizedBox(height: 200),
           ],
         ),
         const Positioned(left: 0, right: 0, bottom: -24, child: ModalItemDocumento()),
@@ -281,11 +281,11 @@ class _BuildItemFactura extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //_BuildDetailsDocumentos(),
+              const _BuildDetailsDocumentos(),
               const SizedBox(height: 24),
               TableItemsFactura(prefacturas: state.preFacturas),
               const SizedBox(height: 16),
-              FilledButton.icon(
+              ElevatedButton.icon(
                 onPressed: () {
                   PreFactura preFactura = PreFacturaModel.init();
                   preFactura.tipo = "SA";
@@ -293,7 +293,12 @@ class _BuildItemFactura extends StatelessWidget {
                 },
                 icon: const Icon(Icons.add_card_rounded),
                 label: const Text("Adicionar"),
-              )
+              ),
+              const SizedBox(height: 12),
+              const Divider(),
+              const SizedBox(height: 12),
+              const _BuildPrefacturarDocumento(),
+              const SizedBox(height: 24),
             ],
           );
         }
@@ -326,6 +331,79 @@ class _BuildDetailsDocumentos extends StatelessWidget {
           color: Colors.red,
         ),
       ],
+    );
+  }
+}
+
+class _BuildPrefacturarDocumento extends StatelessWidget {
+  const _BuildPrefacturarDocumento();
+
+  @override
+  Widget build(BuildContext context) {
+    final documentosAll = context.read<FacturaBloc>().state.documentos;
+    final controller = TextEditingController();
+    final centrosCosto = documentosAll.map((remesa) => MapEntry(remesa.cencosCodigo, remesa.cencosNombre)).toSet().toList();
+
+    final suggestions = centrosCosto.map((centro) {
+      return SuggestionModel(
+        codigo: '${centro.key}',
+        title: centro.value,
+        subTitle: '(${centro.key})',
+      );
+    }).toList();
+    void setValueFactura(String value) {
+      if (value.isNotEmpty) {
+        context.read<ItemFacturaBloc>().add(SelectCentroCostoItemFacturaEvent(centroCosto: value));
+      }
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: 400,
+          child: AutocompleteInput(
+            suggestions: suggestions,
+            title: "Centro Costo",
+            controller: controller,
+            onPressed: setValueFactura,
+          ),
+        ),
+        const SizedBox(width: 16),
+        SizedBox(
+          width: 160,
+          child: CustomOutlinedButton(
+            icon: Icons.delete_forever_outlined,
+            colorText: Colors.white,
+            onPressed: () {},
+            color: Theme.of(context).colorScheme.error,
+            text: "Cancelar",
+          ),
+        ),
+        const SizedBox(width: 16),
+        const _BuildButtonRegistrar(),
+      ],
+    );
+  }
+}
+
+class _BuildButtonRegistrar extends StatelessWidget {
+  const _BuildButtonRegistrar();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+      builder: (context, state) {
+        bool isValid = context.read<ItemFacturaBloc>().state.preFacturas.any((element) => element.tipo == "TR");
+        return SizedBox(
+          width: 240,
+          child: FilledButton.icon(
+            onPressed: isValid && state.centroCosto != "" ? () {} : null,
+            icon: const Icon(Icons.add_card_rounded),
+            label: const Text("Registrar Pre-Factura"),
+          ),
+        );
+      },
     );
   }
 }
