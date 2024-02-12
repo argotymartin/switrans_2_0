@@ -91,32 +91,49 @@ class _BuildFieldItem extends StatelessWidget {
   }
 }
 
-class _BuildFiledDocumento extends StatelessWidget {
+class _BuildFiledDocumento extends StatefulWidget {
   final PreFactura preFactura;
 
   const _BuildFiledDocumento({required this.preFactura});
 
   @override
+  State<_BuildFiledDocumento> createState() => _BuildFiledDocumentoState();
+}
+
+class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
+  @override
   Widget build(BuildContext context) {
     final documentosAll = context.read<FacturaBloc>().state.documentos;
-    final documentoController = TextEditingController(text: preFactura.toString());
-    final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
+    final documentoController = TextEditingController(text: widget.preFactura.toString());
+    final suggestionSeleted =
+        widget.preFactura.documento > 0 ? SuggestionModel(title: widget.preFactura.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
+        codigo: '${remesa.remesa}',
         title: '${remesa.remesa}',
         subTitle: '(${remesa.impreso})',
         details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.cencosNombre)]),
       );
     }).toList();
+
+    void setValueFactura(String value) {
+      if (value.isNotEmpty) {
+        widget.preFactura.documento = int.parse(value);
+        //setState(() {});
+      }
+    }
+
     return Column(
       children: [
         AutocompleteInput(
+          isShowCodigo: false,
           title: "Documento",
           suggestions: suggestions,
           controller: documentoController,
           suggestionSelected: suggestionSeleted,
+          onPressed: setValueFactura,
         ),
-        RadioButtons(tipo: preFactura.tipo),
+        RadioButtons(tipo: widget.preFactura.tipo),
       ],
     );
   }

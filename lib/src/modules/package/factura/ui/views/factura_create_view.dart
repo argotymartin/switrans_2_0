@@ -281,13 +281,14 @@ class _BuildItemFactura extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //_BuildDitailsDocumentos(),
+              //_BuildDetailsDocumentos(),
               const SizedBox(height: 24),
               TableItemsFactura(prefacturas: state.preFacturas),
               const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: () {
                   PreFactura preFactura = PreFacturaModel.init();
+                  preFactura.tipo = "SA";
                   context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: preFactura));
                 },
                 icon: const Icon(Icons.add_card_rounded),
@@ -302,8 +303,8 @@ class _BuildItemFactura extends StatelessWidget {
   }
 }
 
-class _BuildDitailsDocumentos extends StatelessWidget {
-  const _BuildDitailsDocumentos();
+class _BuildDetailsDocumentos extends StatelessWidget {
+  const _BuildDetailsDocumentos();
 
   @override
   Widget build(BuildContext context) {

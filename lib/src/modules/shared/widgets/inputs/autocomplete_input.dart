@@ -1,12 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/shared/services/search_field.dart';
 
 class AutocompleteInput extends StatelessWidget {
   final List<SuggestionModel> suggestions;
-  final SuggestionModel? suggestionSelected;
   final String title;
+  final bool isShowCodigo;
   final TextEditingController controller;
+  final SuggestionModel? suggestionSelected;
+  final Function(String result)? onPressed;
 
   const AutocompleteInput({
     Key? key,
@@ -14,6 +15,8 @@ class AutocompleteInput extends StatelessWidget {
     required this.title,
     required this.controller,
     this.suggestionSelected,
+    this.onPressed,
+    this.isShowCodigo = true,
   }) : super(key: key);
 
   @override
@@ -30,7 +33,7 @@ class AutocompleteInput extends StatelessWidget {
                   item: suggestionSelected!.codigo,
                 )
               : null,
-          enabled: suggestionSelected == null ? true : false,
+          readOnly: suggestionSelected != null ? true : false,
           searchStyle: const TextStyle(fontSize: 12),
           autoCorrect: true,
           maxSuggestionsInViewPort: 4,
@@ -50,13 +53,16 @@ class AutocompleteInput extends StatelessWidget {
               .map((e) => SearchFieldListItem<String>(
                     e.title,
                     item: e.codigo,
-                    child: _ItemAutoComplete(suggestionModel: e),
+                    child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
                   ))
               .toList(),
           focusNode: focus,
           suggestionState: Suggestion.expand,
           onSuggestionTap: (SearchFieldListItem x) {
             if (x.item != null) controller.text = x.item;
+            if (onPressed != null && x.item != null) {
+              onPressed?.call(x.item);
+            }
           },
         ),
       ],
@@ -74,7 +80,7 @@ class AutocompleteInput extends StatelessWidget {
         .map((e) => SearchFieldListItem<String>(
               e.title,
               item: e.codigo,
-              child: _ItemAutoComplete(suggestionModel: e),
+              child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
             ))
         .toList();
   }
@@ -104,7 +110,8 @@ class AutocompleteInput extends StatelessWidget {
 
 class _ItemAutoComplete extends StatelessWidget {
   final SuggestionModel suggestionModel;
-  const _ItemAutoComplete({required this.suggestionModel});
+  final bool isShowCodigo;
+  const _ItemAutoComplete({required this.suggestionModel, required this.isShowCodigo});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +120,7 @@ class _ItemAutoComplete extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: 4),
-          suggestionModel.codigo != "" ? _BuildSuggestionCodigo(codigo: suggestionModel.codigo) : const SizedBox(width: 8),
+          isShowCodigo ? _BuildSuggestionCodigo(codigo: suggestionModel.codigo) : const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

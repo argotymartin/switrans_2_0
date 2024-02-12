@@ -1,4 +1,5 @@
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
+import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/test/factura_data_test.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/cliente_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/empresa_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/documento_model.dart';
@@ -20,9 +21,8 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
       final List<Empresa> response = resp.data.cast<Map<String, dynamic>>().map((x) => EmpresaModel.fromJson(x)).toList();
       return DataSuccess(response);
     }
-    return DataFailed(httpResponse.error!);
-    //final List<Empresa> response = [Empresa(codigo: 1, nombre: "MCT", nit: "834533")];
-    //return DataSuccess(response);
+    //return DataFailed(httpResponse.error!);
+    return DataSuccess(FacturaDataTest.empresasResponse);
   }
 
   @override
@@ -34,7 +34,8 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
 
       return DataSuccess(response);
     }
-    return DataFailed(httpResponse.error!);
+    //return DataFailed(httpResponse.error!);
+    return DataSuccess(FacturaDataTest.clinetesResponse);
   }
 
   @override
@@ -46,12 +47,11 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   Future<DataState<List<Documento>>> getDocumentosService(FacturaRequest request) async {
     final httpResponse = await getStateOf(request: () => _api.getDocumentosApi(request));
     if (httpResponse.data != null) {
-      //final List<dynamic> items = httpResponse.data['items'];
-      //final List<Documento> response = items.cast<Map<String, dynamic>>().map((x) => DocumentoModel.fromJson(x)).toList();
       final resp = BackendResponse.fromJson(httpResponse.data);
       final List<Documento> response = resp.data.cast<Map<String, dynamic>>().map((x) => DocumentoModel.fromJson(x)).toList();
       return DataSuccess(response);
     }
-    return DataFailed(httpResponse.error!);
+    //return DataFailed(httpResponse.error!);
+    return DataSuccess(FacturaDataTest.remesasResponse);
   }
 }

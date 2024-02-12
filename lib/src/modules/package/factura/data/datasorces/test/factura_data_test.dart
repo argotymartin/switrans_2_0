@@ -1,0 +1,88 @@
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+
+class FacturaDataTest {
+  static final List<Empresa> empresasResponse = [
+    Empresa(codigo: 1, nombre: "MCT", nit: "83004861"),
+    Empresa(codigo: 2, nombre: "MARKETING E INVERSIONES S.A.S.", nit: "8060029537"),
+    Empresa(codigo: 12, nombre: "FERRICAR S.A.S", nit: "9010511090"),
+  ];
+
+  static final List<Cliente> clinetesResponse = [
+    Cliente(codigo: 1, nombre: "ROLDAN Y COMPANIA S.A.S.", identificacion: "890903069", telefono: "3520687"),
+    Cliente(codigo: 1, nombre: "INDUFAST S.A.S", identificacion: "900549320", telefono: "6917705"),
+    Cliente(codigo: 1, nombre: "E2 ENERGIA EFICIENTE S.A. E.S.P.", identificacion: "802025052", telefono: "3306266"),
+    Cliente(codigo: 1, nombre: "PEGOMAX SAS", identificacion: "830089785", telefono: "7265033"),
+  ];
+
+  static final List<Documento> remesasResponse = [
+    Documento(
+      remesa: 1235467,
+      impreso: "12345-561",
+      fechaCreacion: "01-01-2024",
+      estadoCodigo: 1,
+      estadoNombre: "Activo",
+      empresa: 1,
+      cierreTarifa: true,
+      cencosCodigo: 1,
+      cencosNombre: "Centro Costo",
+      tipoRemesa: "Nacional",
+      origen: "Funza",
+      destino: "Bogota",
+      observacion: "Esto es una observacion",
+      observacionFactura: "Esto es otra Observacion",
+      remision: "Esto es una Remision",
+      rcp: 1000,
+      total: 2000,
+      flete: 100,
+      anulacionTrafico: false,
+      adiciones: [],
+      descuentos: [],
+    ),
+    Documento(
+      remesa: 1234451,
+      impreso: "45945-154",
+      fechaCreacion: "01-01-2024",
+      estadoCodigo: 1,
+      estadoNombre: "Activo",
+      empresa: 1,
+      cierreTarifa: true,
+      cencosCodigo: 1,
+      cencosNombre: "Centro Costo",
+      tipoRemesa: "Nacional",
+      origen: "Madrid",
+      destino: "Bogota",
+      observacion: "Esto es una observacion",
+      observacionFactura: "Esto es otra Observacion",
+      remision: "Esto es una Remision",
+      rcp: 45000,
+      total: 4511,
+      flete: 1500,
+      anulacionTrafico: true,
+      adiciones: [],
+      descuentos: [],
+    ),
+    Documento(
+      remesa: 1245987,
+      impreso: "01459-845",
+      fechaCreacion: "01-01-2023",
+      estadoCodigo: 1,
+      estadoNombre: "Activo",
+      empresa: 1,
+      cierreTarifa: true,
+      cencosCodigo: 1,
+      cencosNombre: "Centro Costo",
+      tipoRemesa: "Nacional",
+      origen: "Funza",
+      destino: "Bogota",
+      observacion: "Esto es una observacion",
+      observacionFactura: "Esto es otra Observacion",
+      remision: "Esto es una Remision",
+      rcp: 4521,
+      total: 451,
+      flete: 452,
+      anulacionTrafico: false,
+      adiciones: [],
+      descuentos: [],
+    )
+  ];
+}
