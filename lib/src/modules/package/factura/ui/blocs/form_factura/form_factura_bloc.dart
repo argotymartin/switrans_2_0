@@ -1,11 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
 
 part 'form_factura_event.dart';
 part 'form_factura_state.dart';
 
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
+  final AbstractFacturaRepository _repository;
+
   late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
   final TextEditingController clienteController = TextEditingController();
@@ -13,10 +17,21 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final TextEditingController fechaInicioController = TextEditingController();
   final TextEditingController fechaFinController = TextEditingController();
 
-  FormFacturaBloc() : super(const FormFacturaInitialState()) {
+  FormFacturaBloc(this._repository) : super(const FormFacturaInitialState()) {
+    on<GetFormFacturaEvent>((event, emit) async {
+      final dataStateClientes = await _repository.getClientes();
+      final dataStateEmpresas = await _repository.getEmpresasService();
+      emit(FormFacturaDataState(clientes: dataStateClientes.data!, empresas: dataStateEmpresas.data!));
+    });
+
     on<EmpresaFormFacturaEvent>((event, emit) {
       emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(empresa: event.empresa, error: state.error));
+      emit(FormFacturaRequestState(
+        empresa: event.empresa,
+        error: state.error,
+        clientes: state.clientes,
+        empresas: state.empresas,
+      ));
     });
 
     on<PanelFormFacturaEvent>((event, emit) async {

@@ -35,7 +35,6 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
         BlocProvider<ModuloBloc>(create: (_) => injector()..add((const GetModuloEvent()))),
         BlocProvider<FacturaBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
-        BlocProvider<FilterFacturaBloc>(create: (_) => injector()..add((const GetFilterFacturaEvent()))),
       ],
       child: const MyMaterialApp(),
     );

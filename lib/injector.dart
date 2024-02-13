@@ -20,7 +20,6 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<MenuBloc>(MenuBloc());
   injector.registerSingleton<ThemeCubit>(ThemeCubit());
-  injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc());
   injector.registerSingleton<ItemFacturaBloc>(ItemFacturaBloc());
 
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
@@ -33,6 +32,6 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
+  injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector()));
   injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
-  injector.registerSingleton<FilterFacturaBloc>(FilterFacturaBloc(injector()));
 }

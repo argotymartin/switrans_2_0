@@ -56,7 +56,7 @@ class _BuildFiltros extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facturaFilterBloc = BlocProvider.of<FilterFacturaBloc>(context);
+    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Empresa> empresas = facturaFilterBloc.state.empresas;
 
@@ -116,7 +116,7 @@ class _BuildFiltros extends StatelessWidget {
                   fin: fin,
                 );
                 context.read<FacturaBloc>().add(ActiveteFacturaEvent(request));
-                formFacturaBloc.add(const PanelFormFacturaEvent(false));
+                //formFacturaBloc.add(const PanelFormFacturaEvent(false));
 
                 //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
               }
@@ -146,7 +146,7 @@ class _FieldCliente extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facturaFilterBloc = BlocProvider.of<FilterFacturaBloc>(context);
+    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
 
     final suggestions = clientes.map((cliente) {
