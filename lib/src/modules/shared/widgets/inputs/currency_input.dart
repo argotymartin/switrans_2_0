@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:switrans_2_0/src/util/resources/formatters/currency_formater.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/currency_formatter.dart';
 
 class CurrencyInput extends StatelessWidget {
   final TextEditingController controller;

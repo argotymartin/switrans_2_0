@@ -236,7 +236,7 @@ class TableDocumentos extends StatelessWidget {
       listener: (context, state) {
         List<PreFactura> preFacturas = state.preFacturas;
         final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        bool isPresent = preFacturas.any((pre) => pre.documento == docuemnto);
+        bool isPresent = preFacturas.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
 
         rendererContext.cell.row.setChecked(isPresent);
       },

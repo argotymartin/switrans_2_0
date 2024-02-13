@@ -18,9 +18,17 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: state.centroCosto));
     });
 
-    on<RemoveItemFacturaEvent>((event, emit) {
+    on<RemoveItemFacturaEvent>((event, emit) async {
       final List<PreFactura> prefacturas = List.from(state.preFacturas)
         ..removeWhere((element) => element.documento == event.preFactura.documento);
+      emit(const ItemFacturaLoadingState());
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: state.centroCosto));
+    });
+
+    on<RemoveItemByPositionFacturaEvent>((event, emit) {
+      final List<PreFactura> prefacturas = List.from(state.preFacturas);
+      prefacturas.removeAt(event.index);
       emit(const ItemFacturaLoadingState());
       emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: state.centroCosto));
     });

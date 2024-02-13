@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
 
 class TableItemsFactura extends StatelessWidget {
   final List<PreFactura> prefacturas;
@@ -22,6 +23,8 @@ class TableItemsFactura extends StatelessWidget {
         _CellTitle(title: "Documento"),
         _CellTitle(title: "Descripcion"),
         _CellTitle(title: "Valor"),
+        _CellTitle(title: "IVA %"),
+        _CellTitle(title: "IVA Valor"),
         _CellTitle(title: "Cantidad"),
         _CellTitle(title: "Total"),
         _CellTitle(title: "Accion"),
@@ -31,19 +34,25 @@ class TableItemsFactura extends StatelessWidget {
     List<TableRow> buildTableRows = prefacturas.map(
       (prefactura) {
         final valorController = TextEditingController(text: '${prefactura.valor}');
-        final cantidadController = TextEditingController(text: '0');
+        final cantidadController = TextEditingController(text: '1');
         index++;
         return TableRow(
           children: [
             _BuildFieldItem(index),
             _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
             _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
-            _CellContent(child: CurrencyInput(controller: valorController, color: Colors.blue.shade800)),
-            _CellContent(child: NumberInput(colorText: Colors.blue.shade700, controller: cantidadController)),
-            _CellContent(child: CurrencyLabel(color: Colors.green.shade900, text: "200")),
-            _CellContent(child: _BuildFiledAccion(onPressed: () {
-              context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
-            })),
+            _CellContent(child: _BuildValor(valorController: valorController)),
+            const _CellContent(child: _BuildPorcentajeIva()),
+            const _CellContent(child: _BuildValorIva()),
+            _CellContent(child: _BuildCantidad(cantidadController: cantidadController)),
+            const _CellContent(child: _BuildTotal()),
+            _CellContent(
+              child: _BuildFiledAccion(
+                onPressed: () {
+                  context.read<ItemFacturaBloc>().add(RemoveItemByPositionFacturaEvent(index: index - 1));
+                },
+              ),
+            ),
           ],
         );
       },
@@ -51,10 +60,10 @@ class TableItemsFactura extends StatelessWidget {
 
     const columnWidth = {
       0: FlexColumnWidth(0.6),
-      1: FractionColumnWidth(0.2),
-      2: FractionColumnWidth(0.25),
-      3: FractionColumnWidth(0.15),
-      6: FractionColumnWidth(0.15),
+      1: FractionColumnWidth(0.15),
+      2: FractionColumnWidth(0.30),
+      3: FractionColumnWidth(0.1),
+      6: FractionColumnWidth(0.08),
     };
     return Table(
       border: TableBorder.all(color: Colors.grey.shade200, width: 1),
@@ -62,6 +71,62 @@ class TableItemsFactura extends StatelessWidget {
       columnWidths: columnWidth,
       children: [tableRowsTitle, ...buildTableRows],
     );
+  }
+}
+
+class _BuildTotal extends StatelessWidget {
+  const _BuildTotal();
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrencyLabel(color: Colors.green.shade900, text: "200");
+  }
+}
+
+class _BuildCantidad extends StatelessWidget {
+  const _BuildCantidad({
+    required this.cantidadController,
+  });
+
+  final TextEditingController cantidadController;
+
+  @override
+  Widget build(BuildContext context) {
+    return NumberInput(colorText: Colors.blue.shade700, controller: cantidadController);
+  }
+}
+
+class _BuildValorIva extends StatelessWidget {
+  const _BuildValorIva();
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrencyLabel(color: Colors.green.shade900, text: "200");
+  }
+}
+
+class _BuildPorcentajeIva extends StatelessWidget {
+  const _BuildPorcentajeIva();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "19%",
+      style: TextStyle(color: Colors.green.shade900),
+    );
+  }
+}
+
+class _BuildValor extends StatelessWidget {
+  const _BuildValor({
+    required this.valorController,
+  });
+
+  final TextEditingController valorController;
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrencyInput(controller: valorController, color: Colors.blue.shade800);
   }
 }
 
@@ -91,22 +156,16 @@ class _BuildFieldItem extends StatelessWidget {
   }
 }
 
-class _BuildFiledDocumento extends StatefulWidget {
+class _BuildFiledDocumento extends StatelessWidget {
   final PreFactura preFactura;
 
   const _BuildFiledDocumento({required this.preFactura});
 
   @override
-  State<_BuildFiledDocumento> createState() => _BuildFiledDocumentoState();
-}
-
-class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
-  @override
   Widget build(BuildContext context) {
     final documentosAll = context.read<FacturaBloc>().state.documentos;
-    final documentoController = TextEditingController(text: widget.preFactura.toString());
-    final suggestionSeleted =
-        widget.preFactura.documento > 0 ? SuggestionModel(title: widget.preFactura.documento.toString(), subTitle: "") : null;
+    final documentoController = TextEditingController(text: preFactura.toString());
+    final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
         codigo: '${remesa.remesa}',
@@ -118,7 +177,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
 
     void setValueFactura(String value) {
       if (value.isNotEmpty) {
-        widget.preFactura.documento = int.parse(value);
+        preFactura.documento = int.parse(value);
       }
     }
 
@@ -132,7 +191,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
           suggestionSelected: suggestionSeleted,
           onPressed: setValueFactura,
         ),
-        RadioButtons(tipo: widget.preFactura.tipo),
+        RadioButtons(tipo: preFactura.tipo),
       ],
     );
   }
@@ -145,12 +204,13 @@ class _BuildFieldDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: [UpperCaseFormatter()],
       initialValue: CustomFunctions.limpiarTexto(title),
       autovalidateMode: AutovalidateMode.always,
       maxLines: 7,
       minLines: 5,
       textAlign: TextAlign.justify,
-      style: const TextStyle(fontSize: 8.5),
+      style: const TextStyle(fontSize: 10),
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         alignLabelWithHint: true,

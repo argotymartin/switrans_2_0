@@ -319,17 +319,21 @@ class _BuildDetailsDocumentos extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CardAdicionesAndDescuentos(
-          documentos: documentosAdicion,
-          title: 'ADICIONES',
-          color: Colors.green,
-        ),
+        documentosAdicion.isNotEmpty
+            ? CardAdicionesAndDescuentos(
+                documentos: documentosAdicion,
+                title: 'ADICIONES',
+                color: Colors.green,
+              )
+            : const SizedBox(),
         const SizedBox(width: 24),
-        CardAdicionesAndDescuentos(
-          documentos: documentosDescuentos,
-          title: 'DESCUENTOS',
-          color: Colors.red,
-        ),
+        documentosDescuentos.isNotEmpty
+            ? CardAdicionesAndDescuentos(
+                documentos: documentosDescuentos,
+                title: 'DESCUENTOS',
+                color: Colors.red,
+              )
+            : const SizedBox(),
       ],
     );
   }
