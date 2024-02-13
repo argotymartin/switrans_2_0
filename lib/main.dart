@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+//import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/injector.dart';
@@ -14,7 +14,7 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/splash_view.dart';
 
 Future<void> main() async {
-  usePathUrlStrategy();
+  //usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeDependencies();

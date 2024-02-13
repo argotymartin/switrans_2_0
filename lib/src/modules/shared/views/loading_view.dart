@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key});
@@ -12,9 +11,9 @@ class LoadingView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Lottie.asset("animations/loading.json", height: 200),
-            const SizedBox(height: 24),
-            const Text("Cargando ......."),
+            Image.asset("assets/animations/loading.gif"),
+            const SizedBox(height: 4),
+            const Text("Por favor espere..."),
           ],
         ),
       ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/pre_factura_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
@@ -218,7 +217,14 @@ class TableDocumentos extends StatelessWidget {
           );
         }
         if (state is FacturaLoadingState) {
-          return Center(child: Lottie.asset("animations/loading.json", height: 200));
+          return Center(
+            child: Column(
+              children: [
+                Image.asset("assets/animations/loading.gif"),
+                const Text("Por favor espere........."),
+              ],
+            ),
+          );
         }
         return const SizedBox();
       },
