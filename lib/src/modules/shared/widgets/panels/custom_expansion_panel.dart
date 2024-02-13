@@ -1,10 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
-class CustomExpansionPanel extends StatelessWidget {
+class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
   const CustomExpansionPanel({
@@ -14,13 +12,20 @@ class CustomExpansionPanel extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CustomExpansionPanel> createState() => _CustomExpansionPanelState();
+}
+
+class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
+  bool isExpanded = true;
+  @override
   Widget build(BuildContext context) {
-    final expansionPanelCubit = context.watch<FormFacturaBloc>();
+    //final expansionPanelCubit = context.watch<FormFacturaBloc>();
     return Column(
       children: [
         ExpansionPanelList(
-          expansionCallback: (panelIndex, isExpanded) {
-            expansionPanelCubit.add(PanelFormFacturaEvent(isExpanded));
+          expansionCallback: (panelIndex, _) {
+            isExpanded = !isExpanded;
+            setState(() {});
           },
           children: <ExpansionPanel>[
             ExpansionPanel(
@@ -36,7 +41,7 @@ class CustomExpansionPanel extends StatelessWidget {
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Text(
-                            title,
+                            widget.title,
                             style: GoogleFonts.roboto(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -50,9 +55,9 @@ class CustomExpansionPanel extends StatelessWidget {
               },
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: child,
+                child: widget.child,
               ),
-              isExpanded: expansionPanelCubit.state.expanded,
+              isExpanded: isExpanded,
               canTapOnHeader: true,
             )
           ],

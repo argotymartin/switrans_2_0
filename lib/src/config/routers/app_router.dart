@@ -41,7 +41,9 @@ class AppRouter {
                 builder: (context, stateFactura) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
-                    child: (stateFactura is FormFacturaDataState) ? const FacturaCreateView() : const LoadingView(),
+                    child: (stateFactura is FormFacturaDataState || stateFactura is FormFacturaRequestState)
+                        ? const FacturaCreateView()
+                        : const LoadingView(),
                   );
                 },
               );

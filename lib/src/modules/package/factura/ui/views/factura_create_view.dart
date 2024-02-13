@@ -87,39 +87,7 @@ class _BuildFiltros extends StatelessWidget {
           FilledButton.icon(
             onPressed: () {
               final isValid = formKey.currentState!.validate();
-              //final empresa = formFacturaBloc.state.empresa;
-              const empresa = "1";
-              //final cliente = formFacturaBloc.clienteController.text;
-              const cliente = "1409";
-              //final remesas = formFacturaBloc.remesasController.text;
-              //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
-              //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
-              const remesas = "736801,736978,443534";
-              final inicio = formFacturaBloc.fechaInicioController.text;
-              final fin = formFacturaBloc.fechaFinController.text;
-              String error = "";
-              if (empresa.isEmpty) error += " El campo Empresa no puede ser vacio";
-              if (cliente.isEmpty) error += " El campo Cliente no puede ser vacio";
-              if (remesas.isEmpty && inicio.isEmpty) error += " Se deben agregar remesas al filtro o un intervalo de fechas";
-              if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
-
-              if (error.isNotEmpty) {
-                formFacturaBloc.add(ErrorFormFacturaEvent(error));
-              }
-              //if (isValid && formFacturaBloc.state is FormFacturaRequestState && error.isEmpty) {
-              if (isValid && error.isEmpty) {
-                final FacturaRequest request = FacturaRequest(
-                  empresa: int.parse(empresa),
-                  cliente: int.parse(cliente),
-                  remesas: remesas,
-                  inicio: inicio,
-                  fin: fin,
-                );
-                context.read<FacturaBloc>().add(ActiveteFacturaEvent(request));
-                //formFacturaBloc.add(const PanelFormFacturaEvent(false));
-
-                //context.read<FilterFacturaBloc>().add(const PanelFilterFacturaEvent());
-              }
+              formFacturaBloc.onPressedSearch(isValid);
             },
             icon: const Icon(Icons.search_rounded),
             label: const Text("Buscar", style: TextStyle(color: Colors.white)),

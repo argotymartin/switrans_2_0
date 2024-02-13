@@ -32,6 +32,6 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
-  injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector()));
   injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
+  injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector(), injector()));
 }
