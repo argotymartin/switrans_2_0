@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
+import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_details_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/modal_item_documento.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/text_area_documento.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/modals/error_modal.dart';
@@ -95,51 +96,6 @@ class _BuildFiltros extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class _BuildDocumentos extends StatelessWidget {
-  const _BuildDocumentos();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<FacturaBloc, FacturaState>(
-      builder: (context, state) {
-        if (state is FacturaSuccesState) {
-          final remesas = context.read<FormFacturaBloc>().remesasController.text;
-          List<String> items = remesas.split(",");
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    "Consultadas/Encontrados",
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  Text(
-                    "${items.length}/${state.documentos.length}",
-                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              TableDocumentos(documentos: state.documentos),
-            ],
-          );
-        }
-        if (state is FacturaLoadingState) {
-          return Center(
-            child: Column(
-              children: [
-                Image.asset("assets/animations/loading.gif"),
-                const Text("Por favor espere........."),
-              ],
-            ),
-          );
-        }
-        return const SizedBox();
-      },
     );
   }
 }
@@ -277,6 +233,51 @@ class _FieldFechas extends StatelessWidget {
   }
 }
 
+class _BuildDocumentos extends StatelessWidget {
+  const _BuildDocumentos();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (context, state) {
+        if (state is FacturaSuccesState) {
+          final remesas = context.read<FormFacturaBloc>().remesasController.text;
+          List<String> items = remesas.split(",");
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    "Consultadas/Encontrados",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  Text(
+                    "${items.length}/${state.documentos.length}",
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              TableDocumentos(documentos: state.documentos),
+            ],
+          );
+        }
+        if (state is FacturaLoadingState) {
+          return Center(
+            child: Column(
+              children: [
+                Image.asset("assets/animations/loading.gif"),
+                const Text("Por favor espere........."),
+              ],
+            ),
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
 class _BuildItemFactura extends StatelessWidget {
   const _BuildItemFactura();
 
@@ -326,20 +327,13 @@ class _BuildDetailsDocumentos extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         documentosAdicion.isNotEmpty
-            ? CardAdicionesAndDescuentos(
-                documentos: documentosAdicion,
-                title: 'ADICIONES',
-                color: Colors.green,
-              )
-            : const SizedBox(),
+            ? CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green)
+            : const SizedBox(width: 400),
         const SizedBox(width: 24),
         documentosDescuentos.isNotEmpty
-            ? CardAdicionesAndDescuentos(
-                documentos: documentosDescuentos,
-                title: 'DESCUENTOS',
-                color: Colors.red,
-              )
-            : const SizedBox(),
+            ? CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red)
+            : const SizedBox(width: 400),
+        const CardDetailsFactura()
       ],
     );
   }
@@ -350,6 +344,11 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formFacturaBloc = context.read<FormFacturaBloc>();
+
+    final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
+    final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
+
     final documentosAll = context.read<FacturaBloc>().state.documentos;
     final controller = TextEditingController();
     final centrosCosto = documentosAll.map((remesa) => MapEntry(remesa.cencosCodigo, remesa.cencosNombre)).toSet().toList();
@@ -370,6 +369,28 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        SizedBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.work_outline_outlined),
+                  const SizedBox(width: 8),
+                  Text(empresaSelect.nombre),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.contact_emergency_outlined),
+                  const SizedBox(width: 8),
+                  Text(clienteSelect.nombre),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
         SizedBox(
           width: 400,
           child: AutocompleteInput(

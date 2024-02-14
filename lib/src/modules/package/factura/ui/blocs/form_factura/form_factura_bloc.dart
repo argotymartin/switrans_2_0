@@ -42,8 +42,10 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
     on<ErrorFormFacturaEvent>((event, emit) async {
       final String empresa = state.empresa;
+      List<Cliente> clientes = state.clientes;
+      List<Empresa> empresas = state.empresas;
       emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(error: event.error, empresa: empresa, expanded: state.expanded));
+      emit(FormFacturaRequestState(error: event.error, empresa: empresa, expanded: state.expanded, clientes: clientes, empresas: empresas));
     });
 
     scrollController.addListener(() {
@@ -63,11 +65,12 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void onPressedSearch(bool isValid) async {
-    //final empresa = state.empresa;
-    const empresa = "1";
-    //final cliente = formFacturaBloc.clienteController.text;
-    const cliente = "1409";
-    remesasController.text = "736801,736978,443534";
+    //add(const EmpresaFormFacturaEvent("1"));
+    //clienteController.text = "1409";
+    //remesasController.text = "736801,736978,443534";
+
+    final empresa = state.empresa;
+    final cliente = clienteController.text;
     final remesas = remesasController.text;
     //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
     //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
@@ -94,5 +97,15 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       _facturaBloc.add(GetDocumentosFacturaEvent(request));
       await moveScroll(500);
     }
+  }
+
+  Cliente getClienteSelected() {
+    final Cliente cliente = state.clientes.firstWhere((element) => element.codigo == int.parse(clienteController.text));
+    return cliente;
+  }
+
+  Empresa getEmpresaSelected() {
+    final Empresa empresa = state.empresas.firstWhere((element) => element.codigo == int.parse(state.empresa));
+    return empresa;
   }
 }
