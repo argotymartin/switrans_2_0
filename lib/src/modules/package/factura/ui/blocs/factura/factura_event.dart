@@ -11,11 +11,6 @@ class GetFacturaEvent extends FacturaEvent {
   const GetFacturaEvent();
 }
 
-class ActiveteFacturaEvent extends FacturaEvent {
-  final FacturaRequest request;
-  const ActiveteFacturaEvent(this.request);
-}
-
 class ChangedFacturaEvent extends FacturaEvent {
   final List<Documento> documentos;
   const ChangedFacturaEvent(this.documentos);

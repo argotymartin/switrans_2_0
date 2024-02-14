@@ -163,9 +163,11 @@ class TableDocumentos extends StatelessWidget {
                     final Documento doc = state.documentos[event.rowIdx];
                     final prefactura = PreFacturaModel.toDocumetno(doc);
                     if (event.row.checked!) {
+                      prefactura.tipo = "TR";
                       context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: prefactura));
                       stateManager.setRowChecked(event.row, false);
                     } else {
+                      prefactura.tipo = "TR";
                       stateManager.setRowChecked(event.row, true);
                       context.read<ItemFacturaBloc>().add(AddItemFacturaEvent(preFactura: prefactura));
                       context.read<FormFacturaBloc>().animationController.forward();

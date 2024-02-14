@@ -38,7 +38,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       ));
     });
 
-    //scrollController.addListener(() => print(scrollController.offset));
+    scrollController.addListener(() => print(scrollController.offset));
 
     on<ErrorFormFacturaEvent>((event, emit) async {
       final String empresa = state.empresa;
@@ -51,7 +51,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
   }
 
-  void moveScroll(double offset) => scrollController.animateTo(offset, duration: kThemeAnimationDuration, curve: Curves.easeIn);
+  Future moveScroll(double offset) => scrollController.animateTo(offset, duration: kThemeAnimationDuration, curve: Curves.easeIn);
 
   void moveBottomAllScroll() {
     animationController.reset();
@@ -62,7 +62,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  void onPressedSearch(bool isValid) {
+  void onPressedSearch(bool isValid) async {
     //final empresa = state.empresa;
     const empresa = "1";
     //final cliente = formFacturaBloc.clienteController.text;
@@ -90,8 +90,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         inicio: inicio,
         fin: fin,
       );
-      _facturaBloc.add(ActiveteFacturaEvent(request));
-      moveScroll(447);
+      await _facturaBloc.getDocumentos(request);
+      await moveScroll(500);
     }
   }
 }

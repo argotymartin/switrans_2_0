@@ -56,9 +56,8 @@ class _BuildFiltros extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
-    List<Empresa> empresas = facturaFilterBloc.state.empresas;
+    List<Empresa> empresas = formFacturaBloc.state.empresas;
 
     final formKey = GlobalKey<FormState>();
     return Form(
