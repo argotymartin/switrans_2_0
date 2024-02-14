@@ -6,6 +6,8 @@ class PreFactura {
   int valor;
   int cantidad;
   int total;
+  int porcentajeIva;
+  int valorIva;
   PreFactura({
     required this.documentoImpreso,
     required this.documento,
@@ -14,5 +16,7 @@ class PreFactura {
     required this.valor,
     required this.cantidad,
     required this.total,
+    required this.porcentajeIva,
+    required this.valorIva,
   });
 }

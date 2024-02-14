@@ -33,37 +33,32 @@ class TableItemsFactura extends StatelessWidget {
     int index = 0;
     List<TableRow> buildTableRows = prefacturas.map(
       (prefactura) {
-        final valorController = TextEditingController(text: '${prefactura.valor}');
-        final cantidadController = TextEditingController(text: '1');
         index++;
         return TableRow(
           children: [
-            _BuildFieldItem(index),
+            _CellContent(child: _BuildFieldItem(index)),
             _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
             _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
-            _CellContent(child: _BuildValor(valorController: valorController)),
-            const _CellContent(child: _BuildPorcentajeIva()),
-            const _CellContent(child: _BuildValorIva()),
-            _CellContent(child: _BuildCantidad(cantidadController: cantidadController)),
-            const _CellContent(child: _BuildTotal()),
-            _CellContent(
-              child: _BuildFiledAccion(
-                onPressed: () {
-                  context.read<ItemFacturaBloc>().add(RemoveItemByPositionFacturaEvent(index: index - 1));
-                },
-              ),
-            ),
+            _CellContent(child: _BuildValor(preFactura: prefactura)),
+            _CellContent(child: _BuildPorcentajeIva(prefactura.porcentajeIva)),
+            _CellContent(child: _BuildValorIva(valorIva: prefactura.valorIva)),
+            _CellContent(child: _BuildCantidad(preFactura: prefactura)),
+            _CellContent(child: _BuildTotal(total: prefactura.total)),
+            _CellContent(child: _BuildFiledAccion(index: index - 1)),
           ],
         );
       },
     ).toList();
 
     const columnWidth = {
-      0: FlexColumnWidth(0.6),
+      0: FractionColumnWidth(0.04),
       1: FractionColumnWidth(0.15),
-      2: FractionColumnWidth(0.30),
+      2: FractionColumnWidth(0.3),
       3: FractionColumnWidth(0.1),
-      6: FractionColumnWidth(0.08),
+      4: FractionColumnWidth(0.05),
+      5: FractionColumnWidth(0.08),
+      6: FractionColumnWidth(0.06),
+      7: FractionColumnWidth(0.1),
     };
     return Table(
       border: TableBorder.all(color: Colors.grey.shade200, width: 1),
@@ -74,81 +69,23 @@ class TableItemsFactura extends StatelessWidget {
   }
 }
 
-class _BuildTotal extends StatelessWidget {
-  const _BuildTotal();
-
-  @override
-  Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: "200");
-  }
-}
-
-class _BuildCantidad extends StatelessWidget {
-  const _BuildCantidad({
-    required this.cantidadController,
-  });
-
-  final TextEditingController cantidadController;
-
-  @override
-  Widget build(BuildContext context) {
-    return NumberInput(colorText: Colors.blue.shade700, controller: cantidadController);
-  }
-}
-
-class _BuildValorIva extends StatelessWidget {
-  const _BuildValorIva();
-
-  @override
-  Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: "200");
-  }
-}
-
-class _BuildPorcentajeIva extends StatelessWidget {
-  const _BuildPorcentajeIva();
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      "19%",
-      style: TextStyle(color: Colors.green.shade900),
-    );
-  }
-}
-
-class _BuildValor extends StatelessWidget {
-  const _BuildValor({
-    required this.valorController,
-  });
-
-  final TextEditingController valorController;
-
-  @override
-  Widget build(BuildContext context) {
-    return CurrencyInput(controller: valorController, color: Colors.blue.shade800);
-  }
-}
-
 class _BuildFieldItem extends StatelessWidget {
   final int index;
   const _BuildFieldItem(this.index);
 
   @override
   Widget build(BuildContext context) {
-    return _CellContent(
-      child: Center(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Center(
-            child: Text(
-              index.toString(),
-              style: const TextStyle(color: Colors.white),
-            ),
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        child: Center(
+          child: Text(
+            index.toString(),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
@@ -220,9 +157,91 @@ class _BuildFieldDescription extends StatelessWidget {
   }
 }
 
+class _BuildValor extends StatelessWidget {
+  const _BuildValor({
+    required this.preFactura,
+  });
+
+  final PreFactura preFactura;
+
+  @override
+  Widget build(BuildContext context) {
+    void onChaneged(String value) {
+      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
+      int intValue = int.parse(textValue);
+      double newValorIva = intValue * preFactura.porcentajeIva / 100;
+
+      preFactura.valor = intValue;
+      preFactura.valorIva = newValorIva.round();
+      preFactura.total = (preFactura.valor + preFactura.valorIva) * preFactura.cantidad;
+      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+    }
+
+    return CurrencyInput(
+      color: Colors.blue.shade800,
+      onChanged: onChaneged,
+    );
+  }
+}
+
+class _BuildPorcentajeIva extends StatelessWidget {
+  final int valor;
+  const _BuildPorcentajeIva(this.valor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "$valor%",
+      style: TextStyle(color: Colors.green.shade900, fontWeight: FontWeight.w400, fontSize: 16),
+    );
+  }
+}
+
+class _BuildValorIva extends StatelessWidget {
+  final int valorIva;
+  const _BuildValorIva({required this.valorIva});
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrencyLabel(color: Colors.green.shade900, text: valorIva.toString());
+  }
+}
+
+class _BuildCantidad extends StatelessWidget {
+  final PreFactura preFactura;
+  const _BuildCantidad({
+    required this.preFactura,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    void onChanged(String value) {
+      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
+      int intValue = int.parse(textValue);
+      preFactura.cantidad = intValue;
+      preFactura.total = (preFactura.valor + preFactura.valorIva) * preFactura.cantidad;
+      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+    }
+
+    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged);
+  }
+}
+
+class _BuildTotal extends StatelessWidget {
+  final int total;
+  const _BuildTotal({required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrencyLabel(color: Colors.green.shade900, text: total.toString());
+  }
+}
+
 class _BuildFiledAccion extends StatelessWidget {
-  final VoidCallback onPressed;
-  const _BuildFiledAccion({required this.onPressed});
+  final int index;
+  const _BuildFiledAccion({required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -230,14 +249,16 @@ class _BuildFiledAccion extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomSizeButton(
-          onPressed: onPressed,
+          onPressed: () {
+            context.read<ItemFacturaBloc>().add(RemoveItemByPositionFacturaEvent(index: index));
+          },
           width: 32,
           icon: Icons.remove_circle_outline,
           color: Colors.red.shade800,
           iconColor: Colors.white,
         ),
         const SizedBox(width: 4),
-        CustomSizeButton(width: 32, icon: Icons.refresh_outlined, onPressed: onPressed),
+        CustomSizeButton(width: 32, icon: Icons.refresh_outlined, onPressed: () {}),
       ],
     );
   }

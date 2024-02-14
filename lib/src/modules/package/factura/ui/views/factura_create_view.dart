@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +35,7 @@ class FacturaCreateView extends StatelessWidget {
             const SizedBox(height: 10),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
             const SizedBox(height: 10),
-            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: TableDocumentos()),
+            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: _BuildDocumentos()),
             const SizedBox(height: 10),
             const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
             const SizedBox(height: 200),
@@ -96,6 +95,51 @@ class _BuildFiltros extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BuildDocumentos extends StatelessWidget {
+  const _BuildDocumentos();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (context, state) {
+        if (state is FacturaSuccesState) {
+          final remesas = context.read<FormFacturaBloc>().remesasController.text;
+          List<String> items = remesas.split(",");
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    "Consultadas/Encontrados",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  Text(
+                    "${items.length}/${state.documentos.length}",
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              TableDocumentos(documentos: state.documentos),
+            ],
+          );
+        }
+        if (state is FacturaLoadingState) {
+          return Center(
+            child: Column(
+              children: [
+                Image.asset("assets/animations/loading.gif"),
+                const Text("Por favor espere........."),
+              ],
+            ),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

@@ -25,6 +25,11 @@ class RemoveItemFacturaEvent extends ItemFacturaEvent {
   const RemoveItemFacturaEvent({required this.preFactura});
 }
 
+class ChangedItemFacturaEvent extends ItemFacturaEvent {
+  final PreFactura preFactura;
+  const ChangedItemFacturaEvent({required this.preFactura});
+}
+
 class RemoveItemByPositionFacturaEvent extends ItemFacturaEvent {
   final int index;
   const RemoveItemByPositionFacturaEvent({required this.index});

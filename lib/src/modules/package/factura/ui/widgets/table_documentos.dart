@@ -7,67 +7,50 @@ import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
 class TableDocumentos extends StatelessWidget {
-  const TableDocumentos({Key? key}) : super(key: key);
+  final List<Documento> documentos;
+  const TableDocumentos({Key? key, required this.documentos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    late PlutoGridStateManager stateManager;
     final itemFacturaBloc = context.read<ItemFacturaBloc>();
-    return BlocBuilder<FacturaBloc, FacturaState>(
+    final size = MediaQuery.of(context).size;
+    final double rowHeight = size.height * 0.16;
+    const double titleHeight = 48;
+    const double columnFilterHeight = 36;
+
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
-        final size = MediaQuery.of(context).size;
-        final double rowHeight = size.height * 0.16;
-        const double titleHeight = 48;
-        const double columnFilterHeight = 36;
-        if (state is FacturaSuccesState) {
-          late PlutoGridStateManager stateManager;
-          final List<PlutoColumn> columns = DocumentosTableDataBuilder.buildColumns(context);
-          final List<PlutoRow> dataRows = DocumentosTableDataBuilder.buildDataRows(state.documentos, context);
-          return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
-            builder: (context, itemstate) {
-              return Container(
-                height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
-                padding: const EdgeInsets.all(15),
-                child: PlutoGrid(
-                  columns: columns,
-                  rows: dataRows,
-                  onLoaded: (PlutoGridOnLoadedEvent event) {
-                    stateManager = event.stateManager;
-                    stateManager.setShowColumnFilter(true);
-                  },
-                  onRowDoubleTap: (event) => onRowDoubleTap(event, state.documentos, itemFacturaBloc, stateManager),
-                  onRowChecked: (event) => onRowChecked(event, state.documentos, itemFacturaBloc),
-                  configuration: PlutoGridConfiguration(
-                    style: PlutoGridStyleConfig(
-                      checkedColor: Theme.of(context).colorScheme.primaryContainer,
-                      activatedColor: Theme.of(context).colorScheme.onPrimary,
-                      activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                      columnHeight: titleHeight,
-                      columnFilterHeight: columnFilterHeight,
-                      rowHeight: rowHeight,
-                    ),
-                    columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
-                    scrollbar: const PlutoGridScrollbarConfig(
-                      longPressDuration: Duration.zero,
-                      onlyDraggingThumb: false,
-                    ),
-                    localeText: const PlutoGridLocaleText.spanish(),
-                  ),
-                ),
-              );
+        return Container(
+          height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            columns: DocumentosTableDataBuilder.buildColumns(context),
+            rows: DocumentosTableDataBuilder.buildDataRows(documentos, context),
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
             },
-          );
-        }
-        if (state is FacturaLoadingState) {
-          return Center(
-            child: Column(
-              children: [
-                Image.asset("assets/animations/loading.gif"),
-                const Text("Por favor espere........."),
-              ],
+            onRowDoubleTap: (event) => onRowDoubleTap(event, documentos, itemFacturaBloc, stateManager),
+            onRowChecked: (event) => onRowChecked(event, documentos, itemFacturaBloc),
+            configuration: PlutoGridConfiguration(
+              style: PlutoGridStyleConfig(
+                checkedColor: Theme.of(context).colorScheme.primaryContainer,
+                activatedColor: Theme.of(context).colorScheme.onPrimary,
+                activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                columnHeight: titleHeight,
+                columnFilterHeight: columnFilterHeight,
+                rowHeight: rowHeight,
+              ),
+              columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
+              scrollbar: const PlutoGridScrollbarConfig(
+                longPressDuration: Duration.zero,
+                onlyDraggingThumb: false,
+              ),
+              localeText: const PlutoGridLocaleText.spanish(),
             ),
-          );
-        }
-        return const SizedBox();
+          ),
+        );
       },
     );
   }

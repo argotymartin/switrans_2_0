@@ -10,25 +10,29 @@ class PreFacturaModel extends PreFactura {
     required super.valor,
     required super.cantidad,
     required super.total,
+    super.porcentajeIva = 0,
+    super.valorIva = 0,
   });
 
   factory PreFacturaModel.toDocumetno(Documento documento) => PreFacturaModel(
-        cantidad: 4,
+        cantidad: 1,
         documentoImpreso: documento.impreso,
         descripcion: documento.observacion,
         documento: documento.remesa,
-        tipo: "",
-        total: documento.total,
         valor: documento.flete,
+        tipo: "",
+        total: 0,
       );
 
   factory PreFacturaModel.init() => PreFacturaModel(
-        cantidad: 4,
+        cantidad: 1,
         documentoImpreso: "",
         descripcion: "",
         documento: 0,
         tipo: "",
-        total: 1,
+        total: 0,
         valor: 0,
+        valorIva: 0,
+        porcentajeIva: 19,
       );
 }

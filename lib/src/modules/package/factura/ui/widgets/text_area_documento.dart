@@ -37,7 +37,7 @@ class TextAreaDocumentos extends StatelessWidget {
         .toList();
     if (remesas.isEmpty) return null;
     String title = "";
-    RegExp regexGeneral = RegExp(r'^\d{7}$');
+    RegExp regexGeneral = RegExp(r'^\d{6,7}$');
     RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
     if (regexGeneral.hasMatch(remesas.first)) {

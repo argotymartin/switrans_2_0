@@ -17,9 +17,9 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       preFactura.tipo = "TR";
       final List<PreFactura> preFacturas = List.from(state.preFacturas);
       if (!preFacturas.contains(event.preFactura)) preFacturas.add(event.preFactura);
-
+      String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
-      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: state.centroCosto));
+      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: centroCosto));
       _formBloc.animationController.forward();
     });
 
@@ -29,31 +29,39 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
 
       final List<PreFactura> preFacturas = List.from(state.preFacturas);
       if (!preFacturas.contains(preFactura)) preFacturas.add(preFactura);
-
+      String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
-      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: state.centroCosto));
+      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: centroCosto));
       _formBloc.animationController.forward();
     });
 
-    on<RemoveItemFacturaEvent>((event, emit) async {
+    on<RemoveItemFacturaEvent>((event, emit) {
       final List<PreFactura> prefacturas = List.from(state.preFacturas)
         ..removeWhere((element) => element.documento == event.preFactura.documento);
+      String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
-      await Future.delayed(const Duration(milliseconds: 100));
-      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: state.centroCosto));
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: centroCosto));
     });
 
     on<RemoveItemByPositionFacturaEvent>((event, emit) {
       final List<PreFactura> prefacturas = List.from(state.preFacturas);
       prefacturas.removeAt(event.index);
+      String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
-      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: state.centroCosto));
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: centroCosto));
     });
 
     on<SelectCentroCostoItemFacturaEvent>((event, emit) {
       final List<PreFactura> prefacturas = List.from(state.preFacturas);
       emit(const ItemFacturaLoadingState());
       emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: event.centroCosto));
+    });
+
+    on<ChangedItemFacturaEvent>((event, emit) {
+      final List<PreFactura> prefacturas = List.from(state.preFacturas);
+      String centroCosto = state.centroCosto;
+      emit(const ItemFacturaLoadingState());
+      emit(ItemFacturaSuccesState(preFacturas: prefacturas, centroCosto: centroCosto));
     });
   }
 }

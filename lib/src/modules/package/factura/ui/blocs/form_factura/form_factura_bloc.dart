@@ -38,7 +38,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       ));
     });
 
-    scrollController.addListener(() => print(scrollController.offset));
+    //scrollController.addListener(() => print(scrollController.offset));
 
     on<ErrorFormFacturaEvent>((event, emit) async {
       final String empresa = state.empresa;
@@ -67,10 +67,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     const empresa = "1";
     //final cliente = formFacturaBloc.clienteController.text;
     const cliente = "1409";
-    //final remesas = remesasController.text;
+    remesasController.text = "736801,736978,443534";
+    final remesas = remesasController.text;
     //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
     //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
-    const remesas = "736801,736978,443534";
+    //const remesas = "736801,736978,443534";
     final inicio = fechaInicioController.text;
     final fin = fechaFinController.text;
     String error = "";
