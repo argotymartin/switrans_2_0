@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
@@ -13,12 +11,14 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
   FacturaBloc(this._repository) : super(FacturaInitial()) {
     on<FacturaEvent>((event, emit) {});
     on<ChangedFacturaEvent>((event, emit) async {
-      emit(const FacturaInitialState());
+      emit(const FacturaLoadingState());
       emit(FacturaSuccesState(documentos: event.documentos));
     });
-  }
-  FutureOr getDocumentos(FacturaRequest request) async {
-    final resp = await _repository.getDocumentosService(request);
-    add(ChangedFacturaEvent(resp.data!));
+
+    on<GetDocumentosFacturaEvent>((event, emit) async {
+      emit(const FacturaLoadingState());
+      final resp = await _repository.getDocumentosService(event.request);
+      emit(FacturaSuccesState(documentos: resp.data!));
+    });
   }
 }

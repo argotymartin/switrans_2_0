@@ -90,7 +90,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         inicio: inicio,
         fin: fin,
       );
-      await _facturaBloc.getDocumentos(request);
+      _facturaBloc.add(GetDocumentosFacturaEvent(request));
       await moveScroll(500);
     }
   }
