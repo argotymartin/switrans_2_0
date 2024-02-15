@@ -33,18 +33,18 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: title == "ADICIONES"
-                    ? e.adiciones.map((a) => CurrencyLabel(text: a.valor.toString(), color: color)).toList()
-                    : e.descuentos.map((a) => CurrencyLabel(text: a.valor.toString(), color: color)).toList(),
+                    ? e.adiciones.map((a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList()
+                    : e.descuentos.map((a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList(),
               ),
             ]))
         .toList();
 
-    int total = title == "ADICIONES"
+    double total = title == "ADICIONES"
         ? documentos
-            .map((documento) => documento.adiciones.fold(0, (total, adicion) => total + adicion.valor))
+            .map((documento) => documento.adiciones.fold(0, (total, adicion) => total + adicion.valor.toInt()))
             .fold(0, (total, subtotal) => total + subtotal)
         : documentos
-            .map((documento) => documento.descuentos.fold(0, (total, descuento) => total + descuento.valor))
+            .map((documento) => documento.descuentos.fold(0, (total, descuento) => total + descuento.valor.toInt()))
             .fold(0, (total, subtotal) => total + subtotal);
 
     return Container(
@@ -117,7 +117,7 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
-                      child: CurrencyLabel(color: CustomFunctions.oscurecerColor(color, 0.5), text: total.toString()),
+                      child: CurrencyLabel(color: CustomFunctions.oscurecerColor(color, 0.5), text: total.toInt().toString()),
                     ),
                   ),
                 ]),

@@ -66,8 +66,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   void onPressedSearch(bool isValid) async {
     //add(const EmpresaFormFacturaEvent("1"));
-    //clienteController.text = "1409";
-    //remesasController.text = "736801,736978,443534";
+    clienteController.text = "1409";
+    remesasController.text = "736801,736978,443534,736918";
 
     final empresa = state.empresa;
     final cliente = clienteController.text;
@@ -83,9 +83,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     if (remesas.isEmpty && inicio.isEmpty) error += " Se deben agregar remesas al filtro o un intervalo de fechas";
     if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
 
-    if (error.isNotEmpty) {
-      add(ErrorFormFacturaEvent(error));
-    }
+    add(ErrorFormFacturaEvent(error));
+
     if (isValid && error.isEmpty) {
       final FacturaRequest request = FacturaRequest(
         empresa: int.parse(empresa),

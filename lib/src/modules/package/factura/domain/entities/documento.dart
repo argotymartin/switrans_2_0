@@ -18,9 +18,9 @@ class Documento {
   final String observacion;
   final String observacionFactura;
   final String remision;
-  final int rcp;
-  final int total;
-  final int flete;
+  final double rcp;
+  final double total;
+  final double flete;
   final bool anulacionTrafico;
   final List<Adicion> adiciones;
   final List<Descuento> descuentos;

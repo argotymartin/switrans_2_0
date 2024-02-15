@@ -21,4 +21,15 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
       emit(FacturaSuccesState(documentos: resp.data!));
     });
   }
+
+  List<MapEntry<int, String>> getCentosCosto() {
+    final codigosUnicos = state.documentos.map((doc) => doc.cencosCodigo).toSet();
+
+    final centros = <int, String>{};
+    for (int codigo in codigosUnicos) {
+      final documento = state.documentos.firstWhere((doc) => doc.cencosCodigo == codigo);
+      centros[codigo] = documento.cencosNombre;
+    }
+    return centros.entries.toList();
+  }
 }

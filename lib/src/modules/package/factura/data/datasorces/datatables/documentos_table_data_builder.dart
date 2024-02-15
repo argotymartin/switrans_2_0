@@ -111,8 +111,8 @@ class DocumentosTableDataBuilder {
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
     final List<PlutoRow> dataRows = [];
     documentos.asMap().forEach((index, remesa) {
-      int totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
-      int totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
+      double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
+      double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
 
       Map<String, String> infoRemesa = {
         'remesa': "${remesa.impreso} (${remesa.remesa})",

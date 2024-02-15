@@ -295,14 +295,13 @@ class _BuildItemFactura extends StatelessWidget {
               TableItemsFactura(prefacturas: state.preFacturas),
               const SizedBox(height: 16),
               ElevatedButton.icon(
-                onPressed: () {
-                  context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent());
-                },
+                onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
                 icon: const Icon(Icons.add_card_rounded),
                 label: const Text("Adicionar"),
               ),
               const SizedBox(height: 12),
               const Divider(),
+              const SizedBox(height: 12),
               const SizedBox(height: 12),
               const _BuildPrefacturarDocumento(),
               const SizedBox(height: 24),
@@ -348,11 +347,9 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
     final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
     final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
-
-    final documentosAll = context.read<FacturaBloc>().state.documentos;
     final controller = TextEditingController();
-    final centrosCosto = documentosAll.map((remesa) => MapEntry(remesa.cencosCodigo, remesa.cencosNombre)).toSet().toList();
 
+    final centrosCosto = context.read<FacturaBloc>().getCentosCosto();
     final suggestions = centrosCosto.map((centro) {
       return SuggestionModel(
         codigo: '${centro.key}',

@@ -11,18 +11,18 @@ class CardDetailsFactura extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w400, fontSize: 14);
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
-        final FacturaBloc facturaBloc = context.read<FacturaBloc>();
         final documentos = facturaBloc.state.documentos;
-        final prefacturas = state.preFacturas;
+        final prefacturas = state.preFacturas.where((element) => element.documento > 0);
 
-        int totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        int totalPrefacturas = prefacturas.fold(0, (total, prefactura) => total + prefactura.total);
-        int valorFaltante = totalDocumentos - totalPrefacturas;
+        double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        double totalPrefacturas = prefacturas.fold(0, (total, prefactura) => total + prefactura.total);
+        double valorFaltante = totalDocumentos - totalPrefacturas;
 
         return Container(
-          width: 400,
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
@@ -38,7 +38,7 @@ class CardDetailsFactura extends StatelessWidget {
                 children: [
                   const Icon(Icons.file_copy_outlined),
                   const SizedBox(width: 8),
-                  Text("Cantidad Items: ${state.preFacturas.length}", style: textStyle),
+                  Text("Cantidad Items: ${prefacturas.length}", style: textStyle),
                 ],
               ),
               Row(
@@ -53,7 +53,7 @@ class CardDetailsFactura extends StatelessWidget {
                   const Icon(Icons.price_check_outlined),
                   const SizedBox(width: 8),
                   Text("Valor Facturado: ", style: textStyle),
-                  CurrencyLabel(color: Colors.blue, text: '$totalPrefacturas'),
+                  CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
                 ],
               ),
               Row(
@@ -61,7 +61,7 @@ class CardDetailsFactura extends StatelessWidget {
                   const Icon(Icons.paid_outlined),
                   const SizedBox(width: 8),
                   Text("Valor Total Documentos: ", style: textStyle),
-                  CurrencyLabel(color: Colors.green, text: '$totalDocumentos'),
+                  CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
                 ],
               ),
               Row(
@@ -69,7 +69,7 @@ class CardDetailsFactura extends StatelessWidget {
                   const Icon(Icons.money_off_outlined),
                   const SizedBox(width: 8),
                   Text("Valor Faltante: ", style: textStyle),
-                  CurrencyLabel(color: Colors.red, text: '$valorFaltante'),
+                  CurrencyLabel(color: Colors.red, text: '${valorFaltante.toInt()}'),
                 ],
               ),
             ],

@@ -2,7 +2,7 @@
 class Adicion {
   final int codigo;
   final String tipo;
-  final int valor;
+  final double valor;
   Adicion({
     required this.codigo,
     required this.tipo,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
@@ -52,7 +53,7 @@ class TableItemsFactura extends StatelessWidget {
 
     const columnWidth = {
       0: FractionColumnWidth(0.04),
-      1: FractionColumnWidth(0.15),
+      1: FractionColumnWidth(0.18),
       2: FractionColumnWidth(0.3),
       3: FractionColumnWidth(0.1),
       4: FractionColumnWidth(0.05),
@@ -101,7 +102,6 @@ class _BuildFiledDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final documentosAll = context.read<FacturaBloc>().state.documentos;
-    final documentoController = TextEditingController(text: preFactura.toString());
     final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
@@ -112,22 +112,30 @@ class _BuildFiledDocumento extends StatelessWidget {
       );
     }).toList();
 
-    void setValueFactura(String value) {
-      if (value.isNotEmpty) {
-        preFactura.documento = int.parse(value);
+    void setValueFactura(String value) async {
+      if (value.isNotEmpty && preFactura.documento == 0) {
+        final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
+        preFactura.documento = documento.remesa;
+        preFactura.documentoImpreso = documento.impreso;
+        context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
       }
     }
 
     return Column(
       children: [
-        AutocompleteInput(
-          isShowCodigo: false,
-          title: "Documento",
-          suggestions: suggestions,
-          controller: documentoController,
-          suggestionSelected: suggestionSeleted,
-          onPressed: setValueFactura,
-        ),
+        suggestionSeleted != null
+            ? AutocompleteInput(
+                isShowCodigo: false,
+                title: "Documento",
+                suggestions: const [],
+                suggestionSelected: suggestionSeleted,
+              )
+            : AutocompleteInput(
+                isShowCodigo: false,
+                title: "Documento",
+                suggestions: suggestions,
+                onPressed: setValueFactura,
+              ),
         RadioButtons(tipo: preFactura.tipo),
       ],
     );
@@ -169,11 +177,11 @@ class _BuildValor extends StatelessWidget {
     void onChaneged(String value) {
       String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
       String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
-      int intValue = int.parse(textValue);
+      double intValue = double.parse(textValue);
       double newValorIva = intValue * preFactura.porcentajeIva / 100;
 
       preFactura.valor = intValue;
-      preFactura.valorIva = newValorIva.round();
+      preFactura.valorIva = newValorIva;
       preFactura.total = (preFactura.valor + preFactura.valorIva) * preFactura.cantidad;
       context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
     }
@@ -199,12 +207,12 @@ class _BuildPorcentajeIva extends StatelessWidget {
 }
 
 class _BuildValorIva extends StatelessWidget {
-  final int valorIva;
+  final double valorIva;
   const _BuildValorIva({required this.valorIva});
 
   @override
   Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: valorIva.toString());
+    return CurrencyLabel(color: Colors.green.shade900, text: '${valorIva.toInt()}');
   }
 }
 
@@ -230,12 +238,12 @@ class _BuildCantidad extends StatelessWidget {
 }
 
 class _BuildTotal extends StatelessWidget {
-  final int total;
+  final double total;
   const _BuildTotal({required this.total});
 
   @override
   Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: total.toString());
+    return CurrencyLabel(color: Colors.green.shade900, text: '${total.toInt()}');
   }
 }
 

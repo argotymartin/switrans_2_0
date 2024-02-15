@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class ModalItemDocumento extends StatefulWidget {
@@ -24,27 +25,30 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      padding: const EdgeInsets.only(right: 24),
-      height: 64,
-      width: size.width,
-      child: AnimatedBuilder(
-        animation: formulario.animationController,
-        builder: (context, child) => Transform.translate(
-          offset: Offset(0, tralateAnimation.value),
-          child: InkWell(
-            onTap: () => formulario.moveBottomAllScroll(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
-                builder: (context, state) {
-                  return ListView.builder(
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+      builder: (context, state) {
+        List<PreFactura> prefacturas = state.preFacturas.where((prefactura) => prefactura.documento != 0).toList();
+        return Container(
+          padding: const EdgeInsets.only(right: 24),
+          height: 64,
+          width: size.width,
+          child: AnimatedBuilder(
+            animation: formulario.animationController,
+            builder: (context, child) => Transform.translate(
+              offset: Offset(0, tralateAnimation.value),
+              child: InkWell(
+                onTap: () => formulario.moveBottomAllScroll(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: state.preFacturas.length,
+                    itemCount: prefacturas.length,
                     itemBuilder: (BuildContext context, int index) {
+                      PreFactura preFactura = prefacturas[index];
+
                       return Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -56,19 +60,19 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                           child: Row(
                             children: [
                               const Icon(Icons.file_copy),
-                              Text("${state.preFacturas[index].documentoImpreso}  (${state.preFacturas[index].documento})"),
+                              Text("${preFactura.documentoImpreso}  (${preFactura.documento})"),
                             ],
                           ),
                         ),
                       );
                     },
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

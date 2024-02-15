@@ -5,7 +5,7 @@ class AutocompleteInput extends StatelessWidget {
   final List<SuggestionModel> suggestions;
   final String title;
   final bool isShowCodigo;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final SuggestionModel? suggestionSelected;
   final Function(String result)? onPressed;
 
@@ -13,7 +13,7 @@ class AutocompleteInput extends StatelessWidget {
     Key? key,
     required this.suggestions,
     required this.title,
-    required this.controller,
+    this.controller,
     this.suggestionSelected,
     this.onPressed,
     this.isShowCodigo = true,
@@ -23,12 +23,12 @@ class AutocompleteInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final focus = FocusNode();
     return SearchField(
-      initialValue: suggestionSelected != null
+      /*initialValue: suggestionSelected != null
           ? SearchFieldListItem<String>(
               suggestionSelected!.title,
               item: suggestionSelected!.codigo,
             )
-          : null,
+          : null,*/
       readOnly: suggestionSelected != null ? true : false,
       searchStyle: const TextStyle(fontSize: 12),
       autoCorrect: true,
@@ -38,7 +38,7 @@ class AutocompleteInput extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => (value == null) ? 'error' : null,
       key: const Key('searchfield'),
-      hint: suggestionSelected == null ? 'Buscar $title' : '',
+      hint: title, //suggestionSelected == null ? 'Buscar $title' : '',
       itemHeight: 68,
       searchInputDecoration: inputDecoration(context),
       suggestionsDecoration: SuggestionDecoration(
@@ -55,7 +55,7 @@ class AutocompleteInput extends StatelessWidget {
       focusNode: focus,
       suggestionState: Suggestion.expand,
       onSuggestionTap: (SearchFieldListItem x) {
-        if (x.item != null) controller.text = x.item;
+        if (x.item != null && controller != null) controller!.text = x.item;
         if (onPressed != null && x.item != null) {
           onPressed?.call(x.item);
         }
@@ -64,7 +64,7 @@ class AutocompleteInput extends StatelessWidget {
   }
 
   List<SearchFieldListItem<String>>? onTextChanged(query) {
-    controller.text = "";
+    if (controller != null) controller!.text = "";
     final filter = suggestions
         .where(
           (element) => element.title.toLowerCase().contains(query.toLowerCase()),

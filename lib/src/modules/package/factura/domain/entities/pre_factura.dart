@@ -3,11 +3,11 @@ class PreFactura {
   String documentoImpreso;
   String tipo;
   String descripcion;
-  int valor;
+  double valor;
   int cantidad;
-  int total;
+  double total;
   int porcentajeIva;
-  int valorIva;
+  double valorIva;
   PreFactura({
     required this.documentoImpreso,
     required this.documento,
