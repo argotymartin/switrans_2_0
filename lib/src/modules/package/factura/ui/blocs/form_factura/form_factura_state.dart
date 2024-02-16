@@ -1,13 +1,11 @@
 part of 'form_factura_bloc.dart';
 
 abstract class FormFacturaState extends Equatable {
-  final bool expanded;
   final String empresa;
   final String error;
   final List<Cliente> clientes;
   final List<Empresa> empresas;
   const FormFacturaState({
-    this.expanded = true,
     this.empresa = "",
     this.error = "",
     this.clientes = const [],
@@ -23,23 +21,23 @@ class FormFacturaInitialState extends FormFacturaState {
 }
 
 class FormFacturaDataState extends FormFacturaState {
-  const FormFacturaDataState({super.clientes, super.empresas});
+  const FormFacturaDataState({super.clientes, super.empresas, super.empresa, super.error});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [clientes, empresas];
 }
 
 class FormFacturaLoadingState extends FormFacturaState {
   const FormFacturaLoadingState();
 
   @override
-  List<Object> get props => [empresa, expanded, error, clientes, empresas];
+  List<Object> get props => [empresa, error, clientes, empresas];
 }
 
 class FormFacturaRequestState extends FormFacturaState {
-  const FormFacturaRequestState({super.empresa, super.expanded, super.error, super.clientes, super.empresas});
+  const FormFacturaRequestState({super.empresa, super.error, super.clientes, super.empresas});
   @override
-  List<Object> get props => [empresa, expanded, error, clientes, empresas];
+  List<Object> get props => [empresa, error, clientes, empresas];
 }
 
 class FormFacturaSuccesState extends FormFacturaState {

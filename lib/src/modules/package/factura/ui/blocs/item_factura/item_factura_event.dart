@@ -16,13 +16,13 @@ class AddItemServicioAdicionalFacturaEvent extends ItemFacturaEvent {
 }
 
 class AddItemTransporteFacturaEvent extends ItemFacturaEvent {
-  final PreFactura preFactura;
-  const AddItemTransporteFacturaEvent({required this.preFactura});
+  final Documento documento;
+  const AddItemTransporteFacturaEvent({required this.documento});
 }
 
 class RemoveItemFacturaEvent extends ItemFacturaEvent {
-  final PreFactura preFactura;
-  const RemoveItemFacturaEvent({required this.preFactura});
+  final Documento documento;
+  const RemoveItemFacturaEvent({required this.documento});
 }
 
 class ChangedItemFacturaEvent extends ItemFacturaEvent {

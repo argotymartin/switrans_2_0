@@ -34,36 +34,56 @@ class CardDetailsFactura extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.file_copy_outlined),
-                  const SizedBox(width: 8),
-                  Text("Cantidad Items: ${prefacturas.length}", style: textStyle),
-                ],
+              SizedBox(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.file_copy_outlined),
+                          const SizedBox(width: 8),
+                          Text("Cantidad Items: ${prefacturas.length}", style: textStyle),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.text_snippet_outlined),
+                          const SizedBox(width: 8),
+                          Text("Cantidad Documentos ${facturaBloc.state.documentos.length}", style: textStyle),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  const Icon(Icons.text_snippet_outlined),
-                  const SizedBox(width: 8),
-                  Text("Cantidad Documentos ${facturaBloc.state.documentos.length}", style: textStyle),
-                ],
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.price_check_outlined),
-                  const SizedBox(width: 8),
-                  Text("Valor Facturado: ", style: textStyle),
-                  CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
-                ],
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.paid_outlined),
-                  const SizedBox(width: 8),
-                  Text("Valor Total Documentos: ", style: textStyle),
-                  CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
-                ],
-              ),
+              Row(children: [
+                SizedBox(
+                  width: 300,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.paid_outlined),
+                      const SizedBox(width: 8),
+                      Text("Valor Total Documentos: ", style: textStyle),
+                      CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.price_check_outlined),
+                      const SizedBox(width: 8),
+                      Text("Valor Facturado: ", style: textStyle),
+                      CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
+                    ],
+                  ),
+                ),
+              ]),
               Row(
                 children: [
                   const Icon(Icons.money_off_outlined),

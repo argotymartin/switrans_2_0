@@ -8,9 +8,9 @@ import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
 
-class TableItemsFactura extends StatelessWidget {
+class TableItemsDocumento extends StatelessWidget {
   final List<PreFactura> prefacturas;
-  const TableItemsFactura({
+  const TableItemsDocumento({
     super.key,
     required this.prefacturas,
   });
@@ -45,7 +45,7 @@ class TableItemsFactura extends StatelessWidget {
             _CellContent(child: _BuildValorIva(valorIva: prefactura.valorIva)),
             _CellContent(child: _BuildCantidad(preFactura: prefactura)),
             _CellContent(child: _BuildTotal(total: prefactura.total)),
-            _CellContent(child: _BuildFiledAccion(index: index - 1)),
+            _CellContent(child: _BuildFiledAccion(index: index)),
           ],
         );
       },
@@ -117,25 +117,19 @@ class _BuildFiledDocumento extends StatelessWidget {
         final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
         preFactura.documento = documento.remesa;
         preFactura.documentoImpreso = documento.impreso;
-        context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+        //context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
       }
     }
 
     return Column(
       children: [
-        suggestionSeleted != null
-            ? AutocompleteInput(
-                isShowCodigo: false,
-                title: "Documento",
-                suggestions: const [],
-                suggestionSelected: suggestionSeleted,
-              )
-            : AutocompleteInput(
-                isShowCodigo: false,
-                title: "Documento",
-                suggestions: suggestions,
-                onPressed: setValueFactura,
-              ),
+        AutocompleteInput(
+          isShowCodigo: false,
+          title: "Documento",
+          suggestions: suggestions,
+          suggestionSelected: suggestionSeleted,
+          onPressed: setValueFactura,
+        ),
         RadioButtons(tipo: preFactura.tipo),
       ],
     );
@@ -261,7 +255,7 @@ class _BuildFiledAccion extends StatelessWidget {
             context.read<ItemFacturaBloc>().add(RemoveItemByPositionFacturaEvent(index: index));
           },
           width: 32,
-          icon: Icons.remove_circle_outline,
+          icon: Icons.delete_outlined,
           color: Colors.red.shade800,
           iconColor: Colors.white,
         ),

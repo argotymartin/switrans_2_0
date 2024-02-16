@@ -21,18 +21,29 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   FormFacturaBloc(this._repository, this._facturaBloc) : super(const FormFacturaInitialState()) {
     on<GetFormFacturaEvent>((event, emit) async {
+      final String empresa = state.empresa;
+      String error = state.error;
+
+      emit(const FormFacturaLoadingState());
       final dataStateClientes = await _repository.getClientes();
       final dataStateEmpresas = await _repository.getEmpresasService();
-      emit(FormFacturaDataState(clientes: dataStateClientes.data!, empresas: dataStateEmpresas.data!));
+      emit(FormFacturaDataState(
+        clientes: dataStateClientes.data!,
+        empresas: dataStateEmpresas.data!,
+        empresa: empresa,
+        error: error,
+      ));
     });
 
     on<EmpresaFormFacturaEvent>((event, emit) {
       List<Cliente> clientes = state.clientes;
       List<Empresa> empresas = state.empresas;
+      String error = state.error;
+
       emit(const FormFacturaLoadingState());
       emit(FormFacturaRequestState(
         empresa: event.empresa,
-        error: state.error,
+        error: error,
         clientes: clientes,
         empresas: empresas,
       ));
@@ -41,11 +52,17 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     //scrollController.addListener(() => print(scrollController.offset));
 
     on<ErrorFormFacturaEvent>((event, emit) async {
-      final String empresa = state.empresa;
       List<Cliente> clientes = state.clientes;
       List<Empresa> empresas = state.empresas;
+      String empresa = state.empresa;
+
       emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(error: event.error, empresa: empresa, expanded: state.expanded, clientes: clientes, empresas: empresas));
+      emit(FormFacturaRequestState(
+        error: event.error,
+        empresa: empresa,
+        clientes: clientes,
+        empresas: empresas,
+      ));
     });
 
     scrollController.addListener(() {
@@ -104,7 +121,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Empresa getEmpresaSelected() {
-    final Empresa empresa = state.empresas.firstWhere((element) => element.codigo == int.parse(state.empresa));
-    return empresa;
+    final Empresa empresaSelect = state.empresas.firstWhere((element) => element.codigo == int.parse(state.empresa));
+    return empresaSelect;
   }
 }

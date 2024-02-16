@@ -23,12 +23,12 @@ class AutocompleteInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final focus = FocusNode();
     return SearchField(
-      /*initialValue: suggestionSelected != null
+      initialValue: suggestionSelected != null
           ? SearchFieldListItem<String>(
               suggestionSelected!.title,
               item: suggestionSelected!.codigo,
             )
-          : null,*/
+          : null,
       readOnly: suggestionSelected != null ? true : false,
       searchStyle: const TextStyle(fontSize: 12),
       autoCorrect: true,
@@ -38,7 +38,7 @@ class AutocompleteInput extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => (value == null) ? 'error' : null,
       key: const Key('searchfield'),
-      hint: title, //suggestionSelected == null ? 'Buscar $title' : '',
+      hint: suggestionSelected == null ? 'Buscar $title' : '',
       itemHeight: 68,
       searchInputDecoration: inputDecoration(context),
       suggestionsDecoration: SuggestionDecoration(

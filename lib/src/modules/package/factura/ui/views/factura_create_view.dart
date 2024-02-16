@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -290,14 +291,22 @@ class _BuildItemFactura extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _BuildDetailsDocumentos(),
-              const SizedBox(height: 24),
-              TableItemsFactura(prefacturas: state.preFacturas),
               const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
-                icon: const Icon(Icons.add_card_rounded),
-                label: const Text("Adicionar"),
+              const _BuildDetailsDocumentos(),
+              const SizedBox(height: 16),
+              TableItemsDocumento(prefacturas: state.preFacturas),
+              const SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+                    icon: const Icon(Icons.add_card_rounded),
+                    label: const Text("Adicionar"),
+                  ),
+                  const CardDetailsFactura()
+                ],
               ),
               const SizedBox(height: 12),
               const Divider(),
@@ -326,13 +335,12 @@ class _BuildDetailsDocumentos extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         documentosAdicion.isNotEmpty
-            ? CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green)
-            : const SizedBox(width: 400),
-        const SizedBox(width: 24),
+            ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
+            : const Expanded(child: SizedBox()),
+        const SizedBox(width: 48),
         documentosDescuentos.isNotEmpty
-            ? CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red)
-            : const SizedBox(width: 400),
-        const CardDetailsFactura()
+            ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
+            : const Expanded(child: SizedBox()),
       ],
     );
   }
@@ -420,13 +428,38 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
-        bool isValid = context.read<ItemFacturaBloc>().state.preFacturas.any((element) => element.tipo == "TR");
+        final documentos = facturaBloc.state.documentos;
+        final prefacturas = state.preFacturas.where((element) => element.documento > 0);
+        double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        double totalPrefacturas = prefacturas.fold(0, (total, prefactura) => total + prefactura.total);
+        double valorFaltante = totalDocumentos - totalPrefacturas;
+
+        bool isTransporte = state.preFacturas.any((element) => element.tipo == "TR");
+        bool isDocumento = !state.preFacturas.any((element) => element.documento <= 0);
+        bool isCantidad = !state.preFacturas.any((element) => element.cantidad <= 0);
+        bool isValor = !state.preFacturas.any((element) => element.valor <= 0);
+        bool isDescripcion = state.preFacturas.any((element) => element.descripcion.isNotEmpty);
+        bool isCentroCosto = state.centroCosto.isNotEmpty;
+        bool isFaltante = valorFaltante.toInt() == 0;
+
+        debugPrint("isTransporte: $isTransporte");
+        debugPrint("isDocumento: $isDocumento");
+        debugPrint("isCantidad: $isCantidad");
+        debugPrint("isValor: $isValor");
+        debugPrint("isDescripcion: $isDescripcion");
+        debugPrint("isCentroCosto: $isCentroCosto");
+        debugPrint("isFaltante: $isFaltante");
+        debugPrint("valorFaltante: ${valorFaltante.toInt()}");
+        debugPrint("***********************");
+
         return SizedBox(
           width: 240,
           child: FilledButton.icon(
-            onPressed: isValid && state.centroCosto != "" ? () {} : null,
+            onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante ? () {} : null,
             icon: const Icon(Icons.add_card_rounded),
             label: const Text("Registrar Pre-Factura"),
           ),

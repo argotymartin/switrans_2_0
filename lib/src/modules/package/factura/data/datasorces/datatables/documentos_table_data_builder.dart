@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/models/pre_factura_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 
 class DocumentosTableDataBuilder {
@@ -19,8 +18,19 @@ class DocumentosTableDataBuilder {
         type: PlutoColumnType.text(),
         enableRowChecked: true,
         minWidth: 88,
-        width: 80,
+        width: 88,
         renderer: (renderContext) => buildFiledItem(renderContext, context),
+      ),
+      PlutoColumn(
+        title: 'Alerts',
+        field: 'alerts',
+        type: PlutoColumnType.text(),
+        minWidth: 48,
+        width: 48,
+        enableEditingMode: false,
+        enableContextMenu: false,
+        enableDropToResize: false,
+        renderer: (renderContext) => buildFiledAlerts(renderContext, context),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -46,12 +56,35 @@ class DocumentosTableDataBuilder {
         renderer: buildFiledObservaciones,
       ),
       PlutoColumn(
+        title: 'Flete',
+        field: 'flete',
+        enableEditingMode: false,
+        enableContextMenu: false,
+        enableDropToResize: false,
+        minWidth: 92,
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
+        footerRenderer: buildRenderSumFooter,
+      ),
+      PlutoColumn(
+        title: 'Tarifa Base',
+        field: 'tarifaBase',
+        enableEditingMode: false,
+        enableContextMenu: false,
+        enableDropToResize: false,
+        minWidth: 92,
+        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
+        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
+        footerRenderer: buildRenderSumFooter,
+      ),
+      PlutoColumn(
         title: 'Adiciones',
         field: 'adiciones',
         type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
+        minWidth: 92,
         renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
@@ -61,35 +94,18 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
+        minWidth: 92,
         type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
         renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
-      PlutoColumn(
-        title: 'Flete',
-        field: 'flete',
-        enableEditingMode: false,
-        enableContextMenu: false,
-        enableDropToResize: false,
-        type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
-        footerRenderer: buildRenderSumFooter,
-      ),
-      PlutoColumn(
-          title: 'Tarifa Base',
-          field: 'tarifaBase',
-          enableEditingMode: false,
-          enableContextMenu: false,
-          enableDropToResize: false,
-          type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
-          renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
-          footerRenderer: buildRenderSumFooter),
       PlutoColumn(
         title: 'R.C.P',
         field: 'rcp',
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
+        minWidth: 92,
         type: PlutoColumnType.currency(name: '\$', decimalDigits: 0),
         renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
         footerRenderer: buildRenderSumFooter,
@@ -114,7 +130,7 @@ class DocumentosTableDataBuilder {
       double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
       double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
 
-      Map<String, String> infoRemesa = {
+      Map<String, String> infoRemesaMap = {
         'remesa': "${remesa.impreso} (${remesa.remesa})",
         'centroCosto': remesa.cencosNombre,
         'tipo': remesa.tipoRemesa,
@@ -122,15 +138,26 @@ class DocumentosTableDataBuilder {
         'destino': remesa.destino,
       };
 
+      Map<String, dynamic> infoAlertsMap = {
+        'anulacionTrafico': remesa.anulacionTrafico,
+        'isDigitalizado': true,
+      };
+
+      Map<String, dynamic> obsMap = {
+        'observacion': remesa.observacion,
+        'remision': remesa.remision,
+      };
+
       final Map<String, dynamic> dataColumn = {
         'item': index + 1,
+        'alerts': jsonEncode(infoAlertsMap),
         'documento': remesa.remesa,
-        'remesa': jsonEncode(infoRemesa),
-        'obs': remesa.observacion,
-        'adiciones': totalAdiciones,
-        'descuentos': totalDescuentos,
+        'remesa': jsonEncode(infoRemesaMap),
+        'obs': jsonEncode(obsMap),
         'flete': remesa.flete,
         'tarifaBase': remesa.flete,
+        'adiciones': totalAdiciones,
+        'descuentos': totalDescuentos,
         'rcp': remesa.rcp,
       };
       final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
@@ -166,6 +193,32 @@ class DocumentosTableDataBuilder {
     );
   }
 
+  static Widget buildFiledAlerts(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final cellValue = rendererContext.cell.value.toString();
+    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final anulacionTrafico = remesaMap['anulacionTrafico'];
+    final isDigitalizado = remesaMap['isDigitalizado'];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        isDigitalizado
+            ? const Icon(
+                Icons.image,
+                color: Colors.green,
+              )
+            : const SizedBox(),
+        anulacionTrafico
+            ? Icon(
+                Icons.error_outline,
+                color: Theme.of(context).colorScheme.error,
+              )
+            : const SizedBox(),
+      ],
+    );
+  }
+
   static Widget buildFiledRemesa(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
     Map<String, dynamic> remesaMap = jsonDecode(cellValue);
@@ -198,12 +251,50 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledObservaciones(rendererContext) {
+    final cellValue = rendererContext.cell.value.toString();
+    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final obsRemesa = remesaMap['observacion'];
+    final remision = remesaMap['remision'];
     return SelectionArea(
-      child: Text(
-        textAlign: TextAlign.justify,
-        CustomFunctions.limpiarTexto(rendererContext.row.cells[rendererContext.column.field]!.value.toString()),
-        maxLines: 8,
-        style: const TextStyle(fontSize: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 10, color: Colors.black),
+              children: [
+                const TextSpan(
+                  text: 'Obs: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: CustomFunctions.limpiarTexto(obsRemesa),
+                ),
+              ],
+            ),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.justify,
+            maxLines: 8,
+          ),
+          const SizedBox(height: 4),
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 10, color: Colors.black),
+              children: [
+                const TextSpan(
+                  text: 'Remision: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: CustomFunctions.limpiarTexto(remision),
+                ),
+              ],
+            ),
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+          ),
+        ],
       ),
     );
   }
@@ -211,7 +302,7 @@ class DocumentosTableDataBuilder {
   static Widget buildFieldValuesCurrency(rendererContext, Color color) {
     return SelectableText(
       rendererContext.column.type.applyFormat(rendererContext.cell.value),
-      style: TextStyle(color: color, fontSize: 14),
+      style: TextStyle(color: color, fontSize: 12),
       textAlign: TextAlign.end,
     );
   }
@@ -227,24 +318,24 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFieldAccion(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
+        CustomSizeButton(
           onPressed: () {
             rendererContext.stateManager.removeRows([rendererContext.row]);
             final documentosAll = context.read<FacturaBloc>().state.documentos;
             final documento = documentosAll[rendererContext.rowIdx];
             final List<Documento> documentos = List.from(documentosAll)..remove(documento);
             context.read<FacturaBloc>().add(ChangedFacturaEvent(documentos));
-            final preFactuta = PreFacturaModel.toDocumetno(documento);
-            context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(preFactura: preFactuta));
+            context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: documento));
           },
-          icon: const Icon(
-            Icons.delete_forever_outlined,
-            color: Colors.red,
-          ),
+          width: 32,
+          icon: Icons.delete_outlined,
+          color: Colors.red.shade800,
+          iconColor: Colors.white,
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
+        const SizedBox(width: 8),
+        CustomSizeButton(width: 32, icon: Icons.refresh_outlined, onPressed: () {}),
       ],
     );
   }

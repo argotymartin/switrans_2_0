@@ -25,7 +25,7 @@ class CustomSizeButton extends StatelessWidget {
         style: ButtonStyle(
           iconSize: MaterialStatePropertyAll(width * 0.8),
           padding: MaterialStatePropertyAll(EdgeInsetsDirectional.symmetric(horizontal: width * 0.1)),
-          shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0))),
+          shape: const MaterialStatePropertyAll(StadiumBorder()),
           backgroundColor: MaterialStatePropertyAll(color),
         ),
         onPressed: onPressed,

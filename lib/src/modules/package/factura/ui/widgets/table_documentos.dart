@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/datatables/documentos_table_data_builder.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/models/pre_factura_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
 
@@ -23,7 +22,7 @@ class TableDocumentos extends StatelessWidget {
       builder: (context, state) {
         return Container(
           height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: PlutoGrid(
             columns: DocumentosTableDataBuilder.buildColumns(context),
             rows: DocumentosTableDataBuilder.buildDataRows(documentos, context),
@@ -56,34 +55,31 @@ class TableDocumentos extends StatelessWidget {
   }
 
   void onRowDoubleTap(event, documentos, itemFacturaBloc, stateManager) {
-    final Documento doc = documentos[event.rowIdx];
-    final prefactura = PreFacturaModel.toDocumetno(doc);
+    final Documento documento = documentos[event.rowIdx];
     if (event.row.checked!) {
       stateManager.setRowChecked(event.row, false);
-      itemFacturaBloc.add(RemoveItemFacturaEvent(preFactura: prefactura));
+      itemFacturaBloc.add(RemoveItemFacturaEvent(documento: documento));
     } else {
       stateManager.setRowChecked(event.row, true);
-      itemFacturaBloc.add(AddItemTransporteFacturaEvent(preFactura: prefactura));
+      itemFacturaBloc.add(AddItemTransporteFacturaEvent(documento: documento));
     }
   }
 
   void onRowChecked(event, documentos, itemFacturaBloc) {
     if (event.isAll && event.isChecked != null) {
-      for (final remesa in documentos) {
-        final prefactura = PreFacturaModel.toDocumetno(remesa);
+      for (final documento in documentos) {
         if (event.isChecked!) {
-          itemFacturaBloc.add(AddItemTransporteFacturaEvent(preFactura: prefactura));
+          itemFacturaBloc.add(AddItemTransporteFacturaEvent(documento: documento));
         } else {
-          itemFacturaBloc.add(RemoveItemFacturaEvent(preFactura: prefactura));
+          itemFacturaBloc.add(RemoveItemFacturaEvent(documento: documento));
         }
       }
     } else if (event.rowIdx != null && event.isChecked != null) {
-      final Documento doc = documentos[event.rowIdx!];
-      final prefactura = PreFacturaModel.toDocumetno(doc);
+      final Documento documento = documentos[event.rowIdx!];
       if (event.isChecked!) {
-        itemFacturaBloc.add(AddItemTransporteFacturaEvent(preFactura: prefactura));
+        itemFacturaBloc.add(AddItemTransporteFacturaEvent(documento: documento));
       } else {
-        itemFacturaBloc.add(RemoveItemFacturaEvent(preFactura: prefactura));
+        itemFacturaBloc.add(RemoveItemFacturaEvent(documento: documento));
       }
     }
   }

@@ -14,13 +14,13 @@ class PreFacturaModel extends PreFactura {
     super.valorIva = 0,
   });
 
-  factory PreFacturaModel.toDocumetno(Documento documento) => PreFacturaModel(
+  factory PreFacturaModel.toDocumetnoTR(Documento documento) => PreFacturaModel(
         cantidad: 1,
         documentoImpreso: documento.impreso,
-        descripcion: documento.observacion,
+        descripcion: documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacion,
         documento: documento.remesa,
         valor: documento.flete,
-        tipo: "",
+        tipo: "TR",
         total: 0,
       );
 
