@@ -30,7 +30,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       emit(FormFacturaDataState(
         clientes: dataStateClientes.data!,
         empresas: dataStateEmpresas.data!,
-        empresa: empresa,
+        empresa: empresa.isEmpty ? "1" : empresa,
         error: error,
       ));
     });
