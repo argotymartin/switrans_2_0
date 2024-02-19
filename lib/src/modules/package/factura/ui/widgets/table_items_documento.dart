@@ -117,7 +117,7 @@ class _BuildFiledDocumento extends StatelessWidget {
         final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
         preFactura.documento = documento.remesa;
         preFactura.documentoImpreso = documento.impreso;
-        //context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+        context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
       }
     }
 

@@ -47,7 +47,6 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
 
     on<RemoveItemByPositionFacturaEvent>((event, emit) {
       int index = event.index - 1;
-      print(index);
       final List<PreFactura> preFacturas = List.from(state.preFacturas);
       String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());

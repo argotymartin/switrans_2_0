@@ -10,10 +10,11 @@ class FacturaDataTest {
   ];
 
   static final List<Cliente> clinetesResponse = [
-    Cliente(codigo: 1, nombre: "ROLDAN Y COMPANIA S.A.S.", identificacion: "890903069", telefono: "3520687"),
-    Cliente(codigo: 1, nombre: "INDUFAST S.A.S", identificacion: "900549320", telefono: "6917705"),
-    Cliente(codigo: 1, nombre: "E2 ENERGIA EFICIENTE S.A. E.S.P.", identificacion: "802025052", telefono: "3306266"),
-    Cliente(codigo: 1, nombre: "PEGOMAX SAS", identificacion: "830089785", telefono: "7265033"),
+    Cliente(codigo: 2988, nombre: "ROLDAN Y COMPANIA S.A.S.", identificacion: "890903069", telefono: "3520687"),
+    Cliente(codigo: 2486, nombre: "INDUFAST S.A.S", identificacion: "900549320", telefono: "6917705"),
+    Cliente(codigo: 2975, nombre: "E2 ENERGIA EFICIENTE S.A. E.S.P.", identificacion: "802025052", telefono: "3306266"),
+    Cliente(codigo: 2740, nombre: "PEGOMAX SAS", identificacion: "830089785", telefono: "7265033"),
+    Cliente(codigo: 1409, nombre: "GEODIS COLOMBIA LTDA.", identificacion: "830055467", telefono: "6020100"),
   ];
 
   static final List<Documento> remesasResponse = [
