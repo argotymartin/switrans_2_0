@@ -445,7 +445,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
         bool isCentroCosto = state.centroCosto.isNotEmpty;
         bool isFaltante = valorFaltante.toInt() == 0;
 
-        debugPrint("isTransporte: $isTransporte");
+        /*debugPrint("isTransporte: $isTransporte");
         debugPrint("isDocumento: $isDocumento");
         debugPrint("isCantidad: $isCantidad");
         debugPrint("isValor: $isValor");
@@ -453,7 +453,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
         debugPrint("isCentroCosto: $isCentroCosto");
         debugPrint("isFaltante: $isFaltante");
         debugPrint("valorFaltante: ${valorFaltante.toInt()}");
-        debugPrint("***********************");
+        debugPrint("***********************");*/
 
         return SizedBox(
           width: 240,

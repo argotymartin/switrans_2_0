@@ -5,6 +5,7 @@ class AutocompleteInput extends StatelessWidget {
   final List<SuggestionModel> suggestions;
   final String title;
   final bool isShowCodigo;
+  final bool isReadOnly;
   final TextEditingController? controller;
   final SuggestionModel? suggestionSelected;
   final Function(String result)? onPressed;
@@ -17,6 +18,7 @@ class AutocompleteInput extends StatelessWidget {
     this.suggestionSelected,
     this.onPressed,
     this.isShowCodigo = true,
+    this.isReadOnly = false,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class AutocompleteInput extends StatelessWidget {
               item: suggestionSelected!.codigo,
             )
           : null,
-      readOnly: suggestionSelected != null ? true : false,
+      readOnly: isReadOnly,
       searchStyle: const TextStyle(fontSize: 12),
       autoCorrect: true,
       maxSuggestionsInViewPort: 4,
@@ -38,7 +40,7 @@ class AutocompleteInput extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => (value == null) ? 'error' : null,
       key: const Key('searchfield'),
-      hint: suggestionSelected == null ? 'Buscar $title' : '',
+      hint: isReadOnly ? 'Buscar $title' : '',
       itemHeight: 68,
       searchInputDecoration: inputDecoration(context),
       suggestionsDecoration: SuggestionDecoration(
