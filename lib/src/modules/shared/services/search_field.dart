@@ -452,49 +452,50 @@ class _SearchFieldState<T> extends State<SearchField<T>> {
             itemCount: snapshot.data!.length,
             physics: snapshot.data!.length == 1 ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
             itemBuilder: (context, index) => TextFieldTapRegion(
-                child: InkWell(
-              onHover: (value) {
+              child: InkWell(
+                /*onHover: (value) {
                 searchController!.text = snapshot.data![index]!.searchKey;
                 if (widget.onSuggestionTap != null) {
                   widget.onSuggestionTap!(snapshot.data![index]!);
                 }
-              },
-              onTap: () {
-                searchController!.text = snapshot.data![index]!.searchKey;
+              },*/
+                onTap: () {
+                  searchController!.text = snapshot.data![index]!.searchKey;
 
-                suggestionStream.sink.add(null);
-                if (widget.onSuggestionTap != null) {
-                  widget.onSuggestionTap!(snapshot.data![index]!);
-                }
-              },
-              child: Container(
-                height: widget.itemHeight,
-                width: double.infinity,
-                alignment: Alignment.centerLeft,
-                decoration: widget.suggestionItemDecoration?.copyWith(
-                      border: widget.suggestionItemDecoration?.border ??
-                          Border(
-                            bottom: BorderSide(
-                              color: widget.marginColor ?? onSurfaceColor.withOpacity(0.1),
-                            ),
-                          ),
-                    ) ??
-                    BoxDecoration(
-                      border: index == snapshot.data!.length - 1
-                          ? null
-                          : Border(
+                  suggestionStream.sink.add(null);
+                  if (widget.onSuggestionTap != null) {
+                    widget.onSuggestionTap!(snapshot.data![index]!);
+                  }
+                },
+                child: Container(
+                  height: widget.itemHeight,
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  decoration: widget.suggestionItemDecoration?.copyWith(
+                        border: widget.suggestionItemDecoration?.border ??
+                            Border(
                               bottom: BorderSide(
                                 color: widget.marginColor ?? onSurfaceColor.withOpacity(0.1),
                               ),
                             ),
-                    ),
-                child: snapshot.data![index]!.child ??
-                    Text(
-                      snapshot.data![index]!.searchKey,
-                      style: widget.suggestionStyle,
-                    ),
+                      ) ??
+                      BoxDecoration(
+                        border: index == snapshot.data!.length - 1
+                            ? null
+                            : Border(
+                                bottom: BorderSide(
+                                  color: widget.marginColor ?? onSurfaceColor.withOpacity(0.1),
+                                ),
+                              ),
+                      ),
+                  child: snapshot.data![index]!.child ??
+                      Text(
+                        snapshot.data![index]!.searchKey,
+                        style: widget.suggestionStyle,
+                      ),
+                ),
               ),
-            )),
+            ),
           );
 
           return AnimatedContainer(

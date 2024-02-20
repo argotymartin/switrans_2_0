@@ -106,6 +106,7 @@ class _BuildFiledDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController();
     final documentosAll = context.read<FacturaBloc>().state.documentos;
     final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
@@ -118,10 +119,11 @@ class _BuildFiledDocumento extends StatelessWidget {
     }).toList();
 
     void setValueFactura(String value) async {
-      if (value.isNotEmpty && preFactura.documento == 0) {
+      if (value.isNotEmpty) {
         final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
         preFactura.documento = documento.remesa;
         preFactura.documentoImpreso = documento.impreso;
+        preFactura.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
         context.read<ItemFacturaBloc>().add(ChangedDelayItemFacturaEvent(preFactura: preFactura));
       }
     }
@@ -129,6 +131,8 @@ class _BuildFiledDocumento extends StatelessWidget {
     return Column(
       children: [
         AutocompleteInput(
+          isReadOnly: preFactura.tipo == "TR",
+          controller: controller,
           isShowCodigo: false,
           title: "Documento",
           suggestions: suggestions,
@@ -188,7 +192,7 @@ class _BuildValor extends StatelessWidget {
     return CurrencyInput(
       color: Colors.blue.shade800,
       onChanged: onChaneged,
-      initialValue: preFactura.valor.toString(),
+      initialValue: preFactura.valor.toInt().toString(),
     );
   }
 }

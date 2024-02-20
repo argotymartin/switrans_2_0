@@ -33,7 +33,7 @@ class FacturaDataTest {
       destino: "BOGOTA, D.C.",
       observacion:
           "PLANILA PARA LEGALIZAR SERVICIO URBANO CANCELADO POR EL CLIENTE PERACION TEXMODA AEROPUERTO SIN VERIFICAR PESO NI CONTENIDO",
-      observacionFactura: "Esto es otra Observacion",
+      observacionFactura: "ESTA ES LA OBS DE FACTURA DEL DOCUMENTO: 443534",
       remision: "Esto es una Remision",
       rcp: 0.0,
       total: 100.0,
@@ -57,7 +57,7 @@ class FacturaDataTest {
       destino: "CARTAGENA DE INDIAS",
       observacion:
           "VACIO EN EXPRESO D.O:  RTMOE000103736    -    BL:  RTMOE000103736 LLEVA 1X40HC  HLBU2355011 COMPROMISO DE ENTREGA EL DIA 4-1-23",
-      observacionFactura: "Esto es otra Observacion",
+      observacionFactura: "ESTA ES LA OBS DE FACTURA DEL DOCUMENTO: 736918",
       remision: "D.O:  RTMOE000103736    -    BL:  RTMOE000103736",
       rcp: 3660000.0,
       total: 3400000.0,

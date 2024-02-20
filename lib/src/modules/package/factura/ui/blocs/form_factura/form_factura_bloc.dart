@@ -116,6 +116,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Cliente getClienteSelected() {
+    clienteController.text = "1409";
     final Cliente cliente = state.clientes.firstWhere((element) => element.codigo == int.parse(clienteController.text));
     return cliente;
   }
