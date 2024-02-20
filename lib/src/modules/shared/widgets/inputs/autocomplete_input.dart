@@ -40,7 +40,7 @@ class AutocompleteInput extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => (value == null) ? 'error' : null,
       key: const Key('searchfield'),
-      hint: isReadOnly ? 'Buscar $title' : '',
+      hint: isReadOnly ? '' : 'Buscar $title',
       itemHeight: 68,
       searchInputDecoration: inputDecoration(context),
       suggestionsDecoration: SuggestionDecoration(

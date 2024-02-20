@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
@@ -237,7 +237,7 @@ class _BuildDocumentos extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DocumentoBloc, DocumentoState>(
       builder: (context, state) {
-        if (state is FacturaSuccesState) {
+        if (state is DocumentoSuccesState) {
           final remesas = context.read<FormFacturaBloc>().remesasController.text;
           List<String> items = remesas.split(",");
           return Column(
@@ -259,7 +259,7 @@ class _BuildDocumentos extends StatelessWidget {
             ],
           );
         }
-        if (state is FacturaLoadingState) {
+        if (state is DocumentoLoadingState) {
           return Center(
             child: Column(
               children: [
@@ -280,34 +280,41 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        const _BuildDetailsDocumentos(),
-        const SizedBox(height: 16),
-        const TableItemsDocumento(),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ElevatedButton.icon(
-              onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
-              icon: const Icon(Icons.add_card_rounded),
-              label: const Text("Adicionar"),
-            ),
-            const CardDetailsFactura()
-          ],
-        ),
-        const SizedBox(height: 12),
-        const Divider(),
-        const SizedBox(height: 12),
-        const SizedBox(height: 12),
-        const _BuildPrefacturarDocumento(),
-        const SizedBox(height: 24),
-      ],
+    return BlocBuilder<DocumentoBloc, DocumentoState>(
+      builder: (context, state) {
+        if (state is DocumentoSuccesState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              const _BuildDetailsDocumentos(),
+              const SizedBox(height: 16),
+              const TableItemsDocumento(),
+              const SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+                    icon: const Icon(Icons.add_card_rounded),
+                    label: const Text("Adicionar"),
+                  ),
+                  const CardDetailsFactura()
+                ],
+              ),
+              const SizedBox(height: 12),
+              const Divider(),
+              const SizedBox(height: 12),
+              const SizedBox(height: 12),
+              const _BuildPrefacturarDocumento(),
+              const SizedBox(height: 24),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

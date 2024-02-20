@@ -8,33 +8,33 @@ sealed class DocumentoState extends Equatable {
   List<Object> get props => [];
 }
 
-final class FacturaInitial extends DocumentoState {}
+final class DocumentoInitial extends DocumentoState {}
 
-class FacturaInitialState extends DocumentoState {
-  const FacturaInitialState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class FacturaLoadingState extends DocumentoState {
-  const FacturaLoadingState();
+class DocumentoInitialState extends DocumentoState {
+  const DocumentoInitialState();
 
   @override
   List<Object> get props => [];
 }
 
-class FacturaSuccesState extends DocumentoState {
-  const FacturaSuccesState({super.documentos});
+class DocumentoLoadingState extends DocumentoState {
+  const DocumentoLoadingState();
 
   @override
   List<Object> get props => [];
 }
 
-class FacturaErrorState extends DocumentoState {
+class DocumentoSuccesState extends DocumentoState {
+  const DocumentoSuccesState({super.documentos});
+
+  @override
+  List<Object> get props => [];
+}
+
+class DocumentoErrorState extends DocumentoState {
   final Exception error;
 
-  const FacturaErrorState({required this.error});
+  const DocumentoErrorState({required this.error});
   @override
   List<Object> get props => [error];
 }
