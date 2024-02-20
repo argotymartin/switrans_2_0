@@ -283,41 +283,34 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
-      builder: (context, state) {
-        if (state is ItemFacturaSuccesState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              const _BuildDetailsDocumentos(),
-              const SizedBox(height: 16),
-              TableItemsDocumento(prefacturas: state.preFacturas),
-              const SizedBox(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
-                    icon: const Icon(Icons.add_card_rounded),
-                    label: const Text("Adicionar"),
-                  ),
-                  const CardDetailsFactura()
-                ],
-              ),
-              const SizedBox(height: 12),
-              const Divider(),
-              const SizedBox(height: 12),
-              const SizedBox(height: 12),
-              const _BuildPrefacturarDocumento(),
-              const SizedBox(height: 24),
-            ],
-          );
-        }
-        return const SizedBox();
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        const _BuildDetailsDocumentos(),
+        const SizedBox(height: 16),
+        const TableItemsDocumento(),
+        const SizedBox(height: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+              icon: const Icon(Icons.add_card_rounded),
+              label: const Text("Adicionar"),
+            ),
+            const CardDetailsFactura()
+          ],
+        ),
+        const SizedBox(height: 12),
+        const Divider(),
+        const SizedBox(height: 12),
+        const SizedBox(height: 12),
+        const _BuildPrefacturarDocumento(),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }

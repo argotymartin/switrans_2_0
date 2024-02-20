@@ -6,8 +6,9 @@ import 'package:switrans_2_0/src/util/resources/formatters/currency_formatter.da
 class CurrencyInput extends StatelessWidget {
   final TextEditingController? controller;
   final Color color;
+  final String initialValue;
   final Function(String result)? onChanged;
-  const CurrencyInput({super.key, this.controller, required this.color, this.onChanged});
+  const CurrencyInput({super.key, this.controller, required this.color, this.onChanged, this.initialValue = "0"});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class CurrencyInput extends StatelessWidget {
 
     return TextFormField(
       controller: controller,
-      initialValue: "\$0",
+      initialValue: currencyFormat.format(int.parse(initialValue)),
       onChanged: (value) {
         if (onChanged != null) onChanged?.call(value);
       },

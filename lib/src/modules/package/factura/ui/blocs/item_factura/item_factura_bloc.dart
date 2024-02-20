@@ -45,11 +45,13 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       emit(ItemFacturaSuccesState(preFacturas: newPrefacturas, centroCosto: centroCosto));
     });
 
-    on<RemoveItemByPositionFacturaEvent>((event, emit) {
+    on<RemoveItemByPositionFacturaEvent>((event, emit) async {
       int index = event.index - 1;
       final List<PreFactura> preFacturas = List.from(state.preFacturas);
+
       String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
+      await Future.delayed(const Duration(milliseconds: 100));
       final newPrefacturas = preFacturas..removeAt(index);
       emit(ItemFacturaSuccesState(preFacturas: newPrefacturas, centroCosto: centroCosto));
     });
@@ -64,6 +66,14 @@ class ItemFacturaBloc extends Bloc<ItemFacturaEvent, ItemFacturaState> {
       final List<PreFactura> preFacturas = List.from(state.preFacturas);
       String centroCosto = state.centroCosto;
       emit(const ItemFacturaLoadingState());
+      emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: centroCosto));
+    });
+
+    on<ChangedDelayItemFacturaEvent>((event, emit) async {
+      final List<PreFactura> preFacturas = [...state.preFacturas];
+      String centroCosto = state.centroCosto;
+      emit(const ItemFacturaLoadingState());
+      //await Future.delayed(const Duration(milliseconds: 200));
       emit(ItemFacturaSuccesState(preFacturas: preFacturas, centroCosto: centroCosto));
     });
   }

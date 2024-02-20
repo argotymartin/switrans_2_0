@@ -3,17 +3,18 @@ import 'package:flutter/services.dart';
 
 class NumberInput extends StatelessWidget {
   final Color colorText;
+  final String initialValue;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
 
-  const NumberInput({super.key, this.controller, required this.colorText, this.onChanged});
+  const NumberInput({super.key, this.controller, required this.colorText, this.onChanged, this.initialValue = "1"});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       textAlign: TextAlign.center,
       controller: controller,
-      initialValue: "1",
+      initialValue: initialValue,
       onChanged: onChanged,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),

@@ -9,63 +9,68 @@ import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
 
 class TableItemsDocumento extends StatelessWidget {
-  final List<PreFactura> prefacturas;
   const TableItemsDocumento({
     super.key,
-    required this.prefacturas,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tableRowsTitle = TableRow(
-      decoration: BoxDecoration(color: Colors.grey.shade100),
-      children: const [
-        _CellTitle(title: "Item"),
-        _CellTitle(title: "Documento"),
-        _CellTitle(title: "Descripcion"),
-        _CellTitle(title: "Valor"),
-        _CellTitle(title: "IVA %"),
-        _CellTitle(title: "IVA Valor"),
-        _CellTitle(title: "Cantidad"),
-        _CellTitle(title: "Total"),
-        _CellTitle(title: "Accion"),
-      ],
-    );
-    int index = 0;
-    List<TableRow> buildTableRows = prefacturas.map(
-      (prefactura) {
-        index++;
-        return TableRow(
-          children: [
-            _CellContent(child: _BuildFieldItem(index)),
-            _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
-            _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
-            _CellContent(child: _BuildValor(preFactura: prefactura)),
-            _CellContent(child: _BuildPorcentajeIva(prefactura.porcentajeIva)),
-            _CellContent(child: _BuildValorIva(valorIva: prefactura.valorIva)),
-            _CellContent(child: _BuildCantidad(preFactura: prefactura)),
-            _CellContent(child: _BuildTotal(total: prefactura.total)),
-            _CellContent(child: _BuildFiledAccion(index: index)),
+    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+      builder: (context, state) {
+        if (state is ItemFacturaLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final tableRowsTitle = TableRow(
+          decoration: BoxDecoration(color: Colors.grey.shade100),
+          children: const [
+            _CellTitle(title: "Item"),
+            _CellTitle(title: "Documento"),
+            _CellTitle(title: "Descripcion"),
+            _CellTitle(title: "Valor"),
+            _CellTitle(title: "IVA %"),
+            _CellTitle(title: "IVA Valor"),
+            _CellTitle(title: "Cantidad"),
+            _CellTitle(title: "Total"),
+            _CellTitle(title: "Accion"),
           ],
         );
-      },
-    ).toList();
+        int index = 0;
+        List<TableRow> buildTableRows = state.preFacturas.map(
+          (prefactura) {
+            index++;
+            return TableRow(
+              children: [
+                _CellContent(child: _BuildFieldItem(index)),
+                _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
+                _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
+                _CellContent(child: _BuildValor(preFactura: prefactura)),
+                _CellContent(child: _BuildPorcentajeIva(prefactura.porcentajeIva)),
+                _CellContent(child: _BuildValorIva(valorIva: prefactura.valorIva)),
+                _CellContent(child: _BuildCantidad(preFactura: prefactura)),
+                _CellContent(child: _BuildTotal(total: prefactura.total)),
+                _CellContent(child: _BuildFiledAccion(index: index)),
+              ],
+            );
+          },
+        ).toList();
 
-    const columnWidth = {
-      0: FractionColumnWidth(0.04),
-      1: FractionColumnWidth(0.18),
-      2: FractionColumnWidth(0.3),
-      3: FractionColumnWidth(0.1),
-      4: FractionColumnWidth(0.05),
-      5: FractionColumnWidth(0.08),
-      6: FractionColumnWidth(0.06),
-      7: FractionColumnWidth(0.1),
-    };
-    return Table(
-      border: TableBorder.all(color: Colors.grey.shade200, width: 1),
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: columnWidth,
-      children: [tableRowsTitle, ...buildTableRows],
+        const columnWidth = {
+          0: FractionColumnWidth(0.04),
+          1: FractionColumnWidth(0.18),
+          2: FractionColumnWidth(0.3),
+          3: FractionColumnWidth(0.1),
+          4: FractionColumnWidth(0.05),
+          5: FractionColumnWidth(0.08),
+          6: FractionColumnWidth(0.06),
+          7: FractionColumnWidth(0.1),
+        };
+        return Table(
+          border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          columnWidths: columnWidth,
+          children: [tableRowsTitle, ...buildTableRows],
+        );
+      },
     );
   }
 }
@@ -117,7 +122,7 @@ class _BuildFiledDocumento extends StatelessWidget {
         final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
         preFactura.documento = documento.remesa;
         preFactura.documentoImpreso = documento.impreso;
-        context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+        context.read<ItemFacturaBloc>().add(ChangedDelayItemFacturaEvent(preFactura: preFactura));
       }
     }
 
@@ -183,6 +188,7 @@ class _BuildValor extends StatelessWidget {
     return CurrencyInput(
       color: Colors.blue.shade800,
       onChanged: onChaneged,
+      initialValue: preFactura.valor.toString(),
     );
   }
 }
@@ -227,7 +233,7 @@ class _BuildCantidad extends StatelessWidget {
       context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
     }
 
-    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged);
+    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: preFactura.cantidad.toString());
   }
 }
 
