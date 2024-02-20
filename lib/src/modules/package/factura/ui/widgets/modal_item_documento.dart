@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class ModalItemDocumento extends StatefulWidget {
@@ -27,7 +27,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
     final size = MediaQuery.of(context).size;
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
-        List<PreFactura> prefacturas = state.preFacturas.where((prefactura) => prefactura.documento != 0).toList();
+        List<ItemDocumento> itemDocumento = state.itemDocumentos.where((prefactura) => prefactura.documento != 0).toList();
         return Container(
           padding: const EdgeInsets.only(right: 24),
           height: 64,
@@ -45,9 +45,9 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: prefacturas.length,
+                    itemCount: itemDocumento.length,
                     itemBuilder: (BuildContext context, int index) {
-                      PreFactura preFactura = prefacturas[index];
+                      ItemDocumento preFactura = itemDocumento[index];
 
                       return Container(
                         decoration: BoxDecoration(

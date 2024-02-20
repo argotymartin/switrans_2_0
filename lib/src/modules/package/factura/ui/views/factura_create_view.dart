@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_details_factura.dart';
@@ -425,16 +425,16 @@ class _BuildButtonRegistrar extends StatelessWidget {
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
         final documentos = facturaBloc.state.documentos;
-        final prefacturas = state.preFacturas.where((element) => element.documento > 0);
+        final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
         double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        double totalPrefacturas = prefacturas.fold(0, (total, prefactura) => total + prefactura.total);
+        double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
         double valorFaltante = totalDocumentos - totalPrefacturas;
 
-        bool isTransporte = state.preFacturas.any((element) => element.tipo == "TR");
-        bool isDocumento = !state.preFacturas.any((element) => element.documento <= 0);
-        bool isCantidad = !state.preFacturas.any((element) => element.cantidad <= 0);
-        bool isValor = !state.preFacturas.any((element) => element.valor <= 0);
-        bool isDescripcion = state.preFacturas.any((element) => element.descripcion.isNotEmpty);
+        bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
+        bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
+        bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
+        bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
+        bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
         bool isCentroCosto = state.centroCosto.isNotEmpty;
         bool isFaltante = valorFaltante.toInt() == 0;
 

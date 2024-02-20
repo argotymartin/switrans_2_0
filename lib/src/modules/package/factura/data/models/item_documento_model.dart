@@ -1,8 +1,8 @@
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
 
-class PreFacturaModel extends PreFactura {
-  PreFacturaModel({
+class ItemDocumentoModel extends ItemDocumento {
+  ItemDocumentoModel({
     required super.documentoImpreso,
     required super.documento,
     required super.tipo,
@@ -14,7 +14,7 @@ class PreFacturaModel extends PreFactura {
     super.valorIva = 0,
   });
 
-  factory PreFacturaModel.toDocumetnoTR(Documento documento) => PreFacturaModel(
+  factory ItemDocumentoModel.toDocumetnoTR(Documento documento) => ItemDocumentoModel(
         cantidad: 1,
         documentoImpreso: documento.impreso,
         descripcion: documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacion,
@@ -24,7 +24,7 @@ class PreFacturaModel extends PreFactura {
         total: 0,
       );
 
-  factory PreFacturaModel.init() => PreFacturaModel(
+  factory ItemDocumentoModel.init() => ItemDocumentoModel(
         cantidad: 1,
         documentoImpreso: "",
         descripcion: "",
@@ -35,4 +35,13 @@ class PreFacturaModel extends PreFactura {
         valorIva: 0,
         porcentajeIva: 19,
       );
+
+  Map<String, dynamic> toJson() => {
+        "documento": documento,
+        "tipo": tipo,
+        "descripcion": descripcion,
+        "cantidad": cantidad,
+        "valor": valor,
+        "impuesto": valorIva,
+      };
 }

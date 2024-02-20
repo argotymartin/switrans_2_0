@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
 
 part 'factura_event.dart';

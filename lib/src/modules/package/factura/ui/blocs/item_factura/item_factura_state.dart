@@ -1,9 +1,9 @@
 part of 'item_factura_bloc.dart';
 
 sealed class ItemFacturaState extends Equatable {
-  final List<PreFactura> preFacturas;
+  final List<ItemDocumento> itemDocumentos;
   final String centroCosto;
-  const ItemFacturaState({this.preFacturas = const [], this.centroCosto = ""});
+  const ItemFacturaState({this.itemDocumentos = const [], this.centroCosto = ""});
 }
 
 class ItemFacturaInitialState extends ItemFacturaState {
@@ -21,8 +21,8 @@ class ItemFacturaLoadingState extends ItemFacturaState {
 }
 
 class ItemFacturaSuccesState extends ItemFacturaState {
-  const ItemFacturaSuccesState({super.preFacturas, super.centroCosto});
+  const ItemFacturaSuccesState({super.itemDocumentos, super.centroCosto});
 
   @override
-  List<Object> get props => [preFacturas, centroCosto];
+  List<Object> get props => [itemDocumentos, centroCosto];
 }

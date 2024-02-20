@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
@@ -169,9 +169,9 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return BlocListener<ItemFacturaBloc, ItemFacturaState>(
       listener: (context, state) {
-        List<PreFactura> preFacturas = state.preFacturas;
+        List<ItemDocumento> itemDocumentos = state.itemDocumentos;
         final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        bool isPresent = preFacturas.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
+        bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
 
         rendererContext.cell.row.setChecked(isPresent);
       },

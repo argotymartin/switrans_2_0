@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/pre_factura.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
@@ -35,19 +35,19 @@ class TableItemsDocumento extends StatelessWidget {
           ],
         );
         int index = 0;
-        List<TableRow> buildTableRows = state.preFacturas.map(
-          (prefactura) {
+        List<TableRow> buildTableRows = state.itemDocumentos.map(
+          (itemDocumento) {
             index++;
             return TableRow(
               children: [
                 _CellContent(child: _BuildFieldItem(index)),
-                _CellContent(child: _BuildFiledDocumento(preFactura: prefactura)),
-                _CellContent(child: _BuildFieldDescription(title: prefactura.descripcion)),
-                _CellContent(child: _BuildValor(preFactura: prefactura)),
-                _CellContent(child: _BuildPorcentajeIva(prefactura.porcentajeIva)),
-                _CellContent(child: _BuildValorIva(valorIva: prefactura.valorIva)),
-                _CellContent(child: _BuildCantidad(preFactura: prefactura)),
-                _CellContent(child: _BuildTotal(total: prefactura.total)),
+                _CellContent(child: _BuildFiledDocumento(itemDocumento: itemDocumento)),
+                _CellContent(child: _BuildFieldDescription(title: itemDocumento.descripcion)),
+                _CellContent(child: _BuildValor(itemDocumento: itemDocumento)),
+                _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
+                _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
+                _CellContent(child: _BuildCantidad(itemDocumento: itemDocumento)),
+                _CellContent(child: _BuildTotal(total: itemDocumento.total)),
                 _CellContent(child: _BuildFiledAccion(index: index)),
               ],
             );
@@ -100,15 +100,15 @@ class _BuildFieldItem extends StatelessWidget {
 }
 
 class _BuildFiledDocumento extends StatelessWidget {
-  final PreFactura preFactura;
+  final ItemDocumento itemDocumento;
 
-  const _BuildFiledDocumento({required this.preFactura});
+  const _BuildFiledDocumento({required this.itemDocumento});
 
   @override
   Widget build(BuildContext context) {
     final controller = TextEditingController();
     final documentosAll = context.read<FacturaBloc>().state.documentos;
-    final suggestionSeleted = preFactura.documento > 0 ? SuggestionModel(title: preFactura.documento.toString(), subTitle: "") : null;
+    final suggestionSeleted = itemDocumento.documento > 0 ? SuggestionModel(title: itemDocumento.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
         codigo: '${remesa.remesa}',
@@ -121,17 +121,17 @@ class _BuildFiledDocumento extends StatelessWidget {
     void setValueFactura(String value) async {
       if (value.isNotEmpty) {
         final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
-        preFactura.documento = documento.remesa;
-        preFactura.documentoImpreso = documento.impreso;
-        preFactura.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-        context.read<ItemFacturaBloc>().add(ChangedDelayItemFacturaEvent(preFactura: preFactura));
+        itemDocumento.documento = documento.remesa;
+        itemDocumento.documentoImpreso = documento.impreso;
+        itemDocumento.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
+        context.read<ItemFacturaBloc>().add(ChangedDelayItemFacturaEvent(itemDocumento: itemDocumento));
       }
     }
 
     return Column(
       children: [
         AutocompleteInput(
-          isReadOnly: preFactura.tipo == "TR",
+          isReadOnly: itemDocumento.tipo == "TR",
           controller: controller,
           isShowCodigo: false,
           title: "Documento",
@@ -139,7 +139,7 @@ class _BuildFiledDocumento extends StatelessWidget {
           suggestionSelected: suggestionSeleted,
           onPressed: setValueFactura,
         ),
-        RadioButtons(tipo: preFactura.tipo),
+        RadioButtons(tipo: itemDocumento.tipo),
       ],
     );
   }
@@ -169,11 +169,10 @@ class _BuildFieldDescription extends StatelessWidget {
 }
 
 class _BuildValor extends StatelessWidget {
+  final ItemDocumento itemDocumento;
   const _BuildValor({
-    required this.preFactura,
+    required this.itemDocumento,
   });
-
-  final PreFactura preFactura;
 
   @override
   Widget build(BuildContext context) {
@@ -181,18 +180,18 @@ class _BuildValor extends StatelessWidget {
       String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
       String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
       double intValue = double.parse(textValue);
-      double newValorIva = intValue * preFactura.porcentajeIva / 100;
+      double newValorIva = intValue * itemDocumento.porcentajeIva / 100;
 
-      preFactura.valor = intValue;
-      preFactura.valorIva = newValorIva;
-      preFactura.total = (preFactura.valor + preFactura.valorIva) * preFactura.cantidad;
-      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+      itemDocumento.valor = intValue;
+      itemDocumento.valorIva = newValorIva;
+      itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
+      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(itemDocumento: itemDocumento));
     }
 
     return CurrencyInput(
       color: Colors.blue.shade800,
       onChanged: onChaneged,
-      initialValue: preFactura.valor.toInt().toString(),
+      initialValue: itemDocumento.valor.toInt().toString(),
     );
   }
 }
@@ -221,9 +220,9 @@ class _BuildValorIva extends StatelessWidget {
 }
 
 class _BuildCantidad extends StatelessWidget {
-  final PreFactura preFactura;
+  final ItemDocumento itemDocumento;
   const _BuildCantidad({
-    required this.preFactura,
+    required this.itemDocumento,
   });
 
   @override
@@ -232,12 +231,12 @@ class _BuildCantidad extends StatelessWidget {
       String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
       String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
       int intValue = int.parse(textValue);
-      preFactura.cantidad = intValue;
-      preFactura.total = (preFactura.valor + preFactura.valorIva) * preFactura.cantidad;
-      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(preFactura: preFactura));
+      itemDocumento.cantidad = intValue;
+      itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
+      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(itemDocumento: itemDocumento));
     }
 
-    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: preFactura.cantidad.toString());
+    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: itemDocumento.cantidad.toString());
   }
 }
 

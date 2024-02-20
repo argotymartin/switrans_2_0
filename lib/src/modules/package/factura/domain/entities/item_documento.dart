@@ -1,4 +1,4 @@
-class PreFactura {
+class ItemDocumento {
   int documento;
   String documentoImpreso;
   String tipo;
@@ -8,7 +8,7 @@ class PreFactura {
   double total;
   int porcentajeIva;
   double valorIva;
-  PreFactura({
+  ItemDocumento({
     required this.documentoImpreso,
     required this.documento,
     required this.tipo,

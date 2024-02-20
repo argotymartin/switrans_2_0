@@ -15,10 +15,10 @@ class CardDetailsFactura extends StatelessWidget {
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
         final documentos = facturaBloc.state.documentos;
-        final prefacturas = state.preFacturas.where((element) => element.documento > 0);
+        final itemDocumento = state.itemDocumentos.where((element) => element.documento > 0);
 
         double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        double totalPrefacturas = prefacturas.fold(0, (total, prefactura) => total + prefactura.total);
+        double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
         double valorFaltante = totalDocumentos - totalPrefacturas;
 
         return Container(
@@ -43,7 +43,7 @@ class CardDetailsFactura extends StatelessWidget {
                         children: [
                           const Icon(Icons.file_copy_outlined),
                           const SizedBox(width: 8),
-                          Text("Cantidad Items: ${prefacturas.length}", style: textStyle),
+                          Text("Cantidad Items: ${itemDocumento.length}", style: textStyle),
                         ],
                       ),
                     ),

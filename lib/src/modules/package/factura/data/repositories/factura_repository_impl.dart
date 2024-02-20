@@ -3,7 +3,7 @@ import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/test/fa
 import 'package:switrans_2_0/src/modules/package/factura/data/models/cliente_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/empresa_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/documento_model.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factuta_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
