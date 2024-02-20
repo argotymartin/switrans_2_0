@@ -10,8 +10,8 @@ class CardDetailsFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+    final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
         final documentos = facturaBloc.state.documentos;
         final itemDocumento = state.itemDocumentos.where((element) => element.documento > 0);

@@ -165,7 +165,7 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    return BlocListener<ItemFacturaBloc, ItemFacturaState>(
+    return BlocListener<ItemDocumentoBloc, ItemDocumentoState>(
       listener: (context, state) {
         List<ItemDocumento> itemDocumentos = state.itemDocumentos;
         final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
@@ -321,11 +321,11 @@ class DocumentosTableDataBuilder {
         CustomSizeButton(
           onPressed: () {
             rendererContext.stateManager.removeRows([rendererContext.row]);
-            final documentosAll = context.read<FacturaBloc>().state.documentos;
+            final documentosAll = context.read<DocumentoBloc>().state.documentos;
             final documento = documentosAll[rendererContext.rowIdx];
             final List<Documento> documentos = List.from(documentosAll)..remove(documento);
-            context.read<FacturaBloc>().add(ChangedFacturaEvent(documentos));
-            context.read<ItemFacturaBloc>().add(RemoveItemFacturaEvent(documento: documento));
+            context.read<DocumentoBloc>().add(ChangedDocumentoEvent(documentos));
+            context.read<ItemDocumentoBloc>().add(RemoveItemDocumentoEvent(documento: documento));
           },
           width: 32,
           icon: Icons.delete_outlined,

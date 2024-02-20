@@ -1,6 +1,6 @@
-export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/factura/factura_bloc.dart';
+export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/documento/documento_bloc.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/form_factura/form_factura_bloc.dart';
-export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/item_factura/item_factura_bloc.dart';
+export 'package:switrans_2_0/src/modules/package/factura/ui/blocs/item_documento/item_documento_bloc.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_create_view.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_edit_view.dart';
 export 'package:switrans_2_0/src/modules/package/factura/ui/views/factura_search_view.dart';

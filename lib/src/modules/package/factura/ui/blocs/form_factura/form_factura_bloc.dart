@@ -9,7 +9,7 @@ part 'form_factura_state.dart';
 
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final AbstractFacturaRepository _repository;
-  final FacturaBloc _facturaBloc;
+  final DocumentoBloc _documentoBloc;
 
   late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
@@ -18,7 +18,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final TextEditingController fechaInicioController = TextEditingController();
   final TextEditingController fechaFinController = TextEditingController();
 
-  FormFacturaBloc(this._repository, this._facturaBloc) : super(const FormFacturaInitialState()) {
+  FormFacturaBloc(this._repository, this._documentoBloc) : super(const FormFacturaInitialState()) {
     on<GetFormFacturaEvent>((event, emit) async {
       final String empresa = state.empresa;
       String error = state.error;
@@ -109,7 +109,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         inicio: inicio,
         fin: fin,
       );
-      _facturaBloc.add(GetDocumentosFacturaEvent(request));
+      _documentoBloc.add(GetDocumentoEvent(request));
       await moveScroll(500);
     }
   }

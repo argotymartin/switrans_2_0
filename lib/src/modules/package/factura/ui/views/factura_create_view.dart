@@ -235,7 +235,7 @@ class _BuildDocumentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FacturaBloc, FacturaState>(
+    return BlocBuilder<DocumentoBloc, DocumentoState>(
       builder: (context, state) {
         if (state is FacturaSuccesState) {
           final remesas = context.read<FormFacturaBloc>().remesasController.text;
@@ -294,7 +294,7 @@ class _BuildItemFactura extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton.icon(
-              onPressed: () => context.read<ItemFacturaBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+              onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
               icon: const Icon(Icons.add_card_rounded),
               label: const Text("Adicionar"),
             ),
@@ -317,7 +317,7 @@ class _BuildDetailsDocumentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final documentos = context.read<FacturaBloc>().state.documentos;
+    final documentos = context.read<DocumentoBloc>().state.documentos;
     final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
     final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
     return Row(
@@ -346,7 +346,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
     final controller = TextEditingController();
 
-    final centrosCosto = context.read<FacturaBloc>().getCentosCosto();
+    final centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
     final suggestions = centrosCosto.map((centro) {
       return SuggestionModel(
         codigo: '${centro.key}',
@@ -356,7 +356,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     }).toList();
     void setValueFactura(String value) {
       if (value.isNotEmpty) {
-        context.read<ItemFacturaBloc>().add(SelectCentroCostoItemFacturaEvent(centroCosto: value));
+        context.read<ItemDocumentoBloc>().add(SelectCentroCostoItemDocumentoEvent(centroCosto: value));
       }
     }
 
@@ -417,11 +417,11 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
     final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
     final AuthBloc authBloc = context.read<AuthBloc>();
 
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
         final documentos = facturaBloc.state.documentos;
         final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);

@@ -13,9 +13,9 @@ class TableItemsDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
-        if (state is ItemFacturaLoadingState) {
+        if (state is ItemDocumentoLoadingState) {
           return const Center(child: CircularProgressIndicator());
         }
         final tableRowsTitle = TableRow(
@@ -105,7 +105,7 @@ class _BuildFiledDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = TextEditingController();
-    final documentosAll = context.read<FacturaBloc>().state.documentos;
+    final documentosAll = context.read<DocumentoBloc>().state.documentos;
     final suggestionSeleted = itemDocumento.documento > 0 ? SuggestionModel(title: itemDocumento.documento.toString(), subTitle: "") : null;
     final suggestions = documentosAll.map((remesa) {
       return SuggestionModel(
@@ -122,7 +122,7 @@ class _BuildFiledDocumento extends StatelessWidget {
         itemDocumento.documento = documento.remesa;
         itemDocumento.documentoImpreso = documento.impreso;
         itemDocumento.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-        context.read<ItemFacturaBloc>().add(ChangedDelayItemFacturaEvent(itemDocumento: itemDocumento));
+        context.read<ItemDocumentoBloc>().add(ChangedDelayItemDocumentoEvent(itemDocumento: itemDocumento));
       }
     }
 
@@ -183,7 +183,7 @@ class _BuildValor extends StatelessWidget {
       itemDocumento.valor = intValue;
       itemDocumento.valorIva = newValorIva;
       itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
-      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(itemDocumento: itemDocumento));
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: itemDocumento));
     }
 
     return CurrencyInput(
@@ -231,7 +231,7 @@ class _BuildCantidad extends StatelessWidget {
       int intValue = int.parse(textValue);
       itemDocumento.cantidad = intValue;
       itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
-      context.read<ItemFacturaBloc>().add(ChangedItemFacturaEvent(itemDocumento: itemDocumento));
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: itemDocumento));
     }
 
     return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: itemDocumento.cantidad.toString());
@@ -259,7 +259,7 @@ class _BuildFiledAccion extends StatelessWidget {
       children: [
         CustomSizeButton(
           onPressed: () {
-            context.read<ItemFacturaBloc>().add(RemoveItemByPositionFacturaEvent(index: index));
+            context.read<ItemDocumentoBloc>().add(RemoveItemByPositionFacturaEvent(index: index));
           },
           width: 32,
           icon: Icons.delete_outlined,

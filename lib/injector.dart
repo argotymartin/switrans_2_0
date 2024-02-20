@@ -10,7 +10,7 @@ import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_modul
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/repositories/factura_repository_impl.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 final injector = GetIt.instance;
@@ -31,7 +31,7 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
-  injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
+  injector.registerSingleton<DocumentoBloc>(DocumentoBloc(injector()));
   injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector(), injector()));
-  injector.registerSingleton<ItemFacturaBloc>(ItemFacturaBloc(injector()));
+  injector.registerSingleton<ItemDocumentoBloc>(ItemDocumentoBloc(injector()));
 }

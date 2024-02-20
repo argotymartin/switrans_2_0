@@ -25,7 +25,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
         List<ItemDocumento> itemDocumento = state.itemDocumentos.where((prefactura) => prefactura.documento != 0).toList();
         return Container(

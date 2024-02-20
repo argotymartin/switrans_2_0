@@ -24,6 +24,7 @@ class Documento {
   final bool anulacionTrafico;
   final List<Adicion> adiciones;
   final List<Descuento> descuentos;
+
   Documento({
     required this.remesa,
     required this.impreso,
