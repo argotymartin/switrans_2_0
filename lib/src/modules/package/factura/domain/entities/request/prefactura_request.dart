@@ -1,5 +1,5 @@
-import 'package:switrans_2_0/src/modules/package/factura/data/models/documento_model.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/models/item_documento_model.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/documento.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
 
 class PrefacturaRequest {
   final int centroCosto;
@@ -8,8 +8,8 @@ class PrefacturaRequest {
   final int usuario;
   final int valorImpuesto;
   final int valorNeto;
-  final List<DocumentoModel> documentos;
-  final List<ItemDocumentoModel> items;
+  final List<Documento> documentos;
+  final List<ItemDocumento> items;
 
   PrefacturaRequest({
     required this.centroCosto,

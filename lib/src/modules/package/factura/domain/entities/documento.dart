@@ -47,4 +47,9 @@ class Documento {
     required this.adiciones,
     required this.descuentos,
   });
+
+  Map<String, dynamic> toJson() => {
+        "documento": remesa,
+        "tarifa": total,
+      };
 }

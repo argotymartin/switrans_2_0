@@ -19,4 +19,13 @@ class ItemDocumento {
     required this.porcentajeIva,
     required this.valorIva,
   });
+
+  Map<String, dynamic> toJson() => {
+        "documento": documento,
+        "tipo": tipo,
+        "descripcion": descripcion,
+        "cantidad": cantidad,
+        "valor": valor,
+        "impuesto": valorIva,
+      };
 }

@@ -50,9 +50,4 @@ class DocumentoModel extends Documento {
         adiciones: List<Adicion>.from(json["adiciones"].map((x) => Adicion.fromJson(x))),
         descuentos: List<Descuento>.from(json["descuentos"].map((x) => Descuento.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "documento": remesa,
-        "tarifa": total,
-      };
 }

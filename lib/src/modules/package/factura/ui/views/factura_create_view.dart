@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/prefactura_request.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_details_factura.dart';
@@ -421,12 +423,15 @@ class _BuildButtonRegistrar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+    final AuthBloc authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
         final documentos = facturaBloc.state.documentos;
         final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
         double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
         double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
         double valorFaltante = totalDocumentos - totalPrefacturas;
 
@@ -451,7 +456,26 @@ class _BuildButtonRegistrar extends StatelessWidget {
         return SizedBox(
           width: 240,
           child: FilledButton.icon(
-            onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante ? () {} : null,
+            onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
+                ? () {
+                    int centroCosto = int.parse(state.centroCosto);
+                    int clienteCodigo = int.parse(formFacturaBloc.clienteController.text);
+                    int empresaCodigo = int.parse(formFacturaBloc.state.empresa);
+                    int usuario = authBloc.state.auth!.usuario.codigo;
+                    final prefacturaRequest = PrefacturaRequest(
+                      centroCosto: centroCosto,
+                      cliente: clienteCodigo,
+                      empresa: empresaCodigo,
+                      usuario: usuario,
+                      valorImpuesto: totalImpuestos.toInt(),
+                      valorNeto: totalDocumentos.toInt(),
+                      documentos: documentos,
+                      items: itemDocumentos.toList(),
+                    );
+
+                    print(prefacturaRequest.toJson());
+                  }
+                : null,
             icon: const Icon(Icons.add_card_rounded),
             label: const Text("Registrar Pre-Factura"),
           ),

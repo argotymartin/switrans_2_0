@@ -35,13 +35,4 @@ class ItemDocumentoModel extends ItemDocumento {
         valorIva: 0,
         porcentajeIva: 19,
       );
-
-  Map<String, dynamic> toJson() => {
-        "documento": documento,
-        "tipo": tipo,
-        "descripcion": descripcion,
-        "cantidad": cantidad,
-        "valor": valor,
-        "impuesto": valorIva,
-      };
 }
