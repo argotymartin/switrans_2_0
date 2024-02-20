@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractFacturaRepository {

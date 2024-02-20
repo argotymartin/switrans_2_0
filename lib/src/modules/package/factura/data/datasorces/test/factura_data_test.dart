@@ -1,6 +1,4 @@
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/adicion.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/descuento.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 
 class FacturaDataTest {
   static final List<Empresa> empresasResponse = [

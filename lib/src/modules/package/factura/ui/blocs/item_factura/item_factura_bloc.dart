@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/item_documento_model.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 part 'item_factura_event.dart';

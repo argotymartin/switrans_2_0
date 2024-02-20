@@ -10,7 +10,6 @@ class CardDetailsFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w400, fontSize: 14);
     final FacturaBloc facturaBloc = context.read<FacturaBloc>();
     return BlocBuilder<ItemFacturaBloc, ItemFacturaState>(
       builder: (context, state) {
@@ -18,6 +17,7 @@ class CardDetailsFactura extends StatelessWidget {
         final itemDocumento = state.itemDocumentos.where((element) => element.documento > 0);
 
         double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        double totalImpuestos = itemDocumento.fold(0, (total, item) => total + item.valorIva);
         double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
         double valorFaltante = totalDocumentos - totalPrefacturas;
 
@@ -34,68 +34,82 @@ class CardDetailsFactura extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.file_copy_outlined),
-                          const SizedBox(width: 8),
-                          Text("Cantidad Items: ${itemDocumento.length}", style: textStyle),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.text_snippet_outlined),
-                          const SizedBox(width: 8),
-                          Text("Cantidad Documentos ${facturaBloc.state.documentos.length}", style: textStyle),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(children: [
-                SizedBox(
-                  width: 300,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.paid_outlined),
-                      const SizedBox(width: 8),
-                      Text("Valor Total Documentos: ", style: textStyle),
-                      CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 300,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.price_check_outlined),
-                      const SizedBox(width: 8),
-                      Text("Valor Facturado: ", style: textStyle),
-                      CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
-                    ],
-                  ),
-                ),
-              ]),
               Row(
                 children: [
-                  const Icon(Icons.money_off_outlined),
-                  const SizedBox(width: 8),
-                  Text("Valor Faltante: ", style: textStyle),
-                  CurrencyLabel(color: Colors.red, text: '${valorFaltante.toInt()}'),
+                  _BuildItemCard(
+                    title: "Cantidad Items:",
+                    icon: Icons.file_copy_outlined,
+                    content: Text("${itemDocumento.length}"),
+                  ),
+                  _BuildItemCard(
+                    title: "Cantidad Documentos:",
+                    icon: Icons.file_copy_outlined,
+                    content: Text("${facturaBloc.state.documentos.length}"),
+                  ),
                 ],
               ),
+              Row(
+                children: [
+                  _BuildItemCard(
+                    title: "Valor Total Documentos:",
+                    icon: Icons.paid_outlined,
+                    content: CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
+                  ),
+                  _BuildItemCard(
+                    title: "Valor Facturado:",
+                    icon: Icons.price_check_outlined,
+                    content: CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  _BuildItemCard(
+                    title: "Valor Faltante:",
+                    icon: Icons.money_off_outlined,
+                    content: CurrencyLabel(color: Colors.red, text: '${valorFaltante.toInt()}'),
+                  ),
+                  _BuildItemCard(
+                    title: "Valor Impuesto:",
+                    icon: Icons.currency_exchange_outlined,
+                    content: CurrencyLabel(color: Colors.black87, text: '${totalImpuestos.toInt()}'),
+                  ),
+                ],
+              )
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _BuildItemCard extends StatelessWidget {
+  const _BuildItemCard({
+    required this.title,
+    required this.icon,
+    required this.content,
+  });
+
+  final String title;
+  final IconData icon;
+  final Widget content;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w400, fontSize: 14);
+
+    return SizedBox(
+      width: 300,
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 8),
+          Text(title, style: textStyle),
+          const SizedBox(width: 4),
+          content,
+        ],
+      ),
     );
   }
 }

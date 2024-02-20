@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/entities/documento.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 

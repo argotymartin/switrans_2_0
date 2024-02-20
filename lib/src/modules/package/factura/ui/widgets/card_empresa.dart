@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class BuildCardEmpresa extends StatelessWidget {

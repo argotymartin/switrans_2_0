@@ -3,14 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/factura_entities.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/prefactura_request.dart';
+import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_adiciones_and_descuentos.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/card_details_factura.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/modal_item_documento.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/widgets/text_area_documento.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/modals/error_modal.dart';
+import 'package:switrans_2_0/src/modules/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -473,7 +468,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
                       items: itemDocumentos.toList(),
                     );
 
-                    print(prefacturaRequest.toJson());
+                    debugPrint("${prefacturaRequest.toJson()}");
                   }
                 : null,
             icon: const Icon(Icons.add_card_rounded),
