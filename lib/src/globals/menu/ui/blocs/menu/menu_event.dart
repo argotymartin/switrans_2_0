@@ -7,12 +7,14 @@ sealed class MenuEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetMenuEvent extends MenuEvent {
-  const GetMenuEvent();
+class BlockedMenuEvent extends MenuEvent {
+  const BlockedMenuEvent();
 }
 
-class ActiveteMenuEvent extends MenuEvent {
-  final bool isOpenMenu;
-  final bool isMinimize;
-  const ActiveteMenuEvent({required this.isOpenMenu, required this.isMinimize});
+class ExpandedMenuEvent extends MenuEvent {
+  const ExpandedMenuEvent();
+}
+
+class MinimizedMenuEvent extends MenuEvent {
+  const MinimizedMenuEvent();
 }

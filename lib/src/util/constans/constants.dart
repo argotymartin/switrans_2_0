@@ -5,5 +5,4 @@ const String kTokenPocketBase =
 
 const String kBackendBaseUrl = 'http://192.168.102.120:8080';
 
-// API mongo - Node.
 const double kWidthSidebar = 270;

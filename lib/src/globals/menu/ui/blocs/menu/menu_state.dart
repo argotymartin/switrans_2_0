@@ -3,13 +3,12 @@ part of 'menu_bloc.dart';
 sealed class MenuState extends Equatable {
   final bool isOpenMenu;
   final bool isMinimize;
-  const MenuState({this.isOpenMenu = true, this.isMinimize = false});
+  final bool isBlocked;
+  const MenuState({this.isOpenMenu = true, this.isMinimize = false, this.isBlocked = false});
 
   @override
   List<Object> get props => [];
 }
-
-final class MenuInitial extends MenuState {}
 
 class MenuInitialState extends MenuState {
   const MenuInitialState();
@@ -26,16 +25,8 @@ class MenuLoadingState extends MenuState {
 }
 
 class MenuSuccesState extends MenuState {
-  const MenuSuccesState({super.isOpenMenu, super.isMinimize});
+  const MenuSuccesState({super.isOpenMenu, super.isMinimize, super.isBlocked});
 
   @override
-  List<Object> get props => [];
-}
-
-class MenuErrorState extends MenuState {
-  final DioException error;
-
-  const MenuErrorState({required this.error});
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [isOpenMenu, isMinimize, isBlocked];
 }
