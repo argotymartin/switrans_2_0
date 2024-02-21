@@ -1,15 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
-// DropdownMenuEntry labels and values for the second dropdown menu.
-class FacturaSearchView extends StatelessWidget {
-  const FacturaSearchView({super.key});
+class Autocomplete2Input extends StatelessWidget {
+  final List<EntiresAutocomplete> entries;
+  final String label;
+  final TextEditingController controller;
+  const Autocomplete2Input({
+    Key? key,
+    required this.entries,
+    required this.label,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController iconController = TextEditingController();
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     List<EntiresAutocomplete> entries = clientes.map((cliente) {
@@ -57,7 +65,7 @@ class FacturaSearchView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 DropdownMenu<EntiresAutocomplete>(
-                  controller: iconController,
+                  controller: controller,
                   enableFilter: true,
                   requestFocusOnTap: true,
                   leadingIcon: const Icon(Icons.search),

@@ -6,6 +6,7 @@ import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete2_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -110,12 +111,17 @@ class _FieldCliente extends StatelessWidget {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
 
-    final suggestions = clientes.map((cliente) {
-      return SuggestionModel(
-        codigo: cliente.codigo.toString(),
+    final List<EntiresAutocomplete> entries = clientes.map((cliente) {
+      return EntiresAutocomplete(
         title: cliente.nombre,
         subTitle: cliente.identificacion,
-        details: Row(children: [const Icon(Icons.call_rounded), Text(cliente.identificacion)]),
+        codigo: cliente.codigo,
+        details: Row(
+          children: [
+            const Icon(Icons.call, size: 16),
+            Text(cliente.telefono, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w100)),
+          ],
+        ),
       );
     }).toList();
     return Column(
@@ -124,9 +130,9 @@ class _FieldCliente extends StatelessWidget {
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        AutocompleteInput(
-          title: "Cliente",
-          suggestions: suggestions,
+        Autocomplete2Input(
+          label: "Cliente",
+          entries: entries,
           controller: formFacturaBloc.clienteController,
         )
       ],
