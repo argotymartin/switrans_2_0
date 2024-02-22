@@ -8,19 +8,19 @@ part 'form_factura_event.dart';
 part 'form_factura_state.dart';
 
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
+  int _clienteCodigo = 0;
   final AbstractFacturaRepository _repository;
   final DocumentoBloc _documentoBloc;
 
   late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
-  final TextEditingController clienteController = TextEditingController();
   final TextEditingController remesasController = TextEditingController();
   final TextEditingController fechaInicioController = TextEditingController();
   final TextEditingController fechaFinController = TextEditingController();
 
   FormFacturaBloc(this._repository, this._documentoBloc) : super(const FormFacturaInitialState()) {
     on<GetFormFacturaEvent>((event, emit) async {
-      final String empresa = state.empresa;
+      final int empresa = state.empresa;
       String error = state.error;
 
       emit(const FormFacturaLoadingState());
@@ -29,7 +29,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       emit(FormFacturaDataState(
         clientes: dataStateClientes.data!,
         empresas: dataStateEmpresas.data!,
-        empresa: empresa.isEmpty ? "1" : empresa,
+        empresa: empresa <= 0 ? 1 : empresa,
         error: error,
       ));
     });
@@ -53,7 +53,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     on<ErrorFormFacturaEvent>((event, emit) async {
       List<Cliente> clientes = state.clientes;
       List<Empresa> empresas = state.empresas;
-      String empresa = state.empresa;
+      int empresa = state.empresa;
 
       emit(const FormFacturaLoadingState());
       emit(FormFacturaRequestState(
@@ -82,11 +82,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   void onPressedSearch(bool isValid) async {
     //add(const EmpresaFormFacturaEvent("1"));
-    clienteController.text = "1409";
+    //clienteController.text = "1409";
     remesasController.text = "736801,736978,443534,736918";
+    setClienteCodigo = 1409;
 
     final empresa = state.empresa;
-    final cliente = clienteController.text;
     final remesas = remesasController.text;
     //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
     //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
@@ -94,8 +94,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final inicio = fechaInicioController.text;
     final fin = fechaFinController.text;
     String error = "";
-    if (empresa.isEmpty) error += " El campo Empresa no puede ser vacio";
-    if (cliente.isEmpty) error += " El campo Cliente no puede ser vacio";
+    if (empresa <= 0) error += " El campo Empresa no puede ser vacio";
+    if (clienteCodigo <= 0) error += " El campo Cliente no puede ser vacio";
     if (remesas.isEmpty && inicio.isEmpty) error += " Se deben agregar remesas al filtro o un intervalo de fechas";
     if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
 
@@ -103,8 +103,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
     if (isValid && error.isEmpty) {
       final FacturaRequest request = FacturaRequest(
-        empresa: int.parse(empresa),
-        cliente: int.parse(cliente),
+        empresa: empresa,
+        cliente: clienteCodigo,
         remesas: remesas,
         inicio: inicio,
         fin: fin,
@@ -115,13 +115,16 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Cliente getClienteSelected() {
-    clienteController.text = "1409";
-    final Cliente cliente = state.clientes.firstWhere((element) => element.codigo == int.parse(clienteController.text));
+    final Cliente cliente = state.clientes.firstWhere((element) => element.codigo == clienteCodigo);
     return cliente;
   }
 
   Empresa getEmpresaSelected() {
-    final Empresa empresaSelect = state.empresas.firstWhere((element) => element.codigo == int.parse(state.empresa));
+    final Empresa empresaSelect = state.empresas.firstWhere((element) => element.codigo == state.empresa);
     return empresaSelect;
   }
+
+  int get clienteCodigo => _clienteCodigo;
+
+  set setClienteCodigo(int value) => _clienteCodigo = value;
 }

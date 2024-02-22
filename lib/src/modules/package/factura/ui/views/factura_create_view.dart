@@ -109,9 +109,12 @@ class _FieldCliente extends StatelessWidget {
   Widget build(BuildContext context) {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
+    void setValueCliente(EntryAutocomplete entry) {
+      formFacturaBloc.setClienteCodigo = entry.codigo;
+    }
 
-    final List<EntiresAutocomplete> entries = clientes.map((cliente) {
-      return EntiresAutocomplete(
+    final List<EntryAutocomplete> entries = clientes.map((cliente) {
+      return EntryAutocomplete(
         title: cliente.nombre,
         subTitle: cliente.identificacion,
         codigo: cliente.codigo,
@@ -129,14 +132,11 @@ class _FieldCliente extends StatelessWidget {
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        Container(
-          width: 450,
-          color: Colors.red,
-          child: Autocomplete2Input(
-            label: "Cliente",
-            entries: entries,
-            controller: formFacturaBloc.clienteController,
-          ),
+        Autocomplete2Input(
+          label: "Cliente",
+          entries: entries,
+          //controller: formFacturaBloc.clienteController,
+          onPressed: setValueCliente,
         )
       ],
     );
@@ -470,8 +470,8 @@ class _BuildButtonRegistrar extends StatelessWidget {
             onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
                 ? () {
                     int centroCosto = int.parse(state.centroCosto);
-                    int clienteCodigo = int.parse(formFacturaBloc.clienteController.text);
-                    int empresaCodigo = int.parse(formFacturaBloc.state.empresa);
+                    int clienteCodigo = formFacturaBloc.clienteCodigo;
+                    int empresaCodigo = formFacturaBloc.state.empresa;
                     int usuario = authBloc.state.auth!.usuario.codigo;
                     final prefacturaRequest = PrefacturaRequest(
                       centroCosto: centroCosto,

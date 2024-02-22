@@ -12,7 +12,7 @@ class GetFormFacturaEvent extends FormFacturaEvent {
 }
 
 class EmpresaFormFacturaEvent extends FormFacturaEvent {
-  final String empresa;
+  final int empresa;
   const EmpresaFormFacturaEvent(this.empresa);
 }
 

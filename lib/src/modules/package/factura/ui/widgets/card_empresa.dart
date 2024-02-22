@@ -12,7 +12,7 @@ class BuildCardEmpresa extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (context, state) {
-        final bool isActive = state.empresa == empresa.codigo.toString();
+        final bool isActive = state.empresa == empresa.codigo;
         String rutaImagen = "assets/empresas/icon-multicompany.png";
         Color color = Theme.of(context).colorScheme.primary;
         if (empresa.codigo == 1) {
@@ -44,7 +44,7 @@ class BuildCardEmpresa extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                context.read<FormFacturaBloc>().add(EmpresaFormFacturaEvent(empresa.codigo.toString()));
+                context.read<FormFacturaBloc>().add(EmpresaFormFacturaEvent(empresa.codigo));
               },
               child: Center(
                 child: Row(

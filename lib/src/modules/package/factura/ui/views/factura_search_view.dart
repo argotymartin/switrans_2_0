@@ -13,8 +13,8 @@ class FacturaSearchView extends StatelessWidget {
     final TextEditingController iconController = TextEditingController();
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    List<EntiresAutocomplete> entries = clientes.map((cliente) {
-      return EntiresAutocomplete(
+    List<EntryAutocomplete> entries = clientes.map((cliente) {
+      return EntryAutocomplete(
         title: cliente.nombre,
         subTitle: cliente.identificacion,
         codigo: cliente.codigo,
@@ -27,9 +27,9 @@ class FacturaSearchView extends StatelessWidget {
       );
     }).toList();
 
-    final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntiresAutocomplete>>(
+    final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntryAutocomplete>>(
       (entry) {
-        return DropdownMenuEntry<EntiresAutocomplete>(
+        return DropdownMenuEntry<EntryAutocomplete>(
           style: const ButtonStyle(
             padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
             side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
@@ -57,7 +57,7 @@ class FacturaSearchView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                DropdownMenu<EntiresAutocomplete>(
+                DropdownMenu<EntryAutocomplete>(
                   controller: iconController,
                   enableFilter: true,
                   requestFocusOnTap: true,
@@ -67,7 +67,7 @@ class FacturaSearchView extends StatelessWidget {
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                   ),
-                  onSelected: (EntiresAutocomplete? cliente) {},
+                  onSelected: (EntryAutocomplete? cliente) {},
                   dropdownMenuEntries: dropdownMenuEntries,
                 ),
               ],

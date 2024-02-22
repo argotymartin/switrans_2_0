@@ -2,21 +2,23 @@
 import 'package:flutter/material.dart';
 
 class Autocomplete2Input extends StatelessWidget {
-  final List<EntiresAutocomplete> entries;
+  final List<EntryAutocomplete> entries;
   final String label;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final Function(EntryAutocomplete result)? onPressed;
   const Autocomplete2Input({
     Key? key,
     required this.entries,
     required this.label,
-    required this.controller,
+    this.controller,
+    this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntiresAutocomplete>>(
+    final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntryAutocomplete>>(
       (entry) {
-        return DropdownMenuEntry<EntiresAutocomplete>(
+        return DropdownMenuEntry<EntryAutocomplete>(
           style: const ButtonStyle(
             padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
             side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
@@ -37,40 +39,46 @@ class Autocomplete2Input extends StatelessWidget {
       },
     ).toList();
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: DropdownMenu<EntiresAutocomplete>(
-          controller: controller,
-          enableFilter: true,
-          requestFocusOnTap: true,
-          leadingIcon: const Icon(Icons.search),
-          label: const Text('Cliente'),
-          inputDecorationTheme: const InputDecorationTheme(
-            //filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+      child: DropdownMenu<EntryAutocomplete>(
+        controller: controller,
+        enableFilter: true,
+        requestFocusOnTap: true,
+        expandedInsets: EdgeInsets.zero,
+        trailingIcon: const Icon(Icons.arrow_drop_down, size: 20),
+        selectedTrailingIcon: const Icon(Icons.arrow_drop_up, size: 20),
+        leadingIcon: const Icon(Icons.search),
+        label: Text(label),
+        textStyle: const TextStyle(fontSize: 12),
+        inputDecorationTheme: const InputDecorationTheme(
+          constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderSide: BorderSide(),
           ),
-          onSelected: (EntiresAutocomplete? cliente) {},
-          dropdownMenuEntries: dropdownMenuEntries,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
         ),
+        onSelected: (EntryAutocomplete? entry) {
+          print("Cliente selected: ${entry!.codigo}");
+          if (onPressed != null) {
+            onPressed?.call(entry);
+          }
+        },
+        dropdownMenuEntries: dropdownMenuEntries,
       ),
     );
   }
 }
 
-class EntiresAutocomplete {
+class EntryAutocomplete {
   final String title;
   final int codigo;
   final String subTitle;
   final Widget details;
 
-  EntiresAutocomplete({
+  EntryAutocomplete({
     required this.title,
     required this.subTitle,
     this.details = const SizedBox(width: 1, height: 1),

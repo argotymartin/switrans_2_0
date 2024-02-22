@@ -1,12 +1,12 @@
 part of 'form_factura_bloc.dart';
 
 abstract class FormFacturaState extends Equatable {
-  final String empresa;
+  final int empresa;
   final String error;
   final List<Cliente> clientes;
   final List<Empresa> empresas;
   const FormFacturaState({
-    this.empresa = "",
+    this.empresa = 0,
     this.error = "",
     this.clientes = const [],
     this.empresas = const [],
