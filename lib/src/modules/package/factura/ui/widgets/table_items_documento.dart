@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart'; // Importa el paquete collection
+
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
@@ -40,7 +43,7 @@ class TableItemsDocumento extends StatelessWidget {
               children: [
                 _CellContent(child: _BuildFieldItem(index)),
                 _CellContent(child: _BuildFiledDocumento(itemDocumento: itemDocumento)),
-                _CellContent(child: _BuildFieldDescription(title: itemDocumento.descripcion)),
+                _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
                 _CellContent(child: _BuildValor(itemDocumento: itemDocumento)),
                 _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
                 _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
@@ -106,35 +109,35 @@ class _BuildFiledDocumento extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = TextEditingController();
     final documentosAll = context.read<DocumentoBloc>().state.documentos;
-    final suggestionSeleted = itemDocumento.documento > 0 ? SuggestionModel(title: itemDocumento.documento.toString(), subTitle: "") : null;
-    final suggestions = documentosAll.map((remesa) {
-      return SuggestionModel(
-        codigo: '${remesa.remesa}',
-        title: '${remesa.remesa}',
-        subTitle: '(${remesa.impreso})',
-        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(remesa.cencosNombre)]),
+
+    final List<EntryAutocomplete> entriesDocumentos = documentosAll.map((documento) {
+      return EntryAutocomplete(
+        title: '${documento.remesa}',
+        subTitle: '(${documento.impreso})',
+        codigo: documento.remesa,
+        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
       );
     }).toList();
 
-    void setValueFactura(String value) async {
-      if (value.isNotEmpty) {
-        final Documento documento = documentosAll.firstWhere((element) => element.remesa == int.parse(value));
-        itemDocumento.documento = documento.remesa;
-        itemDocumento.documentoImpreso = documento.impreso;
-        itemDocumento.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-        context.read<ItemDocumentoBloc>().add(ChangedDelayItemDocumentoEvent(itemDocumento: itemDocumento));
-      }
+    final entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == itemDocumento.documento);
+
+    void setValueFactura(EntryAutocomplete value) async {
+      final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
+      itemDocumento.documento = documento.remesa;
+      itemDocumento.documentoImpreso = documento.impreso;
+      itemDocumento.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
+      context.read<ItemDocumentoBloc>().add(ChangedDelayItemDocumentoEvent(itemDocumento: itemDocumento));
     }
 
     return Column(
       children: [
-        AutocompleteInput(
-          isReadOnly: itemDocumento.tipo == "TR",
+        Autocomplete2Input(
+          entrySelected: entrySelected,
+          enabled: itemDocumento.tipo != "TR",
           controller: controller,
           isShowCodigo: false,
-          title: "Documento",
-          suggestions: suggestions,
-          suggestionSelected: suggestionSeleted,
+          label: "Documento",
+          entries: entriesDocumentos,
           onPressed: setValueFactura,
         ),
         RadioButtons(tipo: itemDocumento.tipo),
@@ -144,24 +147,28 @@ class _BuildFiledDocumento extends StatelessWidget {
 }
 
 class _BuildFieldDescription extends StatelessWidget {
-  final String title;
-  const _BuildFieldDescription({required this.title});
+  final ItemDocumento item;
+  const _BuildFieldDescription({required this.item});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      inputFormatters: [UpperCaseFormatter()],
-      initialValue: CustomFunctions.limpiarTexto(title),
-      autovalidateMode: AutovalidateMode.always,
-      maxLines: 7,
-      minLines: 5,
-      textAlign: TextAlign.justify,
-      style: const TextStyle(fontSize: 10),
-      keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
-        alignLabelWithHint: true,
-        border: OutlineInputBorder(),
-      ),
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+      builder: (context, state) {
+        return TextFormField(
+          inputFormatters: [UpperCaseFormatter()],
+          initialValue: CustomFunctions.limpiarTexto(item.descripcion),
+          autovalidateMode: AutovalidateMode.always,
+          maxLines: 7,
+          minLines: 5,
+          textAlign: TextAlign.justify,
+          style: const TextStyle(fontSize: 10),
+          keyboardType: TextInputType.multiline,
+          decoration: const InputDecoration(
+            alignLabelWithHint: true,
+            border: OutlineInputBorder(),
+          ),
+        );
+      },
     );
   }
 }

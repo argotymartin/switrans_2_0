@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
@@ -135,7 +136,6 @@ class _FieldCliente extends StatelessWidget {
         Autocomplete2Input(
           label: "Cliente",
           entries: entries,
-          //controller: formFacturaBloc.clienteController,
           onPressed: setValueCliente,
         )
       ],
