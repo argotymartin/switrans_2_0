@@ -41,6 +41,6 @@ class RemoveItemByPositionFacturaEvent extends ItemDocumentoEvent {
 }
 
 class SelectCentroCostoItemDocumentoEvent extends ItemDocumentoEvent {
-  final String centroCosto;
+  final int centroCosto;
   const SelectCentroCostoItemDocumentoEvent({required this.centroCosto});
 }

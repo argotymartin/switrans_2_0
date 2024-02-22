@@ -16,63 +16,66 @@ class TableItemsDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        if (state is ItemDocumentoLoadingState) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final tableRowsTitle = TableRow(
-          decoration: BoxDecoration(color: Colors.grey.shade100),
-          children: const [
-            _CellTitle(title: "Item"),
-            _CellTitle(title: "Documento"),
-            _CellTitle(title: "Descripcion"),
-            _CellTitle(title: "Valor"),
-            _CellTitle(title: "IVA %"),
-            _CellTitle(title: "IVA Valor"),
-            _CellTitle(title: "Cantidad"),
-            _CellTitle(title: "Total"),
-            _CellTitle(title: "Accion"),
-          ],
-        );
-        int index = 0;
-        List<TableRow> buildTableRows = state.itemDocumentos.map(
-          (itemDocumento) {
-            index++;
-            return TableRow(
-              children: [
-                _CellContent(child: _BuildFieldItem(index)),
-                _CellContent(child: _BuildFiledDocumento(itemDocumento: itemDocumento)),
-                _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
-                _CellContent(child: _BuildValor(itemDocumento: itemDocumento)),
-                _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
-                _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
-                _CellContent(child: _BuildCantidad(itemDocumento: itemDocumento)),
-                _CellContent(child: _BuildTotal(total: itemDocumento.total)),
-                _CellContent(child: _BuildFiledAccion(index: index)),
-              ],
-            );
-          },
-        ).toList();
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(builder: (context, state) {
+      final tableRowsTitle = TableRow(
+        decoration: BoxDecoration(color: Colors.grey.shade100),
+        children: const [
+          _CellTitle(title: "Item"),
+          _CellTitle(title: "Documento"),
+          _CellTitle(title: "Descripcion"),
+          _CellTitle(title: "Valor"),
+          _CellTitle(title: "IVA %"),
+          _CellTitle(title: "IVA Valor"),
+          _CellTitle(title: "Cantidad"),
+          _CellTitle(title: "Total"),
+          _CellTitle(title: "Accion"),
+        ],
+      );
+      int index = 0;
+      List<TableRow> buildTableRows = state.itemDocumentos.map(
+        (itemDocumento) {
+          index++;
+          return TableRow(
+            children: [
+              _CellContent(child: _BuildFieldItem(index)),
+              _CellContent(child: _BuildFiledDocumento(item: itemDocumento)),
+              _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
+              _CellContent(child: _BuildValor(item: itemDocumento)),
+              _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
+              _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
+              _CellContent(child: _BuildCantidad(item: itemDocumento)),
+              _CellContent(child: _BuildTotal(total: itemDocumento.total)),
+              _CellContent(child: _BuildFiledAccion(index: index)),
+            ],
+          );
+        },
+      ).toList();
 
-        const columnWidth = {
-          0: FractionColumnWidth(0.04),
-          1: FractionColumnWidth(0.18),
-          2: FractionColumnWidth(0.3),
-          3: FractionColumnWidth(0.1),
-          4: FractionColumnWidth(0.05),
-          5: FractionColumnWidth(0.08),
-          6: FractionColumnWidth(0.06),
-          7: FractionColumnWidth(0.1),
-        };
-        return Table(
-          border: TableBorder.all(color: Colors.grey.shade200, width: 1),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          columnWidths: columnWidth,
-          children: [tableRowsTitle, ...buildTableRows],
-        );
-      },
-    );
+      const columnWidth = {
+        0: FractionColumnWidth(0.04),
+        1: FractionColumnWidth(0.18),
+        2: FractionColumnWidth(0.3),
+        3: FractionColumnWidth(0.1),
+        4: FractionColumnWidth(0.05),
+        5: FractionColumnWidth(0.08),
+        6: FractionColumnWidth(0.06),
+        7: FractionColumnWidth(0.1),
+      };
+      return AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        child: state is ItemDocumentoSuccesState
+            ? Table(
+                border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                columnWidths: columnWidth,
+                children: [tableRowsTitle, ...buildTableRows],
+              )
+            : const CircularProgressIndicator(),
+      );
+    });
   }
 }
 
@@ -101,9 +104,9 @@ class _BuildFieldItem extends StatelessWidget {
 }
 
 class _BuildFiledDocumento extends StatelessWidget {
-  final ItemDocumento itemDocumento;
+  final ItemDocumento item;
 
-  const _BuildFiledDocumento({required this.itemDocumento});
+  const _BuildFiledDocumento({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -119,28 +122,28 @@ class _BuildFiledDocumento extends StatelessWidget {
       );
     }).toList();
 
-    final entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == itemDocumento.documento);
+    final entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == item.documento);
 
     void setValueFactura(EntryAutocomplete value) async {
       final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
-      itemDocumento.documento = documento.remesa;
-      itemDocumento.documentoImpreso = documento.impreso;
-      itemDocumento.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-      context.read<ItemDocumentoBloc>().add(ChangedDelayItemDocumentoEvent(itemDocumento: itemDocumento));
+      item.documento = documento.remesa;
+      item.documentoImpreso = documento.impreso;
+      item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
     }
 
     return Column(
       children: [
         Autocomplete2Input(
           entrySelected: entrySelected,
-          enabled: itemDocumento.tipo != "TR",
+          enabled: item.tipo != "TR",
           controller: controller,
           isShowCodigo: false,
           label: "Documento",
           entries: entriesDocumentos,
           onPressed: setValueFactura,
         ),
-        RadioButtons(tipo: itemDocumento.tipo),
+        RadioButtons(tipo: item.tipo),
       ],
     );
   }
@@ -152,31 +155,30 @@ class _BuildFieldDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        return TextFormField(
-          inputFormatters: [UpperCaseFormatter()],
-          initialValue: CustomFunctions.limpiarTexto(item.descripcion),
-          autovalidateMode: AutovalidateMode.always,
-          maxLines: 7,
-          minLines: 5,
-          textAlign: TextAlign.justify,
-          style: const TextStyle(fontSize: 10),
-          keyboardType: TextInputType.multiline,
-          decoration: const InputDecoration(
-            alignLabelWithHint: true,
-            border: OutlineInputBorder(),
-          ),
-        );
+    return TextFormField(
+      onChanged: (value) {
+        item.descripcion = value;
       },
+      inputFormatters: [UpperCaseFormatter()],
+      initialValue: CustomFunctions.limpiarTexto(item.descripcion),
+      autovalidateMode: AutovalidateMode.always,
+      maxLines: 7,
+      minLines: 5,
+      textAlign: TextAlign.justify,
+      style: const TextStyle(fontSize: 10),
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }
 
 class _BuildValor extends StatelessWidget {
-  final ItemDocumento itemDocumento;
+  final ItemDocumento item;
   const _BuildValor({
-    required this.itemDocumento,
+    required this.item,
   });
 
   @override
@@ -185,18 +187,18 @@ class _BuildValor extends StatelessWidget {
       String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
       String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
       double intValue = double.parse(textValue);
-      double newValorIva = intValue * itemDocumento.porcentajeIva / 100;
+      double newValorIva = intValue * item.porcentajeIva / 100;
 
-      itemDocumento.valor = intValue;
-      itemDocumento.valorIva = newValorIva;
-      itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: itemDocumento));
+      item.valor = intValue;
+      item.valorIva = newValorIva;
+      item.total = (item.valor + item.valorIva) * item.cantidad;
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
     }
 
     return CurrencyInput(
       color: Colors.blue.shade800,
       onChanged: onChaneged,
-      initialValue: itemDocumento.valor.toInt().toString(),
+      initialValue: item.valor.toInt().toString(),
     );
   }
 }
@@ -225,9 +227,9 @@ class _BuildValorIva extends StatelessWidget {
 }
 
 class _BuildCantidad extends StatelessWidget {
-  final ItemDocumento itemDocumento;
+  final ItemDocumento item;
   const _BuildCantidad({
-    required this.itemDocumento,
+    required this.item,
   });
 
   @override
@@ -236,12 +238,12 @@ class _BuildCantidad extends StatelessWidget {
       String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
       String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
       int intValue = int.parse(textValue);
-      itemDocumento.cantidad = intValue;
-      itemDocumento.total = (itemDocumento.valor + itemDocumento.valorIva) * itemDocumento.cantidad;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: itemDocumento));
+      item.cantidad = intValue;
+      item.total = (item.valor + item.valorIva) * item.cantidad;
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
     }
 
-    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: itemDocumento.cantidad.toString());
+    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: item.cantidad.toString());
   }
 }
 

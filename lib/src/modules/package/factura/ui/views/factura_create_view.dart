@@ -363,17 +363,16 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     final controller = TextEditingController();
 
     final centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
-    final suggestions = centrosCosto.map((centro) {
-      return SuggestionModel(
-        codigo: '${centro.key}',
+    final entriesCentroCosto = centrosCosto.map((centro) {
+      return EntryAutocomplete(
+        codigo: centro.key,
         title: centro.value,
         subTitle: '(${centro.key})',
       );
     }).toList();
-    void setValueFactura(String value) {
-      if (value.isNotEmpty) {
-        context.read<ItemDocumentoBloc>().add(SelectCentroCostoItemDocumentoEvent(centroCosto: value));
-      }
+
+    void setValueFactura(EntryAutocomplete value) {
+      context.read<ItemDocumentoBloc>().add(SelectCentroCostoItemDocumentoEvent(centroCosto: value.codigo));
     }
 
     return Row(
@@ -403,9 +402,9 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
         const SizedBox(width: 16),
         SizedBox(
           width: 400,
-          child: AutocompleteInput(
-            suggestions: suggestions,
-            title: "Centro Costo",
+          child: Autocomplete2Input(
+            entries: entriesCentroCosto,
+            label: "Centro Costo",
             controller: controller,
             onPressed: setValueFactura,
           ),
@@ -451,7 +450,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
         bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
         bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
         bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
-        bool isCentroCosto = state.centroCosto.isNotEmpty;
+        bool isCentroCosto = state.centroCosto <= 0;
         bool isFaltante = valorFaltante.toInt() == 0;
 
         /*debugPrint("isTransporte: $isTransporte");
@@ -469,7 +468,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
           child: FilledButton.icon(
             onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
                 ? () {
-                    int centroCosto = int.parse(state.centroCosto);
+                    int centroCosto = state.centroCosto;
                     int clienteCodigo = formFacturaBloc.clienteCodigo;
                     int empresaCodigo = formFacturaBloc.state.empresa;
                     int usuario = authBloc.state.auth!.usuario.codigo;

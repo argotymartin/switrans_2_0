@@ -1,77 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
 
 // DropdownMenuEntry labels and values for the second dropdown menu.
+
 class FacturaSearchView extends StatelessWidget {
   const FacturaSearchView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController iconController = TextEditingController();
-    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
-    List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    List<EntryAutocomplete> entries = clientes.map((cliente) {
-      return EntryAutocomplete(
-        title: cliente.nombre,
-        subTitle: cliente.identificacion,
-        codigo: cliente.codigo,
-        details: Row(
-          children: [
-            const Icon(Icons.call, size: 16),
-            Text(cliente.telefono, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w100)),
-          ],
-        ),
-      );
-    }).toList();
+    return const MaterialApp(
+      home: AnimatedSwitcherExample(),
+    );
+  }
+}
 
-    final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntryAutocomplete>>(
-      (entry) {
-        return DropdownMenuEntry<EntryAutocomplete>(
-          style: const ButtonStyle(
-            padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
-            side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
-          ),
-          value: entry,
-          label: entry.title,
-          leadingIcon: CircleAvatar(child: Text('${entry.codigo}')),
-          labelWidget: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
-              Text(entry.title, style: const TextStyle(color: Colors.grey, fontSize: 10)),
-              entry.details,
-            ],
-          ),
-        );
-      },
-    ).toList();
-    return SafeArea(
+class AnimatedSwitcherExample extends StatefulWidget {
+  const AnimatedSwitcherExample({super.key});
+
+  @override
+  State<AnimatedSwitcherExample> createState() => _AnimatedSwitcherExampleState();
+}
+
+class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Colors.white,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                DropdownMenu<EntryAutocomplete>(
-                  controller: iconController,
-                  enableFilter: true,
-                  requestFocusOnTap: true,
-                  leadingIcon: const Icon(Icons.search),
-                  label: const Text('Cliente'),
-                  inputDecorationTheme: const InputDecorationTheme(
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                  ),
-                  onSelected: (EntryAutocomplete? cliente) {},
-                  dropdownMenuEntries: dropdownMenuEntries,
-                ),
-              ],
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: Text(
+              '$_count',
+              // This key causes the AnimatedSwitcher to interpret this as a "new"
+              // child each time the count changes, so that it will begin its animation
+              // when the count changes.
+              key: ValueKey<int>(_count),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
+          ),
+          ElevatedButton(
+            child: const Text('Increment'),
+            onPressed: () {
+              setState(() {
+                _count += 1;
+              });
+            },
           ),
         ],
       ),

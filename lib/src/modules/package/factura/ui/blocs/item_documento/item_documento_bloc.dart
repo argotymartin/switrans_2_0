@@ -12,7 +12,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
   ItemDocumentoBloc(this._formBloc) : super(const ItemDocumentoInitialState()) {
     on<AddItemTransporteFacturaEvent>((event, emit) {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       if (!itemDocumentos.contains(prefactura)) itemDocumentos.add(prefactura);
 
@@ -23,7 +23,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       ItemDocumento preFactura = ItemDocumentoModel.init();
       preFactura.tipo = "SA";
       if (!preFacturas.contains(preFactura)) preFacturas.add(preFactura);
@@ -35,7 +35,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
     on<RemoveItemDocumentoEvent>((event, emit) {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       final newPrefacturas = preFacturas..removeWhere((element) => element.documento == prefactura.documento);
       emit(const ItemDocumentoLoadingState());
@@ -46,7 +46,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       int index = event.index - 1;
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
 
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
       await Future.delayed(const Duration(milliseconds: 100));
       final newItemDocumentos = itemDocumentos..removeAt(index);
@@ -61,16 +61,16 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
     on<ChangedItemDocumentoEvent>((event, emit) async {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: centroCosto));
     });
 
     on<ChangedDelayItemDocumentoEvent>((event, emit) async {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      String centroCosto = state.centroCosto;
+      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
-      await Future.delayed(const Duration(milliseconds: 20));
+      await Future.delayed(const Duration(milliseconds: 200));
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: centroCosto));
     });
   }
