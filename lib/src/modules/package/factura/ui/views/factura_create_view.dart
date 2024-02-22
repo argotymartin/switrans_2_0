@@ -31,13 +31,13 @@ class FacturaCreateView extends StatelessWidget {
               detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
               breadcrumbTrails: names,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: _BuildDocumentos()),
-            const SizedBox(height: 10),
-            const WhiteCard(icon: Icons.file_copy_outlined, title: "Item Factura", child: _BuildItemFactura()),
-            const SizedBox(height: 200),
+            const SizedBox(height: 16),
+            const CustomColorCard(icon: Icons.file_copy_outlined, title: "Item Documentos", child: _BuildItemFactura()),
+            const SizedBox(height: 32),
           ],
         ),
         const Positioned(left: 0, right: 0, bottom: -24, child: ModalItemDocumento()),
@@ -159,7 +159,7 @@ class _FieldEmpresa extends StatelessWidget {
         const SizedBox(height: 8),
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.start,
-          spacing: 12,
+          spacing: 16,
           children: List.generate(
             empresas.length,
             (index) => SizedBox(
@@ -298,9 +298,9 @@ class _BuildItemFactura extends StatelessWidget {
             children: [
               SizedBox(height: 16),
               _BuildDetailsDocumentos(),
-              Divider(height: 48),
+              Divider(height: 48, color: Colors.white),
               _BuildTableItemsDocumento(),
-              Divider(height: 48),
+              Divider(height: 48, color: Colors.white),
               _BuildPrefacturarDocumento(),
               SizedBox(height: 24),
             ],
@@ -318,24 +318,28 @@ class _BuildTableItemsDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itemDocumentoBloc = context.watch<ItemDocumentoBloc>();
-    return Column(
-      children: [
-        const TableItemsDocumento(),
-        itemDocumentoBloc.state is ItemDocumentoSuccesState
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
-                    icon: const Icon(Icons.add_card_rounded),
-                    label: const Text("Adicionar"),
-                  ),
-                  const CardDetailsFactura()
-                ],
-              )
-            : const SizedBox(),
-      ],
+    return Container(
+      color: Theme.of(context).colorScheme.onPrimary,
+      child: Column(
+        children: [
+          const TableItemsDocumento(),
+          const SizedBox(height: 24),
+          itemDocumentoBloc.state is ItemDocumentoSuccesState
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+                      icon: const Icon(Icons.add_card_rounded),
+                      label: const Text("Adicionar"),
+                    ),
+                    const CardDetailsFactura()
+                  ],
+                )
+              : const SizedBox(),
+        ],
+      ),
     );
   }
 }
@@ -348,17 +352,21 @@ class _BuildDetailsDocumentos extends StatelessWidget {
     final documentos = context.read<DocumentoBloc>().state.documentos;
     final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
     final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        documentosAdicion.isNotEmpty
-            ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
-            : const Expanded(child: SizedBox()),
-        const SizedBox(width: 48),
-        documentosDescuentos.isNotEmpty
-            ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
-            : const Expanded(child: SizedBox()),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(24),
+      color: Theme.of(context).colorScheme.onPrimary,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          documentosAdicion.isNotEmpty
+              ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
+              : const Expanded(child: SizedBox()),
+          const SizedBox(width: 48),
+          documentosDescuentos.isNotEmpty
+              ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
+              : const Expanded(child: SizedBox()),
+        ],
+      ),
     );
   }
 }

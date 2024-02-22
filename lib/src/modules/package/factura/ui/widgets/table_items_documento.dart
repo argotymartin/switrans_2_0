@@ -22,7 +22,7 @@ class TableItemsDocumento extends StatelessWidget {
           return const SizedBox();
         }
         final tableRowsTitle = TableRow(
-          decoration: BoxDecoration(color: Colors.grey.shade100),
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
           children: const [
             _CellTitle(title: "Item"),
             _CellTitle(title: "Documento"),
@@ -297,11 +297,10 @@ class _CellTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return TableCell(
       child: Container(
-        width: 4,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
         ),
       ),
     );

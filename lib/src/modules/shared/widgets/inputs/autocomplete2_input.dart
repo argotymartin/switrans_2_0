@@ -73,8 +73,7 @@ class Autocomplete2Input extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
         ),
         onSelected: (EntryAutocomplete? entry) {
-          print("EntryAutocomplete selected: ${entry!.codigo}");
-          if (onPressed != null) {
+          if (onPressed != null && entry != null) {
             onPressed?.call(entry);
           }
         },
