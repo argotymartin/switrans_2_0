@@ -292,16 +292,37 @@ class _BuildItemFactura extends StatelessWidget {
     return BlocBuilder<DocumentoBloc, DocumentoState>(
       builder: (context, state) {
         if (state is DocumentoSuccesState) {
-          return Column(
+          return const Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              const _BuildDetailsDocumentos(),
-              const SizedBox(height: 16),
-              const TableItemsDocumento(),
-              const SizedBox(height: 16),
-              Row(
+              SizedBox(height: 16),
+              _BuildDetailsDocumentos(),
+              Divider(height: 48),
+              _BuildTableItemsDocumento(),
+              Divider(height: 48),
+              _BuildPrefacturarDocumento(),
+              SizedBox(height: 24),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+class _BuildTableItemsDocumento extends StatelessWidget {
+  const _BuildTableItemsDocumento();
+
+  @override
+  Widget build(BuildContext context) {
+    final itemDocumentoBloc = context.watch<ItemDocumentoBloc>();
+    return Column(
+      children: [
+        const TableItemsDocumento(),
+        itemDocumentoBloc.state is ItemDocumentoSuccesState
+            ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -312,18 +333,9 @@ class _BuildItemFactura extends StatelessWidget {
                   ),
                   const CardDetailsFactura()
                 ],
-              ),
-              const SizedBox(height: 12),
-              const Divider(),
-              const SizedBox(height: 12),
-              const SizedBox(height: 12),
-              const _BuildPrefacturarDocumento(),
-              const SizedBox(height: 24),
-            ],
-          );
-        }
-        return const SizedBox();
-      },
+              )
+            : const SizedBox(),
+      ],
     );
   }
 }
@@ -372,7 +384,8 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     }).toList();
 
     void setValueFactura(EntryAutocomplete value) {
-      context.read<ItemDocumentoBloc>().add(SelectCentroCostoItemDocumentoEvent(centroCosto: value.codigo));
+      formFacturaBloc.setCentroCosto = value.codigo;
+      context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
     }
 
     return Row(
@@ -432,12 +445,12 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
     final AuthBloc authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
+        final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+        final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
         final documentos = facturaBloc.state.documentos;
         final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
         double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
@@ -450,7 +463,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
         bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
         bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
         bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
-        bool isCentroCosto = state.centroCosto <= 0;
+        bool isCentroCosto = formFacturaBloc.centroCosto > 0;
         bool isFaltante = valorFaltante.toInt() == 0;
 
         /*debugPrint("isTransporte: $isTransporte");
@@ -459,6 +472,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
         debugPrint("isValor: $isValor");
         debugPrint("isDescripcion: $isDescripcion");
         debugPrint("isCentroCosto: $isCentroCosto");
+        debugPrint("isCentroCosto: ${formFacturaBloc.centroCosto}");
         debugPrint("isFaltante: $isFaltante");
         debugPrint("valorFaltante: ${valorFaltante.toInt()}");
         debugPrint("***********************");*/
@@ -468,7 +482,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
           child: FilledButton.icon(
             onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
                 ? () {
-                    int centroCosto = state.centroCosto;
+                    int centroCosto = formFacturaBloc.centroCosto;
                     int clienteCodigo = formFacturaBloc.clienteCodigo;
                     int empresaCodigo = formFacturaBloc.state.empresa;
                     int usuario = authBloc.state.auth!.usuario.codigo;

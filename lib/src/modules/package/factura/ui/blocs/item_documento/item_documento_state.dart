@@ -2,8 +2,7 @@ part of 'item_documento_bloc.dart';
 
 sealed class ItemDocumentoState extends Equatable {
   final List<ItemDocumento> itemDocumentos;
-  final int centroCosto;
-  const ItemDocumentoState({this.itemDocumentos = const [], this.centroCosto = 0});
+  const ItemDocumentoState({this.itemDocumentos = const []});
 }
 
 class ItemDocumentoInitialState extends ItemDocumentoState {
@@ -14,15 +13,15 @@ class ItemDocumentoInitialState extends ItemDocumentoState {
 }
 
 class ItemDocumentoLoadingState extends ItemDocumentoState {
-  const ItemDocumentoLoadingState({super.itemDocumentos, super.centroCosto});
+  const ItemDocumentoLoadingState({super.itemDocumentos});
 
   @override
   List<Object> get props => [];
 }
 
 class ItemDocumentoSuccesState extends ItemDocumentoState {
-  const ItemDocumentoSuccesState({super.itemDocumentos, super.centroCosto});
+  const ItemDocumentoSuccesState({super.itemDocumentos});
 
   @override
-  List<Object> get props => [itemDocumentos, centroCosto];
+  List<Object> get props => [itemDocumentos];
 }

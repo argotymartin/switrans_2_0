@@ -16,66 +16,71 @@ class TableItemsDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(builder: (context, state) {
-      final tableRowsTitle = TableRow(
-        decoration: BoxDecoration(color: Colors.grey.shade100),
-        children: const [
-          _CellTitle(title: "Item"),
-          _CellTitle(title: "Documento"),
-          _CellTitle(title: "Descripcion"),
-          _CellTitle(title: "Valor"),
-          _CellTitle(title: "IVA %"),
-          _CellTitle(title: "IVA Valor"),
-          _CellTitle(title: "Cantidad"),
-          _CellTitle(title: "Total"),
-          _CellTitle(title: "Accion"),
-        ],
-      );
-      int index = 0;
-      List<TableRow> buildTableRows = state.itemDocumentos.map(
-        (itemDocumento) {
-          index++;
-          return TableRow(
-            children: [
-              _CellContent(child: _BuildFieldItem(index)),
-              _CellContent(child: _BuildFiledDocumento(item: itemDocumento)),
-              _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
-              _CellContent(child: _BuildValor(item: itemDocumento)),
-              _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
-              _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
-              _CellContent(child: _BuildCantidad(item: itemDocumento)),
-              _CellContent(child: _BuildTotal(total: itemDocumento.total)),
-              _CellContent(child: _BuildFiledAccion(index: index)),
-            ],
-          );
-        },
-      ).toList();
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+      builder: (context, state) {
+        if (state is! ItemDocumentoSuccesState && state is! ItemDocumentoLoadingState) {
+          return const SizedBox();
+        }
+        final tableRowsTitle = TableRow(
+          decoration: BoxDecoration(color: Colors.grey.shade100),
+          children: const [
+            _CellTitle(title: "Item"),
+            _CellTitle(title: "Documento"),
+            _CellTitle(title: "Descripcion"),
+            _CellTitle(title: "Valor"),
+            _CellTitle(title: "IVA %"),
+            _CellTitle(title: "IVA Valor"),
+            _CellTitle(title: "Cantidad"),
+            _CellTitle(title: "Total"),
+            _CellTitle(title: "Accion"),
+          ],
+        );
+        int index = 0;
+        List<TableRow> buildTableRows = state.itemDocumentos.map(
+          (itemDocumento) {
+            index++;
+            return TableRow(
+              children: [
+                _CellContent(child: _BuildFieldItem(index)),
+                _CellContent(child: _BuildFiledDocumento(item: itemDocumento)),
+                _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
+                _CellContent(child: _BuildValor(item: itemDocumento)),
+                _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
+                _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
+                _CellContent(child: _BuildCantidad(item: itemDocumento)),
+                _CellContent(child: _BuildTotal(total: itemDocumento.total)),
+                _CellContent(child: _BuildFiledAccion(index: index)),
+              ],
+            );
+          },
+        ).toList();
 
-      const columnWidth = {
-        0: FractionColumnWidth(0.04),
-        1: FractionColumnWidth(0.18),
-        2: FractionColumnWidth(0.3),
-        3: FractionColumnWidth(0.1),
-        4: FractionColumnWidth(0.05),
-        5: FractionColumnWidth(0.08),
-        6: FractionColumnWidth(0.06),
-        7: FractionColumnWidth(0.1),
-      };
-      return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        child: state is ItemDocumentoSuccesState
-            ? Table(
-                border: TableBorder.all(color: Colors.grey.shade200, width: 1),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: columnWidth,
-                children: [tableRowsTitle, ...buildTableRows],
-              )
-            : const CircularProgressIndicator(),
-      );
-    });
+        const columnWidth = {
+          0: FractionColumnWidth(0.04),
+          1: FractionColumnWidth(0.18),
+          2: FractionColumnWidth(0.3),
+          3: FractionColumnWidth(0.1),
+          4: FractionColumnWidth(0.05),
+          5: FractionColumnWidth(0.08),
+          6: FractionColumnWidth(0.06),
+          7: FractionColumnWidth(0.1),
+        };
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: state is ItemDocumentoSuccesState
+              ? Table(
+                  border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  columnWidths: columnWidth,
+                  children: [tableRowsTitle, ...buildTableRows],
+                )
+              : const CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
 
@@ -139,7 +144,7 @@ class _BuildFiledDocumento extends StatelessWidget {
           enabled: item.tipo != "TR",
           controller: controller,
           isShowCodigo: false,
-          label: "Documento",
+          label: "",
           entries: entriesDocumentos,
           onPressed: setValueFactura,
         ),

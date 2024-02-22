@@ -12,66 +12,53 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
   ItemDocumentoBloc(this._formBloc) : super(const ItemDocumentoInitialState()) {
     on<AddItemTransporteFacturaEvent>((event, emit) {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      int centroCosto = state.centroCosto;
       ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       if (!itemDocumentos.contains(prefactura)) itemDocumentos.add(prefactura);
 
       emit(const ItemDocumentoLoadingState());
-      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
       _formBloc.animationController.forward();
     });
 
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      int centroCosto = state.centroCosto;
       ItemDocumento preFactura = ItemDocumentoModel.init();
       preFactura.tipo = "SA";
       if (!preFacturas.contains(preFactura)) preFacturas.add(preFactura);
 
       emit(const ItemDocumentoLoadingState());
-      emit(ItemDocumentoSuccesState(itemDocumentos: preFacturas, centroCosto: centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: preFacturas));
       _formBloc.animationController.forward();
     });
 
     on<RemoveItemDocumentoEvent>((event, emit) {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      int centroCosto = state.centroCosto;
       ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       final newPrefacturas = preFacturas..removeWhere((element) => element.documento == prefactura.documento);
       emit(const ItemDocumentoLoadingState());
-      emit(ItemDocumentoSuccesState(itemDocumentos: newPrefacturas, centroCosto: centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: newPrefacturas));
     });
 
     on<RemoveItemByPositionFacturaEvent>((event, emit) async {
       int index = event.index - 1;
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
 
-      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
       await Future.delayed(const Duration(milliseconds: 100));
       final newItemDocumentos = itemDocumentos..removeAt(index);
-      emit(ItemDocumentoSuccesState(itemDocumentos: newItemDocumentos, centroCosto: centroCosto));
-    });
-
-    on<SelectCentroCostoItemDocumentoEvent>((event, emit) {
-      final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      emit(const ItemDocumentoLoadingState());
-      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: event.centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: newItemDocumentos));
     });
 
     on<ChangedItemDocumentoEvent>((event, emit) async {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
-      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
     });
 
-    on<ChangedDelayItemDocumentoEvent>((event, emit) async {
+    on<GetItemDocumentoEvent>((event, emit) async {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      int centroCosto = state.centroCosto;
       emit(const ItemDocumentoLoadingState());
-      await Future.delayed(const Duration(milliseconds: 200));
-      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos, centroCosto: centroCosto));
+      emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
     });
   }
 }

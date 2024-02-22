@@ -39,8 +39,3 @@ class RemoveItemByPositionFacturaEvent extends ItemDocumentoEvent {
   final int index;
   const RemoveItemByPositionFacturaEvent({required this.index});
 }
-
-class SelectCentroCostoItemDocumentoEvent extends ItemDocumentoEvent {
-  final int centroCosto;
-  const SelectCentroCostoItemDocumentoEvent({required this.centroCosto});
-}
