@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete2_input.dart';
 
 // DropdownMenuEntry labels and values for the second dropdown menu.
 class FacturaSearchView extends StatelessWidget {
@@ -76,17 +77,4 @@ class FacturaSearchView extends StatelessWidget {
       ),
     );
   }
-}
-
-class EntiresAutocomplete {
-  final String title;
-  final int codigo;
-  final String subTitle;
-  final Widget details;
-  EntiresAutocomplete({
-    required this.title,
-    required this.subTitle,
-    this.details = const SizedBox(width: 1, height: 1),
-    this.codigo = 0,
-  });
 }

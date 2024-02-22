@@ -1,9 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 
 class Autocomplete2Input extends StatelessWidget {
   final List<EntiresAutocomplete> entries;
@@ -18,22 +14,6 @@ class Autocomplete2Input extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
-    List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    List<EntiresAutocomplete> entries = clientes.map((cliente) {
-      return EntiresAutocomplete(
-        title: cliente.nombre,
-        subTitle: cliente.identificacion,
-        codigo: cliente.codigo,
-        details: Row(
-          children: [
-            const Icon(Icons.call, size: 16),
-            Text(cliente.telefono, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w100)),
-          ],
-        ),
-      );
-    }).toList();
-
     final dropdownMenuEntries = entries.map<DropdownMenuEntry<EntiresAutocomplete>>(
       (entry) {
         return DropdownMenuEntry<EntiresAutocomplete>(
@@ -57,30 +37,28 @@ class Autocomplete2Input extends StatelessWidget {
       },
     ).toList();
     return SafeArea(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                DropdownMenu<EntiresAutocomplete>(
-                  controller: controller,
-                  enableFilter: true,
-                  requestFocusOnTap: true,
-                  leadingIcon: const Icon(Icons.search),
-                  label: const Text('Cliente'),
-                  inputDecorationTheme: const InputDecorationTheme(
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                  ),
-                  onSelected: (EntiresAutocomplete? cliente) {},
-                  dropdownMenuEntries: dropdownMenuEntries,
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: DropdownMenu<EntiresAutocomplete>(
+          controller: controller,
+          enableFilter: true,
+          requestFocusOnTap: true,
+          leadingIcon: const Icon(Icons.search),
+          label: const Text('Cliente'),
+          inputDecorationTheme: const InputDecorationTheme(
+            //filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderSide: BorderSide(),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 5.0),
           ),
-        ],
+          onSelected: (EntiresAutocomplete? cliente) {},
+          dropdownMenuEntries: dropdownMenuEntries,
+        ),
       ),
     );
   }
@@ -91,6 +69,7 @@ class EntiresAutocomplete {
   final int codigo;
   final String subTitle;
   final Widget details;
+
   EntiresAutocomplete({
     required this.title,
     required this.subTitle,

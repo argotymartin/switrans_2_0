@@ -6,7 +6,6 @@ import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/views_shared.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete2_input.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -130,10 +129,14 @@ class _FieldCliente extends StatelessWidget {
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        Autocomplete2Input(
-          label: "Cliente",
-          entries: entries,
-          controller: formFacturaBloc.clienteController,
+        Container(
+          width: 450,
+          color: Colors.red,
+          child: Autocomplete2Input(
+            label: "Cliente",
+            entries: entries,
+            controller: formFacturaBloc.clienteController,
+          ),
         )
       ],
     );
