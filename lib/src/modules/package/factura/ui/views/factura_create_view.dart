@@ -42,7 +42,7 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
       children: [
         ListView(
           controller: context.read<FormFacturaBloc>().scrollController,
-          padding: const EdgeInsets.only(right: 24, top: 8),
+          padding: const EdgeInsets.only(right: 32, top: 8),
           physics: const ClampingScrollPhysics(),
           children: [
             BuildViewDetail(
