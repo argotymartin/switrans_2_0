@@ -52,7 +52,6 @@ class MyMaterialApp extends StatefulWidget {
 }
 
 class _MyMaterialAppState extends State<MyMaterialApp> {
-  bool _loading = true;
   bool isTokenValid = true;
   @override
   void initState() {
@@ -69,18 +68,13 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     if (isTokenValid) {
       moduloBloc.add(const ActiveteModuloEvent());
     }
-    if (mounted) {
-      setState(() {
-        _loading = false;
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 1000),
-      child: _loading ? const SplashView() : const _BuildMaterialApp(),
+    return const AnimatedSwitcher(
+      duration: Duration(milliseconds: 1000),
+      child: _BuildMaterialApp(),
     );
   }
 }
