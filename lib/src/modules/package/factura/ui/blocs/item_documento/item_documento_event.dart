@@ -11,6 +11,10 @@ class GetItemDocumentoEvent extends ItemDocumentoEvent {
   const GetItemDocumentoEvent();
 }
 
+class ResetDocumentoEvent extends ItemDocumentoEvent {
+  const ResetDocumentoEvent();
+}
+
 class AddItemServicioAdicionalFacturaEvent extends ItemDocumentoEvent {
   const AddItemServicioAdicionalFacturaEvent();
 }

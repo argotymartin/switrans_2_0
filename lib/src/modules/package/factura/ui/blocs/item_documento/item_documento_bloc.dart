@@ -47,6 +47,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       await Future.delayed(const Duration(milliseconds: 100));
       final newItemDocumentos = itemDocumentos..removeAt(index);
       emit(ItemDocumentoSuccesState(itemDocumentos: newItemDocumentos));
+      _formBloc.animationController.forward();
     });
 
     on<ChangedItemDocumentoEvent>((event, emit) async {
@@ -59,6 +60,11 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
+    });
+
+    on<ResetDocumentoEvent>((event, emit) async {
+      emit(const ItemDocumentoLoadingState());
+      emit(const ItemDocumentoInitialState());
     });
   }
 }

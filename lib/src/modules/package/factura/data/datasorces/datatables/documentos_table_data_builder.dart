@@ -344,10 +344,10 @@ Widget buildRenderSumFooter(rendererContext) {
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
     format: '#,###',
-    alignment: Alignment.center,
+    alignment: Alignment.centerRight,
     titleSpanBuilder: (text) {
       return [
-        TextSpan(text: text, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+        TextSpan(text: '\$ $text', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 12)),
       ];
     },
   );

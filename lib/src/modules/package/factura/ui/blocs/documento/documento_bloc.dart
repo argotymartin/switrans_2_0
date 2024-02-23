@@ -7,6 +7,7 @@ part 'documento_state.dart';
 
 class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
   final AbstractFacturaRepository _repository;
+
   DocumentoBloc(this._repository) : super(DocumentoInitial()) {
     on<DocumentoEvent>((event, emit) {});
     on<ChangedDocumentoEvent>((event, emit) async {

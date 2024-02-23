@@ -49,6 +49,7 @@ class Autocomplete2Input extends StatelessWidget {
     return SafeArea(
       child: DropdownMenu<EntryAutocomplete>(
         controller: controller,
+        menuHeight: 400,
         enableFilter: enabled,
         enableSearch: enabled,
         enabled: enabled,

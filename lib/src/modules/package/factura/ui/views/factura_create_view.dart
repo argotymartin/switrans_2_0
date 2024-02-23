@@ -53,27 +53,36 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
             const SizedBox(height: 16),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
             const SizedBox(height: 16),
-            AnimatedOpacity(
-                opacity: pixels >= 100 ? 1.0 : 0.0,
-                duration: duration,
-                child: const WhiteCard(
-                  icon: Icons.insert_drive_file_outlined,
-                  title: "Factura Documentos",
-                  child: _BuildDocumentos(),
-                )),
+            AnimatedContainer(
+              duration: duration,
+              transform: Matrix4.translationValues(pixels >= 100 ? 0.0 : -600.0, 0, 0),
+              child: AnimatedOpacity(
+                  opacity: pixels >= 100 ? 1.0 : 0.0,
+                  duration: duration,
+                  child: const WhiteCard(
+                    icon: Icons.insert_drive_file_outlined,
+                    title: "Factura Documentos",
+                    child: _BuildDocumentos(),
+                  )),
+            ),
             const SizedBox(height: 16),
-            AnimatedOpacity(
-                opacity: pixels >= 550 ? 1.0 : 0.0,
-                duration: duration,
-                child: const CustomColorCard(
-                  icon: Icons.file_copy_outlined,
-                  title: "Item Documentos",
-                  child: _BuildItemFactura(),
-                )),
+            const SizedBox(height: 16),
+            AnimatedContainer(
+              duration: duration,
+              transform: Matrix4.translationValues(pixels >= 550 ? 0.0 : 600.0, 0, 0),
+              child: AnimatedOpacity(
+                  opacity: pixels >= 550 ? 1.0 : 0.0,
+                  duration: duration,
+                  child: const CustomColorCard(
+                    icon: Icons.file_copy_outlined,
+                    title: "Item Documentos",
+                    child: _BuildItemFactura(),
+                  )),
+            ),
             const SizedBox(height: 32),
           ],
         ),
-        const Positioned(left: 0, right: 0, bottom: -24, child: ModalItemDocumento()),
+        const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
       ],
     );
   }
@@ -85,6 +94,7 @@ class _BuildFiltros extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
     List<Empresa> empresas = formFacturaBloc.state.empresas;
 
     final formKey = GlobalKey<FormState>();
@@ -114,6 +124,7 @@ class _BuildFiltros extends StatelessWidget {
           FilledButton.icon(
             onPressed: () {
               final isValid = formKey.currentState!.validate();
+              itemDocumentoBloc.add(const ResetDocumentoEvent());
               formFacturaBloc.onPressedSearch(isValid);
             },
             icon: const Icon(Icons.search_rounded),

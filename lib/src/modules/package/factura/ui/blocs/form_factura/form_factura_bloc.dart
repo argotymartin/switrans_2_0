@@ -68,17 +68,18 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
 
     scrollController.addListener(() {
-      if (scrollController.offset >= 120) animationController.reset();
+      if (scrollController.offset >= 800) animationController.reset();
     });
   }
 
-  Future moveScroll(double offset) => scrollController.animateTo(offset, duration: kThemeAnimationDuration, curve: Curves.easeIn);
+  Future moveScroll(double offset) =>
+      scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
   void moveBottomAllScroll() {
     animationController.reset();
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
-      duration: kThemeAnimationDuration,
+      duration: const Duration(milliseconds: 1000),
       curve: Curves.easeIn,
     );
   }
@@ -87,8 +88,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     //NotificationSlack().sendMessage("Esta es una prueba desde Flutter");
     //add(const EmpresaFormFacturaEvent("1"));
     //clienteController.text = "1409";
-    remesasController.text = "736801,736978,443534,736918";
-    setClienteCodigo = 1409;
+    //remesasController.text = "736801,736978,443534,736918";
+    //setClienteCodigo = 1409;
 
     final empresa = state.empresa;
     final remesas = remesasController.text;
@@ -114,7 +115,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         fin: fin,
       );
       _documentoBloc.add(GetDocumentoEvent(request));
-      await moveScroll(500);
+      await moveScroll(450);
     }
   }
 

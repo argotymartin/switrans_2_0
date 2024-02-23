@@ -38,7 +38,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                 child: const Row(
                   children: [
                     Expanded(child: SizedBox()),
-                    Flexible(child: SizedBox(child: CardDetailsFactura2())),
+                    SizedBox(width: 720, child: CardDetailsFactura2()),
                   ],
                 ),
               ),

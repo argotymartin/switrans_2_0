@@ -22,7 +22,8 @@ class FacturaAPI {
 
   Future<Response> getDocumentosApi(FacturaRequest request) async {
     const url = '$kBackendBaseUrl/$endPoint/remesas';
-    final response = await _dio.get(url, queryParameters: request.toJson());
+    final params = request.toJson();
+    final response = await _dio.get(url, queryParameters: params);
     return response;
   }
 }
