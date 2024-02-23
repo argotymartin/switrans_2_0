@@ -49,7 +49,9 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       ));
     });
 
-    //scrollController.addListener(() => print(scrollController.offset));
+    scrollController.addListener(() {
+      debugPrint(scrollController.offset.toString());
+    });
 
     on<ErrorFormFacturaEvent>((event, emit) async {
       List<Cliente> clientes = state.clientes;
@@ -82,6 +84,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void onPressedSearch(bool isValid) async {
+    //NotificationSlack().sendMessage("Esta es una prueba desde Flutter");
     //add(const EmpresaFormFacturaEvent("1"));
     //clienteController.text = "1409";
     remesasController.text = "736801,736978,443534,736918";

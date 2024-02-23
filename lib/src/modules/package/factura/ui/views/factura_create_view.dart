@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,20 +10,38 @@ import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
-class FacturaCreateView extends StatelessWidget {
+class FacturaCreateView extends StatefulWidget {
   const FacturaCreateView({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<FacturaCreateView> createState() => _FacturaCreateViewState();
+}
+
+class _FacturaCreateViewState extends State<FacturaCreateView> {
+  late ScrollController _controller;
+  double pixels = 0.0;
+  @override
+  void initState() {
+    _controller = context.read<FormFacturaBloc>().scrollController;
+    _controller.addListener(() {
+      if (mounted) {
+        setState(() => pixels = _controller.offset);
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    const Duration duration = Duration(milliseconds: 1000);
     List<String> names = fullPath.split("/");
-    final formularioBloc = context.read<FormFacturaBloc>();
     return Stack(
       children: [
         ListView(
-          controller: formularioBloc.scrollController,
+          controller: context.read<FormFacturaBloc>().scrollController,
           padding: const EdgeInsets.only(right: 24, top: 8),
           physics: const ClampingScrollPhysics(),
           children: [
@@ -34,9 +53,23 @@ class FacturaCreateView extends StatelessWidget {
             const SizedBox(height: 16),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
             const SizedBox(height: 16),
-            const WhiteCard(icon: Icons.insert_drive_file_outlined, title: "Factura Documentos", child: _BuildDocumentos()),
+            AnimatedOpacity(
+                opacity: pixels >= 100 ? 1.0 : 0.0,
+                duration: duration,
+                child: const WhiteCard(
+                  icon: Icons.insert_drive_file_outlined,
+                  title: "Factura Documentos",
+                  child: _BuildDocumentos(),
+                )),
             const SizedBox(height: 16),
-            const CustomColorCard(icon: Icons.file_copy_outlined, title: "Item Documentos", child: _BuildItemFactura()),
+            AnimatedOpacity(
+                opacity: pixels >= 550 ? 1.0 : 0.0,
+                duration: duration,
+                child: const CustomColorCard(
+                  icon: Icons.file_copy_outlined,
+                  title: "Item Documentos",
+                  child: _BuildItemFactura(),
+                )),
             const SizedBox(height: 32),
           ],
         ),
@@ -377,7 +410,6 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formFacturaBloc = context.read<FormFacturaBloc>();
-
     final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
     final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
     final controller = TextEditingController();
@@ -391,59 +423,71 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
       );
     }).toList();
 
+    final entrySelected = entriesCentroCosto.firstWhereOrNull((entry) => entry.codigo == formFacturaBloc.centroCosto);
+
     void setValueFactura(EntryAutocomplete value) {
-      formFacturaBloc.setCentroCosto = value.codigo;
-      context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+      if (value.codigo > 0) {
+        context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+        formFacturaBloc.setCentroCosto = value.codigo;
+      }
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        SizedBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+      builder: (context, state) {
+        if (state is ItemDocumentoSuccesState) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.work_outline_outlined),
-                  const SizedBox(width: 8),
-                  Text(empresaSelect.nombre),
-                ],
+              SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.work_outline_outlined),
+                        const SizedBox(width: 8),
+                        Text(empresaSelect.nombre),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.contact_emergency_outlined),
+                        const SizedBox(width: 8),
+                        Text(clienteSelect.nombre),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  const Icon(Icons.contact_emergency_outlined),
-                  const SizedBox(width: 8),
-                  Text(clienteSelect.nombre),
-                ],
+              const SizedBox(width: 16),
+              SizedBox(
+                width: 400,
+                child: Autocomplete2Input(
+                  entries: entriesCentroCosto,
+                  label: "Centro Costo",
+                  entrySelected: entrySelected,
+                  controller: controller,
+                  onPressed: setValueFactura,
+                ),
               ),
+              const SizedBox(width: 16),
+              SizedBox(
+                width: 160,
+                child: CustomOutlinedButton(
+                  icon: Icons.delete_forever_outlined,
+                  colorText: Colors.white,
+                  onPressed: () {},
+                  color: Theme.of(context).colorScheme.error,
+                  text: "Cancelar",
+                ),
+              ),
+              const SizedBox(width: 16),
+              const _BuildButtonRegistrar(),
             ],
-          ),
-        ),
-        const SizedBox(width: 16),
-        SizedBox(
-          width: 400,
-          child: Autocomplete2Input(
-            entries: entriesCentroCosto,
-            label: "Centro Costo",
-            controller: controller,
-            onPressed: setValueFactura,
-          ),
-        ),
-        const SizedBox(width: 16),
-        SizedBox(
-          width: 160,
-          child: CustomOutlinedButton(
-            icon: Icons.delete_forever_outlined,
-            colorText: Colors.white,
-            onPressed: () {},
-            color: Theme.of(context).colorScheme.error,
-            text: "Cancelar",
-          ),
-        ),
-        const SizedBox(width: 16),
-        const _BuildButtonRegistrar(),
-      ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

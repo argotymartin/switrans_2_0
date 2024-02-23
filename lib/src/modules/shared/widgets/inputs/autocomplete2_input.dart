@@ -58,7 +58,7 @@ class Autocomplete2Input extends StatelessWidget {
         trailingIcon: const Icon(Icons.arrow_drop_down, size: 20),
         selectedTrailingIcon: const Icon(Icons.arrow_drop_up, size: 20),
         leadingIcon: const Icon(Icons.search),
-        label: Text(label),
+        //label: Text(label),
         hintText: "Buscar $label ...",
         textStyle: const TextStyle(fontSize: 12),
         inputDecorationTheme: const InputDecorationTheme(
