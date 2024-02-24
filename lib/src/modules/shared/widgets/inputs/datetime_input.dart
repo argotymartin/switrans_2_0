@@ -6,9 +6,7 @@ class DatetimeInput extends StatefulWidget {
   const DatetimeInput({super.key, required this.controller});
 
   @override
-  State<StatefulWidget> createState() {
-    return _DatetimeInput();
-  }
+  State<StatefulWidget> createState() => _DatetimeInput();
 }
 
 class _DatetimeInput extends State<DatetimeInput> {

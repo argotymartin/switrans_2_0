@@ -153,6 +153,7 @@ class _FieldCliente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final TextEditingController controller = TextEditingController();
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     void setValueCliente(EntryAutocomplete entry) {
       formFacturaBloc.setClienteCodigo = entry.codigo;
@@ -181,6 +182,8 @@ class _FieldCliente extends StatelessWidget {
           label: "Cliente",
           entries: entries,
           onPressed: setValueCliente,
+          controller: controller,
+          minChractersSearch: 3,
         )
       ],
     );
