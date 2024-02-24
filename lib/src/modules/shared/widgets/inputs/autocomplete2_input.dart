@@ -34,6 +34,26 @@ class _Autocomplete2InputState extends State<Autocomplete2Input> {
   void initState() {
     super.initState();
     widget.controller!.addListener(_onTextChanged);
+    if (widget.entrySelected != null) {
+      dropdownMenuEntries.add(DropdownMenuEntry<EntryAutocomplete>(
+        style: const ButtonStyle(
+            padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
+            side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
+            backgroundColor: MaterialStatePropertyAll(Colors.white)),
+        value: widget.entrySelected!,
+        label: widget.entrySelected!.title,
+        leadingIcon: widget.isShowCodigo ? CircleAvatar(child: Text('${widget.entrySelected!.codigo}')) : const SizedBox(),
+        labelWidget: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.entrySelected!.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+            Text(widget.entrySelected!.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+            SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: widget.entrySelected!.details))
+          ],
+        ),
+      ));
+    }
   }
 
   void _onTextChanged() {

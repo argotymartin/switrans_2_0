@@ -68,7 +68,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
 
     scrollController.addListener(() {
-      if (scrollController.offset >= 800) animationController.reset();
+      // if (scrollController.offset >= 800) animationController.reset();
     });
   }
 
@@ -85,19 +85,14 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void onPressedSearch(bool isValid) async {
-    //NotificationSlack().sendMessage("Esta es una prueba desde Flutter");
-    //add(const EmpresaFormFacturaEvent("1"));
-    //clienteController.text = "1409";
-    //remesasController.text = "736801,736978,443534,736918";
-    //setClienteCodigo = 1409;
+    fechaInicioController.text = "2023-01-01";
+    fechaFinController.text = "2024-01-01";
 
     final empresa = state.empresa;
     final remesas = remesasController.text;
-    //const remesas = "01035-3378,01035-3379,01035-3380,01039-3069";
-    //const remesas = "736801,736801,736917,736918,736978,443534,434196,434196,473845,467345";
-    //const remesas = "736801,736978,443534";
     final inicio = fechaInicioController.text;
     final fin = fechaFinController.text;
+
     String error = "";
     if (empresa <= 0) error += " El campo Empresa no puede ser vacio";
     if (clienteCodigo <= 0) error += " El campo Cliente no puede ser vacio";
@@ -114,8 +109,10 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         inicio: inicio,
         fin: fin,
       );
-      _documentoBloc.add(GetDocumentoEvent(request));
-      await moveScroll(450);
+      final List<Documento> resp = await _documentoBloc.getDocumentos(request);
+      if (resp.isNotEmpty) {
+        moveScroll(450);
+      }
     }
   }
 

@@ -17,9 +17,14 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
 
     on<GetDocumentoEvent>((event, emit) async {
       emit(const DocumentoLoadingState());
-      final resp = await _repository.getDocumentosService(event.request);
-      emit(DocumentoSuccesState(documentos: resp.data!));
     });
+  }
+
+  Future<List<Documento>> getDocumentos(final FacturaRequest request) async {
+    add(const GetDocumentoEvent());
+    final resp = await _repository.getDocumentosService(request);
+    add(ChangedDocumentoEvent(resp.data!));
+    return resp.data!;
   }
 
   List<MapEntry<int, String>> getCentosCosto() {

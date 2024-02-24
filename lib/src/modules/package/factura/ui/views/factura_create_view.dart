@@ -53,23 +53,19 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
             const SizedBox(height: 16),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
             const SizedBox(height: 16),
-            AnimatedContainer(
-              duration: duration,
-              transform: Matrix4.translationValues(pixels >= 100 ? 0.0 : -600.0, 0, 0),
-              child: AnimatedOpacity(
-                  opacity: pixels >= 100 ? 1.0 : 0.0,
-                  duration: duration,
-                  child: const WhiteCard(
-                    icon: Icons.insert_drive_file_outlined,
-                    title: "Factura Documentos",
-                    child: _BuildDocumentos(),
-                  )),
-            ),
+            AnimatedOpacity(
+                opacity: pixels >= 100 ? 1.0 : 0.0,
+                duration: duration,
+                child: const WhiteCard(
+                  icon: Icons.insert_drive_file_outlined,
+                  title: "Factura Documentos",
+                  child: _BuildDocumentos(),
+                )),
             const SizedBox(height: 16),
             const SizedBox(height: 16),
-            AnimatedContainer(
+            AnimatedScale(
               duration: duration,
-              transform: Matrix4.translationValues(pixels >= 550 ? 0.0 : 600.0, 0, 0),
+              scale: pixels >= 550 ? 1.0 : 0.5,
               child: AnimatedOpacity(
                   opacity: pixels >= 550 ? 1.0 : 0.0,
                   duration: duration,
@@ -121,14 +117,48 @@ class _BuildFiltros extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          FilledButton.icon(
-            onPressed: () {
-              final isValid = formKey.currentState!.validate();
-              itemDocumentoBloc.add(const ResetDocumentoEvent());
-              formFacturaBloc.onPressedSearch(isValid);
-            },
-            icon: const Icon(Icons.search_rounded),
-            label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+          Row(
+            children: [
+              FilledButton.icon(
+                onPressed: () {
+                  final isValid = formKey.currentState!.validate();
+                  itemDocumentoBloc.add(const ResetDocumentoEvent());
+                  formFacturaBloc.onPressedSearch(isValid);
+                },
+                icon: const Icon(Icons.search_rounded),
+                label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+              ),
+              const SizedBox(width: 8),
+              BlocBuilder<DocumentoBloc, DocumentoState>(
+                builder: (context, state) {
+                  final remesas = context.read<FormFacturaBloc>().remesasController.text;
+                  List<String> items = remesas.split(",");
+
+                  if (state is DocumentoLoadingState) {
+                    return const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 3.0),
+                    );
+                  }
+                  if (state is DocumentoSuccesState) {
+                    return Column(
+                      children: [
+                        Text(
+                          remesas.isEmpty ? "Encontrados" : "Consultadas/Encontrados",
+                          style: TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                        Text(
+                          remesas.isEmpty ? "${state.documentos.length}" : "${items.length}/${state.documentos.length}",
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                },
+              )
+            ],
           ),
           const SizedBox(height: 8),
           BlocBuilder<FormFacturaBloc, FormFacturaState>(
@@ -294,26 +324,9 @@ class _BuildDocumentos extends StatelessWidget {
     return BlocBuilder<DocumentoBloc, DocumentoState>(
       builder: (context, state) {
         if (state is DocumentoSuccesState) {
-          final remesas = context.read<FormFacturaBloc>().remesasController.text;
-          List<String> items = remesas.split(",");
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    "Consultadas/Encontrados",
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  Text(
-                    "${items.length}/${state.documentos.length}",
-                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              TableDocumentos(documentos: state.documentos),
-            ],
-          );
+          if (state.documentos.isNotEmpty) {
+            return TableDocumentos(documentos: state.documentos);
+          }
         }
         if (state is DocumentoLoadingState) {
           return Center(

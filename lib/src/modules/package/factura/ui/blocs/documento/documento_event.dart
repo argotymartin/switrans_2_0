@@ -12,8 +12,7 @@ class GetFacturaEvent extends DocumentoEvent {
 }
 
 class GetDocumentoEvent extends DocumentoEvent {
-  final FacturaRequest request;
-  const GetDocumentoEvent(this.request);
+  const GetDocumentoEvent();
 }
 
 class ChangedDocumentoEvent extends DocumentoEvent {
