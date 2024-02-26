@@ -1,6 +1,7 @@
 export 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_outlined_button.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_size_button.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/buttons/link_text.dart';
+export 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_menu_item_button.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/cards/custom_color_card.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/inputs/autocomplete_input.dart';

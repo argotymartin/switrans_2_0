@@ -1,59 +1,18 @@
 import 'package:flutter/material.dart';
-
-// DropdownMenuEntry labels and values for the second dropdown menu.
+import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_menu_item_button.dart';
 
 class FacturaSearchView extends StatelessWidget {
   const FacturaSearchView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: AnimatedSwitcherExample(),
-    );
-  }
-}
-
-class AnimatedSwitcherExample extends StatefulWidget {
-  const AnimatedSwitcherExample({super.key});
-
-  @override
-  State<AnimatedSwitcherExample> createState() => _AnimatedSwitcherExampleState();
-}
-
-class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
-  int _count = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return ScaleTransition(scale: animation, child: child);
-            },
-            child: Text(
-              '$_count',
-              // This key causes the AnimatedSwitcher to interpret this as a "new"
-              // child each time the count changes, so that it will begin its animation
-              // when the count changes.
-              key: ValueKey<int>(_count),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ),
-          ElevatedButton(
-            child: const Text('Increment'),
-            onPressed: () {
-              setState(() {
-                _count += 1;
-              });
-            },
-          ),
-        ],
-      ),
+    List<EntryMenu> entryMenus = [
+      EntryMenu(title: "Tipo 11"),
+      EntryMenu(title: "Tipo 12"),
+    ];
+    return MaterialApp(
+      home: CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0),
     );
   }
 }

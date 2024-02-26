@@ -112,6 +112,14 @@ class _BuildFiltros extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NewWidget(),
+              Expanded(child: SizedBox()),
+            ],
+          ),
+          const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -173,6 +181,21 @@ class _BuildFiltros extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<EntryMenu> entryMenus = [
+      EntryMenu(title: "Tipo 10"),
+      EntryMenu(title: "Tipo 12"),
+    ];
+    return CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0);
   }
 }
 
