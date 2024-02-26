@@ -53,14 +53,18 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
             const SizedBox(height: 16),
             const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
             const SizedBox(height: 16),
-            AnimatedOpacity(
-                opacity: pixels >= 100 ? 1.0 : 0.0,
-                duration: duration,
-                child: const WhiteCard(
-                  icon: Icons.insert_drive_file_outlined,
-                  title: "Factura Documentos",
-                  child: _BuildDocumentos(),
-                )),
+            AnimatedScale(
+              duration: duration,
+              scale: pixels >= 100 ? 1.0 : 0.5,
+              child: AnimatedOpacity(
+                  opacity: pixels >= 100 ? 1.0 : 0.0,
+                  duration: duration,
+                  child: const WhiteCard(
+                    icon: Icons.insert_drive_file_outlined,
+                    title: "Factura Documentos",
+                    child: _BuildDocumentos(),
+                  )),
+            ),
             const SizedBox(height: 16),
             const SizedBox(height: 16),
             AnimatedScale(
@@ -187,6 +191,7 @@ class _FieldCliente extends StatelessWidget {
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     void setValueCliente(EntryAutocomplete entry) {
       formFacturaBloc.setClienteCodigo = entry.codigo;
+      controller.text == entry.title;
     }
 
     final List<EntryAutocomplete> entries = clientes.map((cliente) {
@@ -439,7 +444,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     final formFacturaBloc = context.read<FormFacturaBloc>();
     final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
     final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
-    final controller = TextEditingController();
+    final TextEditingController controllerCentroCosto = TextEditingController();
 
     final centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
     final entriesCentroCosto = centrosCosto.map((centro) {
@@ -450,7 +455,8 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
       );
     }).toList();
 
-    final entrySelected = entriesCentroCosto.firstWhereOrNull((entry) => entry.codigo == formFacturaBloc.centroCosto);
+    final entrySelected2 = entriesCentroCosto.firstWhereOrNull((entry) => entry.codigo == formFacturaBloc.centroCosto);
+    final String entrySelected = entrySelected2 != null ? entrySelected2.title : "";
 
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo > 0) {
@@ -493,7 +499,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
                   entries: entriesCentroCosto,
                   label: "Centro Costo",
                   entrySelected: entrySelected,
-                  controller: controller,
+                  controller: controllerCentroCosto,
                   onPressed: setValueFactura,
                 ),
               ),

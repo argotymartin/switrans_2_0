@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:collection/collection.dart'; // Importa el paquete collection
 
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
@@ -108,14 +107,26 @@ class _BuildFieldItem extends StatelessWidget {
   }
 }
 
-class _BuildFiledDocumento extends StatelessWidget {
+class _BuildFiledDocumento extends StatefulWidget {
   final ItemDocumento item;
 
   const _BuildFiledDocumento({required this.item});
 
   @override
+  State<_BuildFiledDocumento> createState() => _BuildFiledDocumentoState();
+}
+
+class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
     final documentosAll = context.read<DocumentoBloc>().state.documentos;
 
     final List<EntryAutocomplete> entriesDocumentos = documentosAll.map((documento) {
@@ -126,29 +137,29 @@ class _BuildFiledDocumento extends StatelessWidget {
         details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
       );
     }).toList();
-
-    final entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == item.documento);
-
-    void setValueFactura(EntryAutocomplete value) async {
+    //final EntryAutocomplete? entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == widget.item.documento);final EntryAutocomplete? entrySelected
+    final String entrySelected = widget.item.documento > 0 ? widget.item.documento.toString() : '';
+    void setValueFactura(EntryAutocomplete value) {
+      setState(() {});
       final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
-      item.documento = documento.remesa;
-      item.documentoImpreso = documento.impreso;
-      item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
+      widget.item.documento = documento.remesa;
+      widget.item.documentoImpreso = documento.impreso;
+      widget.item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
+      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
     }
 
     return Column(
       children: [
         Autocomplete2Input(
           entrySelected: entrySelected,
-          enabled: item.tipo != "TR",
-          controller: controller,
+          enabled: widget.item.tipo != "TR",
+          controller: _controller,
           isShowCodigo: false,
           label: "",
           entries: entriesDocumentos,
           onPressed: setValueFactura,
         ),
-        RadioButtons(tipo: item.tipo),
+        RadioButtons(tipo: widget.item.tipo),
       ],
     );
   }
