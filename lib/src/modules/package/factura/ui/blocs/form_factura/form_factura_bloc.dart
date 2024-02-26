@@ -50,7 +50,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
 
     scrollController.addListener(() {
-      debugPrint(scrollController.offset.toString());
+      //debugPrint(scrollController.offset.toString());
     });
 
     on<ErrorFormFacturaEvent>((event, emit) async {
