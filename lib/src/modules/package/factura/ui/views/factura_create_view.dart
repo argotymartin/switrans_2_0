@@ -66,7 +66,6 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
                   )),
             ),
             const SizedBox(height: 16),
-            const SizedBox(height: 16),
             AnimatedScale(
               duration: duration,
               scale: pixels >= 550 ? 1.0 : 0.5,
@@ -106,17 +105,16 @@ class _BuildFiltros extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
+              Expanded(
+                  child: Row(
+                children: [
+                  Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
+                  const SizedBox(width: 24),
+                  const _FieldTipoFactura(),
+                ],
+              )),
               const SizedBox(width: 24),
               Expanded(child: _FieldEmpresa(empresas: empresas))
-            ],
-          ),
-          const SizedBox(height: 24),
-          const Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NewWidget(),
-              Expanded(child: SizedBox()),
             ],
           ),
           const SizedBox(height: 24),
@@ -184,10 +182,8 @@ class _BuildFiltros extends StatelessWidget {
   }
 }
 
-class NewWidget extends StatelessWidget {
-  const NewWidget({
-    super.key,
-  });
+class _FieldTipoFactura extends StatelessWidget {
+  const _FieldTipoFactura();
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +191,15 @@ class NewWidget extends StatelessWidget {
       EntryMenu(title: "Tipo 10"),
       EntryMenu(title: "Tipo 12"),
     ];
-    return CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text("Tipo", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 1),
+      ],
+    );
   }
 }
 
