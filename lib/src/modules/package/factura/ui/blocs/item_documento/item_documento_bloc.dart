@@ -17,18 +17,17 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
-      _formBloc.animationController.forward();
+      //_formBloc.animationController.forward();
     });
 
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
       ItemDocumento preFactura = ItemDocumentoModel.init();
-      preFactura.tipo = "SA";
       if (!preFacturas.contains(preFactura)) preFacturas.add(preFactura);
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: preFacturas));
-      _formBloc.animationController.forward();
+      // _formBloc.animationController.forward();
     });
 
     on<RemoveItemDocumentoEvent>((event, emit) {
@@ -47,7 +46,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       await Future.delayed(const Duration(milliseconds: 100));
       final newItemDocumentos = itemDocumentos..removeAt(index);
       emit(ItemDocumentoSuccesState(itemDocumentos: newItemDocumentos));
-      _formBloc.animationController.forward();
+      //_formBloc.animationController.forward();
     });
 
     on<ChangedItemDocumentoEvent>((event, emit) async {

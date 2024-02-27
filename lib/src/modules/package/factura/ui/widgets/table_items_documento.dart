@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
@@ -126,15 +125,27 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
         details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
       );
     }).toList();
-    //final EntryAutocomplete? entrySelected = entriesDocumentos.firstWhereOrNull((entry) => entry.codigo == widget.item.documento);final EntryAutocomplete? entrySelected
+    entriesDocumentos.add(EntryAutocomplete(
+      title: '0',
+      subTitle: '( Sin documento )',
+      codigo: 0,
+    ));
     final String entrySelected = widget.item.documento > 0 ? widget.item.documento.toString() : '';
     void setValueFactura(EntryAutocomplete value) {
-      setState(() {});
-      final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
-      widget.item.documento = documento.remesa;
-      widget.item.documentoImpreso = documento.impreso;
-      widget.item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
+      if (value.codigo != 0) {
+        setState(() {
+          final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
+          widget.item.documento = documento.remesa;
+          widget.item.documentoImpreso = documento.impreso;
+          widget.item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
+          context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
+        });
+      } else {
+        setState(() {
+          widget.item.tipo == "SA";
+          context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
+        });
+      }
     }
 
     return Column(

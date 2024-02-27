@@ -39,12 +39,9 @@ class AppRouter {
               context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
               return BlocBuilder<FormFacturaBloc, FormFacturaState>(
                 builder: (context, stateFactura) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 200),
-                    child: (stateFactura is FormFacturaDataState || stateFactura is FormFacturaRequestState)
-                        ? const FacturaCreateView()
-                        : const LoadingView(),
-                  );
+                  return (stateFactura is FormFacturaDataState || stateFactura is FormFacturaRequestState)
+                      ? const FacturaCreateView()
+                      : const LoadingView();
                 },
               );
             },

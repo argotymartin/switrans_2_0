@@ -43,8 +43,8 @@ class FormFacturaRequestState extends FormFacturaState {
 }
 
 class FormFacturaSuccesState extends FormFacturaState {
-  const FormFacturaSuccesState();
+  const FormFacturaSuccesState({super.empresa, super.error, super.clientes, super.empresas, super.tipoFactura});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [empresa, error, clientes, empresas, tipoFactura];
 }

@@ -75,7 +75,7 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
             const SizedBox(height: 32),
           ],
         ),
-        const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
+        //const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
       ],
     );
   }
@@ -376,21 +376,27 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomColorCard(
-      icon: Icons.file_copy_outlined,
-      title: "Item Documentos",
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _BuildDetailsDocumentos(),
-          //Divider(height: 48, color: Colors.white),
-          _BuildTableItemsDocumento(),
-          Divider(height: 48, color: Colors.white),
-          // _BuildPrefacturarDocumento(),
-          SizedBox(height: 24),
-        ],
-      ),
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (context, state) {
+        if (state is FormFacturaSuccesState) {
+          return const CustomColorCard(
+            icon: Icons.file_copy_outlined,
+            title: "Item Documentos",
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _BuildDetailsDocumentos(),
+                _BuildTableItemsDocumento(),
+                Divider(height: 48, color: Colors.white),
+                _BuildPrefacturarDocumento(),
+                SizedBox(height: 24),
+              ],
+            ),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

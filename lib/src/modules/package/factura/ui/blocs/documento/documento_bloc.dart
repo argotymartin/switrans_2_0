@@ -23,8 +23,8 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
   Future<List<Documento>> getDocumentos(final FacturaRequest request) async {
     add(const GetDocumentoEvent());
     final resp = await _repository.getDocumentosService(request);
-
-    add(ChangedDocumentoEvent(resp.data!));
+    List<Documento> documentos = resp.data!;
+    add(ChangedDocumentoEvent(documentos));
     return resp.data!;
   }
 
@@ -36,6 +36,8 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
       final documento = state.documentos.firstWhere((doc) => doc.cencosCodigo == codigo);
       centros[codigo] = documento.cencosNombre;
     }
+    if (centros.isEmpty) centros[0] = "No tengo centro de costo";
+
     return centros.entries.toList();
   }
 }

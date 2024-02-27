@@ -25,6 +25,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     on<EmpresaFormFacturaEvent>(_onEventChanged);
     on<TipoFacturaFormFacturaEvent>(_onEventChanged);
     on<ErrorFormFacturaEvent>(_onEventChanged);
+    on<SuccesFormFacturaEvent>(_onSuccesChanged);
 
     scrollController.addListener(() {
       //debugPrint(scrollController.offset.toString());
@@ -58,10 +59,26 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     if (event is EmpresaFormFacturaEvent) empresa = event.empresa;
     if (event is TipoFacturaFormFacturaEvent) tipoFactura = event.tipoFactura;
     if (event is ErrorFormFacturaEvent) error = event.error;
-    if (event is ErrorFormFacturaEvent) error = event.error;
 
     emit(const FormFacturaLoadingState());
     emit(FormFacturaRequestState(
+      error: error,
+      empresa: empresa,
+      clientes: clientes,
+      empresas: empresas,
+      tipoFactura: tipoFactura,
+    ));
+  }
+
+  void _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) {
+    List<Cliente> clientes = state.clientes;
+    List<Empresa> empresas = state.empresas;
+    String error = state.error;
+    int tipoFactura = state.tipoFactura;
+    int empresa = state.empresa;
+
+    emit(const FormFacturaLoadingState());
+    emit(FormFacturaSuccesState(
       error: error,
       empresa: empresa,
       clientes: clientes,
@@ -74,7 +91,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
   void moveBottomAllScroll() {
-    animationController.reset();
+    //animationController.reset();
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 1000),
@@ -114,10 +131,16 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         fin: fin,
       );
       final List<Documento> resp = await _documentoBloc.getDocumentos(request);
-      if (resp.isNotEmpty) moveScroll(450);
-    }
 
-    if (tipoFactura == 10 && error.isEmpty) moveScroll(450);
+      if (resp.isNotEmpty) {
+        add(const SuccesFormFacturaEvent());
+        moveScroll(450);
+      }
+      if (tipoFactura == 10) {
+        add(const SuccesFormFacturaEvent());
+        moveScroll(450);
+      }
+    }
   }
 
   Cliente getClienteSelected() {
