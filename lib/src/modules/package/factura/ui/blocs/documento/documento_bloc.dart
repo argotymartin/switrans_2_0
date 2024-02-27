@@ -23,6 +23,7 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
   Future<List<Documento>> getDocumentos(final FacturaRequest request) async {
     add(const GetDocumentoEvent());
     final resp = await _repository.getDocumentosService(request);
+
     add(ChangedDocumentoEvent(resp.data!));
     return resp.data!;
   }

@@ -57,26 +57,20 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
               duration: duration,
               scale: pixels >= 100 ? 1.0 : 0.5,
               child: AnimatedOpacity(
-                  opacity: pixels >= 100 ? 1.0 : 0.0,
-                  duration: duration,
-                  child: const WhiteCard(
-                    icon: Icons.insert_drive_file_outlined,
-                    title: "Factura Documentos",
-                    child: _BuildDocumentos(),
-                  )),
+                opacity: pixels >= 100 ? 1.0 : 0.0,
+                duration: duration,
+                child: const _BuildDocumentos(),
+              ),
             ),
             const SizedBox(height: 16),
             AnimatedScale(
               duration: duration,
-              scale: pixels >= 550 ? 1.0 : 0.5,
+              scale: pixels >= 100 ? 1.0 : 0.5,
               child: AnimatedOpacity(
-                  opacity: pixels >= 550 ? 1.0 : 0.0,
-                  duration: duration,
-                  child: const CustomColorCard(
-                    icon: Icons.file_copy_outlined,
-                    title: "Item Documentos",
-                    child: _BuildItemFactura(),
-                  )),
+                opacity: pixels >= 100 ? 1.0 : 0.0,
+                duration: duration,
+                child: const _BuildItemFactura(),
+              ),
             ),
             const SizedBox(height: 32),
           ],
@@ -182,27 +176,6 @@ class _BuildFiltros extends StatelessWidget {
   }
 }
 
-class _FieldTipoFactura extends StatelessWidget {
-  const _FieldTipoFactura();
-
-  @override
-  Widget build(BuildContext context) {
-    List<EntryMenu> entryMenus = [
-      EntryMenu(title: "Tipo 10"),
-      EntryMenu(title: "Tipo 12"),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text("Tipo", style: AppTheme.titleStyle),
-        const SizedBox(height: 8),
-        CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 1),
-      ],
-    );
-  }
-}
-
 class _FieldCliente extends StatelessWidget {
   const _FieldCliente({
     Key? key,
@@ -214,8 +187,11 @@ class _FieldCliente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
-    final TextEditingController controller = TextEditingController();
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
+    Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
+    final TextEditingController controller = TextEditingController();
+    if (cliente != null) controller.text == cliente.nombre;
+
     void setValueCliente(EntryAutocomplete entry) {
       formFacturaBloc.setClienteCodigo = entry.codigo;
       controller.text == entry.title;
@@ -247,6 +223,31 @@ class _FieldCliente extends StatelessWidget {
           controller: controller,
           minChractersSearch: 3,
         )
+      ],
+    );
+  }
+}
+
+class _FieldTipoFactura extends StatelessWidget {
+  const _FieldTipoFactura();
+
+  @override
+  Widget build(BuildContext context) {
+    void onPressed(MenuEntry entry) {
+      context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.value));
+    }
+
+    List<MenuEntry> entryMenus = const [
+      MenuEntry(label: "Tipo 10", value: 10),
+      MenuEntry(label: "Tipo 12", value: 12),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text("Tipo", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0, onPressed: onPressed),
       ],
     );
   }
@@ -357,18 +358,12 @@ class _BuildDocumentos extends StatelessWidget {
       builder: (context, state) {
         if (state is DocumentoSuccesState) {
           if (state.documentos.isNotEmpty) {
-            return TableDocumentos(documentos: state.documentos);
+            return WhiteCard(
+              icon: Icons.insert_drive_file_outlined,
+              title: "Factura Documentos",
+              child: TableDocumentos(documentos: state.documentos),
+            );
           }
-        }
-        if (state is DocumentoLoadingState) {
-          return Center(
-            child: Column(
-              children: [
-                Image.asset("assets/animations/loading.gif"),
-                const Text("Por favor espere........."),
-              ],
-            ),
-          );
         }
         return const SizedBox();
       },
@@ -381,25 +376,21 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DocumentoBloc, DocumentoState>(
-      builder: (context, state) {
-        if (state is DocumentoSuccesState) {
-          return const Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16),
-              _BuildDetailsDocumentos(),
-              Divider(height: 48, color: Colors.white),
-              _BuildTableItemsDocumento(),
-              Divider(height: 48, color: Colors.white),
-              _BuildPrefacturarDocumento(),
-              SizedBox(height: 24),
-            ],
-          );
-        }
-        return const SizedBox();
-      },
+    return const CustomColorCard(
+      icon: Icons.file_copy_outlined,
+      title: "Item Documentos",
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _BuildDetailsDocumentos(),
+          //Divider(height: 48, color: Colors.white),
+          _BuildTableItemsDocumento(),
+          Divider(height: 48, color: Colors.white),
+          // _BuildPrefacturarDocumento(),
+          SizedBox(height: 24),
+        ],
+      ),
     );
   }
 }
@@ -409,27 +400,24 @@ class _BuildTableItemsDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemDocumentoBloc = context.watch<ItemDocumentoBloc>();
     return Container(
       color: Theme.of(context).colorScheme.onPrimary,
       child: Column(
         children: [
           const TableItemsDocumento(),
           const SizedBox(height: 24),
-          itemDocumentoBloc.state is ItemDocumentoSuccesState
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
-                      icon: const Icon(Icons.add_card_rounded),
-                      label: const Text("Adicionar"),
-                    ),
-                    const CardDetailsFactura()
-                  ],
-                )
-              : const SizedBox(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
+                icon: const Icon(Icons.add_card_rounded),
+                label: const Text("Adicionar"),
+              ),
+              const CardDetailsFactura()
+            ],
+          ),
         ],
       ),
     );
@@ -441,24 +429,35 @@ class _BuildDetailsDocumentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final documentos = context.read<DocumentoBloc>().state.documentos;
-    final documentosAdicion = documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
-    final documentosDescuentos = documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
-    return Container(
-      padding: const EdgeInsets.all(24),
-      color: Theme.of(context).colorScheme.onPrimary,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          documentosAdicion.isNotEmpty
-              ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
-              : const Expanded(child: SizedBox()),
-          const SizedBox(width: 48),
-          documentosDescuentos.isNotEmpty
-              ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
-              : const Expanded(child: SizedBox()),
-        ],
-      ),
+    return BlocBuilder<DocumentoBloc, DocumentoState>(
+      builder: (context, state) {
+        if (state is DocumentoSuccesState) {
+          final documentosAdicion = state.documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
+          final documentosDescuentos = state.documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
+
+          if (documentosAdicion.isNotEmpty || documentosDescuentos.isNotEmpty) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              color: Theme.of(context).colorScheme.onPrimary,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  documentosAdicion.isNotEmpty
+                      ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
+                      : const Expanded(child: SizedBox()),
+                  const SizedBox(width: 48),
+                  documentosDescuentos.isNotEmpty
+                      ? Expanded(
+                          child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
+                      : const Expanded(child: SizedBox()),
+                ],
+              ),
+            );
+          }
+        }
+        return const SizedBox();
+      },
     );
   }
 }

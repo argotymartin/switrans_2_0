@@ -17,9 +17,6 @@ class TableItemsDocumento extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
-        if (state is! ItemDocumentoSuccesState && state is! ItemDocumentoLoadingState) {
-          return const SizedBox();
-        }
         final tableRowsTitle = TableRow(
           decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
           children: const [
@@ -64,19 +61,11 @@ class TableItemsDocumento extends StatelessWidget {
           6: FractionColumnWidth(0.06),
           7: FractionColumnWidth(0.1),
         };
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child: state is ItemDocumentoSuccesState
-              ? Table(
-                  border: TableBorder.all(color: Colors.grey.shade200, width: 1),
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  columnWidths: columnWidth,
-                  children: [tableRowsTitle, ...buildTableRows],
-                )
-              : const CircularProgressIndicator(),
+        return Table(
+          border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          columnWidths: columnWidth,
+          children: [tableRowsTitle, ...buildTableRows],
         );
       },
     );

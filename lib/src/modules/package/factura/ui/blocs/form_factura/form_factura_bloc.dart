@@ -10,6 +10,7 @@ part 'form_factura_state.dart';
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   int _clienteCodigo = 0;
   int _centroCostoCodigo = 0;
+  int _tipoFactura = 0;
   final AbstractFacturaRepository _repository;
   final DocumentoBloc _documentoBloc;
 
@@ -20,56 +21,53 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final TextEditingController fechaFinController = TextEditingController();
 
   FormFacturaBloc(this._repository, this._documentoBloc) : super(const FormFacturaInitialState()) {
-    on<GetFormFacturaEvent>((event, emit) async {
-      final int empresa = state.empresa;
-      String error = state.error;
-
-      emit(const FormFacturaLoadingState());
-      final dataStateClientes = await _repository.getClientes();
-      final dataStateEmpresas = await _repository.getEmpresasService();
-      emit(FormFacturaDataState(
-        clientes: dataStateClientes.data!,
-        empresas: dataStateEmpresas.data!,
-        empresa: empresa <= 0 ? 1 : empresa,
-        error: error,
-      ));
-    });
-
-    on<EmpresaFormFacturaEvent>((event, emit) {
-      List<Cliente> clientes = state.clientes;
-      List<Empresa> empresas = state.empresas;
-      String error = state.error;
-
-      emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(
-        empresa: event.empresa,
-        error: error,
-        clientes: clientes,
-        empresas: empresas,
-      ));
-    });
+    on<GetFormFacturaEvent>(_onGetDataFactura);
+    on<EmpresaFormFacturaEvent>(_onEventChanged);
+    on<TipoFacturaFormFacturaEvent>(_onEventChanged);
+    on<ErrorFormFacturaEvent>(_onEventChanged);
 
     scrollController.addListener(() {
       //debugPrint(scrollController.offset.toString());
     });
 
-    on<ErrorFormFacturaEvent>((event, emit) async {
-      List<Cliente> clientes = state.clientes;
-      List<Empresa> empresas = state.empresas;
-      int empresa = state.empresa;
-
-      emit(const FormFacturaLoadingState());
-      emit(FormFacturaRequestState(
-        error: event.error,
-        empresa: empresa,
-        clientes: clientes,
-        empresas: empresas,
-      ));
-    });
-
     scrollController.addListener(() {
       // if (scrollController.offset >= 800) animationController.reset();
     });
+  }
+
+  void _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+    final int empresa = state.empresa;
+    String error = state.error;
+    emit(const FormFacturaLoadingState());
+    final dataStateClientes = await _repository.getClientes();
+    final dataStateEmpresas = await _repository.getEmpresasService();
+    emit(FormFacturaDataState(
+      clientes: dataStateClientes.data!,
+      empresas: dataStateEmpresas.data!,
+      empresa: empresa,
+      error: error,
+    ));
+  }
+
+  void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
+    List<Cliente> clientes = state.clientes;
+    List<Empresa> empresas = state.empresas;
+    String error = state.error;
+    int tipoFactura = state.tipoFactura;
+    int empresa = state.empresa;
+    if (event is EmpresaFormFacturaEvent) empresa = event.empresa;
+    if (event is TipoFacturaFormFacturaEvent) tipoFactura = event.tipoFactura;
+    if (event is ErrorFormFacturaEvent) error = event.error;
+    if (event is ErrorFormFacturaEvent) error = event.error;
+
+    emit(const FormFacturaLoadingState());
+    emit(FormFacturaRequestState(
+      error: error,
+      empresa: empresa,
+      clientes: clientes,
+      empresas: empresas,
+      tipoFactura: tipoFactura,
+    ));
   }
 
   Future moveScroll(double offset) =>
@@ -85,10 +83,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void onPressedSearch(bool isValid) async {
-    fechaInicioController.text = "2023-01-01";
-    fechaFinController.text = "2024-01-01";
+    //fechaInicioController.text = "2023-01-01";
+    //fechaFinController.text = "2024-01-01";
 
     final empresa = state.empresa;
+    final tipoFactura = state.tipoFactura;
     final remesas = remesasController.text;
     final inicio = fechaInicioController.text;
     final fin = fechaFinController.text;
@@ -96,8 +95,13 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     String error = "";
     if (empresa <= 0) error += " El campo Empresa no puede ser vacio";
     if (clienteCodigo <= 0) error += " El campo Cliente no puede ser vacio";
-    if (remesas.isEmpty && inicio.isEmpty) error += " Se deben agregar remesas al filtro o un intervalo de fechas";
-    if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+    if (tipoFactura == 12) {
+      if (remesas.isEmpty && inicio.isEmpty) {
+        error +=
+            " Si se selecciona el tipo (Factura 12), se deben incluir remesas en el filtro, o bien, selecciónar un intervalo de fechas";
+      }
+      if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+    }
 
     add(ErrorFormFacturaEvent(error));
 
@@ -110,10 +114,10 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
         fin: fin,
       );
       final List<Documento> resp = await _documentoBloc.getDocumentos(request);
-      if (resp.isNotEmpty) {
-        moveScroll(450);
-      }
+      if (resp.isNotEmpty) moveScroll(450);
     }
+
+    if (tipoFactura == 10 && error.isEmpty) moveScroll(450);
   }
 
   Cliente getClienteSelected() {
@@ -131,4 +135,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   int get centroCosto => _centroCostoCodigo;
   set setCentroCosto(int value) => _centroCostoCodigo = value;
+
+  int get tipoFactura => _tipoFactura;
+  set setTipoFactura(int value) => _tipoFactura = value;
 }

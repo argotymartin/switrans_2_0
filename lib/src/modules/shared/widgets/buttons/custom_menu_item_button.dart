@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/shared/models/models_shared.dart';
 
 class CustomMenuItemButton extends StatefulWidget {
-  final List<EntryMenu> entries;
+  final List<MenuEntry> entries;
   final int indexSelectedDefault;
-  const CustomMenuItemButton({super.key, required this.entries, required this.indexSelectedDefault})
+  final Function(MenuEntry result)? onPressed;
+  const CustomMenuItemButton({super.key, required this.entries, required this.indexSelectedDefault, this.onPressed})
       : assert(indexSelectedDefault <= (entries.length - 1),
             'El index $indexSelectedDefault esta fuera del rango de macimo de entries: ${entries.length - 1}');
 
@@ -16,14 +16,25 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
   String _lastSelection = "";
   @override
   void initState() {
-    _lastSelection = widget.entries[widget.indexSelectedDefault].title;
+    _lastSelection = widget.entries[widget.indexSelectedDefault].label;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final menus = widget.entries
-        .map((e) => MenuEntry(context: context, label: e.title, onPressed: () => setState(() => _lastSelection = e.title)))
+        .map(
+          (entry) => MenuEntry(
+            value: 1,
+            label: entry.label,
+            onPressed: () {
+              if (_lastSelection != entry.label) {
+                setState(() => _lastSelection = entry.label);
+                widget.onPressed?.call(entry);
+              }
+            },
+          ),
+        )
         .toList();
 
     return MenuBar(
@@ -36,7 +47,7 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
         SubmenuButton(
           leadingIcon: Icon(Icons.list_outlined, color: Theme.of(context).primaryColor),
           trailingIcon: Icon(Icons.expand_more_outlined, color: Theme.of(context).primaryColor),
-          menuChildren: buildMenuEntry(menus),
+          menuChildren: buildMenuEntry(menus, context),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -53,11 +64,11 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
     );
   }
 
-  List<Widget> buildMenuEntry(List<MenuEntry> selections) {
+  List<Widget> buildMenuEntry(List<MenuEntry> selections, BuildContext context) {
     Widget buildSelection(MenuEntry selection) {
       return MenuItemButton(
         style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
-        leadingIcon: Icon(Icons.circle_outlined, color: Theme.of(selection.context).primaryColor),
+        leadingIcon: Icon(Icons.circle_outlined, color: Theme.of(context).colorScheme.onPrimaryContainer),
         onPressed: selection.onPressed,
         trailingIcon: const SizedBox(width: 24),
         child: Text(selection.label),
@@ -71,13 +82,11 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
 class MenuEntry {
   const MenuEntry({
     required this.label,
+    required this.value,
     this.onPressed,
-    this.menuChildren,
-    required this.context,
-  }) : assert(menuChildren == null || onPressed == null, 'onPressed is ignored if menuChildren are provided');
-  final String label;
-  final BuildContext context;
+  });
 
+  final String label;
   final VoidCallback? onPressed;
-  final List<MenuEntry>? menuChildren;
+  final int value;
 }

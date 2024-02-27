@@ -16,9 +16,9 @@ class EmpresaFormFacturaEvent extends FormFacturaEvent {
   const EmpresaFormFacturaEvent(this.empresa);
 }
 
-class PanelFormFacturaEvent extends FormFacturaEvent {
-  final bool isActive;
-  const PanelFormFacturaEvent(this.isActive);
+class TipoFacturaFormFacturaEvent extends FormFacturaEvent {
+  final int tipoFactura;
+  const TipoFacturaFormFacturaEvent(this.tipoFactura);
 }
 
 class ErrorFormFacturaEvent extends FormFacturaEvent {
