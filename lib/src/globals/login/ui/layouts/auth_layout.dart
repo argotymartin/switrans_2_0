@@ -5,19 +5,20 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/modulo/modulo_bloc.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthErrorState) {
             context.pop();
-            alertDialog(size, context, state).show();
+            //alertDialog(size, context, state).show();
+            ErrorDialog.showErrorDioException(context, state.error!);
           }
           if (state is AuthSuccesState) {
             context.read<ModuloBloc>().add(const ActiveteModuloEvent());

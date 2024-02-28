@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
+import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
 
 class AppRouter {
   static String initialRoute = "/";
@@ -40,34 +41,11 @@ class AppRouter {
               return BlocConsumer<FormFacturaBloc, FormFacturaState>(
                 listener: (context, state) {
                   if (state is FormFacturaErrorState) {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
-                        content: SizedBox(
-                          height: 260,
-                          child: Column(
-                            children: [
-                              Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
-                              Text(
-                                "Ocurrio un error".toUpperCase(),
-                                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                state.exception!.response!.data.toString().toLowerCase(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    ErrorDialog.showErrorDioException(context, state.exception!);
                   }
                 },
                 builder: (context, stateFactura) {
-                  return (stateFactura is FormFacturaDataState || stateFactura is FormFacturaRequestState)
-                      ? const FacturaCreateView()
-                      : const LoadingView();
+                  return (stateFactura is FormFacturaLoadingState) ? const LoadingView() : const FacturaCreateView();
                 },
               );
             },

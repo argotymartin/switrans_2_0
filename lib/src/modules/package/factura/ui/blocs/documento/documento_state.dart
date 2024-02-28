@@ -32,7 +32,7 @@ class DocumentoSuccesState extends DocumentoState {
 }
 
 class DocumentoErrorState extends DocumentoState {
-  final Exception error;
+  final DioException error;
 
   const DocumentoErrorState({required this.error});
   @override

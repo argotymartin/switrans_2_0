@@ -19,3 +19,8 @@ class ChangedDocumentoEvent extends DocumentoEvent {
   final List<Documento> documentos;
   const ChangedDocumentoEvent(this.documentos);
 }
+
+class ErrorDocumentoEvent extends DocumentoEvent {
+  final DioException exception;
+  const ErrorDocumentoEvent(this.exception);
+}

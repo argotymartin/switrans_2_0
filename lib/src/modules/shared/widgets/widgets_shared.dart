@@ -14,3 +14,4 @@ export 'package:switrans_2_0/src/modules/shared/widgets/labels/currency_label.da
 export 'package:switrans_2_0/src/modules/shared/widgets/modals/error_modal.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/panels/custom_expansion_panel.dart';
 export 'package:switrans_2_0/src/modules/shared/widgets/tables/table_pluto_grid_datasources.dart';
+export 'package:switrans_2_0/src/modules/shared/widgets/dialog/error_dialog.dart';

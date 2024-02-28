@@ -11,7 +11,6 @@ part 'form_factura_state.dart';
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   int _clienteCodigo = 0;
   int _centroCostoCodigo = 0;
-  int _tipoFactura = 0;
   final AbstractFacturaRepository _repository;
   final DocumentoBloc _documentoBloc;
 
@@ -162,7 +161,4 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   int get centroCosto => _centroCostoCodigo;
   set setCentroCosto(int value) => _centroCostoCodigo = value;
-
-  int get tipoFactura => _tipoFactura;
-  set setTipoFactura(int value) => _tipoFactura = value;
 }

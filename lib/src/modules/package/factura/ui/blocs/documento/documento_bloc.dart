@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
 
@@ -15,17 +16,21 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
       emit(DocumentoSuccesState(documentos: event.documentos));
     });
 
-    on<GetDocumentoEvent>((event, emit) async {
-      emit(const DocumentoLoadingState());
-    });
+    on<GetDocumentoEvent>((event, emit) => emit(const DocumentoLoadingState()));
+    on<ErrorDocumentoEvent>((event, emit) => emit(DocumentoErrorState(error: event.exception)));
   }
 
   Future<List<Documento>> getDocumentos(final FacturaRequest request) async {
     add(const GetDocumentoEvent());
     final resp = await _repository.getDocumentosService(request);
-    List<Documento> documentos = resp.data!;
-    add(ChangedDocumentoEvent(documentos));
-    return resp.data!;
+    if (resp.data != null) {
+      List<Documento> documentos = resp.data!;
+      add(ChangedDocumentoEvent(documentos));
+      return resp.data!;
+    } else {
+      add(ErrorDocumentoEvent(resp.error!));
+    }
+    return [];
   }
 
   List<MapEntry<int, String>> getCentosCosto() {

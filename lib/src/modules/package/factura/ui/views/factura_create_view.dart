@@ -38,45 +38,52 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     const Duration duration = Duration(milliseconds: 1000);
     List<String> names = fullPath.split("/");
-    return Stack(
-      children: [
-        ListView(
-          controller: context.read<FormFacturaBloc>().scrollController,
-          padding: const EdgeInsets.only(right: 32, top: 8),
-          physics: const ClampingScrollPhysics(),
-          children: [
-            BuildViewDetail(
-              title: "Factura",
-              detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
-              breadcrumbTrails: names,
-            ),
-            const SizedBox(height: 16),
-            const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
-            const SizedBox(height: 16),
-            AnimatedScale(
-              duration: duration,
-              scale: pixels >= 100 ? 1.0 : 0.5,
-              child: AnimatedOpacity(
-                opacity: pixels >= 100 ? 1.0 : 0.0,
-                duration: duration,
-                child: const _BuildDocumentos(),
+    return BlocListener<DocumentoBloc, DocumentoState>(
+      listener: (context, state) {
+        if (state is DocumentoErrorState) {
+          ErrorDialog.showErrorDioException(context, state.error);
+        }
+      },
+      child: Stack(
+        children: [
+          ListView(
+            controller: context.read<FormFacturaBloc>().scrollController,
+            padding: const EdgeInsets.only(right: 32, top: 8),
+            physics: const ClampingScrollPhysics(),
+            children: [
+              BuildViewDetail(
+                title: "Factura",
+                detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
+                breadcrumbTrails: names,
               ),
-            ),
-            const SizedBox(height: 16),
-            AnimatedScale(
-              duration: duration,
-              scale: pixels >= 100 ? 1.0 : 0.5,
-              child: AnimatedOpacity(
-                opacity: pixels >= 100 ? 1.0 : 0.0,
+              const SizedBox(height: 16),
+              const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
+              const SizedBox(height: 16),
+              AnimatedScale(
                 duration: duration,
-                child: const _BuildItemFactura(),
+                scale: pixels >= 100 ? 1.0 : 0.5,
+                child: AnimatedOpacity(
+                  opacity: pixels >= 100 ? 1.0 : 0.0,
+                  duration: duration,
+                  child: const _BuildDocumentos(),
+                ),
               ),
-            ),
-            const SizedBox(height: 32),
-          ],
-        ),
-        //const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
-      ],
+              const SizedBox(height: 16),
+              AnimatedScale(
+                duration: duration,
+                scale: pixels >= 100 ? 1.0 : 0.5,
+                child: AnimatedOpacity(
+                  opacity: pixels >= 100 ? 1.0 : 0.0,
+                  duration: duration,
+                  child: const _BuildItemFactura(),
+                ),
+              ),
+              const SizedBox(height: 32),
+            ],
+          ),
+          //const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
+        ],
+      ),
     );
   }
 }
@@ -135,9 +142,6 @@ class _BuildFiltros extends StatelessWidget {
               const SizedBox(width: 8),
               BlocBuilder<DocumentoBloc, DocumentoState>(
                 builder: (context, state) {
-                  final remesas = context.read<FormFacturaBloc>().remesasController.text;
-                  List<String> items = remesas.split(",");
-
                   if (state is DocumentoLoadingState) {
                     return const SizedBox(
                       width: 24,
@@ -146,6 +150,8 @@ class _BuildFiltros extends StatelessWidget {
                     );
                   }
                   if (state is DocumentoSuccesState) {
+                    final remesas = context.read<FormFacturaBloc>().remesasController.text;
+                    List<String> items = remesas.split(",");
                     return Column(
                       children: [
                         Text(
