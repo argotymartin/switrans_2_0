@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
@@ -37,16 +38,19 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
-    final int empresa = state.empresa;
-    String error = state.error;
     emit(const FormFacturaLoadingState());
     final dataStateClientes = await _repository.getClientes();
     final dataStateEmpresas = await _repository.getEmpresasService();
+    if (dataStateClientes.error != null) {
+      emit(FormFacturaErrorState(exception: dataStateClientes.error));
+    }
+    if (dataStateEmpresas.error != null) {
+      emit(FormFacturaErrorState(exception: dataStateEmpresas.error!));
+    }
+
     emit(FormFacturaDataState(
       clientes: dataStateClientes.data!,
       empresas: dataStateEmpresas.data!,
-      empresa: empresa,
-      error: error,
     ));
   }
 

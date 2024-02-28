@@ -37,7 +37,33 @@ class AppRouter {
             path: "/factura/registrar",
             builder: (context, GoRouterState state) {
               context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
-              return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+              return BlocConsumer<FormFacturaBloc, FormFacturaState>(
+                listener: (context, state) {
+                  if (state is FormFacturaErrorState) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                        content: SizedBox(
+                          height: 260,
+                          child: Column(
+                            children: [
+                              Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
+                              Text(
+                                "Ocurrio un error".toUpperCase(),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                state.exception!.response!.data.toString().toLowerCase(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
                 builder: (context, stateFactura) {
                   return (stateFactura is FormFacturaDataState || stateFactura is FormFacturaRequestState)
                       ? const FacturaCreateView()

@@ -6,12 +6,14 @@ abstract class FormFacturaState extends Equatable {
   final String error;
   final List<Cliente> clientes;
   final List<Empresa> empresas;
+  final DioException? exception;
   const FormFacturaState({
     this.empresa = 1,
     this.tipoFactura = 10,
     this.error = "",
     this.clientes = const [],
     this.empresas = const [],
+    this.exception,
   });
 }
 
@@ -47,4 +49,11 @@ class FormFacturaSuccesState extends FormFacturaState {
 
   @override
   List<Object> get props => [empresa, error, clientes, empresas, tipoFactura];
+}
+
+class FormFacturaErrorState extends FormFacturaState {
+  const FormFacturaErrorState({super.exception});
+
+  @override
+  List<DioException?> get props => [exception];
 }

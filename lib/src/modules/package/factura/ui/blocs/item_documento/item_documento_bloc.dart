@@ -17,7 +17,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
-      //_formBloc.animationController.forward();
+      _formBloc.animationController.forward();
     });
 
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {

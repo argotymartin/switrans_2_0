@@ -1,5 +1,4 @@
 import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/test/factura_data_test.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/cliente_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/documento_model.dart';
 import 'package:switrans_2_0/src/modules/package/factura/data/models/empresa_model.dart';
@@ -20,8 +19,8 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
       final List<Empresa> response = resp.data.cast<Map<String, dynamic>>().map((x) => EmpresaModel.fromJson(x)).toList();
       return DataSuccess(response);
     }
-    //return DataFailed(httpResponse.error!);
-    return DataSuccess(FacturaDataTest.empresasResponse);
+    return DataFailed(httpResponse.error!);
+    //return DataSuccess(FacturaDataTest.empresasResponse);
   }
 
   @override
@@ -33,8 +32,8 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
 
       return DataSuccess(response);
     }
-    //return DataFailed(httpResponse.error!);
-    return DataSuccess(FacturaDataTest.clinetesResponse);
+    return DataFailed(httpResponse.error!);
+    //return DataSuccess(FacturaDataTest.clinetesResponse);
   }
 
   @override
@@ -50,7 +49,7 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
       final List<Documento> response = resp.data.cast<Map<String, dynamic>>().map((x) => DocumentoModel.fromJson(x)).toList();
       return DataSuccess(response);
     }
-    //return DataFailed(httpResponse.error!);
-    return DataSuccess(FacturaDataTest.remesasResponse);
+    return DataFailed(httpResponse.error!);
+    //return DataSuccess(FacturaDataTest.remesasResponse);
   }
 }
