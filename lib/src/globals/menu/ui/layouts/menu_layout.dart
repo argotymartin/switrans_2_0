@@ -10,6 +10,7 @@ class MenuLayout extends StatelessWidget {
     return SelectionArea(
       child: Scaffold(
         backgroundColor: const Color(0xffedf2f9),
+        endDrawer: const CustomEndDrawer(),
         body: Row(
           children: [
             const Sidebar(),
@@ -32,6 +33,95 @@ class MenuLayout extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomEndDrawer extends StatelessWidget {
+  const CustomEndDrawer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      shadowColor: Colors.red,
+      backgroundColor: Colors.white,
+      width: 260,
+      child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white))),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  maxRadius: 50,
+                ),
+                Text(
+                  "Soy un usuario",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Theme Colors"),
+              Wrap(
+                children: [
+                  _BuildCircleColor(color: Colors.red),
+                  _BuildCircleColor(color: Colors.yellow),
+                  _BuildCircleColor(color: Colors.blue),
+                  _BuildCircleColor(color: Colors.green),
+                  _BuildCircleColor(color: Colors.orange),
+                  _BuildCircleColor(color: Colors.black),
+                ],
+              ),
+            ],
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.abc),
+            title: const Text('App Version'),
+            subtitle: const Text("Version: 0.0.12"),
+            onTap: () => print("Hola"),
+          ),
+          const ListTile(
+            leading: Icon(Icons.abc),
+            title: Text('App Version'),
+            subtitle: Text("Version: 0.0.12"),
+          ),
+          const ListTile(
+            leading: Icon(Icons.abc),
+            title: Text('App Version'),
+            subtitle: Text("Version: 0.0.12"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BuildCircleColor extends StatelessWidget {
+  final Color color;
+  const _BuildCircleColor({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(100),
+      onTap: () {
+        print("Le di tap al color: ${color.value}");
+      },
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        child: CircleAvatar(
+          backgroundColor: color,
         ),
       ),
     );

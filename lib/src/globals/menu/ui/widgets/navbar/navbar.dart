@@ -12,20 +12,36 @@ class Navbar extends StatelessWidget {
           width: double.infinity,
           height: 66,
           decoration: buidBoxDecoration(context),
-          child: const Row(
+          child: Row(
             children: [
-              SizedBox(width: 10),
-              Spacer(),
-              IconNavbar(icon: Icons.report_gmailerrorred_outlined),
-              SizedBox(width: 16),
-              IconNavbar(icon: Icons.check_box_outline_blank_rounded),
-              SizedBox(width: 16),
-              IconNavbar(icon: Icons.group_work_outlined, title: "!"),
-              SizedBox(width: 16),
-              IconNavbar(icon: Icons.notifications_outlined, title: "11"),
-              SizedBox(width: 16),
-              AvatarNavbar(size: 32),
-              SizedBox(width: 48),
+              const SizedBox(width: 10),
+              const Spacer(),
+              IconNavbar(
+                icon: Icons.settings_outlined,
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              ),
+              const SizedBox(width: 16),
+              IconNavbar(
+                icon: Icons.check_box_outline_blank_rounded,
+                onPressed: () {},
+              ),
+              const SizedBox(width: 16),
+              IconNavbar(
+                icon: Icons.group_work_outlined,
+                title: "!",
+                onPressed: () {},
+              ),
+              const SizedBox(width: 16),
+              IconNavbar(
+                icon: Icons.notifications_outlined,
+                title: "11",
+                onPressed: () {},
+              ),
+              const SizedBox(width: 16),
+              const AvatarNavbar(size: 32),
+              const SizedBox(width: 48),
             ],
           ),
         ),

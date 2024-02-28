@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class IconNavbar extends StatefulWidget {
   final IconData icon;
   final String title;
+  final VoidCallback onPressed;
   const IconNavbar({
     Key? key,
     required this.icon,
     this.title = "",
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class _IconNavbarState extends State<IconNavbar> {
           Positioned(
             top: 8,
             left: 8,
-            child: IconButton(icon: Icon(widget.icon), onPressed: () {}),
+            child: IconButton(icon: Icon(widget.icon), onPressed: widget.onPressed),
           ),
           widget.title != ""
               ? Positioned(

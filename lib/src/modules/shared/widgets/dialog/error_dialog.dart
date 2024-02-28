@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio.dart';
+import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio_strategy.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio_strategy.dart';
@@ -10,6 +12,7 @@ class ErrorDialog {
   static final _errorStrategies = {
     ErrorGenericDio: ErrorGenericDioStrategy(),
     ErrorPocketbaseDio: ErrorPocketbaseDioStrategy(),
+    ErrorBackendDio: ErrorBackendDioStrategy(),
   };
 
   static showErrorDioException(BuildContext context, DioException exception) {
@@ -30,6 +33,8 @@ class ErrorDialog {
         return ErrorGenericDio;
       } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
         return ErrorPocketbaseDio;
+      } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
+        return ErrorBackendDio;
       }
     }
   }
@@ -39,8 +44,7 @@ class ErrorDialog {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
-        content: SizedBox(
-          height: 260,
+        content: SingleChildScrollView(
           child: Column(
             children: [
               Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
