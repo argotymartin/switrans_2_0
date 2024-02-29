@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switrans_2_0/src/config/themes/custom_colors.dart';
 
 class AppTheme {
+  final Color color;
+  AppTheme({this.color = Colors.black});
   ThemeData getTheme(BuildContext context) {
     final theme = Theme.of(context);
     return ThemeData(
@@ -13,8 +14,8 @@ class AppTheme {
         titleMedium: const TextStyle(fontSize: 12),
         titleLarge: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black54)),
       ),
-      colorSchemeSeed: customColorFuchsiaBlue,
-      iconTheme: IconThemeData(color: theme.primaryColor),
+      colorSchemeSeed: color,
+      iconTheme: IconThemeData(color: color),
       inputDecorationTheme: const InputDecorationTheme(
         hintStyle: TextStyle(fontSize: 12),
         labelStyle: TextStyle(fontSize: 12),

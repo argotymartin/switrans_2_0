@@ -83,18 +83,19 @@ class _BuildMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeCubit>().state;
     return MaterialApp.router(
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
-      theme: AppTheme().getTheme(context),
+      theme: AppTheme(color: theme.color).getTheme(context),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('es', 'ES'), // Español
+        Locale('es', 'ES'),
       ],
     );
   }

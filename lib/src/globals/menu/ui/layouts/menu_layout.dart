@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class MenuLayout extends StatelessWidget {
@@ -74,12 +76,15 @@ class CustomEndDrawer extends StatelessWidget {
               Text("Theme Colors"),
               Wrap(
                 children: [
-                  _BuildCircleColor(color: Colors.red),
-                  _BuildCircleColor(color: Colors.yellow),
+                  _BuildCircleColor(color: Colors.indigo),
+                  _BuildCircleColor(color: Colors.teal),
                   _BuildCircleColor(color: Colors.blue),
-                  _BuildCircleColor(color: Colors.green),
+                  _BuildCircleColor(color: Colors.deepOrange),
                   _BuildCircleColor(color: Colors.orange),
-                  _BuildCircleColor(color: Colors.black),
+                  _BuildCircleColor(color: Colors.cyan),
+                  _BuildCircleColor(color: Colors.purple),
+                  _BuildCircleColor(color: Colors.deepPurple),
+                  _BuildCircleColor(color: Colors.limeAccent),
                 ],
               ),
             ],
@@ -116,14 +121,25 @@ class _BuildCircleColor extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(100),
       onTap: () {
-        print("Le di tap al color: ${color.value}");
+        context.read<ThemeCubit>().onChangeColorTheme(color);
+        context.pop();
       },
       child: Container(
-        margin: const EdgeInsets.all(4),
-        child: CircleAvatar(
-          backgroundColor: color,
-        ),
-      ),
+          margin: const EdgeInsets.all(4),
+          child: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                colors: [
+                  color.withOpacity(0.2),
+                  color,
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
