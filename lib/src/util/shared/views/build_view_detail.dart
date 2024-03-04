@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class BuildViewDetail extends StatelessWidget {
-  final String title;
-  final String detail;
-  final List<String> breadcrumbTrails;
+  final String path;
   const BuildViewDetail({
     super.key,
-    required this.title,
-    this.detail = "",
-    this.breadcrumbTrails = const [],
+    this.path = "",
   });
 
   @override
   Widget build(BuildContext context) {
+    List<String> breadcrumbTrails = path.split("/");
+    final ModuloBloc moduloBloc = context.read<ModuloBloc>();
+    final modulo = moduloBloc.state.modulos.firstWhere((element) => element.isSelected);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,12 +22,12 @@ class BuildViewDetail extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: [
-            Icon(Icons.document_scanner_outlined, color: Colors.grey.shade600),
+            Icon(IconData(int.parse(modulo.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
             const SizedBox(width: 4),
-            Text(title, style: Theme.of(context).textTheme.headlineLarge),
+            Text(modulo.texto, style: Theme.of(context).textTheme.headlineLarge),
           ],
         ),
-        Text(detail, style: TextStyle(color: Colors.grey.shade600)),
+        Text(modulo.detalles, style: TextStyle(color: Colors.grey.shade600)),
       ],
     );
   }

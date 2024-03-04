@@ -14,12 +14,11 @@ class TipoImpuestoCreateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-    List<String> names = fullPath.split("/");
+
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (context, state) {
-        if (state is TipoImpuestoErrorState) {
-          ErrorDialog.showErrorDioException(context, state.exception!);
-        }
+        if (state is TipoImpuestoErrorState) ErrorDialog.showDioException(context, state.exception!);
+
         if (state is TipoImpuestoSuccesState) {
           context.go('/tipo_impuesto/buscar');
         }
@@ -30,14 +29,8 @@ class TipoImpuestoCreateView extends StatelessWidget {
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
             children: [
-              BuildViewDetail(
-                title: "Tipo Impuesto",
-                detail: "Sistema de gestión de Tipo Impuestos (Iva, Retefuente, Reteica)",
-                breadcrumbTrails: names,
-              ),
-              const SizedBox(height: 16),
-              const WhiteCard(title: "Registrar", icon: Icons.price_change_outlined, child: _BuildFields()),
-              const SizedBox(height: 16),
+              BuildViewDetail(path: fullPath),
+              const WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
             ],
           ),
         ],
@@ -46,8 +39,8 @@ class TipoImpuestoCreateView extends StatelessWidget {
   }
 }
 
-class _BuildFields extends StatelessWidget {
-  const _BuildFields();
+class _BuildFieldsForm extends StatelessWidget {
+  const _BuildFieldsForm();
 
   @override
   Widget build(BuildContext context) {
@@ -60,29 +53,21 @@ class _BuildFields extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomTextInput(title: "Tipo Impuesto", controller: controller),
+              CustomTextInput(title: "Nombre", controller: controller),
               const SizedBox(),
             ],
           ),
-          Row(
-            children: [
-              FilledButton.icon(
-                onPressed: () {
-                  final isValid = formKey.currentState!.validate();
-                  if (isValid) {
-                    final request = TipoImpuestoRequest(nombre: controller.text, usuario: 1);
-                    context.read<TipoImpuestoBloc>().add(SetImpuestoEvent(request));
-                  }
-
-                  //formFacturaBloc.onPressedSearch(isValid);
-                },
-                icon: const Icon(Icons.save),
-                label: const Text("Crear", style: TextStyle(color: Colors.white)),
-              ),
-              const SizedBox(width: 8),
-            ],
+          FilledButton.icon(
+            onPressed: () {
+              final isValid = formKey.currentState!.validate();
+              if (isValid) {
+                final request = TipoImpuestoRequest(nombre: controller.text, usuario: 1);
+                context.read<TipoImpuestoBloc>().add(SetImpuestoEvent(request));
+              }
+            },
+            icon: const Icon(Icons.save),
+            label: const Text("Crear", style: TextStyle(color: Colors.white)),
           ),
-          const SizedBox(height: 8),
         ],
       ),
     );

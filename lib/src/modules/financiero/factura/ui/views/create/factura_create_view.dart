@@ -38,12 +38,9 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
   Widget build(BuildContext context) {
     final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     const Duration duration = Duration(milliseconds: 1000);
-    List<String> names = fullPath.split("/");
     return BlocListener<DocumentoBloc, DocumentoState>(
       listener: (context, state) {
-        if (state is DocumentoErrorState) {
-          ErrorDialog.showErrorDioException(context, state.error);
-        }
+        if (state is DocumentoErrorState) ErrorDialog.showDioException(context, state.error);
       },
       child: Stack(
         children: [
@@ -52,11 +49,7 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
             children: [
-              BuildViewDetail(
-                title: "Factura",
-                detail: "Sistema de gestión de facturas que permite la facturación de servicios para diversos clientes con facilidad",
-                breadcrumbTrails: names,
-              ),
+              BuildViewDetail(path: fullPath),
               const SizedBox(height: 16),
               const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
               const SizedBox(height: 16),

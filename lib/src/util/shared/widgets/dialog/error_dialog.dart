@@ -15,7 +15,7 @@ class ErrorDialog {
     ErrorBackendDio: ErrorBackendDioStrategy(),
   };
 
-  static showErrorDioException(BuildContext context, DioException exception) {
+  static showDioException(BuildContext context, DioException exception) {
     if (exception.response?.data != null) {
       final Response response = exception.response!;
       final errorType = _getErrorType(response.data);
