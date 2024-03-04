@@ -12,6 +12,11 @@ class SetImpuestoEvent extends TipoImpuestoEvent {
   const SetImpuestoEvent(this.request);
 }
 
+class GetImpuestoEvent extends TipoImpuestoEvent {
+  final TipoImpuestoRequest request;
+  const GetImpuestoEvent(this.request);
+}
+
 class ActiveteTipoImpuestoEvent extends TipoImpuestoEvent {
   const ActiveteTipoImpuestoEvent();
 }

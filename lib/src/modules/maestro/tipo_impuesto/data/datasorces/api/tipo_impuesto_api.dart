@@ -6,7 +6,7 @@ class TipoImpuestoApi {
   final Dio _dio;
   TipoImpuestoApi(this._dio);
 
-  Future<Response> getTipoImpuestosApi() async {
+  Future<Response> getTipoImpuestosApi(TipoImpuestoRequest request) async {
     const url = '$kPocketBaseUrl/api/collections/cliente/records';
     final response = await _dio.get('$url/');
     return response;

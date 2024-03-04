@@ -20,5 +20,15 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
         emit(TipoImpuestoErrorState(exception: resp.error));
       }
     });
+
+    on<GetImpuestoEvent>((event, emit) async {
+      emit(const TipoImpuestoLoadingState());
+      final resp = await _repository.getTipoImpuestosService(event.request);
+      if (resp.data != null) {
+        //emit(TipoImpuestoSuccesState(tipoImpuesto: resp.data));
+      } else {
+        emit(TipoImpuestoErrorState(exception: resp.error));
+      }
+    });
   }
 }

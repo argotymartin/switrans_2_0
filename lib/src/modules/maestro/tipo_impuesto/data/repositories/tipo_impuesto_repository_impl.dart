@@ -11,8 +11,8 @@ class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTi
   final TipoImpuestoApi _api;
   TipoImpuestoRepositoryImpl(this._api);
   @override
-  Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService() async {
-    final httpResponse = await getStateOf(request: () => _api.getTipoImpuestosApi());
+  Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService(TipoImpuestoRequest request) async {
+    final httpResponse = await getStateOf(request: () => _api.getTipoImpuestosApi(request));
     if (httpResponse.data != null) {
       final resp = BackendResponse.fromJson(httpResponse.data);
       final List<TipoImpuesto> response = resp.data.cast<Map<String, dynamic>>().map((x) => TipoImpuestoModel.fromJson(x)).toList();

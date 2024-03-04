@@ -3,6 +3,6 @@ import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/entities/t
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractTipoImpuestoRepository {
-  Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService();
+  Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService(TipoImpuestoRequest request);
   Future<DataState<TipoImpuesto>> setTipoImpuestoService(TipoImpuestoRequest request);
 }
