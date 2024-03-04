@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class TipoImpuestoApi {
@@ -8,6 +9,12 @@ class TipoImpuestoApi {
   Future<Response> getTipoImpuestosApi() async {
     const url = '$kPocketBaseUrl/api/collections/cliente/records';
     final response = await _dio.get('$url/');
+    return response;
+  }
+
+  Future<Response> setTipoImpuestoApi(TipoImpuestoRequest request) async {
+    const url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
+    final response = await _dio.post('$url/', data: request.toJson());
     return response;
   }
 }

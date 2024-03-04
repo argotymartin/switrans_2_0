@@ -1,5 +1,6 @@
 import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
 import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/data/models/tipo_impuesto_model.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/entities/tipo_impuesto.dart';
 import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
@@ -21,7 +22,12 @@ class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTi
   }
 
   @override
-  Future<DataState<TipoImpuesto>> setTipoImpuestoService() {
-    throw UnimplementedError();
+  Future<DataState<TipoImpuesto>> setTipoImpuestoService(TipoImpuestoRequest request) async {
+    final httpResponse = await getStateOf(request: () => _api.setTipoImpuestoApi(request));
+    if (httpResponse.data != null) {
+      final TipoImpuesto response = TipoImpuestoModel.fromJson(httpResponse.data);
+      return DataSuccess(response);
+    }
+    return DataFailed(httpResponse.error!);
   }
 }

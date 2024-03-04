@@ -34,7 +34,7 @@ class _CustomTextInputState extends State<CustomTextInput> {
           height: higth,
           child: TextFormField(
             controller: widget.controller,
-            initialValue: widget.initialValue,
+            initialValue: widget.initialValue.isNotEmpty ? widget.initialValue : null,
             onChanged: widget.onChanged,
             validator: (value) {
               if (value != null) {
