@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AppRouter {
   static String initialRoute = "/";

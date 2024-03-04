@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/request/usuario.request.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/text_form_field_login.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/buttons/custom_outlined_button.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/buttons/custom_outlined_button.dart';
 
 class AuthView extends StatelessWidget {
   const AuthView({super.key});
