@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class BuildRowsForm extends StatelessWidget {
@@ -6,10 +7,14 @@ class BuildRowsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final childrenMap = children.map((child) => Expanded(child: child)).toList();
+    List<Widget> childrenList = [];
+    children.forEachIndexed((index, child) {
+      childrenList.add(Expanded(child: child));
+      if (index + 1 < children.length && children.length > 1) childrenList.add(const SizedBox(width: 24));
+    });
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24),
-      child: Row(children: childrenMap),
+      child: Row(children: childrenList),
     );
   }
 }

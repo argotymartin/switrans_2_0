@@ -25,7 +25,7 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
       emit(const TipoImpuestoLoadingState());
       final resp = await _repository.getTipoImpuestosService(event.request);
       if (resp.data != null) {
-        //emit(TipoImpuestoSuccesState(tipoImpuesto: resp.data));
+        emit(TipoImpuestoConsultedState(tipoImpuestos: resp.data!));
       } else {
         emit(TipoImpuestoErrorState(exception: resp.error));
       }

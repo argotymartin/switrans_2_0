@@ -7,6 +7,8 @@ import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_data_builder.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TipoImpuestoSearchView extends StatelessWidget {
@@ -27,11 +29,31 @@ class TipoImpuestoSearchView extends StatelessWidget {
             physics: const ClampingScrollPhysics(),
             children: [
               BuildViewDetail(path: fullPath),
-              const WhiteCard(title: "Buscar Registros", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
+              const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
+              const _BluildDataTable()
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BluildDataTable extends StatelessWidget {
+  const _BluildDataTable();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
+      builder: (context, state) {
+        if (state is TipoImpuestoConsultedState) {
+          return CustomPlutoGridTable(
+            columns: CustomPlutoGridDataBuilder.buildColumns(context),
+            rows: CustomPlutoGridDataBuilder.buildDataRows(state.tipoImpuestos, context),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
@@ -51,9 +73,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomTextInput(title: "Nombre", controller: nombreController),
+              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
               CustomNumberInput(title: "Codigo", controller: codigoController),
-              const SizedBox(),
             ],
           ),
           FilledButton.icon(
@@ -69,7 +90,7 @@ class _BuildFieldsForm extends StatelessWidget {
               }
             },
             icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            label: const Text("Buscar", style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

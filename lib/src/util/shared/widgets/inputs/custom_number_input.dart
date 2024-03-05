@@ -8,6 +8,7 @@ class CustomNumberInput extends StatefulWidget {
   final int minLength;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
+  final bool isValidator;
 
   const CustomNumberInput({
     super.key,
@@ -16,6 +17,7 @@ class CustomNumberInput extends StatefulWidget {
     this.initialValue = "",
     this.title = "",
     this.minLength = 1,
+    this.isValidator = false,
   });
 
   @override
@@ -37,16 +39,7 @@ class _CustomTextInputState extends State<CustomNumberInput> {
             controller: widget.controller,
             initialValue: widget.initialValue.isNotEmpty ? widget.initialValue : null,
             onChanged: widget.onChanged,
-            validator: (value) {
-              if (value != null) {
-                if (value.length < widget.minLength) {
-                  higth = higth + 24;
-                  setState(() {});
-                  return "El campo debe ser minimo de ${widget.minLength} caracteres";
-                }
-              }
-              return null;
-            },
+            validator: widget.isValidator ? onValidator : null,
             decoration: InputDecoration(
                 errorMaxLines: 1,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
@@ -71,7 +64,7 @@ class _CustomTextInputState extends State<CustomNumberInput> {
                     width: 2,
                   ),
                 ),
-                prefixIcon: const Icon(Icons.abc),
+                prefixIcon: const Icon(Icons.numbers),
                 hintText: widget.title.isNotEmpty ? "Ingrese el ${widget.title}" : "",
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -88,5 +81,16 @@ class _CustomTextInputState extends State<CustomNumberInput> {
         ),
       ],
     );
+  }
+
+  String? onValidator(String? value) {
+    if (value != null) {
+      if (value.length < widget.minLength) {
+        higth = higth + 24;
+        setState(() {});
+        return "El campo debe ser minimo de ${widget.minLength} caracteres";
+      }
+    }
+    return null;
   }
 }
