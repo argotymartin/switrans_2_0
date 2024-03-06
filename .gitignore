@@ -48,9 +48,10 @@ app.*.map.json
 /web/package.json
 /web/server.js
 
-
 # plugins para sitemas operativos
 linux/flutter/*
 macos/Flutter/*
 windows/flutter/*
 
+# FVM Version Cache
+.fvm/
