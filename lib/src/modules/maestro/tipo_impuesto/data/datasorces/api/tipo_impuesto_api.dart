@@ -8,18 +8,7 @@ class TipoImpuestoApi {
 
   Future<Response> getTipoImpuestosApi(TipoImpuestoRequest request) async {
     const url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
-    //final queryParameters = request.toJson();
-
-    String data = "(";
-    if (request.nombre.isNotEmpty) {
-      data += "nombre~'${request.nombre}'";
-    }
-    if (request.codigo != null) {
-      data += "codigo=${request.codigo}";
-    }
-    data += ")";
-    print(data);
-    final queryParameters = {"filter": data};
+    final queryParameters = {"filter": request.toPocketBaseFilter()};
     final response = await _dio.get('$url/', queryParameters: queryParameters);
     return response;
   }

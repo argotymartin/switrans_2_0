@@ -7,12 +7,12 @@ class CustomPlutoGridTable extends StatelessWidget {
   final Function(dynamic value)? onRowChecked;
   final Function(dynamic value)? onRowDoubleTap;
   const CustomPlutoGridTable({
-    Key? key,
+    super.key,
     required this.columns,
     required this.rows,
     this.onRowDoubleTap,
     this.onRowChecked,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

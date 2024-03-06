@@ -18,4 +18,15 @@ class TipoImpuestoRequest {
 
     return data;
   }
+
+  String toPocketBaseFilter() {
+    final List conditions = [];
+
+    if (nombre.isNotEmpty) conditions.add("nombre~'$nombre'");
+    if (codigo != null) conditions.add("codigo=$codigo");
+
+    final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();
+    final data = queryString.isNotEmpty ? "($queryString)" : "";
+    return data;
+  }
 }
