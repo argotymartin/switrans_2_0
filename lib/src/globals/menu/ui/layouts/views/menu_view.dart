@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/cards/white_card.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({super.key});

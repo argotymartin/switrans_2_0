@@ -1,11 +1,10 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/modulo/modulo_bloc.dart';
-import 'package:switrans_2_0/src/modules/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/modules/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
@@ -17,8 +16,7 @@ class AuthLayout extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthErrorState) {
             context.pop();
-            //alertDialog(size, context, state).show();
-            ErrorDialog.showErrorDioException(context, state.error!);
+            ErrorDialog.showDioException(context, state.error!);
           }
           if (state is AuthSuccesState) {
             context.read<ModuloBloc>().add(const ActiveteModuloEvent());
@@ -45,37 +43,6 @@ class AuthLayout extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  AwesomeDialog alertDialog(Size size, BuildContext context, AuthErrorState state) {
-    return AwesomeDialog(
-      bodyHeaderDistance: 0,
-      btnOk: FilledButton.icon(
-        onPressed: () => context.pop(),
-        icon: const Icon(Icons.check_circle_outline),
-        label: const Text("Aceptar"),
-      ),
-      btnCancel: TextButton.icon(
-        onPressed: () => context.pop(),
-        icon: const Icon(Icons.cancel_outlined),
-        label: const Text("Cancelar"),
-      ),
-      headerAnimationLoop: false,
-      width: 400,
-      context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.topSlide,
-      title: 'Ocurrio un error',
-      desc: state.error!.response!.data.toString(),
-      buttonsTextStyle: const TextStyle(color: Colors.black),
-      showCloseIcon: true,
-      btnCancelOnPress: () {
-        context.go("/");
-      },
-      btnOkOnPress: () {
-        context.go("/");
-      },
     );
   }
 }

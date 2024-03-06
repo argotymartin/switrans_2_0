@@ -8,10 +8,14 @@ import 'package:switrans_2_0/src/globals/menu/data/datasorces/api/pocketbase_api
 import 'package:switrans_2_0/src/globals/menu/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_modulo_repository.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/datasorces/api/factura_api.dart';
-import 'package:switrans_2_0/src/modules/package/factura/data/repositories/factura_repository_impl.dart';
-import 'package:switrans_2_0/src/modules/package/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/data/datasorces/api/factura_api.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/data/repositories/factura_repository_impl.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/domain/factura_domain.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/data/repositories/tipo_impuesto_repository_impl.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 
 final injector = GetIt.instance;
 
@@ -34,4 +38,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<DocumentoBloc>(DocumentoBloc(injector()));
   injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector(), injector()));
   injector.registerSingleton<ItemDocumentoBloc>(ItemDocumentoBloc(injector()));
+
+  injector.registerSingleton<TipoImpuestoApi>(TipoImpuestoApi(injector()));
+  injector.registerSingleton<AbstractTipoImpuestoRepository>(TipoImpuestoRepositoryImpl(injector()));
+  injector.registerSingleton<TipoImpuestoBloc>(TipoImpuestoBloc(injector()));
 }

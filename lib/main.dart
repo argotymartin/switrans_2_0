@@ -10,7 +10,8 @@ import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/modules/package/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/util/simple_bloc_observer.dart';
 
 Future<void> main() async {
@@ -32,6 +33,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<ThemeCubit>(create: (_) => injector<ThemeCubit>()),
         BlocProvider<FormFacturaBloc>(create: (_) => injector<FormFacturaBloc>()),
         BlocProvider<ItemDocumentoBloc>(create: (_) => injector<ItemDocumentoBloc>()),
+        BlocProvider<TipoImpuestoBloc>(create: (_) => injector<TipoImpuestoBloc>()),
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
         BlocProvider<ModuloBloc>(create: (_) => injector()..add((const GetModuloEvent()))),
         BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),

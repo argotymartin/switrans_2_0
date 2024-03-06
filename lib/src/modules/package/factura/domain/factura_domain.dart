@@ -1,9 +1,0 @@
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/adicion.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/cliente.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/descuento.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/documento.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/empresa.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/item_documento.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/factura_request.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/entities/request/prefactura_request.dart';
-export 'package:switrans_2_0/src/modules/package/factura/domain/repositories/abstract_factura_repository.dart';

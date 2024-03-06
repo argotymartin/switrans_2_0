@@ -94,7 +94,7 @@ class CustomEndDrawer extends StatelessWidget {
             leading: const Icon(Icons.abc),
             title: const Text('App Version'),
             subtitle: const Text("Version: 0.0.12"),
-            onTap: () => print("Hola"),
+            onTap: () => {},
           ),
           const ListTile(
             leading: Icon(Icons.abc),

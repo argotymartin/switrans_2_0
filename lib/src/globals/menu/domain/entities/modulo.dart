@@ -5,6 +5,7 @@ class Modulo {
   final String icono;
   final String texto;
   final String path;
+  final String detalles;
   List<Pagina> paginas;
   bool isSelected;
 
@@ -13,6 +14,7 @@ class Modulo {
     required this.icono,
     required this.texto,
     required this.path,
+    this.detalles = "",
     this.paginas = const [],
     this.isSelected = false,
   });
