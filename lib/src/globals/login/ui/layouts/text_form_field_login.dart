@@ -9,7 +9,7 @@ class TextFormFieldLogin extends StatefulWidget {
   final Function(String) onFieldSubmitted;
   final String? Function(String?) onValidator;
   const TextFormFieldLogin({
-    Key? key,
+    super.key,
     required this.icon,
     required this.placeHoder,
     required this.textController,
@@ -17,7 +17,7 @@ class TextFormFieldLogin extends StatefulWidget {
     required this.onValidator,
     this.textInputType = TextInputType.text,
     this.isPassword = false,
-  }) : super(key: key);
+  });
 
   @override
   State<TextFormFieldLogin> createState() => _TextFormFieldLoginState();

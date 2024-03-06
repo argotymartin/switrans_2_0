@@ -8,7 +8,7 @@ import 'package:switrans_2_0/src/modules/financiero/factura/domain/factura_domai
 
 class TableDocumentos extends StatelessWidget {
   final List<Documento> documentos;
-  const TableDocumentos({Key? key, required this.documentos}) : super(key: key);
+  const TableDocumentos({super.key, required this.documentos});
 
   @override
   Widget build(BuildContext context) {

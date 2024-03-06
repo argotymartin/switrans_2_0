@@ -5,11 +5,11 @@ class IconNavbar extends StatefulWidget {
   final String title;
   final VoidCallback onPressed;
   const IconNavbar({
-    Key? key,
+    super.key,
     required this.icon,
     this.title = "",
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<IconNavbar> createState() => _IconNavbarState();

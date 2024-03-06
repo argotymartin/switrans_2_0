@@ -6,10 +6,10 @@ class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
   const CustomExpansionPanel({
-    Key? key,
+    super.key,
     required this.title,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomExpansionPanel> createState() => _CustomExpansionPanelState();

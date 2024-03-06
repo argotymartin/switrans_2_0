@@ -73,13 +73,13 @@ class BuildOptionModuloMenu extends StatelessWidget {
   final bool isHovered;
 
   const BuildOptionModuloMenu({
-    Key? key,
+    super.key,
     required this.modulo,
     required this.paginas,
     required this.isMinimized,
     required this.isEntered,
     required this.isHovered,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

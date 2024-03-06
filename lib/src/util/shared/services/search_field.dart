@@ -285,7 +285,7 @@ class SearchField<T> extends StatefulWidget {
   final TextCapitalization textCapitalization;
 
   SearchField(
-      {Key? key,
+      {super.key,
       required this.suggestions,
       this.autoCorrect = true,
       this.autofocus = false,
@@ -323,8 +323,7 @@ class SearchField<T> extends StatefulWidget {
       this.validator,
       @Deprecated('use `onSearchTextChanged` instead.') this.comparator})
       : assert((initialValue != null && suggestions.containsObject(initialValue)) || initialValue == null,
-            'Initial value should either be null or should be present in suggestions list.'),
-        super(key: key);
+            'Initial value should either be null or should be present in suggestions list.');
 
   @override
   @override
@@ -700,13 +699,13 @@ class SuggestionDecoration extends BoxDecoration {
 
   const SuggestionDecoration({
     this.padding = EdgeInsets.zero,
-    Color? color,
-    Border? border,
-    BorderRadiusGeometry? borderRadius,
-    List<BoxShadow>? boxShadow,
-    Gradient? gradient,
-    BoxShape shape = BoxShape.rectangle,
-  }) : super(color: color, border: border, borderRadius: borderRadius, boxShadow: boxShadow, gradient: gradient, shape: shape);
+    super.color,
+    Border? super.border,
+    super.borderRadius,
+    super.boxShadow,
+    super.gradient,
+    super.shape,
+  });
 }
 
 class ScrollbarDecoration {

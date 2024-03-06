@@ -11,7 +11,7 @@ class AutocompleteInput extends StatelessWidget {
   final Function(String result)? onPressed;
 
   const AutocompleteInput({
-    Key? key,
+    super.key,
     required this.suggestions,
     required this.title,
     this.controller,
@@ -19,7 +19,7 @@ class AutocompleteInput extends StatelessWidget {
     this.onPressed,
     this.isShowCodigo = true,
     this.isReadOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ class Autocomplete2Input extends StatefulWidget {
   final String entrySelected;
 
   const Autocomplete2Input({
-    Key? key,
+    super.key,
     required this.entries,
     required this.label,
     this.controller,
@@ -21,7 +21,7 @@ class Autocomplete2Input extends StatefulWidget {
     this.isShowCodigo = true,
     this.entrySelected = '',
     this.minChractersSearch = 1,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _Autocomplete2InputState();

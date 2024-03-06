@@ -12,9 +12,7 @@ import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatefulWidget {
-  const FacturaCreateView({
-    Key? key,
-  }) : super(key: key);
+  const FacturaCreateView({super.key});
 
   @override
   State<FacturaCreateView> createState() => _FacturaCreateViewState();
@@ -178,9 +176,8 @@ class _BuildFiltros extends StatelessWidget {
 
 class _FieldCliente extends StatelessWidget {
   const _FieldCliente({
-    Key? key,
     required this.formFacturaBloc,
-  }) : super(key: key);
+  });
 
   final FormFacturaBloc formFacturaBloc;
 
