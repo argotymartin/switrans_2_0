@@ -81,16 +81,19 @@ class _BuildFieldItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.zero,
-      shape: const StadiumBorder(),
-      side: BorderSide.none,
-      elevation: 0,
-      label: Text(
-        renderContext.cell.value.toString(),
-        style: const TextStyle(color: Colors.white),
+    return Transform.scale(
+      scale: 0.8,
+      child: Chip(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.zero,
+        shape: const StadiumBorder(),
+        side: BorderSide.none,
+        elevation: 0,
+        label: Text(
+          renderContext.cell.value.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

@@ -4,10 +4,8 @@ sealed class TipoImpuestoState extends Equatable {
   final TipoImpuesto? tipoImpuesto;
   final List<TipoImpuesto> tipoImpuestos;
   final DioException? exception;
-  const TipoImpuestoState({this.tipoImpuesto, this.exception, this.tipoImpuestos = const []});
-
-  @override
-  List<Object> get props => [];
+  final String? error;
+  const TipoImpuestoState({this.tipoImpuesto, this.exception, this.tipoImpuestos = const [], this.error});
 }
 
 class TipoImpuestoInitialState extends TipoImpuestoState {
@@ -38,8 +36,14 @@ class TipoImpuestoConsultedState extends TipoImpuestoState {
   List<Object> get props => [tipoImpuestos];
 }
 
-class TipoImpuestoErrorState extends TipoImpuestoState {
-  const TipoImpuestoErrorState({super.exception});
+class TipoImpuestoExceptionState extends TipoImpuestoState {
+  const TipoImpuestoExceptionState({super.exception});
   @override
   List<Object> get props => [exception!];
+}
+
+class TipoImpuestoErrorFormState extends TipoImpuestoState {
+  const TipoImpuestoErrorFormState({super.error});
+  @override
+  List<Object> get props => [error!];
 }

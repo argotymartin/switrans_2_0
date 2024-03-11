@@ -1,11 +1,11 @@
 class TipoImpuestoRequest {
   final int? codigo;
-  final int usuario;
-  final String nombre;
+  final int? usuario;
+  final String? nombre;
 
   TipoImpuestoRequest({
-    required this.nombre,
-    required this.usuario,
+    this.nombre,
+    this.usuario,
     this.codigo,
   });
 
@@ -22,7 +22,7 @@ class TipoImpuestoRequest {
   String toPocketBaseFilter() {
     final List conditions = [];
 
-    if (nombre.isNotEmpty) conditions.add("nombre~'$nombre'");
+    if (nombre!.isNotEmpty) conditions.add("nombre~'$nombre'");
     if (codigo != null) conditions.add("codigo=$codigo");
 
     final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();

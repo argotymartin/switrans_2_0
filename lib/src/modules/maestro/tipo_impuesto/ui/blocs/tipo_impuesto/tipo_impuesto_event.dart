@@ -20,3 +20,8 @@ class GetImpuestoEvent extends TipoImpuestoEvent {
 class ActiveteTipoImpuestoEvent extends TipoImpuestoEvent {
   const ActiveteTipoImpuestoEvent();
 }
+
+class ErrorFormTipoImpuestoEvent extends TipoImpuestoEvent {
+  final String error;
+  const ErrorFormTipoImpuestoEvent(this.error);
+}

@@ -17,7 +17,7 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
       if (resp.data != null) {
         emit(TipoImpuestoSuccesState(tipoImpuesto: resp.data));
       } else {
-        emit(TipoImpuestoErrorState(exception: resp.error));
+        emit(TipoImpuestoExceptionState(exception: resp.error));
       }
     });
 
@@ -27,8 +27,13 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
       if (resp.data != null) {
         emit(TipoImpuestoConsultedState(tipoImpuestos: resp.data!));
       } else {
-        emit(TipoImpuestoErrorState(exception: resp.error));
+        emit(TipoImpuestoExceptionState(exception: resp.error));
       }
+    });
+
+    on<ErrorFormTipoImpuestoEvent>((event, emit) async {
+      emit(const TipoImpuestoLoadingState());
+      emit(TipoImpuestoErrorFormState(error: event.error));
     });
   }
 }

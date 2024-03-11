@@ -17,9 +17,13 @@ class TipoImpuestoCreateView extends StatelessWidget {
 
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (context, state) {
-        if (state is TipoImpuestoErrorState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is TipoImpuestoExceptionState) ErrorDialog.showDioException(context, state.exception!);
 
         if (state is TipoImpuestoSuccesState) {
+          final request = TipoImpuestoRequest(
+            nombre: state.tipoImpuesto!.nombre,
+          );
+          context.read<TipoImpuestoBloc>().add(GetImpuestoEvent(request));
           context.go('/tipo_impuesto/buscar');
         }
       },
