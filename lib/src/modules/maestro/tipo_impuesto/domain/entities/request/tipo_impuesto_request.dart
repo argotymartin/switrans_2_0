@@ -2,11 +2,15 @@ class TipoImpuestoRequest {
   final int? codigo;
   final int? usuario;
   final String? nombre;
+  final String? fechaInicio;
+  final String? fechaFin;
 
   TipoImpuestoRequest({
     this.nombre,
     this.usuario,
     this.codigo,
+    this.fechaInicio,
+    this.fechaFin,
   });
 
   Map<String, dynamic> toJson() {

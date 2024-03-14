@@ -6,9 +6,9 @@ import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/blocs/tipo_imp
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_datetime_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_web_date_picker.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -56,7 +56,12 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      if (nombreController.text.isEmpty && codigoController.text.isEmpty) {
+      bool isCampoVacio = nombreController.text.isEmpty &&
+          codigoController.text.isEmpty &&
+          fechaInicioController.text.isEmpty &&
+          fechaFinController.text.isEmpty;
+
+      if (isCampoVacio) {
         isValid = false;
         tipoImpuestoBloc.add(const ErrorFormTipoImpuestoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -79,8 +84,8 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
               CustomNumberInput(title: "Codigo", controller: codigoController),
-              CustomDatetimeInput(controller: fechaInicioController, title: "Fecha Inicio"),
-              CustomDatetimeInput(controller: fechaFinController, title: "Fecha Fin")
+              CustomWebDatePicker(title: "Fecha Inicial", controller: fechaInicioController),
+              CustomWebDatePicker(title: "Fecha Final", controller: fechaFinController),
             ],
           ),
           BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(

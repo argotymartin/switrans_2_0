@@ -25,7 +25,7 @@ class _DatetimeInput extends State<CustomDatetimeInput> {
   TextEditingController dateinput = TextEditingController();
   @override
   void initState() {
-    dateinput.text = ""; //set the initial value of text field
+    dateinput.text = "";
     super.initState();
   }
 
