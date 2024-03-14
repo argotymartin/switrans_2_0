@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_modulo_repository.dart';
 part 'modulo_event.dart';
@@ -17,15 +18,20 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
       emit(ModuloSuccesState(paquetes: dataState.data!));
     });
 
-    on<ChangedModuloEvent>((event, emit) async {
+    on<ChangedModuloEvent>((event, emit) {
       final List<Paquete> paquetes = state.paquetes.map((paquete) {
         paquete.isSelected = (paquete == event.paquete) ? true : false;
         paquete.modulos = paquete.modulos.map((modulo) {
           modulo.isSelected = (modulo == event.modulo) ? true : false;
+          modulo.paginas = modulo.paginas.map((pagina) {
+            pagina.isSelected = (pagina == event.pagina) ? true : false;
+            return pagina;
+          }).toList();
           return modulo;
         }).toList();
         return paquete;
       }).toList();
+
       emit(const ModuloLoadingState());
       emit(ModuloSuccesState(paquetes: paquetes));
     });

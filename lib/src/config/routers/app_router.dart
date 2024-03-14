@@ -42,7 +42,7 @@ class AppRouter {
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/factura/registrar",
+          path: "/financiero/factura/registrar",
           builder: (context, GoRouterState state) {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
             return BlocConsumer<FormFacturaBloc, FormFacturaState>(
@@ -57,12 +57,12 @@ class AppRouter {
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/factura/buscar",
+          path: "/financiero/factura/buscar",
           builder: (_, __) => const FacturaSearchView(),
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/factura/editar",
+          path: "/financiero/factura/editar",
           builder: (_, __) => const FacturaEditView(),
           redirect: onValidateAuth,
         ),
@@ -82,19 +82,19 @@ class AppRouter {
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/tipo_impuesto/registrar",
+          path: "/maestro/tipo_impuesto/registrar",
           builder: (context, GoRouterState state) {
             return const TipoImpuestoCreateView();
           },
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/tipo_impuesto/buscar",
+          path: "/maestro/tipo_impuesto/buscar",
           builder: (_, __) => const TipoImpuestoSearchView(),
           redirect: onValidateAuth,
         ),
         GoRoute(
-          path: "/tipo_impuesto/editar",
+          path: "/maestro/tipo_impuesto/editar",
           builder: (_, __) => const FacturaEditView(),
           redirect: onValidateAuth,
         ),

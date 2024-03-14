@@ -45,7 +45,15 @@ class Sidebar extends StatelessWidget {
                         state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
                         state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
                         PaquetesSidebar(
-                          paquete: PaqueteModel(id: "", nombre: "Logout", codigo: 1, icono: "0xf031", visible: true, modulos: []),
+                          paquete: PaqueteModel(
+                            id: "",
+                            nombre: "Logout",
+                            codigo: 1,
+                            icono: "0xf031",
+                            visible: true,
+                            modulos: [],
+                            path: '/logout',
+                          ),
                           isMimimize: state.isMinimize,
                           onPressed: () {
                             context.read<AuthBloc>().onLogoutAuthEvent();

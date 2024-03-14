@@ -8,7 +8,13 @@ class PocketbaseAPI {
 
   Future<Response> getModulosAll() async {
     const url = '$kPocketBaseUrl/api/collections/paquete/records';
-    final response = await _dio.get('$url/');
+
+    final response = await _dio.get(
+      '$url/',
+      queryParameters: {
+        "filter": "(visible=true)",
+      },
+    );
 
     final List<dynamic> paquetes = response.data['items'];
 
@@ -21,7 +27,6 @@ class PocketbaseAPI {
         final List<dynamic> paginas = responsePaginas.data['items'];
         modulo["paginas"] = paginas;
       }
-
       paquete["modulos"] = modulos;
     }
 

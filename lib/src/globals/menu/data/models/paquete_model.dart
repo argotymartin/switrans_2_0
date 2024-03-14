@@ -9,6 +9,7 @@ class PaqueteModel extends Paquete {
     required super.icono,
     required super.visible,
     required super.modulos,
+    required super.path,
   });
 
   factory PaqueteModel.fromJson(Map<String, dynamic> json) => PaqueteModel(
@@ -16,6 +17,7 @@ class PaqueteModel extends Paquete {
         nombre: json['nombre'],
         codigo: json['codigo'],
         icono: json['icono'],
+        path: json['path'],
         visible: json['visible'],
         modulos: List<ModuloModel>.from(json['modulos'].map((x) => ModuloModel.fromJson(x))),
       );
