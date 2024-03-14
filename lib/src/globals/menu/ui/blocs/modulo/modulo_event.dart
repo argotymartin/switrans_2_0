@@ -16,7 +16,8 @@ class ActiveteModuloEvent extends ModuloEvent {
 }
 
 class ChangedModuloEvent extends ModuloEvent {
+  final Paquete paquete;
   final Modulo modulo;
   final Pagina pagina;
-  const ChangedModuloEvent(this.modulo, this.pagina);
+  const ChangedModuloEvent(this.paquete, this.modulo, this.pagina);
 }
