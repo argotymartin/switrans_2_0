@@ -5,34 +5,35 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/modulo/modulo_bloc.dart';
 
-class MenuItemSidebar extends StatefulWidget {
-  final Modulo modulo;
+class PaquetesSidebar extends StatefulWidget {
+  final Paquete paquete;
   final bool isMimimize;
   final Function onPressed;
 
-  const MenuItemSidebar({
-    required this.modulo,
+  const PaquetesSidebar({
+    required this.paquete,
     this.isMimimize = false,
     super.key,
     required this.onPressed,
   });
 
   @override
-  State<MenuItemSidebar> createState() => _MenuItemSidebarState();
+  State<PaquetesSidebar> createState() => _PaquetesSidebarState();
 }
 
-class _MenuItemSidebarState extends State<MenuItemSidebar> {
+class _PaquetesSidebarState extends State<PaquetesSidebar> {
   bool isHovered = false;
   bool isEntered = false;
   @override
   Widget build(BuildContext context) {
-    final paginas = widget.modulo.paginas.map((item) => SubMenuItemSidebar(pagina: item, modulo: widget.modulo)).toList();
+    final modulos = widget.paquete.modulos.map((item) => ModulosSidebar(modulo: item, paquete: widget.paquete)).toList();
     final colorScheme = Theme.of(context).colorScheme;
     return AnimatedContainer(
       duration: const Duration(microseconds: 250),
-      color: isHovered || widget.modulo.isSelected ? colorScheme.onPrimaryContainer.withOpacity(0.2) : Colors.transparent,
+      color: isHovered || widget.paquete.isSelected ? colorScheme.onPrimaryContainer.withOpacity(0.2) : Colors.transparent,
       child: Column(
         children: [
           Material(
@@ -42,7 +43,7 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                 setState(() {
                   widget.onPressed();
                   isEntered = !isEntered;
-                  widget.isMimimize ? showPopoverImpl(context, paginas, widget.modulo) : null;
+                  //widget.isMimimize ? showPopoverImpl(context, paginas, widget.paquete) : null;
                 });
               },
               child: MouseRegion(
@@ -51,14 +52,14 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
                 child: BuildOptionModuloMenu(
                   isEntered: isEntered,
                   isMinimized: widget.isMimimize,
-                  modulo: widget.modulo,
-                  paginas: paginas,
+                  paquete: widget.paquete,
+                  modulos: modulos,
                   isHovered: isHovered,
                 ),
               ),
             ),
           ),
-          isEntered & !widget.isMimimize ? Column(children: paginas) : const SizedBox()
+          isEntered & !widget.isMimimize ? Column(children: modulos) : const SizedBox()
         ],
       ),
     );
@@ -66,16 +67,16 @@ class _MenuItemSidebarState extends State<MenuItemSidebar> {
 }
 
 class BuildOptionModuloMenu extends StatelessWidget {
-  final Modulo modulo;
-  final List<SubMenuItemSidebar> paginas;
+  final Paquete paquete;
+  final List<ModulosSidebar> modulos;
   final bool isMinimized;
   final bool isEntered;
   final bool isHovered;
 
   const BuildOptionModuloMenu({
     super.key,
-    required this.modulo,
-    required this.paginas,
+    required this.paquete,
+    this.modulos = const [],
     required this.isMinimized,
     required this.isEntered,
     required this.isHovered,
@@ -89,21 +90,21 @@ class BuildOptionModuloMenu extends StatelessWidget {
       height: 46,
       child: Row(
         children: [
-          modulo.isSelected ? Container(width: 4, height: 48, color: colorScheme.primaryContainer) : const SizedBox(width: 4),
+          paquete.isSelected ? Container(width: 4, height: 48, color: colorScheme.primaryContainer) : const SizedBox(width: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  IconData(int.parse(modulo.icono), fontFamily: 'MaterialIcons'),
+                  IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),
                   color: isHovered || isEntered ? colorScheme.onTertiary : colorScheme.onTertiary.withOpacity(0.6),
                   size: 20,
                 ),
                 isMinimized ? const SizedBox(width: 4) : const SizedBox(width: 10),
                 isMinimized
                     ? SizedBox(
-                        child: modulo.isSelected
+                        child: paquete.isSelected
                             ? Container(
                                 width: 8,
                                 height: 8,
@@ -114,7 +115,7 @@ class BuildOptionModuloMenu extends StatelessWidget {
                         width: 172,
                         child: Text(
                           overflow: TextOverflow.ellipsis,
-                          modulo.texto,
+                          paquete.nombre,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             fontWeight: isHovered || isEntered ? FontWeight.w400 : FontWeight.w300,
@@ -140,6 +141,82 @@ class BuildOptionModuloMenu extends StatelessWidget {
   }
 }
 
+class ModulosSidebar extends StatefulWidget {
+  final Paquete paquete;
+  final Modulo modulo;
+  const ModulosSidebar({super.key, required this.paquete, required this.modulo});
+
+  @override
+  State<ModulosSidebar> createState() => _ModulosSidebarState();
+}
+
+class _ModulosSidebarState extends State<ModulosSidebar> {
+  bool isHovered = false;
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.3),
+      child: InkWell(
+        onTap: () => setState(() {
+          context.read<ModuloBloc>().add(ChangedModuloEvent(widget.modulo, widget.paquete));
+          final path = "${widget.modulo.path}${widget.modulo.path}";
+          context.go(path);
+        }),
+        child: MouseRegion(
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) => setState(() => isHovered = false),
+          child: Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 33),
+                color: Theme.of(context).colorScheme.primaryContainer,
+                width: 1,
+                height: 40,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: isHovered ? 30 : 30.5, top: 10, bottom: 10, right: 10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: isHovered ? 8 : 6,
+                      height: isHovered ? 8 : 6,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      widget.modulo.texto,
+                      style: GoogleFonts.roboto(
+                        fontSize: 13,
+                        fontWeight: isHovered ? FontWeight.w400 : FontWeight.w200,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                    ),
+                    const Spacer(),
+                    widget.modulo.isSelected
+                        ? Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          )
+                        : const SizedBox()
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class SubMenuItemSidebar extends StatefulWidget {
   final Pagina pagina;
   final Modulo modulo;
@@ -157,7 +234,7 @@ class _SubMenuItemSidebarState extends State<SubMenuItemSidebar> {
       color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.3),
       child: InkWell(
         onTap: () => setState(() {
-          context.read<ModuloBloc>().add(ChangedModuloEvent(widget.modulo, widget.pagina));
+          //context.read<ModuloBloc>().add(ChangedModuloEvent(widget.modulo, widget.pagina));
           final path = "${widget.modulo.path}${widget.pagina.path}";
           context.go(path);
         }),

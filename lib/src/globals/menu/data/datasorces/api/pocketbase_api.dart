@@ -7,16 +7,35 @@ class PocketbaseAPI {
   PocketbaseAPI(this._dio);
 
   Future<Response> getModulosAll() async {
-    const url = '$kPocketBaseUrl/api/collections/modulo/records';
+    const url = '$kPocketBaseUrl/api/collections/paquete/records';
     final response = await _dio.get('$url/');
 
-    final List<dynamic> items = response.data['items'];
+    final List<dynamic> paquetes = response.data['items'];
 
-    for (var element in items) {
-      final responseP = await getPagesByModulo(element["id"]);
-      element["paginas"] = responseP.data['items'];
+    for (var paquete in paquetes) {
+      final responseModulos = await getModulosByPaquete(paquete["id"]);
+      final List<dynamic> modulos = responseModulos.data['items'];
+
+      for (var modulo in modulos) {
+        final responsePaginas = await getPagesByModulo(modulo["id"]);
+        final List<dynamic> paginas = responsePaginas.data['items'];
+        modulo["paginas"] = paginas;
+      }
+
+      paquete["modulos"] = modulos;
     }
 
+    return response;
+  }
+
+  Future<Response> getModulosByPaquete(String paquete) async {
+    const url = '$kPocketBaseUrl/api/collections/modulo/records';
+    final response = await _dio.get(
+      '$url/',
+      queryParameters: {
+        "filter": "(paquete='$paquete')",
+      },
+    );
     return response;
   }
 

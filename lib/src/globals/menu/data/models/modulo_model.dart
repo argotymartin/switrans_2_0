@@ -7,6 +7,7 @@ class ModuloModel extends Modulo {
     required super.icono,
     required super.texto,
     required super.path,
+    required super.paquete,
     super.detalles,
     super.paginas,
   });
@@ -16,6 +17,7 @@ class ModuloModel extends Modulo {
         icono: json['modulo_icono'],
         texto: json['modulo_texto'],
         path: json['modulo_path'],
+        paquete: json['paquete'],
         detalles: json['modulo_detalles'],
         paginas: List<PaginaModel>.from(json['paginas'].map((x) => PaginaModel.fromJson(x))),
       );

@@ -1,8 +1,8 @@
 part of 'modulo_bloc.dart';
 
 sealed class ModuloState extends Equatable {
-  final List<Modulo> modulos;
-  const ModuloState({this.modulos = const []});
+  final List<Paquete> paquetes;
+  const ModuloState({this.paquetes = const []});
 
   @override
   List<Object> get props => [];
@@ -25,7 +25,7 @@ class ModuloLoadingState extends ModuloState {
 }
 
 class ModuloSuccesState extends ModuloState {
-  const ModuloSuccesState({super.modulos});
+  const ModuloSuccesState({super.paquetes});
 
   @override
   List<Object> get props => [];

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
-import 'package:switrans_2_0/src/globals/menu/data/models/modulo_model.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/globals/menu/data/models/paquete_model.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
@@ -31,10 +31,10 @@ class Sidebar extends StatelessWidget {
                         state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
                         BlocBuilder<ModuloBloc, ModuloState>(
                           builder: (context, stateModulo) {
-                            List<MenuItemSidebar> modulos = [];
-                            for (Modulo modulo in stateModulo.modulos) {
-                              modulos.add(MenuItemSidebar(
-                                modulo: modulo,
+                            List<PaquetesSidebar> modulos = [];
+                            for (Paquete paquete in stateModulo.paquetes) {
+                              modulos.add(PaquetesSidebar(
+                                paquete: paquete,
                                 isMimimize: state.isMinimize,
                                 onPressed: () {},
                               ));
@@ -44,8 +44,8 @@ class Sidebar extends StatelessWidget {
                         ),
                         state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
                         state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
-                        MenuItemSidebar(
-                          modulo: ModuloModel(codigo: 1, icono: "0xf031", texto: "Logout", path: "/logout"),
+                        PaquetesSidebar(
+                          paquete: PaqueteModel(id: "", nombre: "Logout", codigo: 1, icono: "0xf031", visible: true, modulos: []),
                           isMimimize: state.isMinimize,
                           onPressed: () {
                             context.read<AuthBloc>().onLogoutAuthEvent();

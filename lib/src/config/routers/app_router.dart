@@ -110,7 +110,7 @@ class AppRouter {
     String stringValue = prefs.getString('token') ?? '';
     final isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
-      int lengthModulos = moduloBloc.state.modulos.length;
+      int lengthModulos = moduloBloc.state.paquetes.length;
       if (lengthModulos < 1) {
         moduloBloc.add(const ActiveteModuloEvent());
       }
