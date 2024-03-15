@@ -139,28 +139,29 @@ Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modul
     context: context,
     backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
     direction: PopoverDirection.right,
-    width: 250,
-    height: (modulo.length * 42) + 32,
+    constraints: BoxConstraints.loose(const Size.fromWidth(250)),
     arrowWidth: 60,
-    bodyBuilder: (context) => Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Text(
-                paquete.nombre,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
+    bodyBuilder: (context) => SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                Text(
+                  paquete.nombre,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Column(children: modulo),
-            ],
+                const SizedBox(height: 8),
+                Column(children: modulo),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

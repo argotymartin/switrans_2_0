@@ -19,7 +19,7 @@ class CustomWebDatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         title.isNotEmpty ? Text(title, style: AppTheme.titleStyle) : const SizedBox(),
         title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
