@@ -10,8 +10,8 @@ import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/modules/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/util/simple_bloc_observer.dart';
 
 Future<void> main() async {

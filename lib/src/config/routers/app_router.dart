@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/modules/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
-import 'package:switrans_2_0/src/modules/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
