@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/modulos_sidebar.dart';
 
 class PaquetesSidebar extends StatefulWidget {
-  final Paquete paquete;
+  final PaqueteMenu paquete;
   final bool isMimimize;
   final Function onPressed;
 
@@ -62,7 +62,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
 }
 
 class BuildOptionModuloMenu extends StatelessWidget {
-  final Paquete paquete;
+  final PaqueteMenu paquete;
   final bool isMinimized;
   final bool isEntered;
   final bool isHovered;
@@ -134,7 +134,7 @@ class BuildOptionModuloMenu extends StatelessWidget {
   }
 }
 
-Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, Paquete paquete) {
+Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete) {
   return showPopover(
     context: context,
     backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,

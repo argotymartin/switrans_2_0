@@ -35,7 +35,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<ItemDocumentoBloc>(create: (_) => injector<ItemDocumentoBloc>()),
         BlocProvider<TipoImpuestoBloc>(create: (_) => injector<TipoImpuestoBloc>()),
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
-        BlocProvider<ModuloBloc>(create: (_) => injector()..add((const GetModuloEvent()))),
+        BlocProvider<PaqueteMenuBloc>(create: (_) => injector()..add((const GetPaqueteMenuEvent()))),
         BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
       ],
       child: const MyMaterialApp(),
@@ -62,12 +62,12 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   Future<void> _init() async {
     final authBloc = context.read<AuthBloc>();
-    final moduloBloc = context.read<ModuloBloc>();
+    final paqueteMenuBloc = context.read<PaqueteMenuBloc>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token') ?? '';
     isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
-      moduloBloc.add(const ActiveteModuloEvent());
+      paqueteMenuBloc.add(const ActivetePaqueteMenuEvent());
     }
   }
 

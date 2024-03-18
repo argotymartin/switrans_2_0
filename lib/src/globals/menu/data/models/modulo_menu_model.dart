@@ -1,8 +1,8 @@
-import 'package:switrans_2_0/src/globals/menu/data/models/pagina_model.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/globals/menu/data/models/pagina_menu_model.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 
-class ModuloModel extends Modulo {
-  ModuloModel({
+class ModuloMenuModel extends ModuloMenu {
+  ModuloMenuModel({
     required super.codigo,
     required super.icono,
     required super.texto,
@@ -12,13 +12,13 @@ class ModuloModel extends Modulo {
     super.paginas,
   });
 
-  factory ModuloModel.fromJson(Map<String, dynamic> json) => ModuloModel(
+  factory ModuloMenuModel.fromJson(Map<String, dynamic> json) => ModuloMenuModel(
         codigo: json['modulo_codigo'],
         icono: json['modulo_icono'],
         texto: json['modulo_texto'],
         path: json['modulo_path'],
         paquete: json['paquete'],
         detalles: json['modulo_detalles'],
-        paginas: List<PaginaModel>.from(json['paginas'].map((x) => PaginaModel.fromJson(x))),
+        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJson(x))),
       );
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paginas_sidebar.dart';
 
 class ModulosSidebar extends StatefulWidget {
-  final Paquete paquete;
-  final Modulo modulo;
+  final PaqueteMenu paquete;
+  final ModuloMenu modulo;
   const ModulosSidebar({super.key, required this.paquete, required this.modulo});
 
   @override

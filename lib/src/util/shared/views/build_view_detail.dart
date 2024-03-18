@@ -13,8 +13,8 @@ class BuildViewDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> breadcrumbTrails = path.split("/");
-    final ModuloBloc moduloBloc = context.read<ModuloBloc>();
-    final paquetes = moduloBloc.state.paquetes.firstWhere((element) => element.isSelected);
+    final PaqueteMenuBloc menuBloc = context.read<PaqueteMenuBloc>();
+    final paquetes = menuBloc.state.paquetes.firstWhere((element) => element.isSelected);
     final modulo = paquetes.modulos.firstWhere((element) => element.isSelected);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

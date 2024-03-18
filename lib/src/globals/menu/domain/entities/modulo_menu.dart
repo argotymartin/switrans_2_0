@@ -1,16 +1,16 @@
-import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 
-class Modulo {
+class ModuloMenu {
   final int codigo;
   final String icono;
   final String texto;
   final String paquete;
   final String path;
   final String detalles;
-  List<Pagina> paginas;
+  List<PaginaMenu> paginas;
   bool isSelected;
 
-  Modulo({
+  ModuloMenu({
     required this.codigo,
     required this.icono,
     required this.texto,

@@ -1,7 +1,7 @@
-import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 
-class PaginaModel extends Pagina {
-  PaginaModel({
+class PaginaMenuModel extends PaginaMenu {
+  PaginaMenuModel({
     required super.id,
     required super.modulo,
     required super.codigo,
@@ -9,7 +9,7 @@ class PaginaModel extends Pagina {
     required super.path,
   });
 
-  factory PaginaModel.fromJson(Map<String, dynamic> json) => PaginaModel(
+  factory PaginaMenuModel.fromJson(Map<String, dynamic> json) => PaginaMenuModel(
         id: json["id"],
         modulo: json["modulo"],
         codigo: json["pagina_codigo"],

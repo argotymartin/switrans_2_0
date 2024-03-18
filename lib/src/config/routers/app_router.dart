@@ -103,7 +103,7 @@ class AppRouter {
   }
 
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
-    final moduloBloc = context.read<ModuloBloc>();
+    final moduloBloc = context.read<PaqueteMenuBloc>();
     final authBloc = context.read<AuthBloc>();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -112,7 +112,7 @@ class AppRouter {
     if (isTokenValid) {
       int lengthModulos = moduloBloc.state.paquetes.length;
       if (lengthModulos < 1) {
-        moduloBloc.add(const ActiveteModuloEvent());
+        moduloBloc.add(const ActivetePaqueteMenuEvent());
       }
     }
     return isTokenValid ? state.path : login;
