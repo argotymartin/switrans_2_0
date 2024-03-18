@@ -8,17 +8,17 @@ import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_paque
 part 'paquete_menu_event.dart';
 part 'paquete_menu_state.dart';
 
-class PaquetesMenuBloc extends Bloc<ModuloEvent, ModuloState> {
+class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
   final AbstractPaqueteMenuRepository _moduloRepository;
-  PaquetesMenuBloc(this._moduloRepository) : super(ModuloInitial()) {
-    on<ModuloEvent>((event, emit) {});
-    on<ActiveteModuloEvent>((event, emit) async {
-      emit(const ModuloLoadingState());
+  PaqueteMenuBloc(this._moduloRepository) : super(PaqueteMenuInitial()) {
+    on<PaqueteMenuEvent>((event, emit) {});
+    on<ActivetePaqueteMenuEvent>((event, emit) async {
+      emit(const PaqueteMenuLoadingState());
       final dataState = await _moduloRepository.getModulos();
-      emit(ModuloSuccesState(paquetes: dataState.data!));
+      emit(PaqueteMenuSuccesState(paquetes: dataState.data!));
     });
 
-    on<ChangedModuloEvent>((event, emit) {
+    on<ChangedPaqueteMenuEvent>((event, emit) {
       final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
         paquete.isSelected = (paquete == event.paquete) ? true : false;
         paquete.modulos = paquete.modulos.map((modulo) {
@@ -32,8 +32,8 @@ class PaquetesMenuBloc extends Bloc<ModuloEvent, ModuloState> {
         return paquete;
       }).toList();
 
-      emit(const ModuloLoadingState());
-      emit(ModuloSuccesState(paquetes: paquetes));
+      emit(const PaqueteMenuLoadingState());
+      emit(PaqueteMenuSuccesState(paquetes: paquetes));
     });
   }
 }

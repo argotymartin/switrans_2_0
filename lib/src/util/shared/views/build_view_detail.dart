@@ -13,7 +13,7 @@ class BuildViewDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> breadcrumbTrails = path.split("/");
-    final PaquetesMenuBloc menuBloc = context.read<PaquetesMenuBloc>();
+    final PaqueteMenuBloc menuBloc = context.read<PaqueteMenuBloc>();
     final paquetes = menuBloc.state.paquetes.firstWhere((element) => element.isSelected);
     final modulo = paquetes.modulos.firstWhere((element) => element.isSelected);
     return Column(

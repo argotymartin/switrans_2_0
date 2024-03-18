@@ -31,7 +31,7 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
   injector.registerSingleton<AbstractPaqueteMenuRepository>(PaqueteMenuRespositoryImpl(injector()));
-  injector.registerSingleton<PaquetesMenuBloc>(PaquetesMenuBloc(injector()));
+  injector.registerSingleton<PaqueteMenuBloc>(PaqueteMenuBloc(injector()));
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));

@@ -1,23 +1,23 @@
 part of 'paquete_menu_bloc.dart';
 
-sealed class ModuloEvent extends Equatable {
-  const ModuloEvent();
+sealed class PaqueteMenuEvent extends Equatable {
+  const PaqueteMenuEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class GetModuloEvent extends ModuloEvent {
-  const GetModuloEvent();
+class GetPaqueteMenuEvent extends PaqueteMenuEvent {
+  const GetPaqueteMenuEvent();
 }
 
-class ActiveteModuloEvent extends ModuloEvent {
-  const ActiveteModuloEvent();
+class ActivetePaqueteMenuEvent extends PaqueteMenuEvent {
+  const ActivetePaqueteMenuEvent();
 }
 
-class ChangedModuloEvent extends ModuloEvent {
+class ChangedPaqueteMenuEvent extends PaqueteMenuEvent {
   final PaqueteMenu paquete;
   final ModuloMenu modulo;
   final PaginaMenu pagina;
-  const ChangedModuloEvent(this.paquete, this.modulo, this.pagina);
+  const ChangedPaqueteMenuEvent(this.paquete, this.modulo, this.pagina);
 }

@@ -1,40 +1,40 @@
 part of 'paquete_menu_bloc.dart';
 
-sealed class ModuloState extends Equatable {
+sealed class PaqueteMenuState extends Equatable {
   final List<PaqueteMenu> paquetes;
-  const ModuloState({this.paquetes = const []});
+  const PaqueteMenuState({this.paquetes = const []});
 
   @override
   List<Object> get props => [];
 }
 
-final class ModuloInitial extends ModuloState {}
+final class PaqueteMenuInitial extends PaqueteMenuState {}
 
-class ModuloInitialState extends ModuloState {
-  const ModuloInitialState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class ModuloLoadingState extends ModuloState {
-  const ModuloLoadingState();
+class PaqueteMenuInitialState extends PaqueteMenuState {
+  const PaqueteMenuInitialState();
 
   @override
   List<Object> get props => [];
 }
 
-class ModuloSuccesState extends ModuloState {
-  const ModuloSuccesState({super.paquetes});
+class PaqueteMenuLoadingState extends PaqueteMenuState {
+  const PaqueteMenuLoadingState();
 
   @override
   List<Object> get props => [];
 }
 
-class ModuloErrorState extends ModuloState {
+class PaqueteMenuSuccesState extends PaqueteMenuState {
+  const PaqueteMenuSuccesState({super.paquetes});
+
+  @override
+  List<Object> get props => [];
+}
+
+class PaqueteMenuErrorState extends PaqueteMenuState {
   final DioException error;
 
-  const ModuloErrorState({required this.error});
+  const PaqueteMenuErrorState({required this.error});
   @override
   List<Object> get props => [error];
 }

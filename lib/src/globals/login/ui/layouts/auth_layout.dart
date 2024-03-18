@@ -19,7 +19,7 @@ class AuthLayout extends StatelessWidget {
             ErrorDialog.showDioException(context, state.error!);
           }
           if (state is AuthSuccesState) {
-            context.read<PaquetesMenuBloc>().add(const ActiveteModuloEvent());
+            context.read<PaqueteMenuBloc>().add(const ActivetePaqueteMenuEvent());
             context.go("/");
           }
           if (state is AuthLoadInProgressState) {

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
@@ -26,7 +27,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6),
       child: InkWell(
         onTap: () => setState(() {
-          context.read<PaquetesMenuBloc>().add(ChangedModuloEvent(widget.paquete, widget.modulo, widget.pagina));
+          context.read<PaqueteMenuBloc>().add(ChangedPaqueteMenuEvent(widget.paquete, widget.modulo, widget.pagina));
           final path = "${widget.paquete.path}${widget.modulo.path}${widget.pagina.path}";
           context.go(path);
         }),
