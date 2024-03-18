@@ -1,16 +1,16 @@
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 
-class Paquete {
+class PaqueteMenu {
   final String id;
   final int codigo;
   final String nombre;
   final String icono;
   final String path;
   final bool visible;
-  List<Modulo> modulos;
+  List<ModuloMenu> modulos;
   bool isSelected;
 
-  Paquete({
+  PaqueteMenu({
     required this.id,
     required this.nombre,
     required this.codigo,

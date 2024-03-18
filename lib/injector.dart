@@ -5,8 +5,8 @@ import 'package:switrans_2_0/src/globals/login/data/repositories/auth_repository
 import 'package:switrans_2_0/src/globals/login/domain/repositories/abstract_auth_repository.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/data/datasorces/api/pocketbase_api.dart';
-import 'package:switrans_2_0/src/globals/menu/data/repositories/modulo_repository_impl.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_modulo_repository.dart';
+import 'package:switrans_2_0/src/globals/menu/data/repositories/paquete_menu_repository_impl.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_paquete_menu_repository.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/datasorces/api/factura_api.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/factura_repository_impl.dart';
@@ -30,8 +30,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AuthBloc>(AuthBloc(injector()));
 
   injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
-  injector.registerSingleton<AbstractModuloRepository>(ModuloRespositoryImpl(injector()));
-  injector.registerSingleton<ModuloBloc>(ModuloBloc(injector()));
+  injector.registerSingleton<AbstractPaqueteMenuRepository>(PaqueteMenuRespositoryImpl(injector()));
+  injector.registerSingleton<PaquetesMenuBloc>(PaquetesMenuBloc(injector()));
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));

@@ -1,4 +1,4 @@
-part of 'modulo_bloc.dart';
+part of 'paquete_menu_bloc.dart';
 
 sealed class ModuloEvent extends Equatable {
   const ModuloEvent();
@@ -16,8 +16,8 @@ class ActiveteModuloEvent extends ModuloEvent {
 }
 
 class ChangedModuloEvent extends ModuloEvent {
-  final Paquete paquete;
-  final Modulo modulo;
-  final Pagina pagina;
+  final PaqueteMenu paquete;
+  final ModuloMenu modulo;
+  final PaginaMenu pagina;
   const ChangedModuloEvent(this.paquete, this.modulo, this.pagina);
 }

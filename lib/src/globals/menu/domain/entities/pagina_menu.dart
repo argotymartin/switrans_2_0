@@ -1,4 +1,4 @@
-class Pagina {
+class PaginaMenu {
   final String id;
   final String modulo;
   final int codigo;
@@ -6,7 +6,7 @@ class Pagina {
   final String path;
   bool isSelected;
 
-  Pagina({
+  PaginaMenu({
     required this.id,
     required this.modulo,
     required this.codigo,

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
-  final Pagina pagina;
-  final Modulo modulo;
-  final Paquete paquete;
+  final PaginaMenu pagina;
+  final ModuloMenu modulo;
+  final PaqueteMenu paquete;
   const PaginasSidebar({super.key, required this.pagina, required this.modulo, required this.paquete});
 
   @override
@@ -26,7 +26,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6),
       child: InkWell(
         onTap: () => setState(() {
-          context.read<ModuloBloc>().add(ChangedModuloEvent(widget.paquete, widget.modulo, widget.pagina));
+          context.read<PaquetesMenuBloc>().add(ChangedModuloEvent(widget.paquete, widget.modulo, widget.pagina));
           final path = "${widget.paquete.path}${widget.modulo.path}${widget.pagina.path}";
           context.go(path);
         }),

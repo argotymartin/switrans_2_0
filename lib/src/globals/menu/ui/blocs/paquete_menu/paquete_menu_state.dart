@@ -1,7 +1,7 @@
-part of 'modulo_bloc.dart';
+part of 'paquete_menu_bloc.dart';
 
 sealed class ModuloState extends Equatable {
-  final List<Paquete> paquetes;
+  final List<PaqueteMenu> paquetes;
   const ModuloState({this.paquetes = const []});
 
   @override

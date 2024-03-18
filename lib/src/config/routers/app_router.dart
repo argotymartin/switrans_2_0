@@ -103,7 +103,7 @@ class AppRouter {
   }
 
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
-    final moduloBloc = context.read<ModuloBloc>();
+    final moduloBloc = context.read<PaquetesMenuBloc>();
     final authBloc = context.read<AuthBloc>();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
