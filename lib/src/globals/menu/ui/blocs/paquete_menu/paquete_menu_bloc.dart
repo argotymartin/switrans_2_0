@@ -35,5 +35,28 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
       emit(const PaqueteMenuLoadingState());
       emit(PaqueteMenuSuccesState(paquetes: paquetes));
     });
+
+    on<SelectedPaqueteMenuEvent>((event, emit) {
+      final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+        if (paquete == event.paquete) {}
+        return paquete;
+      }).toList();
+
+      emit(const PaqueteMenuLoadingState());
+      emit(PaqueteMenuSuccesState(paquetes: paquetes));
+    });
+
+    on<SelectedModuloMenuEvent>((event, emit) {
+      final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+        paquete.modulos = paquete.modulos.map((modulo) {
+          modulo.isSelected = (modulo == event.modulo) ? true : false;
+          return modulo;
+        }).toList();
+        return paquete;
+      }).toList();
+
+      emit(const PaqueteMenuLoadingState());
+      emit(PaqueteMenuSuccesState(paquetes: paquetes));
+    });
   }
 }

@@ -15,7 +15,7 @@ class ModuloMenuModel extends ModuloMenu {
   factory ModuloMenuModel.fromJson(Map<String, dynamic> json) => ModuloMenuModel(
         codigo: json['modulo_codigo'],
         icono: json['modulo_icono'],
-        texto: json['modulo_texto'],
+        texto: json['modulo_nombre'],
         path: json['modulo_path'],
         paquete: json['paquete'],
         detalles: json['modulo_detalles'],

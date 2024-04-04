@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paginas_sidebar.dart';
 
 class ModulosSidebar extends StatefulWidget {
@@ -27,6 +29,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
           child: InkWell(
             onTap: () => setState(() {
               isEntered = !isEntered;
+              context.read<PaqueteMenuBloc>().add(SelectedModuloMenuEvent(widget.modulo));
             }),
             child: MouseRegion(
               onEnter: (_) => setState(() => isHovered = true),
@@ -57,9 +60,9 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                       ),
                       const Spacer(),
                       Icon(
-                        isEntered ? Icons.menu_open_outlined : Icons.menu_outlined,
+                        widget.modulo.isSelected ? Icons.menu_open_outlined : Icons.menu_outlined,
                         size: 16,
-                        color: isHovered || isEntered
+                        color: isHovered || widget.modulo.isSelected
                             ? Theme.of(context).colorScheme.onTertiary
                             : Theme.of(context).colorScheme.onTertiary.withOpacity(0.6),
                       ),
@@ -85,7 +88,10 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
             ),
           ),
         ),
-        isEntered ? Column(children: paginas) : const SizedBox()
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: widget.modulo.isSelected ? Column(children: paginas) : const SizedBox(),
+        ),
       ],
     );
   }

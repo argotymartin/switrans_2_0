@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/modulos_sidebar.dart';
 
 class PaquetesSidebar extends StatefulWidget {
@@ -23,6 +26,7 @@ class PaquetesSidebar extends StatefulWidget {
 class _PaquetesSidebarState extends State<PaquetesSidebar> {
   bool isHovered = false;
   bool isEntered = false;
+
   @override
   Widget build(BuildContext context) {
     final modulos = widget.paquete.modulos.map((item) => ModulosSidebar(modulo: item, paquete: widget.paquete)).toList();
@@ -37,8 +41,10 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
             child: InkWell(
               onTap: () {
                 setState(() {
-                  widget.onPressed();
                   isEntered = !isEntered;
+                  widget.paquete.isSelected = isEntered;
+                  context.read<PaqueteMenuBloc>().add(SelectedPaqueteMenuEvent(widget.paquete));
+                  widget.onPressed();
                   widget.isMimimize ? showPopoverImpl(context, modulos, widget.paquete) : null;
                 });
               },
@@ -54,7 +60,10 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
               ),
             ),
           ),
-          isEntered & !widget.isMimimize ? Column(children: modulos) : const SizedBox()
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: widget.paquete.isSelected & !widget.isMimimize ? Column(children: modulos) : const SizedBox(),
+          ),
         ],
       ),
     );
