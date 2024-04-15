@@ -5,10 +5,10 @@ export 'package:switrans_2_0/src/util/shared/widgets/buttons/custom_menu_item_bu
 export 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/cards/custom_color_card.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete2_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/currency_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/datetime_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/number_input.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/labels/breadcrumb_trail.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/labels/currency_label.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/modals/error_modal.dart';

@@ -12,6 +12,10 @@ import 'package:switrans_2_0/src/packages/financiero/factura/data/datasorces/api
 import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/factura_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasorces/db/accion_documento_db.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositories/tipo_impuesto_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
@@ -42,4 +46,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<TipoImpuestoApi>(TipoImpuestoApi(injector()));
   injector.registerSingleton<AbstractTipoImpuestoRepository>(TipoImpuestoRepositoryImpl(injector()));
   injector.registerSingleton<TipoImpuestoBloc>(TipoImpuestoBloc(injector()));
+
+  injector.registerSingleton<AccionDocumentoDB>(AccionDocumentoDB());
+  injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryImpl(injector()));
+  injector.registerSingleton<AccionDocumentoBloc>(AccionDocumentoBloc(injector()));
 }

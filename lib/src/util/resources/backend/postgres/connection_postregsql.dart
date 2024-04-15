@@ -11,9 +11,6 @@ class ConnectionPostgresql {
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
-    final result0 = await conn.execute("select * from tb_usuario");
-    List<ResultRow> result = result0.reversed.toList();
-    print(result[0]);
     return conn;
   }
 }

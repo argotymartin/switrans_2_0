@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
@@ -26,6 +28,7 @@ class AppRouter {
       ),
       routerFactura(),
       routerTipoImpuesto(),
+      accionDocumentos(),
     ],
     errorBuilder: (_, state) => ErrorLayout(goRouterState: state),
   );
@@ -96,6 +99,33 @@ class AppRouter {
         GoRoute(
           path: "/maestro/tipo_impuesto/editar",
           builder: (_, __) => const FacturaEditView(),
+          redirect: onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute accionDocumentos() {
+    return ShellRoute(
+      builder: (context, state, child) {
+        return MenuLayout(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: root,
+          builder: (_, GoRouterState state) => const MenuView(),
+          redirect: onValidateAuth,
+        ),
+        GoRoute(
+          path: "/maestro/accion_documentos/registrar",
+          builder: (context, GoRouterState state) {
+            return const AccionDocumentoCreateView();
+          },
+          redirect: onValidateAuth,
+        ),
+        GoRoute(
+          path: "/maestro/accion_documentos/buscar",
+          builder: (_, __) => const AccionDocumentoSearchView(),
           redirect: onValidateAuth,
         ),
       ],
