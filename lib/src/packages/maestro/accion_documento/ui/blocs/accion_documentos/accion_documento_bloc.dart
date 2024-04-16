@@ -9,6 +9,7 @@ part 'accion_documento_state.dart';
 
 class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoState> {
   final AbstractAccionDocumentoRepository _repository;
+  List<TipoDocumentoAccionDocumento> tipos = [];
   AccionDocumentoBloc(this._repository) : super(const AccionDocumentoInitialState()) {
     on<SetAccionDocumentoEvent>((event, emit) async {
       emit(const AccionDocumentoLoadingState());
@@ -36,9 +37,10 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
     });
   }
 
-  Future<List<TipoDocumentoAccionDocumento>> onGetTipoDocumento() async {
-    final resp = await _repository.getTipoDocumentosService();
-
-    return resp.data!;
+  Future<void> onGetTipoDocumento() async {
+    if (tipos.isEmpty) {
+      final resp = await _repository.getTipoDocumentosService();
+      tipos = resp.data!;
+    }
   }
 }

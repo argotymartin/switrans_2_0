@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
@@ -102,31 +101,19 @@ class FieldTipoDocumento extends StatelessWidget {
       typeController.text = entry.codigo.toString();
     }
 
+    final acciones = context.read<AccionDocumentoBloc>().tipos;
+    List<EntryAutocomplete> entryMenus = acciones.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Tipo Documento", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        FutureBuilder(
-          future: context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
-          builder: (
-            context,
-            AsyncSnapshot<dynamic> snapshot,
-          ) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              final List<EntryAutocomplete> entryMenus = [];
-              for (TipoDocumentoAccionDocumento e in snapshot.data) {
-                entryMenus.add(EntryAutocomplete(title: e.nombre, codigo: e.codigo));
-              }
-              return AutocompleteInput(
-                entries: entryMenus,
-                label: "Tipo Documento",
-                onPressed: onPressed,
-              );
-            }
-            return const CircularProgressIndicator();
-          },
+        AutocompleteInput(
+          entries: entryMenus,
+          label: "Tipo Documento",
+          onPressed: onPressed,
         ),
       ],
     );

@@ -24,7 +24,7 @@ class AccionDocumentoPlutoGridDataBuilder {
       ),
       PlutoColumn(
         title: 'Tipo Documento',
-        field: 'documento',
+        field: 'tipo_documento',
         type: PlutoColumnType.text(),
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
@@ -59,7 +59,7 @@ class AccionDocumentoPlutoGridDataBuilder {
         'nombre': accion.nombre,
         'usuario': accion.usuario,
         'naturaleza_inversa': accion.esInverso,
-        'documento': accion.tipo,
+        'tipo_documento': accion.tipo,
         'fecha_creacion': accion.fechaCreacion,
       };
       final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);

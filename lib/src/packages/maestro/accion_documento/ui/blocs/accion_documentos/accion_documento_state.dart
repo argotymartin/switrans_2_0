@@ -3,11 +3,14 @@ part of 'accion_documento_bloc.dart';
 sealed class AccionDocumentoState extends Equatable {
   final AccionDocumento? accionDocumento;
   final List<AccionDocumento> accionDocumentos;
-  final List<TipoDocumentoAccionDocumento> tipoDocumentos;
   final DioException? exception;
   final String? error;
-  const AccionDocumentoState(
-      {this.accionDocumento, this.exception, this.accionDocumentos = const [], this.tipoDocumentos = const [], this.error});
+  const AccionDocumentoState({
+    this.accionDocumento,
+    this.exception,
+    this.accionDocumentos = const [],
+    this.error,
+  });
 }
 
 class AccionDocumentoInitialState extends AccionDocumentoState {

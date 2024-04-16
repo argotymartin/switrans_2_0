@@ -17,10 +17,6 @@ class GetAccionDocumentoEvent extends AccionDocumentoEvent {
   const GetAccionDocumentoEvent(this.request);
 }
 
-class ActiveteAccionDocumentoEvent extends AccionDocumentoEvent {
-  const ActiveteAccionDocumentoEvent();
-}
-
 class ErrorFormAccionDocumentoEvent extends AccionDocumentoEvent {
   final String error;
   const ErrorFormAccionDocumentoEvent(this.error);
