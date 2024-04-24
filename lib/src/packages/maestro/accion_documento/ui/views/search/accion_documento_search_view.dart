@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
@@ -32,7 +34,7 @@ class AccionDocumentoSearchView extends StatelessWidget {
             children: [
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BluildDataTable()
+              const _BluildDataTable(),
             ],
           ),
         ],
@@ -66,7 +68,7 @@ class _BuildFieldsForm extends StatelessWidget {
         final request = AccionDocumentoRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
-          tipo: int.tryParse(typeController.text),
+          tipoDocumento: int.tryParse(typeController.text),
         );
         context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
       }
@@ -120,17 +122,59 @@ class _BuildFieldsForm extends StatelessWidget {
   }
 }
 
-class _BluildDataTable extends StatelessWidget {
+class _BluildDataTable extends StatefulWidget {
   const _BluildDataTable();
 
   @override
+  State<_BluildDataTable> createState() => _BluildDataTableState();
+}
+
+class _BluildDataTableState extends State<_BluildDataTable> {
+  List<AccionDocumentoRequest> listUpdate = [];
+  @override
   Widget build(BuildContext context) {
+    void onRowChecked(PlutoGridOnRowCheckedEvent event) {
+      setState(() {});
+      if (event.row == null || event.rowIdx == null || event.isChecked == null) {
+        return;
+      }
+      Map<String, dynamic> mapRow = Map.fromEntries(
+        event.row!.cells.entries.map((entry) => MapEntry(entry.key, entry.value.value)),
+      );
+      final request = AccionDocumentoRequest.fromMap(mapRow);
+
+      if (event.isChecked!) {
+        if (!listUpdate.contains(request)) listUpdate.add(request);
+      } else {
+        listUpdate.removeWhere((element) => element.codigo! == request.codigo!);
+      }
+      listUpdate.map((e) => e.codigo);
+    }
+
+    void onPressedSave() {
+      print(listUpdate.map((e) => e.codigo));
+    }
+
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (context, state) {
         if (state is AccionDocumentoConsultedState) {
-          return CustomPlutoGridTable(
-            columns: AccionDocumentoPlutoGridDataBuilder.buildColumns(context),
-            rows: AccionDocumentoPlutoGridDataBuilder.buildDataRows(state.accionDocumentos, context),
+          return Column(
+            children: [
+              CustomPlutoGridTable(
+                columns: AccionDocumentoPlutoGridDataBuilder.buildColumns(context),
+                rows: AccionDocumentoPlutoGridDataBuilder.buildDataRows(state.accionDocumentos, context),
+                onRowChecked: onRowChecked,
+              ),
+              BuildButtonFormSave(
+                onPressed: onPressedSave,
+                icon: Icons.save,
+                label: "Actualizar",
+                cantdiad: listUpdate.length,
+                isConsulted: true,
+                isInProgress: false,
+                error: "",
+              )
+            ],
           );
         }
         return const SizedBox();

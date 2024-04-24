@@ -7,8 +7,8 @@ class AccionDocumentoDB {
 
   Future<Response> getAccionDocumentosDB(AccionDocumentoRequest request) async {
     String where = '';
-    if (request.tipo != null) {
-      where = "WHERE d.documento_codigo = ${request.tipo!}";
+    if (request.tipoDocumento != null) {
+      where = "WHERE d.documento_codigo = ${request.tipoDocumento!}";
     }
     if (request.nombre!.isNotEmpty) {
       where = "WHERE accdoc_nombre ILIKE '%${request.nombre!}%'";
@@ -36,7 +36,7 @@ class AccionDocumentoDB {
   Future<Response> getTipoDocumentosDB() async {
     const sql =
         """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
-    final response = FunctionsPostgresql.executeQueryDB(sql);
+    final response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 
@@ -50,9 +50,9 @@ class AccionDocumentoDB {
         accdoc_es_naturaleza_inversa)
         VALUES ($max, 
         '${request.nombre}', 
-        ${request.tipo}, 
+        ${request.tipoDocumento}, 
         ${request.usuario}, 
-        ${request.isInverso} );""";
+        ${request.isNaturalezaInversa} );""";
     await FunctionsPostgresql.executeQueryDB(sql);
     final resp = await getAccionDocumentosDB(request);
     return resp;

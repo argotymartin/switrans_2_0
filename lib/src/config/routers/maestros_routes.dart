@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/crea
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
+import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
 
 import '../../packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 
@@ -30,7 +31,7 @@ class MaestrosRoutes {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
-            return const CircularProgressIndicator();
+            return const SplashView();
           },
         );
       },

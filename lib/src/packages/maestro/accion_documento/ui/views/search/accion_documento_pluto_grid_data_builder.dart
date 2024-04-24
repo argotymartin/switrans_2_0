@@ -23,6 +23,7 @@ class AccionDocumentoPlutoGridDataBuilder {
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
       PlutoColumn(
+        enableEditingMode: false,
         title: 'Tipo Documento',
         field: 'tipo_documento',
         type: PlutoColumnType.text(),
@@ -32,7 +33,7 @@ class AccionDocumentoPlutoGridDataBuilder {
         title: 'Naturaleza Inversa',
         field: 'naturaleza_inversa',
         type: PlutoColumnType.text(),
-        renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
+        renderer: (renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
       ),
       PlutoColumn(
         enableEditingMode: false,
@@ -45,6 +46,14 @@ class AccionDocumentoPlutoGridDataBuilder {
         enableEditingMode: false,
         title: 'Fecha Creacion',
         field: 'fecha_creacion',
+        type: PlutoColumnType.text(),
+        renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
+      ),
+      PlutoColumn(
+        enableRowChecked: true,
+        enableEditingMode: false,
+        title: 'Guardar Cambios',
+        field: 'cambios',
         type: PlutoColumnType.text(),
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
@@ -61,6 +70,7 @@ class AccionDocumentoPlutoGridDataBuilder {
         'naturaleza_inversa': accion.esInverso,
         'tipo_documento': accion.tipo,
         'fecha_creacion': accion.fechaCreacion,
+        'cambios': accion.codigo,
       };
       final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
       dataRows.add(row);
@@ -80,6 +90,23 @@ class _BuildFieldText extends StatelessWidget {
     return Text(
       renderContext.cell.value.toString().toUpperCase(),
       style: const TextStyle(color: Colors.black),
+    );
+  }
+}
+
+class _BuildFieldCheckBox extends StatelessWidget {
+  final PlutoColumnRendererContext renderContext;
+  const _BuildFieldCheckBox({
+    required this.renderContext,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool value = renderContext.cell.value;
+    void onChangedValue(bool newValue) => value = newValue;
+
+    return Center(
+      child: SwitchBoxInput(onChanged: onChangedValue, title: "", value: value),
     );
   }
 }

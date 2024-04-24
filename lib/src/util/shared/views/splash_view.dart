@@ -9,11 +9,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Center(
-        child: Column(
-          children: [
-            Image.asset("assets/animations/loading.gif"),
-          ],
-        ),
+        child: Image.asset("assets/animations/loading.gif"),
       ),
     );
   }

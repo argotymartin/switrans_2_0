@@ -1,28 +1,26 @@
 class AccionDocumentoRequest {
   final int? codigo;
   final String? nombre;
-  final int? tipo;
+  final int? tipoDocumento;
   final int? usuario;
-  final bool isInverso;
+  final bool isNaturalezaInversa;
   final String? fechaInicio;
   final String? fechaFin;
 
   AccionDocumentoRequest({
     this.nombre,
     this.codigo,
-    this.tipo,
+    this.tipoDocumento,
     this.usuario,
-    this.isInverso = false,
+    this.isNaturalezaInversa = false,
     this.fechaInicio,
     this.fechaFin,
   });
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
-      'nombre': nombre,
-    };
-    if (codigo != 0) data['codigo'] = codigo;
-
-    return data;
-  }
+  factory AccionDocumentoRequest.fromMap(Map<String, dynamic> map) => AccionDocumentoRequest(
+        nombre: map['nombre'],
+        codigo: map['codigo'],
+        //tipoDocumento: map['tipo_documento'],
+        isNaturalezaInversa: map['naturaleza_inversa'],
+      );
 }

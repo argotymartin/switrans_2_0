@@ -4,8 +4,8 @@ import 'package:pluto_grid/pluto_grid.dart';
 class CustomPlutoGridTable extends StatelessWidget {
   final List<PlutoColumn> columns;
   final List<PlutoRow> rows;
-  final Function(dynamic value)? onRowChecked;
-  final Function(dynamic value)? onRowDoubleTap;
+  final Function(PlutoGridOnRowCheckedEvent value)? onRowChecked;
+  final Function(PlutoGridOnRowCheckedEvent value)? onRowDoubleTap;
   const CustomPlutoGridTable({
     super.key,
     required this.columns,
@@ -31,12 +31,12 @@ class CustomPlutoGridTable extends StatelessWidget {
           stateManager.setShowColumnFilter(true);
         },
         onRowChecked: onRowChecked,
-        onRowDoubleTap: onRowDoubleTap,
+        //onRowDoubleTap: onRowDoubleTap,
         configuration: PlutoGridConfiguration(
           style: PlutoGridStyleConfig(
-            checkedColor: Theme.of(context).colorScheme.primaryContainer,
-            activatedColor: Theme.of(context).colorScheme.inversePrimary,
-            activatedBorderColor: Theme.of(context).colorScheme.onInverseSurface,
+            checkedColor: Theme.of(context).colorScheme.inversePrimary,
+            activatedColor: Theme.of(context).colorScheme.onPrimary,
+            activatedBorderColor: Theme.of(context).colorScheme.primary,
             columnHeight: titleHeight,
             columnFilterHeight: columnFilterHeight,
             enableRowColorAnimation: true,

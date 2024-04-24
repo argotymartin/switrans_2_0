@@ -9,7 +9,7 @@ class SwitchBoxInput extends StatefulWidget {
   const SwitchBoxInput({
     super.key,
     this.value = false,
-    required this.onChanged,
+    this.onChanged,
     required this.title,
   });
 
@@ -36,10 +36,8 @@ class _SwitchBoxInputState extends State<SwitchBoxInput> {
         Switch(
           value: _value,
           onChanged: (value) {
-            setState(() {
-              _value = value;
-            });
-            widget.onChanged!(value);
+            setState(() => _value = value);
+            if (widget.onChanged != null) widget.onChanged!(value);
           },
           thumbIcon: MaterialStateProperty.resolveWith<Icon>(
             (Set<MaterialState> states) {

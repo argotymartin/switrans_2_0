@@ -26,7 +26,7 @@ class AccionDocumentoCreateView extends StatelessWidget {
             nombre: state.accionDocumento!.nombre,
           );
           context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
-          context.go('/maestro/accion_documentos/buscar');
+          context.go('/maestros/accion_documentos/buscar');
         }
       },
       child: Stack(
@@ -36,7 +36,11 @@ class AccionDocumentoCreateView extends StatelessWidget {
             physics: const ClampingScrollPhysics(),
             children: [
               BuildViewDetail(path: fullPath),
-              const WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
+              const WhiteCard(
+                title: "Registrar Nuevo",
+                icon: Icons.price_change_outlined,
+                child: _BuildFieldsForm(),
+              ),
             ],
           ),
         ],
@@ -76,8 +80,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 final request = AccionDocumentoRequest(
                   nombre: nameController.text.toUpperCase(),
                   usuario: 1,
-                  isInverso: esInverso,
-                  tipo: int.tryParse(typeController.text),
+                  isNaturalezaInversa: esInverso,
+                  tipoDocumento: int.tryParse(typeController.text),
                 );
                 context.read<AccionDocumentoBloc>().add(SetAccionDocumentoEvent(request));
               }
