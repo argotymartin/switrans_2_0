@@ -44,4 +44,15 @@ class AccionDocumentoRepositoryImpl extends BaseApiRepository implements Abstrac
     }
     return DataFailed(httpResponse.error!);
   }
+
+  @override
+  Future<DataState<AccionDocumento>> updateAccionDocumentosService(AccionDocumentoRequest request) async {
+    final httpResponse = await getStateOf(request: () => _accionDocumentoDB.updateAccionDocumentosDB(request));
+    if (httpResponse.data != null) {
+      final resp = httpResponse.data[0];
+      final AccionDocumentoModel response = AccionDocumentoModel.fromJson(resp);
+      return DataSuccess(response);
+    }
+    return DataFailed(httpResponse.error!);
+  }
 }

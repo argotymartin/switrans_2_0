@@ -21,6 +21,16 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
       }
     });
 
+    on<UpdateAccionDocumentoEvent>((event, emit) async {
+      emit(const AccionDocumentoLoadingState());
+      final resp = await _repository.updateAccionDocumentosService(event.request);
+      if (resp.data != null) {
+        emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
+      } else {
+        emit(AccionDocumentoExceptionState(exception: resp.error));
+      }
+    });
+
     on<GetAccionDocumentoEvent>((event, emit) async {
       emit(const AccionDocumentoLoadingState());
       final resp = await _repository.getAccionDocumentosService(event.request);

@@ -17,16 +17,21 @@ class AccionDocumentoPlutoGridDataBuilder {
         renderer: (renderContext) => _BuildFieldItem(renderContext: renderContext),
       ),
       PlutoColumn(
+        enableEditingMode: true,
         title: 'Nombre',
         field: 'nombre',
         type: PlutoColumnType.text(),
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
       PlutoColumn(
-        enableEditingMode: false,
+        enableEditingMode: true,
         title: 'Tipo Documento',
         field: 'tipo_documento',
-        type: PlutoColumnType.text(),
+        type: PlutoColumnType.select(<String>[
+          'Programmer',
+          'Designer',
+          'Owner',
+        ]),
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
       PlutoColumn(
@@ -68,7 +73,9 @@ class AccionDocumentoPlutoGridDataBuilder {
         'nombre': accion.nombre,
         'usuario': accion.usuario,
         'naturaleza_inversa': accion.esInverso,
-        'tipo_documento': accion.tipo,
+        //'tipo_documento': accion.tipo,
+        'tipo_documento': 'Programmer',
+
         'fecha_creacion': accion.fechaCreacion,
         'cambios': accion.codigo,
       };
@@ -104,7 +111,6 @@ class _BuildFieldCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     bool value = renderContext.cell.value;
     void onChangedValue(bool newValue) => value = newValue;
-
     return Center(
       child: SwitchBoxInput(onChanged: onChangedValue, title: "", value: value),
     );

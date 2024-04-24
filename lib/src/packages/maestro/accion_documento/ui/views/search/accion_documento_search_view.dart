@@ -152,7 +152,15 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     void onPressedSave() {
-      print(listUpdate.map((e) => e.codigo));
+      for (var e in listUpdate) {
+        final request = AccionDocumentoRequest(
+          codigo: e.codigo,
+          isNaturalezaInversa: e.isNaturalezaInversa,
+          nombre: e.nombre,
+          tipoDocumento: e.tipoDocumento,
+        );
+        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
+      }
     }
 
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(

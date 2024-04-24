@@ -39,7 +39,7 @@ class CustomPlutoGridTable extends StatelessWidget {
             activatedBorderColor: Theme.of(context).colorScheme.primary,
             columnHeight: titleHeight,
             columnFilterHeight: columnFilterHeight,
-            enableRowColorAnimation: true,
+            //enableRowColorAnimation: true,
             rowHeight: rowHeight,
             gridBorderRadius: BorderRadius.circular(8),
             evenRowColor: Theme.of(context).colorScheme.surfaceVariant,

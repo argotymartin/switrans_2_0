@@ -12,6 +12,11 @@ class SetAccionDocumentoEvent extends AccionDocumentoEvent {
   const SetAccionDocumentoEvent(this.request);
 }
 
+class UpdateAccionDocumentoEvent extends AccionDocumentoEvent {
+  final AccionDocumentoRequest request;
+  const UpdateAccionDocumentoEvent(this.request);
+}
+
 class GetAccionDocumentoEvent extends AccionDocumentoEvent {
   final AccionDocumentoRequest request;
   const GetAccionDocumentoEvent(this.request);

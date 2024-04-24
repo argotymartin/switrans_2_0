@@ -57,4 +57,19 @@ class AccionDocumentoDB {
     final resp = await getAccionDocumentosDB(request);
     return resp;
   }
+
+  Future<Response> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
+    String update = "";
+    if (request.nombre != null) update += "accdoc_nombre = '${request.nombre}', ";
+    if (request.tipoDocumento != null) update += "documento_codigo = ${request.tipoDocumento}, ";
+    if (request.isNaturalezaInversa != null) update += "accdoc_es_naturaleza_inversa = ${request.isNaturalezaInversa} ";
+
+    final sql = """UPDATE public.tb_accion_documentos
+          SET $update
+        WHERE accdoc_codigo = ${request.codigo};""";
+    print(sql);
+    await FunctionsPostgresql.executeQueryDB(sql);
+    final resp = await getAccionDocumentosDB(request);
+    return resp;
+  }
 }

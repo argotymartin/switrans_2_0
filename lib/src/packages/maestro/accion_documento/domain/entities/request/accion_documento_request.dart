@@ -3,7 +3,7 @@ class AccionDocumentoRequest {
   final String? nombre;
   final int? tipoDocumento;
   final int? usuario;
-  final bool isNaturalezaInversa;
+  final bool? isNaturalezaInversa;
   final String? fechaInicio;
   final String? fechaFin;
 
@@ -12,7 +12,7 @@ class AccionDocumentoRequest {
     this.codigo,
     this.tipoDocumento,
     this.usuario,
-    this.isNaturalezaInversa = false,
+    this.isNaturalezaInversa,
     this.fechaInicio,
     this.fechaFin,
   });

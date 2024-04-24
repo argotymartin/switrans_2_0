@@ -7,4 +7,5 @@ abstract class AbstractAccionDocumentoRepository {
   Future<DataState<List<AccionDocumento>>> getAccionDocumentosService(AccionDocumentoRequest request);
   Future<DataState<List<TipoDocumentoAccionDocumento>>> getTipoDocumentosService();
   Future<DataState<AccionDocumento>> setAccionDocumentosService(AccionDocumentoRequest request);
+  Future<DataState<AccionDocumento>> updateAccionDocumentosService(AccionDocumentoRequest request);
 }
