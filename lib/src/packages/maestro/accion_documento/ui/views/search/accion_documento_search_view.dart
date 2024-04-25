@@ -81,8 +81,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
               CustomNumberInput(title: "Codigo", controller: codigoController),
+              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
               FieldTipoDocumento(typeController),
             ],
           ),
@@ -152,14 +152,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     void onPressedSave() {
-      for (var e in listUpdate) {
-        final request = AccionDocumentoRequest(
-          codigo: e.codigo,
-          isNaturalezaInversa: e.isNaturalezaInversa,
-          nombre: e.nombre,
-          tipoDocumento: e.tipoDocumento,
-        );
-        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
+      for (AccionDocumentoRequest req in listUpdate) {
+        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(req));
       }
     }
 

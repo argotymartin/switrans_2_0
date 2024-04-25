@@ -22,6 +22,7 @@ class AccionDocumentoDB {
                     d.documento_nombre,
                     u.usuario_nombre,
                     ad.accdoc_fecha_creacion,
+                    ad.accdoc_fecha_modificacion,
                     ad.accdoc_es_naturaleza_inversa,
                     ad.accdoc_es_activo
               FROM tb_accion_documentos ad
@@ -59,15 +60,16 @@ class AccionDocumentoDB {
   }
 
   Future<Response> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
-    String update = "";
+    final fecha = DateTime.now();
+    String update = "accdoc_fecha_modificacion = '${fecha.toString()}', ";
     if (request.nombre != null) update += "accdoc_nombre = '${request.nombre}', ";
     if (request.tipoDocumento != null) update += "documento_codigo = ${request.tipoDocumento}, ";
+    if (request.isActivo != null) update += "accdoc_es_activo = ${request.isActivo}, ";
     if (request.isNaturalezaInversa != null) update += "accdoc_es_naturaleza_inversa = ${request.isNaturalezaInversa} ";
 
     final sql = """UPDATE public.tb_accion_documentos
           SET $update
         WHERE accdoc_codigo = ${request.codigo};""";
-    print(sql);
     await FunctionsPostgresql.executeQueryDB(sql);
     final resp = await getAccionDocumentosDB(request);
     return resp;

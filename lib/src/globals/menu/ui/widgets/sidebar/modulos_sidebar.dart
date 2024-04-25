@@ -60,7 +60,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                       ),
                       const Spacer(),
                       Icon(
-                        widget.modulo.isSelected ? Icons.menu_open_outlined : Icons.menu_outlined,
+                        widget.modulo.isSelected ? Icons.arrow_drop_down : Icons.arrow_drop_up,
                         size: 16,
                         color: isHovered || widget.modulo.isSelected
                             ? Theme.of(context).colorScheme.onTertiary
@@ -74,7 +74,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: Colors.amber,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),

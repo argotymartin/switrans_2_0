@@ -9,6 +9,12 @@ class AccionDocumentoPlutoGridDataBuilder {
     return [
       PlutoColumn(
         enableEditingMode: false,
+        enableAutoEditing: false,
+        enableColumnDrag: false,
+        enableContextMenu: false,
+        applyFormatterInEditing: false,
+        enableDropToResize: false,
+        enableFilterMenuItem: false,
         title: 'Codigo',
         field: 'codigo',
         type: PlutoColumnType.text(),
@@ -18,6 +24,7 @@ class AccionDocumentoPlutoGridDataBuilder {
       ),
       PlutoColumn(
         enableEditingMode: true,
+        enableAutoEditing: true,
         title: 'Nombre',
         field: 'nombre',
         type: PlutoColumnType.text(),
@@ -25,6 +32,7 @@ class AccionDocumentoPlutoGridDataBuilder {
       ),
       PlutoColumn(
         enableEditingMode: true,
+        enableAutoEditing: true,
         title: 'Tipo Documento',
         field: 'tipo_documento',
         type: PlutoColumnType.select(<String>[
@@ -35,8 +43,32 @@ class AccionDocumentoPlutoGridDataBuilder {
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
       PlutoColumn(
+        enableEditingMode: true,
+        enableAutoEditing: true,
         title: 'Naturaleza Inversa',
         field: 'naturaleza_inversa',
+        type: PlutoColumnType.text(),
+        renderer: (renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
+      ),
+      PlutoColumn(
+        minWidth: 188,
+        enableEditingMode: false,
+        title: 'Fecha Creacion',
+        field: 'fecha_creacion',
+        type: PlutoColumnType.text(),
+        renderer: (renderContext) => _BuildFieldDate(renderContext: renderContext),
+      ),
+      PlutoColumn(
+        minWidth: 188,
+        enableEditingMode: false,
+        title: 'Fecha Actualizacion',
+        field: 'fecha_actualizacion',
+        type: PlutoColumnType.text(),
+        renderer: (renderContext) => _BuildFieldDate(renderContext: renderContext),
+      ),
+      PlutoColumn(
+        title: 'Activo',
+        field: 'activo',
         type: PlutoColumnType.text(),
         renderer: (renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
       ),
@@ -44,13 +76,6 @@ class AccionDocumentoPlutoGridDataBuilder {
         enableEditingMode: false,
         title: 'Usuario',
         field: 'usuario',
-        type: PlutoColumnType.text(),
-        renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
-      ),
-      PlutoColumn(
-        enableEditingMode: false,
-        title: 'Fecha Creacion',
-        field: 'fecha_creacion',
         type: PlutoColumnType.text(),
         renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
       ),
@@ -73,11 +98,11 @@ class AccionDocumentoPlutoGridDataBuilder {
         'nombre': accion.nombre,
         'usuario': accion.usuario,
         'naturaleza_inversa': accion.esInverso,
-        //'tipo_documento': accion.tipo,
-        'tipo_documento': 'Programmer',
-
+        'tipo_documento': accion.tipo,
         'fecha_creacion': accion.fechaCreacion,
-        'cambios': accion.codigo,
+        'fecha_actualizacion': accion.fechaActualizacion,
+        'activo': accion.esActivo,
+        'cambios': "",
       };
       final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
       dataRows.add(row);
@@ -101,6 +126,35 @@ class _BuildFieldText extends StatelessWidget {
   }
 }
 
+class _BuildFieldDate extends StatelessWidget {
+  final PlutoColumnRendererContext renderContext;
+  const _BuildFieldDate({
+    required this.renderContext,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dateValue = renderContext.cell.value.toString().split(" ");
+    final fecha = dateValue[0];
+    final hora = dateValue[1].split(".")[0];
+    return Row(
+      children: [
+        const Icon(Icons.calendar_month, color: Colors.black54),
+        Text(
+          fecha,
+          style: const TextStyle(color: Colors.black),
+        ),
+        const SizedBox(width: 4),
+        const Icon(Icons.timelapse_rounded, color: Colors.black54),
+        Text(
+          hora,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ],
+    );
+  }
+}
+
 class _BuildFieldCheckBox extends StatelessWidget {
   final PlutoColumnRendererContext renderContext;
   const _BuildFieldCheckBox({
@@ -109,10 +163,9 @@ class _BuildFieldCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool value = renderContext.cell.value;
-    void onChangedValue(bool newValue) => value = newValue;
+    void onChangedValue(bool newValue) => renderContext.cell.value = newValue;
     return Center(
-      child: SwitchBoxInput(onChanged: onChangedValue, title: "", value: value),
+      child: SwitchBoxInput(onChanged: onChangedValue, value: renderContext.cell.value),
     );
   }
 }

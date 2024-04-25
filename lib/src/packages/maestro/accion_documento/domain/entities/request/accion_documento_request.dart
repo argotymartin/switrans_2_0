@@ -4,8 +4,7 @@ class AccionDocumentoRequest {
   final int? tipoDocumento;
   final int? usuario;
   final bool? isNaturalezaInversa;
-  final String? fechaInicio;
-  final String? fechaFin;
+  final bool? isActivo;
 
   AccionDocumentoRequest({
     this.nombre,
@@ -13,8 +12,7 @@ class AccionDocumentoRequest {
     this.tipoDocumento,
     this.usuario,
     this.isNaturalezaInversa,
-    this.fechaInicio,
-    this.fechaFin,
+    this.isActivo,
   });
 
   factory AccionDocumentoRequest.fromMap(Map<String, dynamic> map) => AccionDocumentoRequest(
@@ -22,5 +20,6 @@ class AccionDocumentoRequest {
         codigo: map['codigo'],
         //tipoDocumento: map['tipo_documento'],
         isNaturalezaInversa: map['naturaleza_inversa'],
+        isActivo: map['activo'],
       );
 }

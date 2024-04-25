@@ -6,6 +6,7 @@ class AccionDocumento {
   final bool esInverso;
   final String usuario;
   final String fechaCreacion;
+  final String fechaActualizacion;
   AccionDocumento({
     required this.codigo,
     required this.nombre,
@@ -14,5 +15,6 @@ class AccionDocumento {
     required this.esInverso,
     required this.usuario,
     required this.fechaCreacion,
+    required this.fechaActualizacion,
   });
 }

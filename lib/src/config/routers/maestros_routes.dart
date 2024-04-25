@@ -31,7 +31,7 @@ class MaestrosRoutes {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
-            return const SplashView();
+            return const MenuLayout(child: SplashView());
           },
         );
       },

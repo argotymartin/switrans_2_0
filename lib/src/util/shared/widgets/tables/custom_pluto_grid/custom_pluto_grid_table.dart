@@ -6,12 +6,14 @@ class CustomPlutoGridTable extends StatelessWidget {
   final List<PlutoRow> rows;
   final Function(PlutoGridOnRowCheckedEvent value)? onRowChecked;
   final Function(PlutoGridOnRowCheckedEvent value)? onRowDoubleTap;
+  final bool columnFilter;
   const CustomPlutoGridTable({
     super.key,
     required this.columns,
     required this.rows,
     this.onRowDoubleTap,
     this.onRowChecked,
+    this.columnFilter = false,
   });
 
   @override
@@ -19,7 +21,7 @@ class CustomPlutoGridTable extends StatelessWidget {
     late PlutoGridStateManager stateManager;
     const double rowHeight = 48;
     const double titleHeight = 48;
-    const double columnFilterHeight = 36;
+    double columnFilterHeight = columnFilter ? 36 : 0;
     return Container(
       height: (rowHeight * (rows.length + 1)) + (titleHeight + columnFilterHeight),
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -28,7 +30,7 @@ class CustomPlutoGridTable extends StatelessWidget {
         rows: rows,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
-          stateManager.setShowColumnFilter(true);
+          columnFilter ? stateManager.setShowColumnFilter(true) : null;
         },
         onRowChecked: onRowChecked,
         //onRowDoubleTap: onRowDoubleTap,
@@ -39,7 +41,7 @@ class CustomPlutoGridTable extends StatelessWidget {
             activatedBorderColor: Theme.of(context).colorScheme.primary,
             columnHeight: titleHeight,
             columnFilterHeight: columnFilterHeight,
-            //enableRowColorAnimation: true,
+            enableRowColorAnimation: true,
             rowHeight: rowHeight,
             gridBorderRadius: BorderRadius.circular(8),
             evenRowColor: Theme.of(context).colorScheme.surfaceVariant,

@@ -8,6 +8,7 @@ import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/switch_box_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AccionDocumentoCreateView extends StatelessWidget {
@@ -67,10 +68,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               CustomTextInput(title: "Nombre", controller: nameController),
               FieldTipoDocumento(typeController),
-              SwitchBoxInput(
-                title: "Naturaleza inversa",
-                onChanged: (value) => esInverso = value,
-              )
+              SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa")
             ],
           ),
           FilledButton.icon(
