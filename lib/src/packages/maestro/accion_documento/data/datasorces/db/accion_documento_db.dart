@@ -70,6 +70,7 @@ class AccionDocumentoDB {
     final sql = """UPDATE public.tb_accion_documentos
           SET $update
         WHERE accdoc_codigo = ${request.codigo};""";
+    print(sql);
     await FunctionsPostgresql.executeQueryDB(sql);
     final resp = await getAccionDocumentosDB(request);
     return resp;

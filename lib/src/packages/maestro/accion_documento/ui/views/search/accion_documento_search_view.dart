@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AccionDocumentoSearchView extends StatelessWidget {
@@ -130,43 +128,43 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<AccionDocumentoRequest> listUpdate = [];
+  List<Map<String, dynamic>> listUpdate = [];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(PlutoGridOnRowCheckedEvent event) {
-      setState(() {});
-      if (event.row == null || event.rowIdx == null || event.isChecked == null) {
-        return;
-      }
-      Map<String, dynamic> mapRow = Map.fromEntries(
-        event.row!.cells.entries.map((entry) => MapEntry(entry.key, entry.value.value)),
-      );
-      final request = AccionDocumentoRequest.fromMap(mapRow);
-
-      if (event.isChecked!) {
-        if (!listUpdate.contains(request)) listUpdate.add(request);
-      } else {
-        listUpdate.removeWhere((element) => element.codigo! == request.codigo!);
-      }
-      listUpdate.map((e) => e.codigo);
+    void onRowChecked(dynamic event) {
+      listUpdate.clear();
+      setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
-      for (AccionDocumentoRequest req in listUpdate) {
-        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(req));
+      for (Map<String, dynamic> map in listUpdate) {
+        final request = AccionDocumentoRequest.fromMap(map);
+        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
       }
     }
 
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (context, state) {
         if (state is AccionDocumentoConsultedState) {
+          final nombres = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
+          final List<Map<String, dynamic>> plutoRes = [];
+          for (var e in state.accionDocumentos) {
+            Map<String, dynamic> map = {};
+            map.addEntries({
+              'codigo': {'type': Tipo.item, 'value': e.codigo, 'edit': false},
+              'nombre': {'type': Tipo.text, 'value': e.nombre, 'edit': true},
+              'tipo_documento': {'type': Tipo.select, 'value': e.tipo, 'edit': true, 'data': nombres},
+              'naturaleza_inversa': {'type': Tipo.boolean, 'value': e.esInverso, 'edit': true},
+              'activo': {'type': Tipo.boolean, 'value': e.esActivo, 'edit': true},
+              'fecha_creacion': {'type': Tipo.date, 'value': e.fechaCreacion, 'edit': false},
+              'fecha_actualizacion': {'type': Tipo.date, 'value': e.fechaActualizacion, 'edit': false},
+              'usuario': {'type': Tipo.text, 'value': e.usuario, 'edit': false}
+            }.entries);
+            plutoRes.add(map);
+          }
           return Column(
             children: [
-              CustomPlutoGridTable(
-                columns: AccionDocumentoPlutoGridDataBuilder.buildColumns(context),
-                rows: AccionDocumentoPlutoGridDataBuilder.buildDataRows(state.accionDocumentos, context),
-                onRowChecked: onRowChecked,
-              ),
+              PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked),
               BuildButtonFormSave(
                 onPressed: onPressedSave,
                 icon: Icons.save,
