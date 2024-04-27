@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 
 class AccionDocumentoSearchView extends StatelessWidget {
   const AccionDocumentoSearchView({super.key});
@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
         final request = AccionDocumentoRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
-          tipoDocumento: int.tryParse(typeController.text),
+          tipoDocumento: typeController.text,
         );
         context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
       }
@@ -86,28 +86,27 @@ class _BuildFieldsForm extends StatelessWidget {
           ),
           BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
             builder: (context, state) {
-              int cantdiad = 0;
+              int cantidad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
               String error = "";
               if (state is AccionDocumentoLoadingState) {
                 isInProgress = true;
-              }
-
-              if (state is AccionDocumentoErrorFormState) {
+              } else if (state is AccionDocumentoErrorFormState) {
                 error = state.error!;
-              }
-              if (state is AccionDocumentoConsultedState) {
-                isInProgress = false;
+              } else if (state is AccionDocumentoConsultedState) {
                 isConsulted = true;
-                cantdiad = state.accionDocumentos.length;
+                cantidad = state.accionDocumentos.length;
+              } else if (state is AccionDocumentoSuccesState) {
+                final request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
+                context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
+                context.go('/maestros/accion_documentos/buscar');
               }
-
               return BuildButtonForm(
                 onPressed: onPressed,
                 icon: Icons.search,
                 label: "Buscar",
-                cantdiad: cantdiad,
+                cantdiad: cantidad,
                 isConsulted: isConsulted,
                 isInProgress: isInProgress,
                 error: error,
@@ -143,39 +142,29 @@ class _BluildDataTableState extends State<_BluildDataTable> {
       }
     }
 
+    Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, List<String> tiposList) {
+      return {
+        'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
+        'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
+        'tipo_documento': DataItemGrid(type: Tipo.select, value: accionDocumento.tipo, edit: true, dataList: tiposList),
+        'naturaleza_inversa': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esInverso, edit: true),
+        'activo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esActivo, edit: true),
+        'fecha_creacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
+        'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
+        'usuario': DataItemGrid(type: Tipo.text, value: accionDocumento.usuario, edit: false),
+      };
+    }
+
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (context, state) {
         if (state is AccionDocumentoConsultedState) {
-          final nombres = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
-          final List<Map<String, dynamic>> plutoRes = [];
-          for (var e in state.accionDocumentos) {
-            Map<String, dynamic> map = {};
-            map.addEntries({
-              'codigo': {'type': Tipo.item, 'value': e.codigo, 'edit': false},
-              'nombre': {'type': Tipo.text, 'value': e.nombre, 'edit': true},
-              'tipo_documento': {'type': Tipo.select, 'value': e.tipo, 'edit': true, 'data': nombres},
-              'naturaleza_inversa': {'type': Tipo.boolean, 'value': e.esInverso, 'edit': true},
-              'activo': {'type': Tipo.boolean, 'value': e.esActivo, 'edit': true},
-              'fecha_creacion': {'type': Tipo.date, 'value': e.fechaCreacion, 'edit': false},
-              'fecha_actualizacion': {'type': Tipo.date, 'value': e.fechaActualizacion, 'edit': false},
-              'usuario': {'type': Tipo.text, 'value': e.usuario, 'edit': false}
-            }.entries);
-            plutoRes.add(map);
+          final tiposList = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
+          final List<Map<String, DataItemGrid>> plutoRes = [];
+          for (AccionDocumento accionDocumento in state.accionDocumentos) {
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
+            plutoRes.add(rowData);
           }
-          return Column(
-            children: [
-              PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked),
-              BuildButtonFormSave(
-                onPressed: onPressedSave,
-                icon: Icons.save,
-                label: "Actualizar",
-                cantdiad: listUpdate.length,
-                isConsulted: true,
-                isInProgress: false,
-                error: "",
-              )
-            ],
-          );
+          return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
         }
         return const SizedBox();
       },

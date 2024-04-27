@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
@@ -23,9 +22,7 @@ class AccionDocumentoCreateView extends StatelessWidget {
         if (state is AccionDocumentoExceptionState) ErrorDialog.showDioException(context, state.exception!);
 
         if (state is AccionDocumentoSuccesState) {
-          final request = AccionDocumentoRequest(
-            nombre: state.accionDocumento!.nombre,
-          );
+          final request = AccionDocumentoRequest(nombre: state.accionDocumento!.nombre);
           context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
           context.go('/maestros/accion_documentos/buscar');
         }
@@ -79,7 +76,7 @@ class _BuildFieldsForm extends StatelessWidget {
                   nombre: nameController.text.toUpperCase(),
                   usuario: 1,
                   isNaturalezaInversa: esInverso,
-                  tipoDocumento: int.tryParse(typeController.text),
+                  tipoDocumento: typeController.text,
                 );
                 context.read<AccionDocumentoBloc>().add(SetAccionDocumentoEvent(request));
               }
@@ -89,35 +86,6 @@ class _BuildFieldsForm extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class FieldTipoDocumento extends StatelessWidget {
-  final TextEditingController typeController;
-  const FieldTipoDocumento(this.typeController, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    void onPressed(EntryAutocomplete entry) {
-      typeController.text = entry.codigo.toString();
-    }
-
-    final acciones = context.read<AccionDocumentoBloc>().tipos;
-    List<EntryAutocomplete> entryMenus = acciones.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text("Tipo Documento", style: AppTheme.titleStyle),
-        const SizedBox(height: 8),
-        AutocompleteInput(
-          entries: entryMenus,
-          label: "Tipo Documento",
-          onPressed: onPressed,
-        ),
-      ],
     );
   }
 }

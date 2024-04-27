@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 enum Tipo { item, text, boolean, select, date }
 
-class PlutoGridDataBuilder extends StatelessWidget {
-  final List<Map<String, dynamic>> plutoData;
+class PlutoGridDataBuilder extends StatefulWidget {
+  final List<Map<String, DataItemGrid>> plutoData;
   final Function(dynamic value)? onRowChecked;
+  final Function()? onPressedSave;
 
-  const PlutoGridDataBuilder({super.key, required this.plutoData, this.onRowChecked});
+  const PlutoGridDataBuilder({super.key, required this.plutoData, this.onRowChecked, this.onPressedSave});
 
+  @override
+  State<PlutoGridDataBuilder> createState() => _PlutoGridDataBuilderState();
+}
+
+class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
+  List listValues = [];
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {
       List<PlutoColumn> columns = [];
-      plutoData.first.forEach((key, v) {
-        final tipo = v["type"];
-        final bool isEdit = v["edit"];
+      widget.plutoData.first.forEach((key, v) {
+        final tipo = v.type;
+        final bool isEdit = v.edit;
+        final tilte = key.toUpperCase().replaceAll("_", " ");
 
         if (tipo == Tipo.item) {
           columns.add(
@@ -29,7 +39,7 @@ class PlutoGridDataBuilder extends StatelessWidget {
               applyFormatterInEditing: false,
               enableDropToResize: false,
               enableFilterMenuItem: false,
-              title: key,
+              title: tilte,
               field: key,
               type: PlutoColumnType.text(),
               minWidth: 80,
@@ -41,10 +51,10 @@ class PlutoGridDataBuilder extends StatelessWidget {
         if (tipo == Tipo.text) {
           columns.add(
             PlutoColumn(
-              //enableEditingMode: isEdit,
+              enableEditingMode: isEdit,
               applyFormatterInEditing: true,
               enableAutoEditing: isEdit,
-              title: key,
+              title: tilte,
               field: key,
               type: PlutoColumnType.text(),
               renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
@@ -52,12 +62,12 @@ class PlutoGridDataBuilder extends StatelessWidget {
           );
         }
         if (tipo == Tipo.select) {
-          final data = v["data"];
+          final data = v.dataList!;
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
               enableAutoEditing: isEdit,
-              title: key,
+              title: tilte,
               field: key,
               type: PlutoColumnType.select(<String>[...data]),
             ),
@@ -68,7 +78,7 @@ class PlutoGridDataBuilder extends StatelessWidget {
             PlutoColumn(
               enableEditingMode: isEdit,
               enableAutoEditing: isEdit,
-              title: key,
+              title: tilte,
               field: key,
               type: PlutoColumnType.text(),
               renderer: (renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
@@ -80,7 +90,7 @@ class PlutoGridDataBuilder extends StatelessWidget {
             PlutoColumn(
               minWidth: 188,
               enableEditingMode: false,
-              title: key,
+              title: tilte,
               field: key,
               type: PlutoColumnType.text(),
               renderer: (renderContext) => _BuildFieldDate(renderContext: renderContext),
@@ -102,10 +112,10 @@ class PlutoGridDataBuilder extends StatelessWidget {
     List<PlutoRow> buildDataRows(BuildContext context) {
       final List<PlutoRow> dataRows = [];
 
-      plutoData.asMap().forEach((index, dato) {
+      widget.plutoData.asMap().forEach((index, dato) {
         Map<String, dynamic> dataColumn = {};
         dato.forEach((key, value) {
-          dataColumn.addEntries({key: value["value"]}.entries);
+          dataColumn.addEntries({key: value.value}.entries);
         });
         dataColumn.addEntries({'cambios': ""}.entries);
         final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
@@ -114,23 +124,43 @@ class PlutoGridDataBuilder extends StatelessWidget {
       return dataRows;
     }
 
-    return CustomPlutoGridTable(
-      columns: buildColumns(context),
-      rows: buildDataRows(context),
-      onRowChecked: (event) {
-        Map<int, Map<String, dynamic>> selectedMap = {};
-        if (event.row == null || event.rowIdx == null || event.isChecked == null) return;
+    Map<int, Map<String, dynamic>> selectedMap = {};
+    return Column(
+      children: [
+        CustomPlutoGridTable(
+          columns: buildColumns(context),
+          rows: buildDataRows(context),
+          onRowChecked: (event) {
+            if (event.row == null || event.rowIdx == null || event.isChecked == null) return;
 
-        if (event.isChecked! == true) {
-          Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map((entry) => MapEntry(entry.key, entry.value.value)));
-          selectedMap.addEntries({event.rowIdx!: mapRow}.entries);
-        } else {
-          selectedMap.remove(event.rowIdx);
-        }
-
-        final List listeValues = selectedMap.values.toList();
-        onRowChecked!.call(listeValues);
-      },
+            if (event.isChecked! == true) {
+              Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
+                (entry) {
+                  if (entry.value.column.type.isSelect) {
+                    return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);
+                  }
+                  return MapEntry(entry.key, entry.value.value);
+                },
+              ));
+              selectedMap.addEntries({event.rowIdx!: mapRow}.entries);
+            } else {
+              selectedMap.remove(event.rowIdx);
+            }
+            setState(() => listValues = selectedMap.values.toList());
+            widget.onRowChecked!.call(listValues);
+          },
+        ),
+        BuildButtonFormSave(
+          onPressed: widget.onPressedSave!,
+          enabled: listValues.isEmpty ? true : false,
+          icon: Icons.save,
+          label: "Actualizar",
+          cantdiad: listValues.length,
+          isConsulted: true,
+          isInProgress: false,
+          error: "",
+        )
+      ],
     );
   }
 }

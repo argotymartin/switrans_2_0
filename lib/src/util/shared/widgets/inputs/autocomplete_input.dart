@@ -56,9 +56,10 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   DropdownMenuEntry<EntryAutocomplete> buildItemMenuEntry(EntryAutocomplete entry) {
     return DropdownMenuEntry<EntryAutocomplete>(
       style: const ButtonStyle(
-          padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
-          side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
-          backgroundColor: MaterialStatePropertyAll(Colors.white)),
+        padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
+        side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
+        backgroundColor: MaterialStatePropertyAll(Colors.white),
+      ),
       value: entry,
       label: entry.title,
       leadingIcon: widget.isShowCodigo ? CircleAvatar(child: Text('${entry.codigo}')) : const SizedBox(),

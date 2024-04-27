@@ -40,9 +40,11 @@ class BuildButtonFormSave extends StatelessWidget {
                     : const SizedBox(),
             const SizedBox(width: 24),
             FilledButton.icon(
-              onPressed: () {
-                onPressed.call();
-              },
+              onPressed: enabled
+                  ? null
+                  : () {
+                      onPressed.call();
+                    },
               icon: Icon(icon),
               label: Text(label, style: const TextStyle(color: Colors.white)),
             ),
