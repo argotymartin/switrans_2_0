@@ -8,9 +8,9 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/reposi
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
-class AccionDocumentoRepositoryImpl extends BaseApiRepository implements AbstractAccionDocumentoRepository {
+class AccionDocumentoRepositoryDBImpl extends BaseApiRepository implements AbstractAccionDocumentoRepository {
   final AccionDocumentoDB _accionDocumentoDB;
-  AccionDocumentoRepositoryImpl(this._accionDocumentoDB);
+  AccionDocumentoRepositoryDBImpl(this._accionDocumentoDB);
 
   @override
   Future<DataState<List<AccionDocumento>>> getAccionDocumentosService(AccionDocumentoRequest request) async {

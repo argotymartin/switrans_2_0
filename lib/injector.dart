@@ -13,7 +13,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/f
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasorces/db/accion_documento_db.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
@@ -48,6 +48,6 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<TipoImpuestoBloc>(TipoImpuestoBloc(injector()));
 
   injector.registerSingleton<AccionDocumentoDB>(AccionDocumentoDB());
-  injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryImpl(injector()));
+  injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryDBImpl(injector()));
   injector.registerSingleton<AccionDocumentoBloc>(AccionDocumentoBloc(injector()));
 }

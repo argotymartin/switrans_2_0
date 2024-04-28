@@ -164,6 +164,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
             plutoRes.add(rowData);
           }
+          if (plutoRes.isEmpty) {
+            return const Text("No se encontraon resultados");
+          }
           return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
         }
         return const SizedBox();
