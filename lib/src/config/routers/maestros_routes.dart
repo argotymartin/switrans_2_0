@@ -5,6 +5,8 @@ import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
@@ -18,6 +20,7 @@ class MaestrosRoutes {
     List<ShellRoute> routes = [];
     routes.add(accionDocumentos());
     routes.add(routerTipoImpuesto());
+    routes.add(routerServicioEmpresarial());
     return routes;
   }
 
@@ -69,6 +72,27 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const TipoImpuestoSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerServicioEmpresarial() {
+    const String modulePath = "servicio_empresarial";
+    return ShellRoute(
+      builder: (context, state, child) {
+        return MenuLayout(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (_, __) => const ServicioEmpresarialCreateView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const ServicoEmpresarialSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

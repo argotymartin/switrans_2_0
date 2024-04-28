@@ -4,8 +4,6 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
 
 class AccionDocumentoDB {
-  AccionDocumentoDB();
-
   Future<Response> getAccionDocumentosDB(AccionDocumentoRequest request) async {
     try {
       String where = '';

@@ -16,6 +16,10 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasorc
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositories/tipo_impuesto_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
@@ -50,4 +54,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AccionDocumentoDB>(AccionDocumentoDB());
   injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryDBImpl(injector()));
   injector.registerSingleton<AccionDocumentoBloc>(AccionDocumentoBloc(injector()));
+
+  injector.registerSingleton<ServicioEmpresarialDB>(ServicioEmpresarialDB());
+  injector.registerSingleton<AbstractServicioEmpresarialRepository>(ServicioEmpresarialDBImpl(injector()));
+  injector.registerSingleton<ServicioEmpresarialBloc>(ServicioEmpresarialBloc(injector()));
 }
