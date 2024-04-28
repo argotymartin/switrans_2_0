@@ -1,169 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/util/shared/services/search_field.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
-class AutocompleteInput extends StatelessWidget {
-  final List<SuggestionModel> suggestions;
-  final String title;
-  final bool isShowCodigo;
-  final bool isReadOnly;
+class AutocompleteInput extends StatefulWidget {
+  final List<EntryAutocomplete> entries;
+  final String label;
   final TextEditingController? controller;
-  final SuggestionModel? suggestionSelected;
-  final Function(String result)? onPressed;
+  final Function(EntryAutocomplete result)? onPressed;
+  final bool enabled;
+  final bool isShowCodigo;
+  final int minChractersSearch;
+  final String entrySelected;
 
   const AutocompleteInput({
     super.key,
-    required this.suggestions,
-    required this.title,
+    required this.entries,
+    required this.label,
     this.controller,
-    this.suggestionSelected,
     this.onPressed,
+    this.enabled = true,
     this.isShowCodigo = true,
-    this.isReadOnly = false,
+    this.entrySelected = '',
+    this.minChractersSearch = 1,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final focus = FocusNode();
-    return SearchField(
-      initialValue: suggestionSelected != null
-          ? SearchFieldListItem<String>(
-              suggestionSelected!.title,
-              item: suggestionSelected!.codigo,
-            )
-          : null,
-      readOnly: isReadOnly,
-      searchStyle: const TextStyle(fontSize: 12),
-      autoCorrect: true,
-      maxSuggestionsInViewPort: 4,
-      textCapitalization: TextCapitalization.sentences,
-      onSearchTextChanged: onTextChanged,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) => (value == null) ? 'error' : null,
-      key: const Key('searchfield'),
-      hint: isReadOnly ? '' : 'Buscar $title',
-      itemHeight: 68,
-      searchInputDecoration: inputDecoration(context),
-      suggestionsDecoration: SuggestionDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      suggestions: suggestions
-          .map((e) => SearchFieldListItem<String>(
-                e.title,
-                item: e.codigo,
-                child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
-              ))
-          .toList(),
-      focusNode: focus,
-      suggestionState: Suggestion.expand,
-      onSuggestionTap: (SearchFieldListItem x) {
-        if (x.item != null && controller != null) controller!.text = x.item;
-        if (onPressed != null && x.item != null) {
-          onPressed?.call(x.item);
-        }
-      },
-    );
-  }
-
-  List<SearchFieldListItem<String>>? onTextChanged(query) {
-    if (controller != null) controller!.text = "";
-    final filter = suggestions
-        .where(
-          (element) => element.title.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
-    return filter
-        .map((e) => SearchFieldListItem<String>(
-              e.title,
-              item: e.codigo,
-              child: _ItemAutoComplete(suggestionModel: e, isShowCodigo: isShowCodigo),
-            ))
-        .toList();
-  }
-
-  InputDecoration inputDecoration(BuildContext context) {
-    return InputDecoration(
-      suffixIcon: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(8), topRight: Radius.circular(8)),
-          color: Theme.of(context).colorScheme.outlineVariant,
-        ),
-        child: Icon(Icons.filter_list_rounded, color: Theme.of(context).colorScheme.outline),
-      ),
-      constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-    );
-  }
+  State<StatefulWidget> createState() => _Autocomplete2InputState();
 }
 
-class _ItemAutoComplete extends StatelessWidget {
-  final SuggestionModel suggestionModel;
-  final bool isShowCodigo;
-  const _ItemAutoComplete({required this.suggestionModel, required this.isShowCodigo});
+class _Autocomplete2InputState extends State<AutocompleteInput> {
+  List<DropdownMenuEntry<EntryAutocomplete>> dropdownMenuEntries = [];
+  String entrySelected2 = '';
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
-      child: Row(
+  void initState() {
+    super.initState();
+    final filteredEntries = widget.entries.take(10).toList();
+    dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
+    entrySelected2 = widget.entrySelected;
+    if (widget.controller != null) widget.controller!.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    final searchText = widget.controller!.text.toLowerCase();
+    if (mounted) {
+      setState(() {
+        entrySelected2 = '';
+        final filteredEntries = widget.entries.where((entry) => entry.title.toLowerCase().contains(searchText)).toList();
+        if (searchText.length >= widget.minChractersSearch) {
+          dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
+        }
+      });
+    }
+  }
+
+  DropdownMenuEntry<EntryAutocomplete> buildItemMenuEntry(EntryAutocomplete entry) {
+    return DropdownMenuEntry<EntryAutocomplete>(
+      style: const ButtonStyle(
+        padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
+        side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
+        backgroundColor: MaterialStatePropertyAll(Colors.white),
+      ),
+      value: entry,
+      label: entry.title,
+      leadingIcon: widget.isShowCodigo ? CircleAvatar(child: Text('${entry.codigo}')) : const SizedBox(),
+      labelWidget: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 4),
-          isShowCodigo ? _BuildSuggestionCodigo(codigo: suggestionModel.codigo) : const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(suggestionModel.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-              Text(suggestionModel.subTitle, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200, color: Colors.black54)),
-              SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: suggestionModel.details))
-            ],
-          ),
+          Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+          if (entry.subTitle.isNotEmpty) Text(entry.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+          if (entry.details != null) SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: entry.details))
         ],
       ),
     );
   }
-}
-
-class _BuildSuggestionCodigo extends StatelessWidget {
-  final String codigo;
-  const _BuildSuggestionCodigo({
-    required this.codigo,
-  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(1, 1))],
-      ),
-      child: Text(
-        codigo,
-        style: const TextStyle(fontSize: 12),
+    return SafeArea(
+      child: DropdownMenu<EntryAutocomplete>(
+        controller: widget.controller,
+        menuHeight: 400,
+        requestFocusOnTap: true,
+        enableFilter: widget.enabled,
+        enableSearch: widget.enabled,
+        enabled: widget.enabled,
+        expandedInsets: EdgeInsets.zero,
+        trailingIcon: const Icon(Icons.arrow_drop_down, size: 20),
+        selectedTrailingIcon: const Icon(Icons.arrow_drop_up, size: 20),
+        leadingIcon: const Icon(Icons.search),
+        hintText: entrySelected2 != '' ? entrySelected2 : "Buscar ${widget.label} ...",
+        textStyle: const TextStyle(fontSize: 12),
+        inputDecorationTheme: const InputDecorationTheme(
+          constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderSide: BorderSide(),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
+        ),
+        onSelected: (EntryAutocomplete? entry) {
+          widget.onPressed?.call(entry!);
+          if (widget.controller != null) widget.controller!.text == entry!.title;
+        },
+        dropdownMenuEntries: dropdownMenuEntries,
       ),
     );
   }
-}
-
-class SuggestionModel {
-  final String title;
-  final String codigo;
-  final String subTitle;
-  final Widget details;
-  SuggestionModel({
-    required this.title,
-    required this.subTitle,
-    this.details = const SizedBox(width: 1, height: 1),
-    this.codigo = "",
-  });
 }

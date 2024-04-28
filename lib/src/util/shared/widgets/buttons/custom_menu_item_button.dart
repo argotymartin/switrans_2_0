@@ -53,10 +53,12 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
             transitionBuilder: (Widget child, Animation<double> animation) {
               return ScaleTransition(scale: animation, child: child);
             },
-            child: Text(
-              key: GlobalKey(),
-              _lastSelection,
-              style: const TextStyle(fontWeight: FontWeight.w300),
+            child: SizedBox(
+              child: Text(
+                key: GlobalKey(),
+                _lastSelection,
+                style: const TextStyle(fontWeight: FontWeight.w300),
+              ),
             ),
           ),
         ),
@@ -71,7 +73,10 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
         leadingIcon: Icon(Icons.circle_outlined, color: Theme.of(context).colorScheme.onPrimaryContainer),
         onPressed: selection.onPressed,
         trailingIcon: const SizedBox(width: 24),
-        child: Text(selection.label),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: Text(selection.label),
+        ),
       );
     }
 

@@ -151,7 +151,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
 
     return Column(
       children: [
-        Autocomplete2Input(
+        AutocompleteInput(
           entrySelected: entrySelected,
           enabled: widget.item.tipo != "TR",
           controller: _controller,

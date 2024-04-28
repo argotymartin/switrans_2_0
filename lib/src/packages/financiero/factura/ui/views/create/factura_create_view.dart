@@ -213,7 +213,7 @@ class _FieldCliente extends StatelessWidget {
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        Autocomplete2Input(
+        AutocompleteInput(
           label: "Cliente",
           entries: entries,
           onPressed: setValueCliente,
@@ -524,7 +524,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
               const SizedBox(width: 16),
               SizedBox(
                 width: 400,
-                child: Autocomplete2Input(
+                child: AutocompleteInput(
                   entries: entriesCentroCosto,
                   label: "Centro Costo",
                   entrySelected: entrySelected,
