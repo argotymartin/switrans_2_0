@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
-
-enum Tipo { item, text, boolean, select, date }
 
 class PlutoGridDataBuilder extends StatefulWidget {
   final List<Map<String, DataItemGrid>> plutoData;
@@ -52,7 +47,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
-              applyFormatterInEditing: true,
               enableAutoEditing: isEdit,
               title: tilte,
               field: key,
@@ -77,7 +71,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
-              enableAutoEditing: isEdit,
+              enableAutoEditing: false,
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
@@ -117,7 +111,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
         dato.forEach((key, value) {
           dataColumn.addEntries({key: value.value}.entries);
         });
-        dataColumn.addEntries({'cambios': ""}.entries);
+        dataColumn.addEntries({'cambios': ''}.entries);
         final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
         dataRows.add(row);
       });
@@ -132,7 +126,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           rows: buildDataRows(context),
           onRowChecked: (event) {
             if (event.row == null || event.rowIdx == null || event.isChecked == null) return;
-
             if (event.isChecked! == true) {
               Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
                 (entry) {
@@ -146,6 +139,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             } else {
               selectedMap.remove(event.rowIdx);
             }
+            print(selectedMap);
             setState(() => listValues = selectedMap.values.toList());
             widget.onRowChecked!.call(listValues);
           },

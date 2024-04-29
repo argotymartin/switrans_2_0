@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TipoImpuestoCreateView extends StatelessWidget {
@@ -57,7 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomTextInput(title: "Nombre", controller: controller),
+              TextInputTitle(title: "Nombre", controller: controller),
               const SizedBox(),
             ],
           ),

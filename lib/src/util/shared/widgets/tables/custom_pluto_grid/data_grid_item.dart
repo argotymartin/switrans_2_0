@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
+enum Tipo { item, text, boolean, select, date }
 
 class DataItemGrid {
   final Tipo type;

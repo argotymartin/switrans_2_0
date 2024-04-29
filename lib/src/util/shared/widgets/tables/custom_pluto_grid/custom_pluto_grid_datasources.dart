@@ -10,6 +10,10 @@ class TablePlutoGridDataSource {
   }
 
   static Map<String, PlutoCell> _cellsByColumn(List<PlutoColumn> columns, Map<String, dynamic> dataColumn) {
-    return Map.fromEntries(columns.map((column) => MapEntry(column.field, PlutoCell(value: dataColumn[column.field]))));
+    return Map.fromEntries(columns.map((column) => MapEntry(
+        column.field,
+        PlutoCell(
+          value: dataColumn[column.field],
+        ))));
   }
 }

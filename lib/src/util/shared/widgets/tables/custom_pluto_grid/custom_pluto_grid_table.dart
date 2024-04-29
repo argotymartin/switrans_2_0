@@ -33,8 +33,15 @@ class CustomPlutoGridTable extends StatelessWidget {
           columnFilter ? stateManager.setShowColumnFilter(true) : null;
         },
         onRowChecked: onRowChecked,
+        onSelected: (event) {
+          print("onSelected: ");
+          print(event.selectedRows);
+        },
+
         //onRowDoubleTap: onRowDoubleTap,
         configuration: PlutoGridConfiguration(
+          enableMoveHorizontalInEditing: true,
+          enableMoveDownAfterSelecting: true,
           style: PlutoGridStyleConfig(
             checkedColor: Theme.of(context).colorScheme.inversePrimary,
             activatedColor: Theme.of(context).colorScheme.onPrimary,

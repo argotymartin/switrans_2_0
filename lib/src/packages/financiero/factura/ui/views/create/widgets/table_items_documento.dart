@@ -260,7 +260,12 @@ class _BuildCantidad extends StatelessWidget {
       context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
     }
 
-    return NumberInput(colorText: Colors.blue.shade700, onChanged: onChanged, initialValue: item.cantidad.toString());
+    return NumberInput(
+      colorText: Colors.blue.shade700,
+      onChanged: onChanged,
+      initialValue: item.cantidad.toString(),
+      title: "",
+    );
   }
 }
 

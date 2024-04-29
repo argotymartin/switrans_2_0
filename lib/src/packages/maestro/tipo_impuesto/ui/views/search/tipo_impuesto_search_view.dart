@@ -3,14 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_web_date_picker.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_data_builder.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_table.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TipoImpuestoSearchView extends StatelessWidget {
@@ -48,18 +41,13 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    final TextEditingController fechaInicioController = TextEditingController();
-    final TextEditingController fechaFinController = TextEditingController();
     final formKey = GlobalKey<FormState>();
 
     final TipoImpuestoBloc tipoImpuestoBloc = context.read<TipoImpuestoBloc>();
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty &&
-          codigoController.text.isEmpty &&
-          fechaInicioController.text.isEmpty &&
-          fechaFinController.text.isEmpty;
+      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;
@@ -82,10 +70,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
-              CustomNumberInput(title: "Codigo", controller: codigoController),
-              CustomWebDatePicker(title: "Fecha Inicial", controller: fechaInicioController),
-              CustomWebDatePicker(title: "Fecha Final", controller: fechaFinController),
+              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              NumberInputTitle(title: "Codigo", controller: codigoController),
             ],
           ),
           BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
@@ -132,10 +118,10 @@ class _BluildDataTable extends StatelessWidget {
     return BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
       builder: (context, state) {
         if (state is TipoImpuestoConsultedState) {
-          return CustomPlutoGridTable(
-            columns: CustomPlutoGridDataBuilder.buildColumns(context),
-            rows: CustomPlutoGridDataBuilder.buildDataRows(state.tipoImpuestos, context),
-          );
+          //return CustomPlutoGridTable(
+          //  columns: CustomPlutoGridDataBuilder.buildColumns(context),
+          //  rows: CustomPlutoGridDataBuilder.buildDataRows(state.tipoImpuestos, context),
+          //);
         }
         return const SizedBox();
       },

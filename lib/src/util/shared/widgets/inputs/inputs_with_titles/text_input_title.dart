@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 
-class NumberInputTitle extends StatefulWidget {
+class TextInputTitle extends StatefulWidget {
   final String initialValue;
   final String title;
   final int minLength;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
-  final bool isValidator;
 
-  const NumberInputTitle({
+  const TextInputTitle({
     super.key,
     this.controller,
     this.onChanged,
     this.initialValue = "",
     this.title = "",
-    this.minLength = 1,
-    this.isValidator = false,
+    this.minLength = 3,
   });
 
   @override
-  State<NumberInputTitle> createState() => _CustomTextInputState();
+  State<TextInputTitle> createState() => _TextInputTitleState();
 }
 
-class _CustomTextInputState extends State<NumberInputTitle> {
+class _TextInputTitleState extends State<TextInputTitle> {
   double higth = 38;
   @override
   Widget build(BuildContext context) {
@@ -35,24 +33,14 @@ class _CustomTextInputState extends State<NumberInputTitle> {
         widget.title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         SizedBox(
             height: higth,
-            child: NumberInput(
-              colorText: Colors.black,
-              title: widget.title,
+            child: TextInput(
               controller: widget.controller,
+              initialValue: widget.initialValue,
+              minLength: widget.minLength,
               onChanged: widget.onChanged,
+              title: widget.title,
             )),
       ],
     );
-  }
-
-  String? onValidator(String? value) {
-    if (value != null) {
-      if (value.length < widget.minLength) {
-        higth = higth + 24;
-        setState(() {});
-        return "El campo debe ser minimo de ${widget.minLength} caracteres";
-      }
-    }
-    return null;
   }
 }

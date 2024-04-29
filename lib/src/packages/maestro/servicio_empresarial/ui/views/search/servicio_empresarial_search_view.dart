@@ -4,14 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 
 class ServicoEmpresarialSearchView extends StatelessWidget {
   const ServicoEmpresarialSearchView({super.key});
@@ -48,7 +42,6 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    final TextEditingController typeController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
@@ -56,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && typeController.text.isEmpty;
+      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;
@@ -78,8 +71,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomNumberInput(title: "Codigo", controller: codigoController),
-              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
+              NumberInputTitle(title: "Codigo", controller: codigoController),
+              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
             ],
           ),
           BlocBuilder<ServicioEmpresarialBloc, ServicioEmpresarialState>(

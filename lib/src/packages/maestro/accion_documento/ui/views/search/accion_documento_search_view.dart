@@ -4,14 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_number_input.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/custom_text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 
 class AccionDocumentoSearchView extends StatelessWidget {
   const AccionDocumentoSearchView({super.key});
@@ -79,8 +73,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: [
           BuildRowsForm(
             children: [
-              CustomNumberInput(title: "Codigo", controller: codigoController),
-              CustomTextInput(title: "Nombre", controller: nombreController, minLength: 0),
+              NumberInputTitle(title: "Codigo", controller: codigoController),
+              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               FieldTipoDocumento(typeController),
             ],
           ),
