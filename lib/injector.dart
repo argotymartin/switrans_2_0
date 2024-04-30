@@ -16,6 +16,10 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasorc
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/db/modulo_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/modulo_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
@@ -58,4 +62,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<ServicioEmpresarialDB>(ServicioEmpresarialDB());
   injector.registerSingleton<AbstractServicioEmpresarialRepository>(ServicioEmpresarialDBImpl(injector()));
   injector.registerSingleton<ServicioEmpresarialBloc>(ServicioEmpresarialBloc(injector()));
+
+  injector.registerSingleton<ModuloApi>(ModuloApi(injector()));
+  injector.registerSingleton<AbstractModuloRepository>(ModuloRepositoryImpl(injector()));
+  injector.registerSingleton<ModuloBloc>(ModuloBloc(injector()));
 }

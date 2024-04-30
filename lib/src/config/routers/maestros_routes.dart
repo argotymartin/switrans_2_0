@@ -10,8 +10,10 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
-
-import '../../packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";
@@ -21,6 +23,7 @@ class MaestrosRoutes {
     routes.add(accionDocumentos());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());
+    routes.add(routerModulo());
     return routes;
   }
 
@@ -93,6 +96,38 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const ServicoEmpresarialSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerModulo() {
+    const String modulePath = "modulo";
+    return ShellRoute(
+      builder: (context, state, child) {
+        return FutureBuilder(
+          future: context.read<ModuloBloc>().onGetPaquetes(),
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MenuLayout(child: child);
+            }
+            return const MenuLayout(child: SplashView());
+          },
+        );
+      },
+      routes: [
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (context, GoRouterState state) {
+            return const ModuloCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const ModuloSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
