@@ -24,7 +24,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
   Widget build(BuildContext context) {
     bool isEntered = widget.paquete.isSelected;
     final colorScheme = Theme.of(context).colorScheme;
-    List<ModulosSidebar> modulos = widget.paquete.modulos.map((e) => ModulosSidebar(modulo: e, paquete: widget.paquete)).toList();
+    List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
     return Column(
       children: [
         InkWell(
@@ -32,7 +32,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
             setState(
               () {
                 isEntered = !isEntered;
-                context.read<PaqueteMenuBloc>().getPaqueteSelected(widget.paquete, isEntered);
+                context.read<PaqueteMenuBloc>().onPaqueteSelected(widget.paquete, isEntered);
                 widget.isMimimize ? showPopoverImpl(context, modulos, widget.paquete) : null;
               },
             );
@@ -41,7 +41,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
             onHover: (_) => setState(() => isHovered = true),
             onExit: (_) => setState(() => isHovered = false),
             child: Material(
-              color: isHovered || widget.paquete.isSelected ? colorScheme.onPrimaryContainer.withOpacity(0.2) : Colors.transparent,
+              color: isHovered || widget.paquete.isSelected ? colorScheme.onPrimaryContainer.withOpacity(0.1) : Colors.transparent,
               child: BuildOptionPaqueteMenu(
                 isMinimized: widget.isMimimize,
                 paquete: widget.paquete,

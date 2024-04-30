@@ -18,39 +18,48 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
       emit(PaqueteMenuSuccesState(paquetes: dataState.data!));
     });
 
-    on<ChangedPaqueteMenuEvent>((event, emit) {
-      final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-        // paquete.isSelected = (paquete == event.paquete) ? true : false;
-        paquete.modulos = paquete.modulos.map((modulo) {
-          modulo.isSelected = (modulo == event.modulo) ? true : false;
-          modulo.paginas = modulo.paginas.map((pagina) {
-            pagina.isSelected = (pagina == event.pagina) ? true : false;
-            return pagina;
-          }).toList();
-          return modulo;
-        }).toList();
-        return paquete;
-      }).toList();
-
-      emit(const PaqueteMenuLoadingState());
-      emit(PaqueteMenuSuccesState(paquetes: paquetes));
-    });
-
     on<SelectedPaqueteMenuEvent>((event, emit) {
       emit(const PaqueteMenuLoadingState());
       emit(PaqueteMenuSuccesState(paquetes: event.paquetes));
     });
   }
 
-  void getPaqueteSelected(PaqueteMenu paqueteMenu, bool isSelected) {
-    List<PaqueteMenu> paquetes = state.paquetes.map((e) {
-      e.isSelected = false;
-      if (e.codigo == paqueteMenu.codigo) {
-        e.isSelected = isSelected;
-      }
-      return e;
+  void onPaqueteSelected(PaqueteMenu paqueteMenu, bool isSelected) {
+    List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+      paquete.isSelected = (paquete == paqueteMenu) ? isSelected : false;
+      return paquete;
     }).toList();
 
     add(SelectedPaqueteMenuEvent(paquetes));
+  }
+
+  void onModuloSelected(ModuloMenu moduloMenu, bool isSelected) {
+    final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+      paquete.modulos = paquete.modulos.map((modulo) {
+        modulo.isSelected = (modulo == moduloMenu) ? isSelected : false;
+        return modulo;
+      }).toList();
+      return paquete;
+    }).toList();
+
+    add(SelectedPaqueteMenuEvent(paquetes));
+  }
+
+  String onPaginaSelected(PaginaMenu paginaMenu, bool isSelected) {
+    String path = '';
+    final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+      paquete.modulos = paquete.modulos.map((modulo) {
+        modulo.paginas = modulo.paginas.map((pagina) {
+          pagina.isSelected = (pagina == paginaMenu) ? isSelected : false;
+          if (pagina == paginaMenu) path = '${paquete.path}${modulo.path}${pagina.path}';
+          return pagina;
+        }).toList();
+        return modulo;
+      }).toList();
+      return paquete;
+    }).toList();
+
+    add(SelectedPaqueteMenuEvent(paquetes));
+    return path;
   }
 }
