@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/routers/app_router.dart';
-import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
-import 'package:switrans_2_0/src/globals/menu/data/models/paquete_menu_model.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/footer_sidebar.dart';
@@ -44,7 +40,6 @@ class Sidebar extends StatelessWidget {
                                 paquetesSidebar.add(PaquetesSidebar(
                                   paquete: paquete,
                                   isMimimize: state.isMinimize,
-                                  onPressed: () {},
                                 ));
                               }
                               return Column(children: paquetesSidebar);
@@ -52,7 +47,7 @@ class Sidebar extends StatelessWidget {
                           ),
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
-                          PaquetesSidebar(
+                          /*PaquetesSidebar(
                             paquete: PaqueteMenuModel(
                               id: "",
                               nombre: "Logout",
@@ -67,7 +62,7 @@ class Sidebar extends StatelessWidget {
                               context.read<AuthBloc>().onLogoutAuthEvent();
                               context.go(AppRouter.login);
                             },
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

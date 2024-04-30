@@ -23,11 +23,11 @@ class ChangedPaqueteMenuEvent extends PaqueteMenuEvent {
 }
 
 class SelectedPaqueteMenuEvent extends PaqueteMenuEvent {
-  final PaqueteMenu paquete;
-  const SelectedPaqueteMenuEvent(this.paquete);
+  final List<PaqueteMenu> paquetes;
+  const SelectedPaqueteMenuEvent(this.paquetes);
 }
 
 class SelectedModuloMenuEvent extends PaqueteMenuEvent {
-  final ModuloMenu modulo;
-  const SelectedModuloMenuEvent(this.modulo);
+  final List<PaginaMenu> paqueteMenu;
+  const SelectedModuloMenuEvent(this.paqueteMenu);
 }

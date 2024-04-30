@@ -23,32 +23,34 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6),
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
       child: InkWell(
         onTap: () => setState(() {
           context.read<PaqueteMenuBloc>().add(ChangedPaqueteMenuEvent(widget.paquete, widget.modulo, widget.pagina));
           final path = "${widget.paquete.path}${widget.modulo.path}${widget.pagina.path}";
           context.go(path);
         }),
-        child: MouseRegion(
-          onEnter: (_) => setState(() => isHovered = true),
-          onExit: (_) => setState(() => isHovered = false),
+        child: Material(
+          color: isHovered || widget.pagina.isSelected
+              ? Theme.of(context).colorScheme.onPrimaryContainer
+              : Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6),
           child: Stack(
             children: [
               Container(
                 margin: const EdgeInsets.only(left: 42.5),
                 color: Theme.of(context).colorScheme.primaryContainer,
-                width: 1,
+                width: isHovered || widget.pagina.isSelected ? 2 : 1,
                 height: 40,
               ),
               Container(
-                margin: const EdgeInsets.only(left: 42.5, top: 10, bottom: 10, right: 10),
+                margin: const EdgeInsets.only(left: 43, top: 10, bottom: 10, right: 10),
                 child: Row(
                   children: [
                     Container(
                       width: 20,
-                      height: isHovered ? 4 : 2,
+                      height: isHovered || widget.pagina.isSelected ? 2 : 1,
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,
                       ),
@@ -59,7 +61,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
                       widget.pagina.texto,
                       style: GoogleFonts.roboto(
                         fontSize: 13,
-                        fontWeight: isHovered ? FontWeight.w400 : FontWeight.w200,
+                        fontWeight: isHovered || widget.pagina.isSelected ? FontWeight.w400 : FontWeight.w200,
                         color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                     ),

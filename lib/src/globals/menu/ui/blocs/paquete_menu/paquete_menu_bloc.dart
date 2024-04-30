@@ -20,7 +20,7 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
 
     on<ChangedPaqueteMenuEvent>((event, emit) {
       final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-        paquete.isSelected = (paquete == event.paquete) ? true : false;
+        // paquete.isSelected = (paquete == event.paquete) ? true : false;
         paquete.modulos = paquete.modulos.map((modulo) {
           modulo.isSelected = (modulo == event.modulo) ? true : false;
           modulo.paginas = modulo.paginas.map((pagina) {
@@ -37,26 +37,20 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
     });
 
     on<SelectedPaqueteMenuEvent>((event, emit) {
-      final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-        if (paquete == event.paquete) {}
-        return paquete;
-      }).toList();
-
       emit(const PaqueteMenuLoadingState());
-      emit(PaqueteMenuSuccesState(paquetes: paquetes));
+      emit(PaqueteMenuSuccesState(paquetes: event.paquetes));
     });
+  }
 
-    on<SelectedModuloMenuEvent>((event, emit) {
-      final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-        paquete.modulos = paquete.modulos.map((modulo) {
-          modulo.isSelected = (modulo == event.modulo) ? true : false;
-          return modulo;
-        }).toList();
-        return paquete;
-      }).toList();
+  void getPaqueteSelected(PaqueteMenu paqueteMenu, bool isSelected) {
+    List<PaqueteMenu> paquetes = state.paquetes.map((e) {
+      e.isSelected = false;
+      if (e.codigo == paqueteMenu.codigo) {
+        e.isSelected = isSelected;
+      }
+      return e;
+    }).toList();
 
-      emit(const PaqueteMenuLoadingState());
-      emit(PaqueteMenuSuccesState(paquetes: paquetes));
-    });
+    add(SelectedPaqueteMenuEvent(paquetes));
   }
 }
