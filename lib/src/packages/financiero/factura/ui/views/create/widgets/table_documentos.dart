@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/data/datasorces/datatables/documentos_table_data_builder.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/datatables/documentos_table_data_builder.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/blocs/item_documento/item_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
@@ -26,7 +26,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       child: InkWell(
         onTap: () => setState(() {
           isEntered = !isEntered;
-          final path = context.read<PaqueteMenuBloc>().onPaginaSelected(widget.pagina, isEntered);
+          final path = context.read<MenuSidebarBloc>().onPaginaSelected(widget.pagina, isEntered);
           context.go(path);
         }),
         child: Material(

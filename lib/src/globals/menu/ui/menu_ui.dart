@@ -11,5 +11,5 @@ export 'package:switrans_2_0/src/globals/menu/ui/layouts/error.layout.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/blocs/menu/menu_bloc.dart';
-export 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+export 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/blocs/theme/theme_cubit.dart';

@@ -4,23 +4,22 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_paquete_menu_repository.dart';
-part 'paquete_menu_event.dart';
-part 'paquete_menu_state.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_menu_sidebar_repository.dart';
+part 'menu_sidebar_event.dart';
+part 'menu_sidebar_state.dart';
 
-class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
-  final AbstractPaqueteMenuRepository _moduloRepository;
-  PaqueteMenuBloc(this._moduloRepository) : super(PaqueteMenuInitial()) {
-    on<PaqueteMenuEvent>((event, emit) {});
-    on<ActivetePaqueteMenuEvent>((event, emit) async {
-      emit(const PaqueteMenuLoadingState());
+class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
+  final AbstractMenuSidebarRepository _moduloRepository;
+  MenuSidebarBloc(this._moduloRepository) : super(const MenuSidebarInitialState()) {
+    on<ActiveteMenuSidebarEvent>((event, emit) async {
+      emit(const MenuSidebarLoadingState());
       final dataState = await _moduloRepository.getModulos();
-      emit(PaqueteMenuSuccesState(paquetes: dataState.data!));
+      emit(MenuSidebarSuccesState(paquetes: dataState.data!));
     });
 
-    on<SelectedPaqueteMenuEvent>((event, emit) {
-      emit(const PaqueteMenuLoadingState());
-      emit(PaqueteMenuSuccesState(paquetes: event.paquetes));
+    on<SelectedMenuSidebarEvent>((event, emit) {
+      emit(const MenuSidebarLoadingState());
+      emit(MenuSidebarSuccesState(paquetes: event.paquetes));
     });
   }
 
@@ -30,7 +29,7 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
       return paquete;
     }).toList();
 
-    add(SelectedPaqueteMenuEvent(paquetes));
+    add(SelectedMenuSidebarEvent(paquetes));
   }
 
   void onModuloSelected(ModuloMenu moduloMenu, bool isSelected) {
@@ -42,7 +41,7 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
       return paquete;
     }).toList();
 
-    add(SelectedPaqueteMenuEvent(paquetes));
+    add(SelectedMenuSidebarEvent(paquetes));
   }
 
   String onPaginaSelected(PaginaMenu paginaMenu, bool isSelected) {
@@ -59,7 +58,7 @@ class PaqueteMenuBloc extends Bloc<PaqueteMenuEvent, PaqueteMenuState> {
       return paquete;
     }).toList();
 
-    add(SelectedPaqueteMenuEvent(paquetes));
+    add(SelectedMenuSidebarEvent(paquetes));
     return path;
   }
 }

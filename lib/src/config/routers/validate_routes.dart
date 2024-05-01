@@ -10,7 +10,7 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 class ValidateRoutes {
   static const login = "/sign-in";
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
-    final moduloBloc = context.read<PaqueteMenuBloc>();
+    final moduloBloc = context.read<MenuSidebarBloc>();
     final authBloc = context.read<AuthBloc>();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,7 +19,7 @@ class ValidateRoutes {
     if (isTokenValid) {
       int lengthModulos = moduloBloc.state.paquetes.length;
       if (lengthModulos < 1) {
-        moduloBloc.add(const ActivetePaqueteMenuEvent());
+        moduloBloc.add(const ActiveteMenuSidebarEvent());
       }
     }
     return isTokenValid ? state.path : login;

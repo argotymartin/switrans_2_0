@@ -33,7 +33,7 @@ class Sidebar extends StatelessWidget {
                           ProfileSidebar(isMenuIcon: state.isMinimize),
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Paquetes'),
-                          BlocBuilder<PaqueteMenuBloc, PaqueteMenuState>(
+                          BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
                             builder: (context, stateModulo) {
                               List<PaquetesSidebar> paquetesSidebar = [];
                               for (PaqueteMenu paquete in stateModulo.paquetes) {

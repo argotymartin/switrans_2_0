@@ -37,7 +37,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<ItemDocumentoBloc>(create: (_) => injector<ItemDocumentoBloc>()),
         BlocProvider<TipoImpuestoBloc>(create: (_) => injector<TipoImpuestoBloc>()),
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
-        BlocProvider<PaqueteMenuBloc>(create: (_) => injector()..add((const GetPaqueteMenuEvent()))),
+        BlocProvider<MenuSidebarBloc>(create: (_) => injector<MenuSidebarBloc>()),
         BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
         BlocProvider<AccionDocumentoBloc>(create: (_) => injector<AccionDocumentoBloc>()),
         BlocProvider<ServicioEmpresarialBloc>(create: (_) => injector<ServicioEmpresarialBloc>()),
@@ -66,12 +66,12 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   Future<void> _init() async {
     final authBloc = context.read<AuthBloc>();
-    final paqueteMenuBloc = context.read<PaqueteMenuBloc>();
+    final paqueteMenuBloc = context.read<MenuSidebarBloc>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token') ?? '';
     isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
-      paqueteMenuBloc.add(const ActivetePaqueteMenuEvent());
+      paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
     }
   }
 

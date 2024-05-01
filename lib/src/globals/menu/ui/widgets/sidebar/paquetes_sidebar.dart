@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/modulos_sidebar.dart';
 
@@ -32,7 +32,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
             setState(
               () {
                 isEntered = !isEntered;
-                context.read<PaqueteMenuBloc>().onPaqueteSelected(widget.paquete, isEntered);
+                context.read<MenuSidebarBloc>().onPaqueteSelected(widget.paquete, isEntered);
                 widget.isMimimize ? showPopoverImpl(context, modulos, widget.paquete) : null;
               },
             );
