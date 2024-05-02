@@ -1,18 +1,21 @@
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/filter_pocketbase.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/modulo_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/paquete_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/modulo_paquete_model.dart';
 
-class ModuloApi {
+class ModuloApiPocketBase {
   final Dio _dio;
-  ModuloApi(this._dio);
+  ModuloApiPocketBase(this._dio);
 
   Future<Response> getModulosApi(ModuloRequest request) async {
+    final paqueteId =  request.paquete == null ? '' : await getPaqueteId(request.paquete!);
+    paqueteId.isEmpty ? request.paquete = request.paquete : request.paquete = paqueteId;
     const url = '$kPocketBaseUrl/api/collections/modulo/records';
-    final queryParameters = {"filter": request.toPocketBaseFilter()};
+    final queryParameters = {"filter": FilterPocketBase().toPocketBaseFilter(request)};
     final response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
@@ -55,18 +58,37 @@ class ModuloApi {
   }
 
   Future<String> getPaqueteId(String paquete) async {
-    List<Paquete> paquetes = [];
+    List<ModuloPaquete> paquetes = [];
     final httpResponse = await getPaquetesApi();
     if (httpResponse.data != null) {
       final resp = httpResponse.data['items'];
-      paquetes = List<Paquete>.from(resp.map((x) => PaqueteModel.fromJson(x)));
+      paquetes = List<ModuloPaquete>.from(resp.map((x) => ModuloPaqueteModel.fromJson(x)));
     }
-    for (Paquete package in paquetes) {
+    for (ModuloPaquete package in paquetes) {
       if (package.codigo.toString() == paquete || package.nombre == paquete) {
         return package.paqueteId;
       }
     }
     return '';
+  }
+
+  Future<List<Modulo>> getPaqueteNombre(List<Modulo> response) async {
+    final List<Modulo> data = [];
+    List<ModuloPaquete> paquetes = [];
+    final httpResponse = await getPaquetesApi();
+    if (httpResponse.data != null) {
+      final resp = httpResponse.data['items'];
+      paquetes = List<ModuloPaquete>.from(resp.map((x) => ModuloPaqueteModel.fromJson(x)));
+    }
+    for (Modulo modulo in response) {
+      for (ModuloPaquete paquete in paquetes) {
+        if (paquete.paqueteId == modulo.paquete) {
+          modulo.paquete = paquete.nombre;
+          data.add(modulo);
+        }
+      }
+    }
+    return data;
   }
 
 }

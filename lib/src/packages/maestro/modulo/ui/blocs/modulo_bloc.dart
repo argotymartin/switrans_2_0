@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 
 part 'modulo_event.dart';
 part 'modulo_state.dart';
 
 class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
   final AbstractModuloRepository _repository;
-  List<Paquete> paquetes = [];
+  List<ModuloPaquete> paquetes = [];
 
   ModuloBloc(this._repository) : super(const ModuloInitialState()) {
     on<SetModuloEvent>(_onSetModulo);
@@ -21,9 +21,6 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
   }
 
   void _onSetModulo(SetModuloEvent event, Emitter<ModuloState> emit) async {
-    event.request.moduloPath = event.request.moduloPath?.replaceAll(' ', '_')
-        .replaceAll(RegExp(r'[^\w\s-]'), '')
-        .toLowerCase();
     emit(const ModuloLoadingState());
     final response = await _repository.setModuloService(event.request);
     if (response.data != null) {
@@ -46,19 +43,8 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
   void _onGetModulo(GetModuloEvent event, Emitter<ModuloState> emit) async {
     emit(const ModuloLoadingState());
     final response = await _repository.getModulosService(event.request);
-    await onGetPaquetes();
     if (response.data != null) {
-      final List<Modulo> data = [];
-      for (Modulo modulo in response.data!) {
-        for (Paquete paquete in paquetes) {
-          if (paquete.paqueteId == modulo.paquete) {
-            modulo.paquete = paquete.nombre;
-            data.add(modulo);
-            break;
-          }
-        }
-      }
-      emit(ModuloConsultedState(modulos: data));
+      emit(ModuloConsultedState(modulos: response.data!));
     } else {
       emit(ModuloExceptionState(exception: response.error));
     }

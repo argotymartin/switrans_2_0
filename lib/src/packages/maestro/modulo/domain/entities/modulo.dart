@@ -7,6 +7,7 @@ class Modulo {
    bool moduloVisible;
    String moduloIcono;
    String paquete;
+   bool moduloActivo;
    String fechaCreacion;
 
   Modulo({
@@ -18,6 +19,7 @@ class Modulo {
     required this.moduloVisible,
     required this.moduloIcono,
     required this.paquete,
+    required this.moduloActivo,
     required this.fechaCreacion
   });
 }

@@ -1,4 +1,4 @@
- class Paquete {
+ class ModuloPaquete {
   String paqueteId;
    int codigo;
    String nombre;
@@ -6,7 +6,7 @@
    bool visible;
    String path;
 
-  Paquete({
+  ModuloPaquete({
     required this.paqueteId,
     required this.codigo,
     required this.nombre,

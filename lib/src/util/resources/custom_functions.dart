@@ -12,4 +12,9 @@ class CustomFunctions {
 
     return Color.fromRGBO(red, green, blue, color.opacity);
   }
+
+  static String formatPath(String text) {
+    return "/${text.replaceAll(RegExp(r'\/'), '_').replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(' ', '_')}";
+  }
+
 }

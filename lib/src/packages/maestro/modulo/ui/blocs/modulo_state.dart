@@ -3,7 +3,7 @@ part of 'modulo_bloc.dart';
 sealed class ModuloState extends Equatable {
   final Modulo? modulo;
   final List<Modulo> modulos;
-  final List<Paquete> paquetes;
+  final List<ModuloPaquete> paquetes;
   final DioException? exception;
   final String error;
   const ModuloState({

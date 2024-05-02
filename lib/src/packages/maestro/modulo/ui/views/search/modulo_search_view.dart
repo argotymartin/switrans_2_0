@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/web_date_picker_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
@@ -48,8 +50,8 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    final TextEditingController fechaInicioController = TextEditingController();
-    final TextEditingController fechaFinController = TextEditingController();
+    final TextEditingController paqueteController = TextEditingController();
+    bool isActivo = true;
 
     final formKey = GlobalKey<FormState>();
 
@@ -58,7 +60,7 @@ class _BuildFieldsForm extends StatelessWidget {
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
       bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty &&
-          fechaInicioController.text.isEmpty && fechaFinController.text.isEmpty;
+          paqueteController.text.isEmpty && isActivo == null;
 
       if (isCampoVacio) {
         isValid = false;
@@ -69,8 +71,8 @@ class _BuildFieldsForm extends StatelessWidget {
         final request = ModuloRequest(
           moduloNombre: nombreController.text,
           moduloCodigo: int.tryParse(codigoController.text),
-          fechaInicial: fechaInicioController.text,
-          fechaFinal: fechaFinController.text,
+          paquete: paqueteController.text,
+          moduloActivo: isActivo
         );
         context.read<ModuloBloc>().add(GetModuloEvent(request));
       }
@@ -84,8 +86,15 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              WebDatePickerTitle(title: "Fecha Inicial", controller: fechaInicioController),
-              WebDatePickerTitle(title: "Fecha Final", controller: fechaFinController),
+              FieldPaquete(paqueteController),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Activo", style: AppTheme.titleStyle),
+                  const SizedBox(height: 8),
+                  SwitchBoxInput( value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                ]
+              )
             ],
           ),
           BlocBuilder<ModuloBloc, ModuloState>(
@@ -156,6 +165,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
         'icono': DataItemGrid(type: Tipo.text, value: modulo.moduloIcono, edit: false),
         'paquete': DataItemGrid(type: Tipo.text, value: modulo.paquete, edit: false),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: modulo.fechaCreacion, edit: false),
+        'activo': DataItemGrid(type: Tipo.boolean, value: modulo.moduloActivo, edit: false),
         'visible': DataItemGrid(type: Tipo.boolean, value: modulo.moduloVisible, edit: true),
       };
     }

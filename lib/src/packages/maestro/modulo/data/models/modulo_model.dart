@@ -10,6 +10,7 @@ class ModuloModel extends Modulo {
     required super.moduloVisible,
     required super.moduloIcono,
     required super.paquete,
+    required super.moduloActivo,
     required super.fechaCreacion,
   });
 
@@ -22,6 +23,7 @@ class ModuloModel extends Modulo {
     moduloVisible: json["modulo_visible"],
     moduloIcono: json["modulo_icono"],
     paquete: json["paquete"],
+    moduloActivo: json["modulo_activo"],
     fechaCreacion: json["created"].toString(),
   );
 }

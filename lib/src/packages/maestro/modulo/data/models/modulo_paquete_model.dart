@@ -1,7 +1,7 @@
-import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/paquete.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 
-class PaqueteModel extends Paquete {
-  PaqueteModel({
+class ModuloPaqueteModel extends ModuloPaquete {
+  ModuloPaqueteModel({
     required super.paqueteId,
     required super.codigo,
     required super.nombre,
@@ -10,7 +10,7 @@ class PaqueteModel extends Paquete {
     required super.path,
   });
 
-  factory PaqueteModel.fromJson(Map<String, dynamic> json) => PaqueteModel(
+  factory ModuloPaqueteModel.fromJson(Map<String, dynamic> json) => ModuloPaqueteModel(
     paqueteId: json['id'],
     codigo: json['codigo'],
     nombre: json['nombre'],
