@@ -13,12 +13,32 @@ class ModuloMenuModel extends ModuloMenu {
   });
 
   factory ModuloMenuModel.fromJson(Map<String, dynamic> json) => ModuloMenuModel(
+        codigo: json['codigo'],
+        icono: json['icono'],
+        texto: json['texto'],
+        path: json['path'],
+        paquete: json['paquete'],
+        detalles: json['detalles'],
+        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "codigo": codigo,
+        "icono": icono,
+        "texto": texto,
+        "path": path,
+        "paquete": paquete,
+        "detalles": detalles,
+        "paginas": paginas,
+      };
+
+  factory ModuloMenuModel.fromJsonPocketbase(Map<String, dynamic> json) => ModuloMenuModel(
         codigo: json['modulo_codigo'],
         icono: json['modulo_icono'],
         texto: json['modulo_nombre'],
         path: json['modulo_path'],
         paquete: json['paquete'],
         detalles: json['modulo_detalles'],
-        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJson(x))),
+        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJsonPocketbase(x))),
       );
 }

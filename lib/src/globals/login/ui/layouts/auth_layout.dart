@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -19,7 +19,7 @@ class AuthLayout extends StatelessWidget {
             ErrorDialog.showDioException(context, state.error!);
           }
           if (state is AuthSuccesState) {
-            context.read<PaqueteMenuBloc>().add(const ActivetePaqueteMenuEvent());
+            context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
             context.go("/");
           }
           if (state is AuthLoadInProgressState) {

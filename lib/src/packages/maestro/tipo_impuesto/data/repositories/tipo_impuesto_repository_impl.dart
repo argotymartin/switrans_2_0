@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasorces/api/tipo_impuesto_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasources/api/tipo_impuesto_api.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/models/tipo_impuesto_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/tipo_impuesto.dart';

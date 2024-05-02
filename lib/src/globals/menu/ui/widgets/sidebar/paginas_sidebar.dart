@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/paquete_menu/paquete_menu_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
   final PaginaMenu pagina;
-  final ModuloMenu modulo;
-  final PaqueteMenu paquete;
-  const PaginasSidebar({super.key, required this.pagina, required this.modulo, required this.paquete});
+  const PaginasSidebar({super.key, required this.pagina});
 
   @override
   State<PaginasSidebar> createState() => _PaginasSidebarState();
@@ -20,35 +16,38 @@ class PaginasSidebar extends StatefulWidget {
 
 class _PaginasSidebarState extends State<PaginasSidebar> {
   bool isHovered = false;
+  bool isEntered = false;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6),
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
       child: InkWell(
         onTap: () => setState(() {
-          context.read<PaqueteMenuBloc>().add(ChangedPaqueteMenuEvent(widget.paquete, widget.modulo, widget.pagina));
-          final path = "${widget.paquete.path}${widget.modulo.path}${widget.pagina.path}";
+          isEntered = !isEntered;
+          final path = context.read<MenuSidebarBloc>().onPaginaSelected(widget.pagina, isEntered);
           context.go(path);
         }),
-        child: MouseRegion(
-          onEnter: (_) => setState(() => isHovered = true),
-          onExit: (_) => setState(() => isHovered = false),
+        child: Material(
+          color: isHovered || widget.pagina.isSelected
+              ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.5)
+              : Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.4),
           child: Stack(
             children: [
               Container(
                 margin: const EdgeInsets.only(left: 42.5),
                 color: Theme.of(context).colorScheme.primaryContainer,
-                width: 1,
+                width: isHovered || widget.pagina.isSelected ? 2 : 1,
                 height: 40,
               ),
               Container(
-                margin: const EdgeInsets.only(left: 42.5, top: 10, bottom: 10, right: 10),
+                margin: const EdgeInsets.only(left: 43, top: 10, bottom: 10, right: 10),
                 child: Row(
                   children: [
                     Container(
                       width: 20,
-                      height: isHovered ? 4 : 2,
+                      height: isHovered || widget.pagina.isSelected ? 2 : 1,
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,
                       ),
@@ -59,7 +58,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
                       widget.pagina.texto,
                       style: GoogleFonts.roboto(
                         fontSize: 13,
-                        fontWeight: isHovered ? FontWeight.w400 : FontWeight.w200,
+                        fontWeight: isHovered || widget.pagina.isSelected ? FontWeight.w400 : FontWeight.w200,
                         color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                     ),

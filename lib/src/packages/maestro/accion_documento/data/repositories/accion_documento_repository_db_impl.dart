@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasorces/db/accion_documento_db.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasources/db/accion_documento_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/accion_documento_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/tipo_documento_accion_documento_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/accion_documento.dart';
