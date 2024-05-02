@@ -92,7 +92,7 @@ class MaestrosRoutes {
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const ServicoEmpresarialSearchView(),
+          builder: (_, state) => const ServicoEmpresarialSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

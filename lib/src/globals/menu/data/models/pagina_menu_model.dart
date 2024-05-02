@@ -12,6 +12,22 @@ class PaginaMenuModel extends PaginaMenu {
   factory PaginaMenuModel.fromJson(Map<String, dynamic> json) => PaginaMenuModel(
         id: json["id"],
         modulo: json["modulo"],
+        codigo: json["codigo"],
+        texto: json["texto"],
+        path: json["path"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "modulo": modulo,
+        "codigo": codigo,
+        "texto": texto,
+        "path": path,
+      };
+
+  factory PaginaMenuModel.fromJsonPocketbase(Map<String, dynamic> json) => PaginaMenuModel(
+        id: json["id"],
+        modulo: json["modulo"],
         codigo: json["pagina_codigo"],
         texto: json["pagina_texto"],
         path: json["pagina_path"],

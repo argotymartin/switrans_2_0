@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:switrans_2_0/src/globals/menu/data/models/paquete_menu_model.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
@@ -11,15 +14,32 @@ part 'menu_sidebar_state.dart';
 class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
   final AbstractMenuSidebarRepository _moduloRepository;
   MenuSidebarBloc(this._moduloRepository) : super(const MenuSidebarInitialState()) {
+    List<PaqueteMenu> paquetes2 = [];
     on<ActiveteMenuSidebarEvent>((event, emit) async {
       emit(const MenuSidebarLoadingState());
       final dataState = await _moduloRepository.getModulos();
-      emit(MenuSidebarSuccesState(paquetes: dataState.data!));
+      paquetes2 = dataState.data!;
+      emit(MenuSidebarSuccesState(paquetes: paquetes2));
     });
 
     on<SelectedMenuSidebarEvent>((event, emit) {
       emit(const MenuSidebarLoadingState());
       emit(MenuSidebarSuccesState(paquetes: event.paquetes));
+    });
+
+    on<SearchMenuSidebarEvent>((event, emit) {
+      emit(const MenuSidebarLoadingState());
+
+      final String encodedPackages = jsonEncode(paquetes2);
+      final List<PaqueteMenu> filteredPackages =
+          jsonDecode(encodedPackages).map<PaqueteMenu>((dynamic packageJson) => PaqueteMenuModel.fromJson(packageJson)).toList();
+
+      for (var paquete in filteredPackages) {
+        paquete.modulos = paquete.modulos.where((modulo) => modulo.texto.toLowerCase().contains(event.query.toLowerCase())).toList();
+        paquete.isSelected = true;
+      }
+
+      emit(MenuSidebarSuccesState(paquetes: filteredPackages));
     });
   }
 

@@ -7,8 +7,9 @@ sealed class MenuSidebarEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetMenuSidebarEvent extends MenuSidebarEvent {
-  const GetMenuSidebarEvent();
+class SearchMenuSidebarEvent extends MenuSidebarEvent {
+  final String query;
+  const SearchMenuSidebarEvent(this.query);
 }
 
 class ActiveteMenuSidebarEvent extends MenuSidebarEvent {

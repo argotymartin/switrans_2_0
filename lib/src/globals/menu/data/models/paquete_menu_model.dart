@@ -21,4 +21,24 @@ class PaqueteMenuModel extends PaqueteMenu {
         visible: json['visible'],
         modulos: List<ModuloMenuModel>.from(json['modulos'].map((x) => ModuloMenuModel.fromJson(x))),
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nombre": nombre,
+        "codigo": codigo,
+        "icono": icono,
+        "visible": visible,
+        "modulos": modulos,
+        "path": path,
+      };
+
+  factory PaqueteMenuModel.fromJsonPocketBase(Map<String, dynamic> json) => PaqueteMenuModel(
+        id: json['id'],
+        nombre: json['nombre'],
+        codigo: json['codigo'],
+        icono: json['icono'],
+        path: json['path'],
+        visible: json['visible'],
+        modulos: List<ModuloMenuModel>.from(json['modulos'].map((x) => ModuloMenuModel.fromJsonPocketbase(x))),
+      );
 }

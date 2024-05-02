@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/footer_sidebar.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/search_modulo.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class Sidebar extends StatelessWidget {
@@ -32,6 +33,7 @@ class Sidebar extends StatelessWidget {
                           LogoSidebar(isMenuIcon: state.isMinimize),
                           ProfileSidebar(isMenuIcon: state.isMinimize),
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
+                          const SearchModulo(),
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Paquetes'),
                           BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
                             builder: (context, stateModulo) {
