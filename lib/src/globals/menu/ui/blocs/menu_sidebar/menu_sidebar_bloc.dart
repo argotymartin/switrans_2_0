@@ -30,6 +30,11 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     on<SearchMenuSidebarEvent>((event, emit) {
       emit(const MenuSidebarLoadingState());
 
+      if (event.query.isEmpty) {
+        emit(MenuSidebarSuccesState(paquetes: paquetes2));
+        return;
+      }
+
       final String encodedPackages = jsonEncode(paquetes2);
       final List<PaqueteMenu> filteredPackages =
           jsonDecode(encodedPackages).map<PaqueteMenu>((dynamic packageJson) => PaqueteMenuModel.fromJson(packageJson)).toList();
@@ -38,8 +43,9 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
         paquete.modulos = paquete.modulos.where((modulo) => modulo.texto.toLowerCase().contains(event.query.toLowerCase())).toList();
         paquete.isSelected = true;
       }
+      final paquetesfilter = filteredPackages.where((element) => element.modulos.isNotEmpty).toList();
 
-      emit(MenuSidebarSuccesState(paquetes: filteredPackages));
+      emit(MenuSidebarSuccesState(paquetes: paquetesfilter));
     });
   }
 
