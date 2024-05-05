@@ -6,6 +6,9 @@ stages:
   - build
   - deploy
 
+before_script:
+  - /home/evargas/fvm/default/bin/flutter pub get
+
 lints:
   stage: lints
   script:
