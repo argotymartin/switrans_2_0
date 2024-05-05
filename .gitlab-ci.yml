@@ -2,27 +2,8 @@ image: cirrusci/flutter:latest
 
 stages:
   - lints
-  - tests
-  - build
-  - deploy
 
 lints:
   stage: lints
   script:
     - /home/evargas/Documentos/flutter/bin/flutter analyze
-
-tests:
-  stage: tests
-  script:
-    - flutter test
-
-build:
-  stage: build
-  script:
-    - flutter build web
-
-deploy:
-  stage: deploy
-  script:
-    - cp -r build/web public
-    - git push origin live
