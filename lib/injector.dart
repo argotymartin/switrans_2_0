@@ -25,7 +25,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositorie
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 
-final injector = GetIt.instance;
+final GetIt injector = GetIt.instance;
 
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());

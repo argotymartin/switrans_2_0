@@ -15,7 +15,7 @@ class ErrorDialog {
     ErrorBackendDio: ErrorBackendDioStrategy(),
   };
 
-  static showDioException(BuildContext context, DioException exception) {
+  static void showDioException(BuildContext context, DioException exception) {
     if (exception.response?.data != null) {
       final Response response = exception.response!;
       final errorType = _getErrorType(response.data);
@@ -27,7 +27,7 @@ class ErrorDialog {
     }
   }
 
-  static _getErrorType(dynamic errorData) {
+  static dynamic _getErrorType(dynamic errorData) {
     if (errorData is Map) {
       if (errorData.containsKey('status') && errorData.containsKey('error')) {
         return ErrorGenericDio;
@@ -39,7 +39,7 @@ class ErrorDialog {
     }
   }
 
-  static _showErrorDialog(BuildContext context, content) {
+  static void _showErrorDialog(BuildContext context, content) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(

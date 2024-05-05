@@ -139,7 +139,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             } else {
               selectedMap.remove(event.rowIdx);
             }
-            print(selectedMap);
+            //print(selectedMap);
             setState(() => listValues = selectedMap.values.toList());
             widget.onRowChecked!.call(listValues);
           },
