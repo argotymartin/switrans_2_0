@@ -6,9 +6,6 @@ stages:
   - build
   - deploy
 
-before_script:
-  - flutter pub get
-
 lints:
   stage: lints
   script:
