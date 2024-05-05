@@ -23,19 +23,15 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
           context.go('/maestros/servicio_empresarial/buscar');
         }
       },
-      child: Stack(
+      child: ListView(
+        padding: const EdgeInsets.only(right: 32, top: 8),
+        physics: const ClampingScrollPhysics(),
         children: [
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: [
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
-                title: "Registrar Nuevo",
-                icon: Icons.add_circle_outline_outlined,
-                child: _BuildFieldsForm(),
-              ),
-            ],
+          BuildViewDetail(path: fullPath),
+          const WhiteCard(
+            title: "Registrar Nuevo",
+            icon: Icons.add_circle_outline_outlined,
+            child: _BuildFieldsForm(),
           ),
         ],
       ),
