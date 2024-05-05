@@ -1,18 +1,31 @@
 image: cirrusci/flutter:latest
 
+stages:
+  - lints
+  - tests
+  - build
+  - deploy
+
 before_script:
-  - flutter channel beta
-  - flutter upgrade
-  - flutter config --enable-web
   - flutter pub get
 
-pages:
-  stage: deploy
+lints:
+  stage: lints
+  script:
+    - flutter analyze
+
+tests:
+  stage: tests
+  script:
+    - flutter test
+
+build:
+  stage: build
   script:
     - flutter build web
+
+deploy:
+  stage: deploy
+  script:
     - cp -r build/web public
-  artifacts:
-    paths:
-      - public
-  only:
-    - live
+    - git push origin live
