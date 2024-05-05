@@ -7,12 +7,12 @@ stages:
   - deploy
 
 before_script:
-  - /home/evargas/fvm/default/bin/flutter pub get
+  - flutter pub get
 
 lints:
   stage: lints
   script:
-    - /home/evargas/fvm/default/bin/flutter analyze
+    - flutter analyze
 
 tests:
   stage: tests
