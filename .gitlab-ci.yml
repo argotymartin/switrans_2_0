@@ -9,7 +9,7 @@ stages:
 lints:
   stage: lints
   script:
-    - flutter analyze
+    - home/evargas/Documentos/flutter analyze
 
 tests:
   stage: tests
