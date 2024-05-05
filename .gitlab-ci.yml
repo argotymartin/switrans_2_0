@@ -9,7 +9,7 @@ stages:
 lints:
   stage: lints
   script:
-    - flutter analyze
+    - /home/evargas/fvm/default/bin/flutter analyze
 
 tests:
   stage: tests
