@@ -54,7 +54,7 @@ class ProfileSidebar extends StatelessWidget {
                           }
                           return const SizedBox();
                         },
-                      )
+                      ),
               ],
             ),
           ),

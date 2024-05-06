@@ -36,7 +36,7 @@ class MenuLayout extends StatelessWidget {
                   const Positioned(top: 0, left: 0, right: 0, bottom: 0, child: Navbar()),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -68,7 +68,7 @@ class CustomEndDrawer extends StatelessWidget {
                 Text(
                   "Soy un usuario",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                )
+                ),
               ],
             ),
           ),
@@ -127,21 +127,22 @@ class _BuildCircleColor extends StatelessWidget {
         context.pop();
       },
       child: Container(
-          margin: const EdgeInsets.all(4),
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                colors: [
-                  color.withOpacity(0.2),
-                  color,
-                ],
-              ),
+        margin: const EdgeInsets.all(4),
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              colors: [
+                color.withOpacity(0.2),
+                color,
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

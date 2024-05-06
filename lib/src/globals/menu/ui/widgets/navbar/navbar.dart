@@ -60,7 +60,7 @@ class Navbar extends StatelessWidget {
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
             blurRadius: 22,
-          )
+          ),
         ],
       );
 }

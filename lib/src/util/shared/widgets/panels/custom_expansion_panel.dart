@@ -58,7 +58,7 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
               ),
               isExpanded: isExpanded,
               canTapOnHeader: true,
-            )
+            ),
           ],
         ),
       ],

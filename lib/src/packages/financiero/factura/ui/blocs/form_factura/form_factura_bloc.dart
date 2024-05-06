@@ -47,10 +47,12 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       emit(FormFacturaErrorState(exception: dataStateEmpresas.error!));
     }
 
-    emit(FormFacturaDataState(
-      clientes: dataStateClientes.data!,
-      empresas: dataStateEmpresas.data!,
-    ));
+    emit(
+      FormFacturaDataState(
+        clientes: dataStateClientes.data!,
+        empresas: dataStateEmpresas.data!,
+      ),
+    );
   }
 
   void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
@@ -70,13 +72,15 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     }
 
     emit(const FormFacturaLoadingState());
-    emit(FormFacturaRequestState(
-      error: error,
-      empresa: empresa,
-      clientes: clientes,
-      empresas: empresas,
-      tipoFactura: tipoFactura,
-    ));
+    emit(
+      FormFacturaRequestState(
+        error: error,
+        empresa: empresa,
+        clientes: clientes,
+        empresas: empresas,
+        tipoFactura: tipoFactura,
+      ),
+    );
   }
 
   void _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) {
@@ -87,13 +91,15 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final int empresa = state.empresa;
 
     emit(const FormFacturaLoadingState());
-    emit(FormFacturaSuccesState(
-      error: error,
-      empresa: empresa,
-      clientes: clientes,
-      empresas: empresas,
-      tipoFactura: tipoFactura,
-    ));
+    emit(
+      FormFacturaSuccesState(
+        error: error,
+        empresa: empresa,
+        clientes: clientes,
+        empresas: empresas,
+        tipoFactura: tipoFactura,
+      ),
+    );
   }
 
   Future moveScroll(double offset) =>

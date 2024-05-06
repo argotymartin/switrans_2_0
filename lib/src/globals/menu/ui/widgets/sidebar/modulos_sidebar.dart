@@ -82,7 +82,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                                 ),
                               )
                             : null,
-                      )
+                      ),
                     ],
                   ),
                 ),

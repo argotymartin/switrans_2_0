@@ -75,7 +75,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           )
-                        : const SizedBox()
+                        : const SizedBox(),
                   ],
                 ),
               ),

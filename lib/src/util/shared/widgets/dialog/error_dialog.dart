@@ -51,7 +51,7 @@ class ErrorDialog {
                 style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
               ),
               const SizedBox(height: 16),
-              content
+              content,
             ],
           ),
         ),

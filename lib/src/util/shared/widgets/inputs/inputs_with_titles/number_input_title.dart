@@ -34,13 +34,14 @@ class _CustomTextInputState extends State<NumberInputTitle> {
         widget.title.isNotEmpty ? Text(widget.title, style: AppTheme.titleStyle) : const SizedBox(),
         widget.title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         SizedBox(
-            height: higth,
-            child: NumberInput(
-              colorText: Colors.black,
-              title: widget.title,
-              controller: widget.controller,
-              onChanged: widget.onChanged,
-            )),
+          height: higth,
+          child: NumberInput(
+            colorText: Colors.black,
+            title: widget.title,
+            controller: widget.controller,
+            onChanged: widget.onChanged,
+          ),
+        ),
       ],
     );
   }

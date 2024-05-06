@@ -30,7 +30,7 @@ class LogoSidebar extends StatelessWidget {
                       fontWeight: FontWeight.w300,
                       color: Colors.white,
                     ),
-                  )
+                  ),
           ],
         ),
       ),

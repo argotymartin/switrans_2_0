@@ -27,7 +27,7 @@ class TipoImpuestoSearchView extends StatelessWidget {
             children: [
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BluildDataTable()
+              const _BluildDataTable(),
             ],
           ),
         ],

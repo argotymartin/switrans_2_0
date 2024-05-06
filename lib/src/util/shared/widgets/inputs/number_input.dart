@@ -25,36 +25,37 @@ class NumberInput extends StatelessWidget {
       onChanged: onChanged,
       //validator: isValidator ? onValidator : null,
       decoration: InputDecoration(
-          errorMaxLines: 1,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
-          border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+        errorMaxLines: 1,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
+        border: InputBorder.none,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
-              width: 2,
-            ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
           ),
-          errorBorder: OutlineInputBorder(
-            gapPadding: 100,
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
-              width: 2,
-            ),
+        ),
+        errorBorder: OutlineInputBorder(
+          gapPadding: 100,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
           ),
-          prefixIcon: const Icon(Icons.numbers),
-          hintText: title.isNotEmpty ? "Ingrese el $title" : "",
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
-              width: 2,
-            ),
-          )),
+        ),
+        prefixIcon: const Icon(Icons.numbers),
+        hintText: title.isNotEmpty ? "Ingrese el $title" : "",
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
+          ),
+        ),
+      ),
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),

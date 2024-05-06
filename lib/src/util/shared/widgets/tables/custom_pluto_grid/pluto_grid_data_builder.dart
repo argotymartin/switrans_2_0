@@ -93,14 +93,16 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
       });
-      columns.add(PlutoColumn(
-        enableRowChecked: true,
-        enableEditingMode: false,
-        title: 'Guardar Cambios',
-        field: 'cambios',
-        type: PlutoColumnType.text(),
-        renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
-      ));
+      columns.add(
+        PlutoColumn(
+          enableRowChecked: true,
+          enableEditingMode: false,
+          title: 'Guardar Cambios',
+          field: 'cambios',
+          type: PlutoColumnType.text(),
+          renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
+        ),
+      );
       return columns;
     }
 
@@ -130,14 +132,16 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               return;
             }
             if (event.isChecked!) {
-              final Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
-                (entry) {
-                  if (entry.value.column.type.isSelect) {
-                    return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);
-                  }
-                  return MapEntry(entry.key, entry.value.value);
-                },
-              ));
+              final Map<String, dynamic> mapRow = Map.fromEntries(
+                event.row!.cells.entries.map(
+                  (entry) {
+                    if (entry.value.column.type.isSelect) {
+                      return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);
+                    }
+                    return MapEntry(entry.key, entry.value.value);
+                  },
+                ),
+              );
               selectedMap.addEntries({event.rowIdx!: mapRow}.entries);
             } else {
               selectedMap.remove(event.rowIdx);
@@ -156,7 +160,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           isConsulted: true,
           isInProgress: false,
           error: "",
-        )
+        ),
       ],
     );
   }

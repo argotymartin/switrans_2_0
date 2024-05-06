@@ -104,7 +104,8 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
                                 height: 8,
                                 decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(100)),
                               )
-                            : null)
+                            : null,
+                      )
                     : SizedBox(
                         width: 172,
                         child: Text(
@@ -125,7 +126,7 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
                         color: isHovered || paquete.isSelected
                             ? Theme.of(context).colorScheme.onTertiary
                             : Theme.of(context).colorScheme.onTertiary.withOpacity(0.6),
-                      )
+                      ),
               ],
             ),
           ),

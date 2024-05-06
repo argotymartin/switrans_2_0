@@ -41,7 +41,7 @@ class BuildButtonForm extends StatelessWidget {
                         "Encontrados: $cantdiad",
                         style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
                       )
-                    : const SizedBox()
+                    : const SizedBox(),
           ],
         ),
         const SizedBox(height: 8),

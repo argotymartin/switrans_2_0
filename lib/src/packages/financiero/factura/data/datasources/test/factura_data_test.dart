@@ -114,6 +114,6 @@ class FacturaDataTest {
       anulacionTrafico: false,
       adiciones: [Adicion(codigo: 202305, tipo: "acompanamiento", valor: 85000.0)],
       descuentos: [],
-    )
+    ),
   ];
 }

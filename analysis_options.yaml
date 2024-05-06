@@ -144,14 +144,14 @@ linter:
     prefer_iterable_whereType: true
     prefer_mixin: true
     prefer_null_aware_method_calls: true
-    prefer_null_aware_operators: false
-    prefer_spread_collections: false
-    prefer_typing_uninitialized_variables: false
-    prefer_void_to_null: false
-    provide_deprecation_message: false
+    prefer_null_aware_operators: true
+    prefer_spread_collections: true
+    prefer_typing_uninitialized_variables: true
+    prefer_void_to_null: true
+    provide_deprecation_message: true
     public_member_api_docs: false
-    recursive_getters: false
-    require_trailing_commas: false
+    recursive_getters: true
+    require_trailing_commas: true
     secure_pubspec_urls: false
     sized_box_for_whitespace: false
     sized_box_shrink_expand: false

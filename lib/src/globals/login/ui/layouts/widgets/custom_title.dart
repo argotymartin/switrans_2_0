@@ -17,7 +17,7 @@ class CustomTitle extends StatelessWidget {
               color: Colors.white.withOpacity(0.8),
             ),
           ),
-        )
+        ),
       ],
     );
   }

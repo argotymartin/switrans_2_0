@@ -37,36 +37,37 @@ class _TextInputState extends State<TextInput> {
         return null;
       },
       decoration: InputDecoration(
-          errorMaxLines: 1,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
-          border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+        errorMaxLines: 1,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
+        border: InputBorder.none,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
-              width: 2,
-            ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
           ),
-          errorBorder: OutlineInputBorder(
-            gapPadding: 100,
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
-              width: 2,
-            ),
+        ),
+        errorBorder: OutlineInputBorder(
+          gapPadding: 100,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
           ),
-          prefixIcon: const Icon(Icons.abc),
-          hintText: widget.title.isNotEmpty ? "Ingrese el ${widget.title}" : "",
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error,
-              width: 2,
-            ),
-          )),
+        ),
+        prefixIcon: const Icon(Icons.abc),
+        hintText: widget.title.isNotEmpty ? "Ingrese el ${widget.title}" : "",
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
+          ),
+        ),
+      ),
       keyboardType: TextInputType.text,
       style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
     );

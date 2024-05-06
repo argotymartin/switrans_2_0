@@ -22,7 +22,7 @@ class ErrorLayout extends StatelessWidget {
                 context.go("/");
               },
               child: const Text("Ir a Home"),
-            )
+            ),
           ],
         ),
       ),

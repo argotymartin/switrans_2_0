@@ -20,9 +20,11 @@ class AuthPocketbaseApi {
     final response = await _dio.patch(
       '$url/${params.identity}',
       data: {"usunedPhoneId": params.token},
-      options: Options(headers: {
-        'Authorization': kTokenPocketBase, // Set the content-length.
-      }),
+      options: Options(
+        headers: {
+          'Authorization': kTokenPocketBase, // Set the content-length.
+        },
+      ),
     );
     return response;
   }

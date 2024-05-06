@@ -43,10 +43,12 @@ class Sidebar extends StatelessWidget {
                             builder: (context, stateModulo) {
                               final List<PaquetesSidebar> paquetesSidebar = [];
                               for (final PaqueteMenu paquete in stateModulo.paquetes) {
-                                paquetesSidebar.add(PaquetesSidebar(
-                                  paquete: paquete,
-                                  isMimimize: state.isMinimize,
-                                ));
+                                paquetesSidebar.add(
+                                  PaquetesSidebar(
+                                    paquete: paquete,
+                                    isMimimize: state.isMinimize,
+                                  ),
+                                );
                               }
                               return Column(children: paquetesSidebar);
                             },
@@ -66,12 +68,12 @@ class Sidebar extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  FooterSidebar(isMinimize: state.isMinimize)
+                  FooterSidebar(isMinimize: state.isMinimize),
                 ],
               )
             : const SizedBox();
@@ -81,13 +83,14 @@ class Sidebar extends StatelessWidget {
 
   BoxDecoration buildBoxDecoration(BuildContext context) {
     return BoxDecoration(
-        gradient: LinearGradient(
-      begin: Alignment.centerRight,
-      end: Alignment.centerLeft,
-      colors: [
-        Theme.of(context).colorScheme.primary,
-        Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
-      ],
-    ));
+      gradient: LinearGradient(
+        begin: Alignment.centerRight,
+        end: Alignment.centerLeft,
+        colors: [
+          Theme.of(context).colorScheme.primary,
+          Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
+        ],
+      ),
+    );
   }
 }

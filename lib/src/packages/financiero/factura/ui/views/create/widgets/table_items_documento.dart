@@ -126,10 +126,12 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
         details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
       );
     }).toList();
-    entriesDocumentos.add(EntryAutocomplete(
-      title: '0',
-      subTitle: '( Sin documento )',
-    ));
+    entriesDocumentos.add(
+      EntryAutocomplete(
+        title: '0',
+        subTitle: '( Sin documento )',
+      ),
+    );
     final String entrySelected = widget.item.documento > 0 ? widget.item.documento.toString() : '';
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo != 0) {

@@ -101,15 +101,16 @@ class _BuildFiltros extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                  child: Row(
-                children: [
-                  Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
-                  const SizedBox(width: 24),
-                  const _FieldTipoFactura(),
-                ],
-              )),
+                child: Row(
+                  children: [
+                    Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
+                    const SizedBox(width: 24),
+                    const _FieldTipoFactura(),
+                  ],
+                ),
+              ),
               const SizedBox(width: 24),
-              Expanded(child: _FieldEmpresa(empresas: empresas))
+              Expanded(child: _FieldEmpresa(empresas: empresas)),
             ],
           ),
           const SizedBox(height: 24),
@@ -118,7 +119,7 @@ class _BuildFiltros extends StatelessWidget {
             children: [
               Expanded(child: _FieldRemesas(formFacturaBloc: formFacturaBloc)),
               const SizedBox(width: 24),
-              Expanded(child: _FieldFechas(formFacturaBloc: formFacturaBloc))
+              Expanded(child: _FieldFechas(formFacturaBloc: formFacturaBloc)),
             ],
           ),
           const SizedBox(height: 24),
@@ -161,7 +162,7 @@ class _BuildFiltros extends StatelessWidget {
                   }
                   return const SizedBox();
                 },
-              )
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -169,7 +170,7 @@ class _BuildFiltros extends StatelessWidget {
             builder: (context, state) {
               return (state.error != "") ? ErrorModal(title: state.error) : const SizedBox();
             },
-          )
+          ),
         ],
       ),
     );
@@ -222,7 +223,7 @@ class _FieldCliente extends StatelessWidget {
           onPressed: setValueCliente,
           controller: controller,
           minChractersSearch: 3,
-        )
+        ),
       ],
     );
   }
@@ -418,7 +419,7 @@ class _BuildTableItemsDocumento extends StatelessWidget {
                 icon: const Icon(Icons.add_card_rounded),
                 label: const Text("Adicionar"),
               ),
-              const CardDetailsFactura()
+              const CardDetailsFactura(),
             ],
           ),
         ],
@@ -452,7 +453,8 @@ class _BuildDetailsDocumentos extends StatelessWidget {
                   const SizedBox(width: 48),
                   documentosDescuentos.isNotEmpty
                       ? Expanded(
-                          child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red))
+                          child: CardAdicionesAndDescuentos(documentos: documentosDescuentos, title: 'DESCUENTOS', color: Colors.red),
+                        )
                       : const Expanded(child: SizedBox()),
                 ],
               ),

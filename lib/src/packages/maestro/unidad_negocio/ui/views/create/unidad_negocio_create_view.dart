@@ -61,7 +61,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldUnidadNegocioEmpresa(empresaController),
-              const SwitchBoxInputTitle(title: "Activo", value: isActivo)
+              const SwitchBoxInputTitle(title: "Activo", value: isActivo),
             ],
           ),
           FilledButton.icon(

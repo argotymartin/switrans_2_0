@@ -64,7 +64,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldTipoDocumento(typeController),
-              const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa")
+              const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa"),
             ],
           ),
           FilledButton.icon(

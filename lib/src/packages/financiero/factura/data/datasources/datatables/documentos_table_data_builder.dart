@@ -370,7 +370,7 @@ class _DetailRemesa extends StatelessWidget {
         Container(
           constraints: const BoxConstraints(maxWidth: 180),
           child: FittedBox(child: Text(subtitle, style: const TextStyle(color: Colors.black, fontSize: 10))),
-        )
+        ),
       ],
     );
   }

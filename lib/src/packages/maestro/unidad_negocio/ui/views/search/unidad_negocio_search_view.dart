@@ -80,11 +80,14 @@ class _BuildFieldsForm extends StatelessWidget {
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               FieldUnidadNegocioEmpresa(empresaController),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("Activo", style: AppTheme.titleStyle),
-                const SizedBox(height: 8),
-                SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
-              ])
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Activo", style: AppTheme.titleStyle),
+                  const SizedBox(height: 8),
+                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                ],
+              ),
             ],
           ),
           BlocBuilder<UnidadNegocioBloc, UnidadNegocioState>(

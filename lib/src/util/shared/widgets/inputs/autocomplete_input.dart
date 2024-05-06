@@ -70,7 +70,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         children: [
           Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
           if (entry.subTitle.isNotEmpty) Text(entry.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
-          if (entry.details != null) SizedBox(height: 16, child: FittedBox(child: entry.details))
+          if (entry.details != null) SizedBox(height: 16, child: FittedBox(child: entry.details)),
         ],
       ),
     );

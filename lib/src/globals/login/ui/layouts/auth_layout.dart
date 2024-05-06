@@ -86,7 +86,7 @@ class _DesktopBody extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -118,7 +118,7 @@ class BuildTitle extends StatelessWidget {
             Image.asset(
               "assets/empresas/icon-multicompany.png",
               width: 36,
-            )
+            ),
           ],
         ),
         Container(

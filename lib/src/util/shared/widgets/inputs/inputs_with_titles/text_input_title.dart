@@ -32,14 +32,15 @@ class _TextInputTitleState extends State<TextInputTitle> {
         widget.title.isNotEmpty ? Text(widget.title, style: AppTheme.titleStyle) : const SizedBox(),
         widget.title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         SizedBox(
-            height: higth,
-            child: TextInput(
-              controller: widget.controller,
-              initialValue: widget.initialValue,
-              minLength: widget.minLength,
-              onChanged: widget.onChanged,
-              title: widget.title,
-            )),
+          height: higth,
+          child: TextInput(
+            controller: widget.controller,
+            initialValue: widget.initialValue,
+            minLength: widget.minLength,
+            onChanged: widget.onChanged,
+            title: widget.title,
+          ),
+        ),
       ],
     );
   }

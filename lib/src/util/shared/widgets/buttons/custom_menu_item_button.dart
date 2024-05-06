@@ -9,8 +9,10 @@ class CustomMenuItemButton extends StatefulWidget {
     required this.indexSelectedDefault,
     this.onPressed,
     super.key,
-  }) : assert(indexSelectedDefault <= (entries.length - 1),
-            'El index $indexSelectedDefault esta fuera del rango de macimo de entries: ${entries.length - 1}');
+  }) : assert(
+          indexSelectedDefault <= (entries.length - 1),
+          'El index $indexSelectedDefault esta fuera del rango de macimo de entries: ${entries.length - 1}',
+        );
 
   @override
   State<CustomMenuItemButton> createState() => _MyMenuBarState();

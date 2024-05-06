@@ -81,7 +81,7 @@ class CardDetailsFactura extends StatelessWidget {
                       content: CurrencyLabel(color: Colors.black87, text: '${totalImpuestos.toInt()}'),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

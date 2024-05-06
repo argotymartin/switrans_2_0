@@ -105,17 +105,17 @@ class MaestrosRoutes {
   static ShellRoute routerUnidadNegocio() {
     const String modulePath = "unidad_negocio";
     return ShellRoute(
-        builder: (context, state, child) {
-          return FutureBuilder(
-            future: context.read<UnidadNegocioBloc>().onGetEmpresas(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return MenuLayout(child: child);
-              }
-              return const MenuLayout(child: SplashView());
-            },
-          );
-        },
+      builder: (context, state, child) {
+        return FutureBuilder(
+          future: context.read<UnidadNegocioBloc>().onGetEmpresas(),
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MenuLayout(child: child);
+            }
+            return const MenuLayout(child: SplashView());
+          },
+        );
+      },
       routes: [
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
@@ -126,8 +126,8 @@ class MaestrosRoutes {
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const UnidadNegocioSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
-        )
-      ]
+        ),
+      ],
     );
   }
 }
