@@ -13,7 +13,9 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
     on<AddItemTransporteFacturaEvent>((event, emit) {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
       ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
-      if (!itemDocumentos.contains(prefactura)) itemDocumentos.add(prefactura);
+      if (!itemDocumentos.contains(prefactura)) {
+        itemDocumentos.add(prefactura);
+      }
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
@@ -23,7 +25,9 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
       ItemDocumento preFactura = ItemDocumentoModel.init();
-      if (!preFacturas.contains(preFactura)) preFacturas.add(preFactura);
+      if (!preFacturas.contains(preFactura)) {
+        preFacturas.add(preFactura);
+      }
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: preFacturas));

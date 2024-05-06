@@ -59,9 +59,15 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     String error = state.error;
     int tipoFactura = state.tipoFactura;
     int empresa = state.empresa;
-    if (event is EmpresaFormFacturaEvent) empresa = event.empresa;
-    if (event is TipoFacturaFormFacturaEvent) tipoFactura = event.tipoFactura;
-    if (event is ErrorFormFacturaEvent) error = event.error;
+    if (event is EmpresaFormFacturaEvent) {
+      empresa = event.empresa;
+    }
+    if (event is TipoFacturaFormFacturaEvent) {
+      tipoFactura = event.tipoFactura;
+    }
+    if (event is ErrorFormFacturaEvent) {
+      error = event.error;
+    }
 
     emit(const FormFacturaLoadingState());
     emit(FormFacturaRequestState(
@@ -113,14 +119,20 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final fin = fechaFinController.text;
 
     String error = "";
-    if (empresa <= 0) error += " El campo Empresa no puede ser vacio";
-    if (clienteCodigo <= 0) error += " El campo Cliente no puede ser vacio";
+    if (empresa <= 0) {
+      error += " El campo Empresa no puede ser vacio";
+    }
+    if (clienteCodigo <= 0) {
+      error += " El campo Cliente no puede ser vacio";
+    }
     if (tipoFactura == 12) {
       if (remesas.isEmpty && inicio.isEmpty) {
         error +=
             " Si se selecciona el tipo (Factura 12), se deben incluir remesas en el filtro, o bien, selecciónar un intervalo de fechas";
       }
-      if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+      if (inicio != "" && fin == "") {
+        error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+      }
     }
 
     add(ErrorFormFacturaEvent(error));

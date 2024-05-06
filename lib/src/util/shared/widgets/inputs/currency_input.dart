@@ -21,7 +21,9 @@ class CurrencyInput extends StatelessWidget {
       controller: controller,
       initialValue: currencyFormat.format(int.parse(initialValue)),
       onChanged: (value) {
-        if (onChanged != null) onChanged?.call(value);
+        if (onChanged != null) {
+          onChanged?.call(value);
+        }
       },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),

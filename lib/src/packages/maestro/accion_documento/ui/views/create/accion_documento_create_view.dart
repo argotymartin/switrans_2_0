@@ -16,7 +16,9 @@ class AccionDocumentoCreateView extends StatelessWidget {
 
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (context, state) {
-        if (state is AccionDocumentoExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is AccionDocumentoExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
 
         if (state is AccionDocumentoSuccesState) {
           final request = AccionDocumentoRequest(nombre: state.accionDocumento!.nombre);

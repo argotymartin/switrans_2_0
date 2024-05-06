@@ -76,7 +76,9 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
       paquete.modulos = paquete.modulos.map((modulo) {
         modulo.paginas = modulo.paginas.map((pagina) {
           pagina.isSelected = (pagina == paginaMenu) ? isSelected : false;
-          if (pagina == paginaMenu) path = '${paquete.path}${modulo.path}${pagina.path}';
+          if (pagina == paginaMenu) {
+            path = '${paquete.path}${modulo.path}${pagina.path}';
+          }
           return pagina;
         }).toList();
         return modulo;

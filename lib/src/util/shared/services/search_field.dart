@@ -639,7 +639,9 @@ class _SearchFieldState<T> extends State<SearchField<T>> {
         readOnly: widget.readOnly,
         autovalidateMode: widget.autovalidateMode,
         onFieldSubmitted: (x) {
-          if (widget.onSubmit != null) widget.onSubmit!(x);
+          if (widget.onSubmit != null) {
+            widget.onSubmit!(x);
+          }
         },
         onTap: () {
           /// only call if SuggestionState = [Suggestion.expand]
@@ -651,10 +653,14 @@ class _SearchFieldState<T> extends State<SearchField<T>> {
               });
             }
           }
-          if (widget.onTap != null) widget.onTap!();
+          if (widget.onTap != null) {
+            widget.onTap!();
+          }
         },
         onSaved: (x) {
-          if (widget.onSaved != null) widget.onSaved!(x);
+          if (widget.onSaved != null) {
+            widget.onSaved!(x);
+          }
         },
         inputFormatters: widget.inputFormatters,
         controller: widget.controller ?? searchController,

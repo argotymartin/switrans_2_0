@@ -29,7 +29,9 @@ class _SwitchBoxInputState extends State<SwitchBoxInput> {
       value: _value,
       onChanged: (value) {
         setState(() => _value = value);
-        if (widget.onChanged != null) widget.onChanged!(value);
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
       },
       thumbIcon: MaterialStateProperty.resolveWith<Icon>(
         (Set<MaterialState> states) {

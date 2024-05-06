@@ -15,7 +15,9 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (context, state) {
-        if (state is ServicioEmpresarialExceptionState) ErrorDialog.showDioException(context, state.exception);
+        if (state is ServicioEmpresarialExceptionState) {
+          ErrorDialog.showDioException(context, state.exception);
+        }
 
         if (state is ServicioEmpresarialSuccesState) {
           final request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);

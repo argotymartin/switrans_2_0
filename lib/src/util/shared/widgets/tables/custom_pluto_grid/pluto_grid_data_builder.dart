@@ -125,7 +125,9 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns: buildColumns(context),
           rows: buildDataRows(context),
           onRowChecked: (event) {
-            if (event.row == null || event.rowIdx == null || event.isChecked == null) return;
+            if (event.row == null || event.rowIdx == null || event.isChecked == null) {
+              return;
+            }
             if (event.isChecked! == true) {
               Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
                 (entry) {

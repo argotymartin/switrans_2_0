@@ -17,9 +17,15 @@ class FacturaRequest {
       'empresa': empresa,
       'cliente': cliente,
     };
-    if (remesas != "") data['remesas'] = remesas;
-    if (inicio != "") data['inicio'] = inicio;
-    if (fin != "") data['fin'] = fin;
+    if (remesas != "") {
+      data['remesas'] = remesas;
+    }
+    if (inicio != "") {
+      data['inicio'] = inicio;
+    }
+    if (fin != "") {
+      data['fin'] = fin;
+    }
 
     return data;
   }

@@ -37,7 +37,9 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
     final filteredEntries = widget.entries.take(10).toList();
     dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
     entrySelected2 = widget.entrySelected;
-    if (widget.controller != null) widget.controller!.addListener(_onTextChanged);
+    if (widget.controller != null) {
+      widget.controller!.addListener(_onTextChanged);
+    }
   }
 
   void _onTextChanged() {
@@ -104,7 +106,9 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         ),
         onSelected: (EntryAutocomplete? entry) {
           widget.onPressed?.call(entry!);
-          if (widget.controller != null) widget.controller!.text = entry!.title;
+          if (widget.controller != null) {
+            widget.controller!.text = entry!.title;
+          }
         },
         dropdownMenuEntries: dropdownMenuEntries,
       ),

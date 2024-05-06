@@ -15,7 +15,9 @@ class TipoImpuestoSearchView extends StatelessWidget {
 
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (context, state) {
-        if (state is TipoImpuestoExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is TipoImpuestoExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
       },
       child: Stack(
         children: [

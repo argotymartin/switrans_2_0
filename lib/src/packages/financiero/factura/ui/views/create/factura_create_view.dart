@@ -38,7 +38,9 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
     const Duration duration = Duration(milliseconds: 1000);
     return BlocListener<DocumentoBloc, DocumentoState>(
       listener: (context, state) {
-        if (state is DocumentoErrorState) ErrorDialog.showDioException(context, state.error);
+        if (state is DocumentoErrorState) {
+          ErrorDialog.showDioException(context, state.error);
+        }
       },
       child: Stack(
         children: [

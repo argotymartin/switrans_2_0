@@ -16,7 +16,9 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (context, state) {
-        if (state is ServicioEmpresarialExceptionState) ErrorDialog.showDioException(context, state.exception);
+        if (state is ServicioEmpresarialExceptionState) {
+          ErrorDialog.showDioException(context, state.exception);
+        }
       },
       child: Stack(
         children: [

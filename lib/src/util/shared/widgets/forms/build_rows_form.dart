@@ -10,7 +10,9 @@ class BuildRowsForm extends StatelessWidget {
     List<Widget> childrenList = [];
     children.forEachIndexed((index, child) {
       childrenList.add(Expanded(child: child));
-      if (index + 1 < children.length && children.length > 1) childrenList.add(const SizedBox(width: 24));
+      if (index + 1 < children.length && children.length > 1) {
+        childrenList.add(const SizedBox(width: 24));
+      }
     });
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24),

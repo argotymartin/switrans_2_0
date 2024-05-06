@@ -41,7 +41,9 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
       final documento = state.documentos.firstWhere((doc) => doc.cencosCodigo == codigo);
       centros[codigo] = documento.cencosNombre;
     }
-    if (centros.isEmpty) centros[0] = "No tengo centro de costo";
+    if (centros.isEmpty) {
+      centros[0] = "No tengo centro de costo";
+    }
 
     return centros.entries.toList();
   }

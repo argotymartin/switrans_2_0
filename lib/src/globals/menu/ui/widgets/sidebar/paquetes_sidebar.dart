@@ -33,7 +33,9 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
               () {
                 isEntered = !isEntered;
                 context.read<MenuSidebarBloc>().onPaqueteSelected(widget.paquete, isEntered);
-                if (widget.isMimimize) showPopoverImpl(context, modulos, widget.paquete);
+                if (widget.isMimimize) {
+                  showPopoverImpl(context, modulos, widget.paquete);
+                }
               },
             );
           },
