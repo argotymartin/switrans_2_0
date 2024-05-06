@@ -68,21 +68,21 @@ linter:
     diagnostic_describe_all_properties: false
     directives_ordering: true
     discarded_futures: false
-    do_not_use_environment: false
-    empty_catches: false
-    empty_constructor_bodies: false
-    empty_statements: false
-    eol_at_end_of_file: false
-    exhaustive_cases: false
-    file_names: false
-    flutter_style_todos: false
-    hash_and_equals: false
-    implementation_imports: false
-    implicit_call_tearoffs: false
-    implicit_reopen: false
-    invalid_case_patterns: false
-    join_return_with_assignment: false
-    leading_newlines_in_multiline_strings: false
+    do_not_use_environment: true
+    empty_catches: true
+    empty_constructor_bodies: true
+    empty_statements: true
+    eol_at_end_of_file: true
+    exhaustive_cases: true
+    file_names: true
+    flutter_style_todos: true
+    hash_and_equals: true
+    implementation_imports: true
+    implicit_call_tearoffs: true
+    implicit_reopen: true
+    invalid_case_patterns: true
+    join_return_with_assignment: true
+    leading_newlines_in_multiline_strings: true
     library_annotations: false
     library_names: false
     library_prefixes: false

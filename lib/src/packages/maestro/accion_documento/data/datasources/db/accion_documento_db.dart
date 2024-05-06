@@ -26,7 +26,8 @@ class AccionDocumentoDB {
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
-      final sql = """SELECT ad.accdoc_codigo,
+      final sql = """
+                SELECT ad.accdoc_codigo,
                     ad.accdoc_nombre,
                     d.documento_nombre,
                     u.usuario_nombre,
@@ -38,7 +39,8 @@ class AccionDocumentoDB {
                     LEFT JOIN tb_documento d ON d.documento_codigo = ad.documento_codigo
                     LEFT JOIN tb_usuario u ON u.usuario_codigo = ad.usuario_creacion
               $where 
-              ORDER BY ad.accdoc_codigo""";
+              ORDER BY ad.accdoc_codigo
+              """;
       final response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
@@ -50,16 +52,19 @@ class AccionDocumentoDB {
   Future<Response> setAccionDocumentosDB(AccionDocumentoRequest request) async {
     final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_accion_documentos', key: 'accdoc_codigo');
 
-    final sql = """INSERT INTO public.tb_accion_documentos (accdoc_codigo, 
-        accdoc_nombre, 
-        documento_codigo, 
-        usuario_creacion, 
-        accdoc_es_naturaleza_inversa)
-        VALUES ($max, 
-        '${request.nombre}', 
-        ${request.tipoDocumento}, 
-        ${request.usuario}, 
-        ${request.isNaturalezaInversa} );""";
+    final sql = """
+        INSERT INTO public.tb_accion_documentos (
+            accdoc_codigo, 
+            accdoc_nombre, 
+            documento_codigo, 
+            usuario_creacion, 
+            accdoc_es_naturaleza_inversa)
+            VALUES ($max, 
+            '${request.nombre}', 
+            ${request.tipoDocumento}, 
+            ${request.usuario}, 
+            ${request.isNaturalezaInversa} );
+        """;
     await FunctionsPostgresql.executeQueryDB(sql);
     final resp = await getAccionDocumentosDB(request);
     return resp;

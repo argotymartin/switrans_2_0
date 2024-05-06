@@ -21,7 +21,8 @@ class ServicioEmpresarialDB {
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
-      final sql = """SELECT se.seremp_codigo,
+      final sql = """
+              SELECT se.seremp_codigo,
                       se.seremp_nombre,
                       se.seremp_es_activo,
                       se.seremp_fecha_creacion,
@@ -42,7 +43,9 @@ class ServicioEmpresarialDB {
   Future<Response> setServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_servicio_empresariales', key: 'seremp_codigo');
 
-    final sql = """INSERT INTO public.tb_servicio_empresariales (seremp_codigo, 
+    final sql = """
+        INSERT INTO public.tb_servicio_empresariales (
+        seremp_codigo, 
         seremp_nombre, 
         usuario_creacion, 
         seremp_es_activo)
