@@ -27,15 +27,13 @@ class ErrorDialog {
     }
   }
 
-  static dynamic _getErrorType(dynamic errorData) {
-    if (errorData is Map) {
-      if (errorData.containsKey('status') && errorData.containsKey('error')) {
-        return ErrorGenericDio;
-      } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
-        return ErrorPocketbaseDio;
-      } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
-        return ErrorBackendDio;
-      }
+  static dynamic _getErrorType(Map errorData) {
+    if (errorData.containsKey('status') && errorData.containsKey('error')) {
+      return ErrorGenericDio;
+    } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
+      return ErrorPocketbaseDio;
+    } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
+      return ErrorBackendDio;
     }
   }
 

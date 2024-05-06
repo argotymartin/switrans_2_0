@@ -4,7 +4,7 @@ import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PlutoGridDataBuilder extends StatefulWidget {
   final List<Map<String, DataItemGrid>> plutoData;
-  final Function(dynamic value)? onRowChecked;
+  final Function(List<Map<String, dynamic>> value)? onRowChecked;
   final Function()? onPressedSave;
 
   const PlutoGridDataBuilder({
@@ -19,7 +19,7 @@ class PlutoGridDataBuilder extends StatefulWidget {
 }
 
 class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
-  List listValues = [];
+  List<Map<String, dynamic>> listValues = [];
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {

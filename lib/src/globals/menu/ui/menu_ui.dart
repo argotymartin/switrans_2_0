@@ -7,7 +7,7 @@ export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paquetes_sideba
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/profile_sidebar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/sidebar.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/text_separator_sidebar.dart';
-export 'package:switrans_2_0/src/globals/menu/ui/layouts/error.layout.dart';
+export 'package:switrans_2_0/src/globals/menu/ui/layouts/error_layout.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/blocs/menu/menu_bloc.dart';

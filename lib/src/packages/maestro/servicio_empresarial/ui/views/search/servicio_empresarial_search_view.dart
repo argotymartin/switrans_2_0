@@ -123,7 +123,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = [];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
+    void onRowChecked(List<Map<String, dynamic>> event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }

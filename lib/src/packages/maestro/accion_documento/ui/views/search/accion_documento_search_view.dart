@@ -124,20 +124,20 @@ class _BluildDataTable extends StatefulWidget {
 
 class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = [];
+  void onRowChecked(List<Map<String, dynamic>> event) {
+    listUpdate.clear();
+    setState(() => listUpdate.addAll(event));
+  }
+
+  void onPressedSave() {
+    for (Map<String, dynamic> map in listUpdate) {
+      final request = AccionDocumentoRequest.fromMap(map);
+      context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
-        final request = AccionDocumentoRequest.fromMap(map);
-        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
-      }
-    }
-
     Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, List<String> tiposList) {
       return {
         'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
