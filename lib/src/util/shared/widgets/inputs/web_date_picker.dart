@@ -56,7 +56,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     }
   }
 
-  void onChangeCalendarDatePicker(DateTime? selectedDate) async {
+  void onChangeCalendarDatePicker(DateTime? selectedDate) {
     setState(() {
       final selectedYear = selectedDate.parseToString('yyyy');
       if (selectedYear == currentYear) {

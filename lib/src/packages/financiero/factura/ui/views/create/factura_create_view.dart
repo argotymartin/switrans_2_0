@@ -194,7 +194,7 @@ class _FieldCliente extends StatelessWidget {
     }
 
     void setValueCliente(EntryAutocomplete entry) {
-      formFacturaBloc.setClienteCodigo = entry.codigo;
+      formFacturaBloc.clienteCodigo = entry.codigo;
       controller.text = entry.title;
     }
 
@@ -490,7 +490,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo > 0) {
         context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-        formFacturaBloc.setCentroCosto = value.codigo;
+        formFacturaBloc.centroCosto = value.codigo;
       }
     }
 

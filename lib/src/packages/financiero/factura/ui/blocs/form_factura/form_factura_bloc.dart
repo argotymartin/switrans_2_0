@@ -36,7 +36,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
   }
 
-  void _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+  Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(const FormFacturaLoadingState());
     final dataStateClientes = await _repository.getClientes();
     final dataStateEmpresas = await _repository.getEmpresasService();
@@ -108,7 +108,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  void onPressedSearch({required bool isValid}) async {
+  Future<void> onPressedSearch({required bool isValid}) async {
     final empresa = state.empresa;
     final tipoFactura = state.tipoFactura;
     final remesas = remesasController.text;
@@ -166,8 +166,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   int get clienteCodigo => _clienteCodigo;
-  set setClienteCodigo(int value) => _clienteCodigo = value;
+  set clienteCodigo(int value) => _clienteCodigo = value;
 
   int get centroCosto => _centroCostoCodigo;
-  set setCentroCosto(int value) => _centroCostoCodigo = value;
+  set centroCosto(int value) => _centroCostoCodigo = value;
 }
