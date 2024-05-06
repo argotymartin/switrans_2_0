@@ -10,6 +10,9 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
 
 class MaestrosRoutes {
@@ -20,6 +23,7 @@ class MaestrosRoutes {
     routes.add(accionDocumentos());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());
+    routes.add(routerUnidadNegocio());
     return routes;
   }
 
@@ -91,10 +95,39 @@ class MaestrosRoutes {
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, state) => const ServicoEmpresarialSearchView(),
+          builder: (_, __) => const ServicoEmpresarialSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
+    );
+  }
+
+  static ShellRoute routerUnidadNegocio() {
+    const String modulePath = "unidad_negocio";
+    return ShellRoute(
+        builder: (context, state, child) {
+          return FutureBuilder(
+            future: context.read<UnidadNegocioBloc>().onGetEmpresas(),
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return MenuLayout(child: child);
+              }
+              return const MenuLayout(child: SplashView());
+            },
+          );
+        },
+      routes: [
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (_, __) => const UnidadNegocioCreateView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const UnidadNegocioSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        )
+      ]
     );
   }
 }

@@ -12,7 +12,7 @@ class FunctionsPostgresql {
   }
 
   static Future<Response> executeQueryDB(String sql) async {
-    final path = sql.split("tb_")[1].split(" ")[0].trim();
+    final path = sql.toLowerCase().split("tb_")[1].split(" ")[0].trim();
     final conn = await ConnectionPostgresql.onConnect();
     final result = await conn.execute(sql);
 
