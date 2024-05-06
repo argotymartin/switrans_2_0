@@ -15,7 +15,7 @@ class BreadcrumbTrail extends StatelessWidget {
 
     List<Widget> result = [];
     bool primeraIteracion = true;
-    for (var element in elements) {
+    for (final element in elements) {
       if (primeraIteracion) {
         result.add(Text("Switrans", style: TextStyle(color: Colors.blue.shade500)));
         primeraIteracion = false; // Cambiar la variable para evitar repetir la acción

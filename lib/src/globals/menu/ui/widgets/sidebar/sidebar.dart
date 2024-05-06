@@ -42,7 +42,7 @@ class Sidebar extends StatelessWidget {
                           BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
                             builder: (context, stateModulo) {
                               List<PaquetesSidebar> paquetesSidebar = [];
-                              for (PaqueteMenu paquete in stateModulo.paquetes) {
+                              for (final PaqueteMenu paquete in stateModulo.paquetes) {
                                 paquetesSidebar.add(PaquetesSidebar(
                                   paquete: paquete,
                                   isMimimize: state.isMinimize,

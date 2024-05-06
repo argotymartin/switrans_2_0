@@ -16,8 +16,8 @@ class BuildViewDetail extends StatelessWidget {
     List<String> breadcrumbTrails = path.split("/");
     final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
     late ModuloMenu moduloSelected;
-    for (var paquete in menuBloc.state.paquetes) {
-      for (var modulo in paquete.modulos) {
+    for (final paquete in menuBloc.state.paquetes) {
+      for (final modulo in paquete.modulos) {
         if (modulo.path.contains(breadcrumbTrails[2])) {
           moduloSelected = modulo;
         }

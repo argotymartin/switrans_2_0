@@ -129,7 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
+      for (final Map<String, dynamic> map in listUpdate) {
         final request = ServicioEmpresarialRequest.fromMapTable(map);
         context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(request));
       }
@@ -150,7 +150,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
       builder: (context, state) {
         if (state is ServicioEmpresarialConsultedState) {
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (ServicioEmpresarial servico in state.serviciosEmpresariales) {
+          for (final ServicioEmpresarial servico in state.serviciosEmpresariales) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(servico);
             plutoRes.add(rowData);
           }

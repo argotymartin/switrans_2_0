@@ -130,7 +130,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   }
 
   void onPressedSave() {
-    for (Map<String, dynamic> map in listUpdate) {
+    for (final Map<String, dynamic> map in listUpdate) {
       final request = AccionDocumentoRequest.fromMap(map);
       context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
     }
@@ -156,7 +156,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
         if (state is AccionDocumentoConsultedState) {
           final tiposList = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (AccionDocumento accionDocumento in state.accionDocumentos) {
+          for (final AccionDocumento accionDocumento in state.accionDocumentos) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
             plutoRes.add(rowData);
           }

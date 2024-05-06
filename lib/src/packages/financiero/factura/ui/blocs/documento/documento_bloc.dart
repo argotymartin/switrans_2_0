@@ -37,7 +37,7 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
     final codigosUnicos = state.documentos.map((doc) => doc.cencosCodigo).toSet();
 
     final centros = <int, String>{};
-    for (int codigo in codigosUnicos) {
+    for (final int codigo in codigosUnicos) {
       final documento = state.documentos.firstWhere((doc) => doc.cencosCodigo == codigo);
       centros[codigo] = documento.cencosNombre;
     }
