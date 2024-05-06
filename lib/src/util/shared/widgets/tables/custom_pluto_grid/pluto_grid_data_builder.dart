@@ -153,7 +153,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
         ),
         BuildButtonFormSave(
           onPressed: widget.onPressedSave!,
-          enabled: listValues.isEmpty ? true : false,
+          enabled: listValues.isEmpty,
           icon: Icons.save,
           label: "Actualizar",
           cantdiad: listValues.length,

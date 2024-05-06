@@ -33,7 +33,7 @@ class ServicioEmpresarialDB {
                 ORDER BY se.seremp_codigo""";
       final response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
       rethrow;
     }
@@ -79,7 +79,7 @@ class ServicioEmpresarialDB {
 
       final resp = await getServicioEmpresarialDB(request);
       return resp;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
       rethrow;
     }

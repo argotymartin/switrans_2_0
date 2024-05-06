@@ -52,7 +52,11 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
 
   void onPaqueteSelected(PaqueteMenu paqueteMenu, bool isSelected) {
     List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-      paquete.isSelected = (paquete == paqueteMenu) ? isSelected : false;
+      if (paquete == paqueteMenu) {
+        paquete.isSelected = isSelected;
+      } else {
+        paquete.isSelected = false;
+      }
       return paquete;
     }).toList();
 
@@ -62,7 +66,11 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
   void onModuloSelected(ModuloMenu moduloMenu, bool isSelected) {
     final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
       paquete.modulos = paquete.modulos.map((modulo) {
-        modulo.isSelected = (modulo == moduloMenu) ? isSelected : false;
+        if (modulo == moduloMenu) {
+          modulo.isSelected = isSelected;
+        } else {
+          modulo.isSelected = false;
+        }
         return modulo;
       }).toList();
       return paquete;
@@ -76,7 +84,11 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
       paquete.modulos = paquete.modulos.map((modulo) {
         modulo.paginas = modulo.paginas.map((pagina) {
-          pagina.isSelected = (pagina == paginaMenu) ? isSelected : false;
+          if (pagina == paginaMenu) {
+            pagina.isSelected = isSelected;
+          } else {
+            pagina.isSelected = false;
+          }
           if (pagina == paginaMenu) {
             path = '${paquete.path}${modulo.path}${pagina.path}';
           }

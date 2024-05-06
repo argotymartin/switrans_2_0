@@ -41,7 +41,7 @@ class AccionDocumentoDB {
               ORDER BY ad.accdoc_codigo""";
       final response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
       rethrow;
     }
@@ -94,7 +94,7 @@ class AccionDocumentoDB {
 
       final resp = await getAccionDocumentosDB(request);
       return resp;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
       rethrow;
     }
