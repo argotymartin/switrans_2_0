@@ -2,9 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio_empresa.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
 
 part 'unidad_negocio_event.dart';
 part 'unidad_negocio_state.dart';
@@ -13,7 +13,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
   final AbstractUnidadNegocioRepository _repository;
   List<UnidadNegocioEmpresa> empresas = [];
 
-   UnidadNegocioBloc(this._repository) : super(const UnidadNegocioInitialState()) {
+  UnidadNegocioBloc(this._repository) : super(const UnidadNegocioInitialState()) {
     on<GetUnidadNegocioEvent>((event, emit) async {
       emit(const UnidadNegocioLoadingState());
       final response = await _repository.getUnidadNegocioService(event.request);
@@ -44,7 +44,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
       }
     });
 
-    on<ErrorFormUnidadNegocioEvent>((event, emit)  {
+    on<ErrorFormUnidadNegocioEvent>((event, emit) {
       emit(const UnidadNegocioLoadingState());
       emit(UnidadNegocioErrorFormState(errorForm: event.error));
     });

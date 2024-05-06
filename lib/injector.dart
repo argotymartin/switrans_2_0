@@ -24,10 +24,10 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasources
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositories/tipo_impuesto_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_db_impl.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/db/unidad_negocio_db.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 
 final GetIt injector = GetIt.instance;
 

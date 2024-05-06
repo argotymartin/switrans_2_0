@@ -26,5 +26,3 @@ class ErrorFormUnidadNegocioEvent extends UnidadNegocioEvent {
   final String error;
   const ErrorFormUnidadNegocioEvent(this.error);
 }
-
-

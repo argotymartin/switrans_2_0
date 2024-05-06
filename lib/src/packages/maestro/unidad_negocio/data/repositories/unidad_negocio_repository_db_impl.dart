@@ -2,9 +2,9 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasource
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/unidad_negocio_empresa_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/unidad_negocio_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
@@ -48,7 +48,7 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
 
   @override
   Future<DataState<List<UnidadNegocioEmpresa>>> getEmpresasService() async {
-    final httpResponse = await  getStateOf(request: () => _unidadNegocioDB.getEmpresasDB());
+    final httpResponse = await getStateOf(request: () => _unidadNegocioDB.getEmpresasDB());
     if (httpResponse.data != null) {
       final resp = httpResponse.data;
       final response = List<UnidadNegocioEmpresa>.from(resp.map((x) => UnidadNegocioEmpresaModel.fromDB(x)));
@@ -56,6 +56,4 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
     }
     return DataFailed(httpResponse.error!);
   }
-
-
 }

@@ -12,6 +12,6 @@ class UnidadNegocio {
     required this.isActivo,
     required this.fechaCreacion,
     required this.usuario,
-    required this.empresa
+    required this.empresa,
   });
 }

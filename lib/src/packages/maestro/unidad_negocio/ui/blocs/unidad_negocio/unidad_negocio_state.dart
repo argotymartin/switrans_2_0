@@ -37,7 +37,7 @@ class UnidadNegocioConsultedState extends UnidadNegocioState {
   const UnidadNegocioConsultedState({super.unidadNegocioList});
 
   @override
-  List<Object?> get props => [unidadNegocioList!];
+  List<Object?> get props => [unidadNegocioList];
 }
 
 class UnidadNegocioFailedState extends UnidadNegocioState {

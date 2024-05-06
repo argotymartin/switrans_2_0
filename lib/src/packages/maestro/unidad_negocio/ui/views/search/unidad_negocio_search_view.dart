@@ -8,13 +8,6 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/field_unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class UnidadNegocioSearchView extends StatelessWidget {
@@ -26,7 +19,9 @@ class UnidadNegocioSearchView extends StatelessWidget {
 
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
       listener: (context, state) {
-        if (state is UnidadNegocioFailedState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is UnidadNegocioFailedState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
       },
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
@@ -57,7 +52,8 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && empresaController.text.isEmpty && isActivo == null;
+      final bool isCampoVacio =
+          nombreController.text.isEmpty && codigoController.text.isEmpty && empresaController.text.isEmpty && isActivo == null;
 
       if (isCampoVacio) {
         isValid = false;
@@ -84,14 +80,11 @@ class _BuildFieldsForm extends StatelessWidget {
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               FieldUnidadNegocioEmpresa(empresaController),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Activo", style: AppTheme.titleStyle),
-                  const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
-                ]
-              )
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text("Activo", style: AppTheme.titleStyle),
+                const SizedBox(height: 8),
+                SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+              ])
             ],
           ),
           BlocBuilder<UnidadNegocioBloc, UnidadNegocioState>(
@@ -140,13 +133,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = [];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
+    void onRowChecked(event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
+      for (final Map<String, dynamic> map in listUpdate) {
         final request = UnidadNegocioRequestModel.fromMapTable(map);
         context.read<UnidadNegocioBloc>().add(UpdateUnidadNegocioEvent(request));
       }
@@ -167,7 +160,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
       builder: (context, state) {
         if (state is UnidadNegocioConsultedState) {
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (UnidadNegocio unidadNegocio in state.unidadNegocioList) {
+          for (final UnidadNegocio unidadNegocio in state.unidadNegocioList) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(unidadNegocio);
             plutoRes.add(rowData);
           }

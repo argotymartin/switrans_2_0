@@ -7,7 +7,7 @@ class UnidadNegocioDB {
   Future<Response> getUnidadNegocioDB(UnidadNegocioRequest request) async {
     try {
       String where = '';
-      List conditions = [];
+      final List conditions = [];
 
       if (request.codigo != null) {
         conditions.add("tu.unineg_codigo = ${request.codigo!}");
@@ -27,7 +27,8 @@ class UnidadNegocioDB {
         where = "WHERE ${conditions.join(" AND ")}";
       }
 
-      final sql = """SELECT TU.UNINEG_CODIGO,
+      final sql = """
+              SELECT TU.UNINEG_CODIGO,
                       TU.UNINEG_NOMBRE,
                       TU.UNINEG_ACTIVO,
                       TU.UNINEG_FECHACREACION,
@@ -40,7 +41,7 @@ class UnidadNegocioDB {
                 ORDER BY tu.unineg_codigo""";
       final response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
       rethrow;
     }
@@ -49,7 +50,9 @@ class UnidadNegocioDB {
   Future<Response> setUnidadNegocioDB(UnidadNegocioRequest request) async {
     final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_unidadnegocio', key: 'unineg_codigo');
 
-    final sql = """INSERT INTO public.tb_unidadnegocio (unineg_codigo, 
+    final sql = """
+      INSERT INTO public.tb_unidadnegocio (
+        unineg_codigo, 
         unineg_nombre, 
         unineg_activo,
         usuario_codigo, 
@@ -69,7 +72,6 @@ class UnidadNegocioDB {
 
   Future<Response> updateUnidadNegocioDB(UnidadNegocioRequest request) async {
     try {
-      final fecha = DateTime.now();
       final updateFields = [];
 
       if (request.nombre != null) {
@@ -79,7 +81,7 @@ class UnidadNegocioDB {
         updateFields.add("unineg_activo = ${request.isActivo}");
       }
       if (request.empresa != null) {
-        final empresa =  await getEmpresaCodigoDB(request.empresa!);
+        final empresa = await getEmpresaCodigoDB(request.empresa!);
         updateFields.add("empresa_codigo = ${empresa.data[0]['empresa_codigo']}");
         request.empresa = '${empresa.data[0]['empresa_codigo']}';
       }
@@ -95,7 +97,7 @@ class UnidadNegocioDB {
 
       final resp = await getUnidadNegocioDB(request);
       return resp;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
       rethrow;
     }
@@ -103,14 +105,13 @@ class UnidadNegocioDB {
 
   Future<Response> getEmpresasDB() async {
     const sql =
-    """SELECT EMPRESA_CODIGO, EMPRESA_NOMBRE FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE ORDER BY EMPRESA_NOMBRE ASC """;
+        """SELECT EMPRESA_CODIGO, EMPRESA_NOMBRE FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE ORDER BY EMPRESA_NOMBRE ASC """;
     final response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 
   Future<Response> getEmpresaCodigoDB(String empresaNombre) async {
-    final sql =
-    """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_NOMBRE = '$empresaNombre' """;
+    final sql = """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_NOMBRE = '$empresaNombre' """;
     final response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }

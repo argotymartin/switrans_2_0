@@ -1,4 +1,4 @@
-class UnidadNegocioRequest  {
+class UnidadNegocioRequest {
   int? codigo;
   String? nombre;
   bool? isActivo;
@@ -10,6 +10,6 @@ class UnidadNegocioRequest  {
     this.nombre,
     this.isActivo,
     this.usuario,
-    this.empresa
+    this.empresa,
   });
 }

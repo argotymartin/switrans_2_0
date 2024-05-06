@@ -6,10 +6,6 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/field_unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class UnidadNegocioCreateView extends StatelessWidget {
@@ -21,7 +17,9 @@ class UnidadNegocioCreateView extends StatelessWidget {
 
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
       listener: (context, state) {
-        if (state is UnidadNegocioFailedState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is UnidadNegocioFailedState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
 
         if (state is UnidadNegocioSuccessState) {
           final request = UnidadNegocioRequest(nombre: state.unidadNegocio!.nombre);
@@ -52,7 +50,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController empresaController = TextEditingController();
-    final isActivo = true;
+    const isActivo = true;
     final formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -63,7 +61,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldUnidadNegocioEmpresa(empresaController),
-              SwitchBoxInputTitle(title: "Activo", value: isActivo)
+              const SwitchBoxInputTitle(title: "Activo", value: isActivo)
             ],
           ),
           FilledButton.icon(
