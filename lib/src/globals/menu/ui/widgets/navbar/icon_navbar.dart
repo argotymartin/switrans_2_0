@@ -5,10 +5,10 @@ class IconNavbar extends StatefulWidget {
   final String title;
   final VoidCallback onPressed;
   const IconNavbar({
-    super.key,
     required this.icon,
-    this.title = "",
     required this.onPressed,
+    this.title = "",
+    super.key,
   });
 
   @override

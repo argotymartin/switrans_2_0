@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 
 class DatetimeInput extends StatefulWidget {
   final TextEditingController controller;
-  const DatetimeInput({super.key, required this.controller});
+  const DatetimeInput({
+    required this.controller,
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _DatetimeInput();

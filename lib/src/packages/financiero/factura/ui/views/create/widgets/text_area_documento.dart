@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class TextAreaDocumentos extends StatelessWidget {
   final TextEditingController controller;
-  const TextAreaDocumentos({super.key, required this.controller});
+  const TextAreaDocumentos({
+    required this.controller,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

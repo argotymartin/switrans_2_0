@@ -8,7 +8,10 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
   final PaginaMenu pagina;
-  const PaginasSidebar({super.key, required this.pagina});
+  const PaginasSidebar({
+    required this.pagina,
+    super.key,
+  });
 
   @override
   State<PaginasSidebar> createState() => _PaginasSidebarState();

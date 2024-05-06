@@ -4,8 +4,8 @@ enum Option { option1, option2 }
 
 class RadioButtons extends StatefulWidget {
   const RadioButtons({
-    super.key,
     required this.tipo,
+    super.key,
   });
   final String tipo;
 

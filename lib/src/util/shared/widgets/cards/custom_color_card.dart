@@ -7,7 +7,13 @@ class CustomColorCard extends StatelessWidget {
   final double? width;
   final Widget child;
   final IconData icon;
-  const CustomColorCard({super.key, this.title, this.width, required this.child, required this.icon});
+  const CustomColorCard({
+    required this.child,
+    required this.icon,
+    this.title,
+    this.width,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

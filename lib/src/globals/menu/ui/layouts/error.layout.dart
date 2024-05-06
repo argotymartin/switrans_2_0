@@ -3,7 +3,10 @@ import 'package:go_router/go_router.dart';
 
 class ErrorLayout extends StatelessWidget {
   final GoRouterState goRouterState;
-  const ErrorLayout({super.key, required this.goRouterState});
+  const ErrorLayout({
+    required this.goRouterState,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

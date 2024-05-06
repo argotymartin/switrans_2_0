@@ -9,12 +9,12 @@ class CustomSizeButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CustomSizeButton({
-    super.key,
     required this.width,
     required this.icon,
     required this.onPressed,
     this.color,
     this.iconColor,
+    super.key,
   });
 
   @override

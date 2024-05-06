@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class BuildRowsForm extends StatelessWidget {
   final List<Widget> children;
-  const BuildRowsForm({super.key, required this.children});
+  const BuildRowsForm({
+    required this.children,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 class LinkText extends StatefulWidget {
   final String text;
   final Function? onPressed;
-  const LinkText({super.key, required this.text, this.onPressed});
+  const LinkText({
+    required this.text,
+    this.onPressed,
+    super.key,
+  });
 
   @override
   State<LinkText> createState() => _LinkTextState();

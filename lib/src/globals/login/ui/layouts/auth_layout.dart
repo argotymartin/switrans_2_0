@@ -95,8 +95,8 @@ class _DesktopBody extends StatelessWidget {
 
 class BuildTitle extends StatelessWidget {
   const BuildTitle({
-    super.key,
     required this.size,
+    super.key,
   });
 
   final Size size;

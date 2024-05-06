@@ -11,7 +11,11 @@ class PaquetesSidebar extends StatefulWidget {
   final PaqueteMenu paquete;
   final bool isMimimize;
 
-  const PaquetesSidebar({super.key, required this.paquete, this.isMimimize = false});
+  const PaquetesSidebar({
+    required this.paquete,
+    this.isMimimize = false,
+    super.key,
+  });
 
   @override
   State<PaquetesSidebar> createState() => _PaquetesSidebarState();
@@ -67,10 +71,10 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   final bool isHovered;
 
   const BuildOptionPaqueteMenu({
-    super.key,
     required this.paquete,
     required this.isMinimized,
     required this.isHovered,
+    super.key,
   });
 
   @override

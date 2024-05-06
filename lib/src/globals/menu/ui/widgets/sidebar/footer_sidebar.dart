@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class FooterSidebar extends StatelessWidget {
   const FooterSidebar({
-    super.key,
     required this.isMinimize,
+    super.key,
   });
 
   final bool isMinimize;

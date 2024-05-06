@@ -10,7 +10,6 @@ class BuildButtonForm extends StatelessWidget {
   final int? cantdiad;
   final String error;
   const BuildButtonForm({
-    super.key,
     required this.onPressed,
     required this.icon,
     required this.label,
@@ -18,6 +17,7 @@ class BuildButtonForm extends StatelessWidget {
     required this.isInProgress,
     required this.error,
     this.cantdiad = 0,
+    super.key,
   });
 
   @override

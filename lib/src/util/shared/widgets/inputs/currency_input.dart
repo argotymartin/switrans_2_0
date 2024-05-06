@@ -8,7 +8,13 @@ class CurrencyInput extends StatelessWidget {
   final Color color;
   final String initialValue;
   final Function(String result)? onChanged;
-  const CurrencyInput({super.key, this.controller, required this.color, this.onChanged, this.initialValue = "0"});
+  const CurrencyInput({
+    required this.color,
+    this.controller,
+    this.onChanged,
+    this.initialValue = "0",
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

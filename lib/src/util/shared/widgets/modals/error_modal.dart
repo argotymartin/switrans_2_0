@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class ErrorModal extends StatelessWidget {
   final String title;
   const ErrorModal({
-    super.key,
     required this.title,
+    super.key,
   });
 
   @override

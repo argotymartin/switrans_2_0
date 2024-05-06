@@ -7,7 +7,10 @@ import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paginas_sidebar
 
 class ModulosSidebar extends StatefulWidget {
   final ModuloMenu modulo;
-  const ModulosSidebar({super.key, required this.modulo});
+  const ModulosSidebar({
+    required this.modulo,
+    super.key,
+  });
 
   @override
   State<ModulosSidebar> createState() => _ModulosSidebarState();

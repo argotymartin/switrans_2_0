@@ -8,12 +8,12 @@ class CustomPlutoGridTable extends StatelessWidget {
   final Function(PlutoGridOnRowCheckedEvent value)? onRowDoubleTap;
   final bool columnFilter;
   const CustomPlutoGridTable({
-    super.key,
     required this.columns,
     required this.rows,
     this.onRowDoubleTap,
     this.onRowChecked,
     this.columnFilter = false,
+    super.key,
   });
 
   @override

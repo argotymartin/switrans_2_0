@@ -7,7 +7,12 @@ class PlutoGridDataBuilder extends StatefulWidget {
   final Function(dynamic value)? onRowChecked;
   final Function()? onPressedSave;
 
-  const PlutoGridDataBuilder({super.key, required this.plutoData, this.onRowChecked, this.onPressedSave});
+  const PlutoGridDataBuilder({
+    required this.plutoData,
+    this.onRowChecked,
+    this.onPressedSave,
+    super.key,
+  });
 
   @override
   State<PlutoGridDataBuilder> createState() => _PlutoGridDataBuilderState();

@@ -6,9 +6,9 @@ class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
   const CustomExpansionPanel({
-    super.key,
     required this.title,
     required this.child,
+    super.key,
   });
 
   @override

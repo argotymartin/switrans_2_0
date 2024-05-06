@@ -285,8 +285,8 @@ class SearchField<T> extends StatefulWidget {
   final TextCapitalization textCapitalization;
 
   SearchField(
-      {super.key,
-      required this.suggestions,
+      {required this.suggestions,
+      super.key,
       this.autoCorrect = true,
       this.autofocus = false,
       this.autovalidateMode,

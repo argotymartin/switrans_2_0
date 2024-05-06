@@ -11,15 +11,15 @@ class BuildButtonFormSave extends StatelessWidget {
   final int? cantdiad;
   final String error;
   const BuildButtonFormSave({
-    super.key,
     required this.onPressed,
     required this.icon,
     required this.label,
     required this.isConsulted,
-    this.enabled = true,
     required this.isInProgress,
     required this.error,
+    this.enabled = true,
     this.cantdiad = 0,
+    super.key,
   });
 
   @override

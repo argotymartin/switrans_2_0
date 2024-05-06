@@ -11,10 +11,10 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
   final String title;
   final Color color;
   const CardAdicionesAndDescuentos({
-    super.key,
     required this.documentos,
     required this.title,
     required this.color,
+    super.key,
   });
 
   @override

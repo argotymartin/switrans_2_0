@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 class BreadcrumbTrail extends StatelessWidget {
   final List<String> elements;
   const BreadcrumbTrail({
-    super.key,
     required this.elements,
+    super.key,
   });
 
   @override
