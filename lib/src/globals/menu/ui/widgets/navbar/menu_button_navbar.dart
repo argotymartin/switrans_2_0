@@ -11,14 +11,22 @@ class MenuButtonNavar extends StatelessWidget {
     final OverlayPortalController tooltipController = OverlayPortalController();
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (context, state) {
-        bool isOpenMenu = state.isOpenMenu;
-        bool isMinimize = state.isMinimize;
+        final bool isOpenMenu = state.isOpenMenu;
+        final bool isMinimize = state.isMinimize;
         double positionedLeft = 0;
 
-        if (isOpenMenu) positionedLeft = 16 + kWidthSidebar;
-        if (isMinimize) positionedLeft = 16 + 80;
-        if (isMinimize && !isOpenMenu) positionedLeft = 16;
-        if (!isMinimize && !isOpenMenu) positionedLeft = 16;
+        if (isOpenMenu) {
+          positionedLeft = 16 + kWidthSidebar;
+        }
+        if (isMinimize) {
+          positionedLeft = 16 + 80;
+        }
+        if (isMinimize && !isOpenMenu) {
+          positionedLeft = 16;
+        }
+        if (!isMinimize && !isOpenMenu) {
+          positionedLeft = 16;
+        }
         return MouseRegion(
           onHover: (event) => tooltipController.toggle(),
           child: OverlayPortal(

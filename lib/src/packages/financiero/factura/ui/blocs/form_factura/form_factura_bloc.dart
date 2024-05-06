@@ -36,7 +36,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     });
   }
 
-  void _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+  Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(const FormFacturaLoadingState());
     final dataStateClientes = await _repository.getClientes();
     final dataStateEmpresas = await _repository.getEmpresasService();
@@ -54,14 +54,20 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    List<Cliente> clientes = state.clientes;
-    List<Empresa> empresas = state.empresas;
+    final List<Cliente> clientes = state.clientes;
+    final List<Empresa> empresas = state.empresas;
     String error = state.error;
     int tipoFactura = state.tipoFactura;
     int empresa = state.empresa;
-    if (event is EmpresaFormFacturaEvent) empresa = event.empresa;
-    if (event is TipoFacturaFormFacturaEvent) tipoFactura = event.tipoFactura;
-    if (event is ErrorFormFacturaEvent) error = event.error;
+    if (event is EmpresaFormFacturaEvent) {
+      empresa = event.empresa;
+    }
+    if (event is TipoFacturaFormFacturaEvent) {
+      tipoFactura = event.tipoFactura;
+    }
+    if (event is ErrorFormFacturaEvent) {
+      error = event.error;
+    }
 
     emit(const FormFacturaLoadingState());
     emit(FormFacturaRequestState(
@@ -74,11 +80,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    List<Cliente> clientes = state.clientes;
-    List<Empresa> empresas = state.empresas;
-    String error = state.error;
-    int tipoFactura = state.tipoFactura;
-    int empresa = state.empresa;
+    final List<Cliente> clientes = state.clientes;
+    final List<Empresa> empresas = state.empresas;
+    final String error = state.error;
+    final int tipoFactura = state.tipoFactura;
+    final int empresa = state.empresa;
 
     emit(const FormFacturaLoadingState());
     emit(FormFacturaSuccesState(
@@ -93,7 +99,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   Future moveScroll(double offset) =>
       scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
-  void moveBottomAllScroll() {
+  Future<void> moveBottomAllScroll() async {
     //animationController.reset();
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
@@ -102,10 +108,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  void onPressedSearch(bool isValid) async {
-    //fechaInicioController.text = "2023-01-01";
-    //fechaFinController.text = "2024-01-01";
-
+  Future<void> onPressedSearch({required bool isValid}) async {
     final empresa = state.empresa;
     final tipoFactura = state.tipoFactura;
     final remesas = remesasController.text;
@@ -113,14 +116,20 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final fin = fechaFinController.text;
 
     String error = "";
-    if (empresa <= 0) error += " El campo Empresa no puede ser vacio";
-    if (clienteCodigo <= 0) error += " El campo Cliente no puede ser vacio";
+    if (empresa <= 0) {
+      error += " El campo Empresa no puede ser vacio";
+    }
+    if (clienteCodigo <= 0) {
+      error += " El campo Cliente no puede ser vacio";
+    }
     if (tipoFactura == 12) {
       if (remesas.isEmpty && inicio.isEmpty) {
         error +=
             " Si se selecciona el tipo (Factura 12), se deben incluir remesas en el filtro, o bien, selecciónar un intervalo de fechas";
       }
-      if (inicio != "" && fin == "") error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+      if (inicio != "" && fin == "") {
+        error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+      }
     }
 
     add(ErrorFormFacturaEvent(error));
@@ -157,8 +166,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   int get clienteCodigo => _clienteCodigo;
-  set setClienteCodigo(int value) => _clienteCodigo = value;
+  set clienteCodigo(int value) => _clienteCodigo = value;
 
   int get centroCosto => _centroCostoCodigo;
-  set setCentroCosto(int value) => _centroCostoCodigo = value;
+  set centroCosto(int value) => _centroCostoCodigo = value;
 }

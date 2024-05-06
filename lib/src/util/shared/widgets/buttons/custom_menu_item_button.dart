@@ -4,8 +4,12 @@ class CustomMenuItemButton extends StatefulWidget {
   final List<MenuEntry> entries;
   final int indexSelectedDefault;
   final Function(MenuEntry result)? onPressed;
-  const CustomMenuItemButton({super.key, required this.entries, required this.indexSelectedDefault, this.onPressed})
-      : assert(indexSelectedDefault <= (entries.length - 1),
+  const CustomMenuItemButton({
+    required this.entries,
+    required this.indexSelectedDefault,
+    this.onPressed,
+    super.key,
+  }) : assert(indexSelectedDefault <= (entries.length - 1),
             'El index $indexSelectedDefault esta fuera del rango de macimo de entries: ${entries.length - 1}');
 
   @override

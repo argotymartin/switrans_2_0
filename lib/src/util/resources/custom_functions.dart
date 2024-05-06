@@ -6,9 +6,9 @@ class CustomFunctions {
   }
 
   static Color oscurecerColor(Color color, double factor) {
-    int red = (color.red * factor).round();
-    int green = (color.green * factor).round();
-    int blue = (color.blue * factor).round();
+    final int red = (color.red * factor).round();
+    final int green = (color.green * factor).round();
+    final int blue = (color.blue * factor).round();
 
     return Color.fromRGBO(red, green, blue, color.opacity);
   }

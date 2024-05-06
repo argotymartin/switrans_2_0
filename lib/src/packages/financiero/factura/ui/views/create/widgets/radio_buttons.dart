@@ -4,8 +4,8 @@ enum Option { option1, option2 }
 
 class RadioButtons extends StatefulWidget {
   const RadioButtons({
-    super.key,
     required this.tipo,
+    super.key,
   });
   final String tipo;
 
@@ -56,7 +56,6 @@ class _MyAppState extends State<RadioButtons> {
               Transform.scale(
                 scale: 0.8,
                 child: Radio<Option>(
-                  toggleable: false,
                   value: Option.option2,
                   groupValue: selectedOption,
                   splashRadius: 2,

@@ -15,7 +15,9 @@ class TipoImpuestoSearchView extends StatelessWidget {
 
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (context, state) {
-        if (state is TipoImpuestoExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is TipoImpuestoExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
       },
       child: Stack(
         children: [
@@ -47,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;

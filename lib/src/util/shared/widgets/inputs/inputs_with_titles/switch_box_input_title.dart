@@ -6,7 +6,11 @@ class SwitchBoxInputTitle extends StatelessWidget {
   final bool value;
   final String title;
 
-  const SwitchBoxInputTitle({super.key, required this.value, required this.title});
+  const SwitchBoxInputTitle({
+    required this.value,
+    required this.title,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

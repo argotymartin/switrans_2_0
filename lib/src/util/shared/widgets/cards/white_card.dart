@@ -6,7 +6,13 @@ class WhiteCard extends StatelessWidget {
   final double? width;
   final Widget child;
   final IconData icon;
-  const WhiteCard({super.key, this.title, this.width, required this.child, required this.icon});
+  const WhiteCard({
+    required this.child,
+    required this.icon,
+    this.title,
+    this.width,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,6 @@ class WhiteCard extends StatelessWidget {
                 Icon(icon),
                 const SizedBox(width: 4),
                 FittedBox(
-                  fit: BoxFit.contain,
                   child: Text(
                     title!,
                     style: GoogleFonts.roboto(

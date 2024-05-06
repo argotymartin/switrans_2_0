@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class FooterSidebar extends StatelessWidget {
   const FooterSidebar({
-    super.key,
     required this.isMinimize,
+    super.key,
   });
 
   final bool isMinimize;
@@ -20,7 +20,6 @@ class FooterSidebar extends StatelessWidget {
           ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.forum_outlined, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
                 Icon(Icons.telegram_sharp, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),

@@ -6,7 +6,10 @@ import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart'
 class BuildCardEmpresa extends StatefulWidget {
   final Empresa empresa;
 
-  const BuildCardEmpresa({super.key, required this.empresa});
+  const BuildCardEmpresa({
+    required this.empresa,
+    super.key,
+  });
 
   @override
   State<BuildCardEmpresa> createState() => _BuildCardEmpresaState();

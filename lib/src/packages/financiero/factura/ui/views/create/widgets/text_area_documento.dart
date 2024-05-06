@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class TextAreaDocumentos extends StatelessWidget {
   final TextEditingController controller;
-  const TextAreaDocumentos({super.key, required this.controller});
+  const TextAreaDocumentos({
+    required this.controller,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +27,27 @@ class TextAreaDocumentos extends StatelessWidget {
   }
 
   String? onValidator(String? value) {
-    if (value == null || value.isEmpty) return null;
+    if (value == null || value.isEmpty) {
+      return null;
+    }
     RegExp regexRemesas = RegExp("");
 
-    RegExp regex = RegExp(r'^[0-9, -]+$');
-    if (!regex.hasMatch(value)) return "Los valores de texto no estan permitidos";
-    List<String> remesas = value
+    final RegExp regex = RegExp(r'^[0-9, -]+$');
+    if (!regex.hasMatch(value)) {
+      return "Los valores de texto no estan permitidos";
+    }
+    final List<String> remesas = value
         .split(",")
         .map((remesa) => remesa.trim())
         .takeWhile((remesa) => remesa != value.split(",").last.trim())
         .where((remesa) => regexRemesas.hasMatch(remesa))
         .toList();
-    if (remesas.isEmpty) return null;
+    if (remesas.isEmpty) {
+      return null;
+    }
     String title = "";
-    RegExp regexGeneral = RegExp(r'^\d{6,7}$');
-    RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
+    final RegExp regexGeneral = RegExp(r'^\d{6,7}$');
+    final RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
     if (regexGeneral.hasMatch(remesas.first)) {
       regexRemesas = regexGeneral;
@@ -50,7 +59,7 @@ class TextAreaDocumentos extends StatelessWidget {
       return "Los valores digitados no parecen ser remesas validas";
     }
 
-    List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
+    final List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
 
     if (remesasDiferentes.isNotEmpty) {
       if (remesasDiferentes.first != "") {

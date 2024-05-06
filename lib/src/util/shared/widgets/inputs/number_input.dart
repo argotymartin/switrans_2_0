@@ -8,7 +8,14 @@ class NumberInput extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String result)? onChanged;
 
-  const NumberInput({super.key, this.controller, required this.colorText, this.onChanged, this.initialValue = '', required this.title});
+  const NumberInput({
+    required this.colorText,
+    required this.title,
+    this.controller,
+    this.onChanged,
+    this.initialValue = '',
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +26,12 @@ class NumberInput extends StatelessWidget {
       //validator: isValidator ? onValidator : null,
       decoration: InputDecoration(
           errorMaxLines: 1,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
           border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
-              width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(

@@ -59,16 +59,24 @@ class AuthView extends StatelessWidget {
     );
   }
 
-  String? onValidateUser(value) {
-    RegExp regExp = RegExp(r'^[a-zA-Z]+\.[a-zA-Z]+$');
-    if (value == null || value.isEmpty) return "Ingrese su usuario";
-    if (!regExp.hasMatch(value)) return "No es un usuario valido (usuario.nombre)";
+  String? onValidateUser(String? value) {
+    final RegExp regExp = RegExp(r'^[a-zA-Z]+\.[a-zA-Z]+$');
+    if (value == null || value.isEmpty) {
+      return "Ingrese su usuario";
+    }
+    if (!regExp.hasMatch(value)) {
+      return "No es un usuario valido (usuario.nombre)";
+    }
     return null;
   }
 
-  String? onValidatePass(value) {
-    if (value == null || value.isEmpty) return "Ingrese su contraseña";
-    if (value.length < 6) return "La contraseña debe ser de mas de 6 caracteres";
+  String? onValidatePass(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Ingrese su contraseña";
+    }
+    if (value.length < 6) {
+      return "La contraseña debe ser de mas de 6 caracteres";
+    }
     return null;
   }
 

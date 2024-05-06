@@ -16,7 +16,9 @@ class AccionDocumentoCreateView extends StatelessWidget {
 
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (context, state) {
-        if (state is AccionDocumentoExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is AccionDocumentoExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
 
         if (state is AccionDocumentoSuccesState) {
           final request = AccionDocumentoRequest(nombre: state.accionDocumento!.nombre);
@@ -51,7 +53,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController typeController = TextEditingController();
-    bool esInverso = false;
+    const bool esInverso = false;
     final formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -62,7 +64,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldTipoDocumento(typeController),
-              SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa")
+              const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa")
             ],
           ),
           FilledButton.icon(

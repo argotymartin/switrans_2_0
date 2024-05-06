@@ -13,7 +13,7 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is AuthErrorState) {
             context.pop();
             ErrorDialog.showDioException(context, state.error!);
@@ -55,7 +55,7 @@ class _DesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double width = size.width < 780 ? size.width * 0.8 : 500;
+    final double width = size.width < 780 ? size.width * 0.8 : 500;
     return SizedBox(
       width: size.width,
       height: size.height * 0.95,
@@ -95,8 +95,8 @@ class _DesktopBody extends StatelessWidget {
 
 class BuildTitle extends StatelessWidget {
   const BuildTitle({
-    super.key,
     required this.size,
+    super.key,
   });
 
   final Size size;

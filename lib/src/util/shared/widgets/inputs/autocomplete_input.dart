@@ -12,7 +12,6 @@ class AutocompleteInput extends StatefulWidget {
   final String entrySelected;
 
   const AutocompleteInput({
-    super.key,
     required this.entries,
     required this.label,
     this.controller,
@@ -21,6 +20,7 @@ class AutocompleteInput extends StatefulWidget {
     this.isShowCodigo = true,
     this.entrySelected = '',
     this.minChractersSearch = 1,
+    super.key,
   });
 
   @override
@@ -37,7 +37,9 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
     final filteredEntries = widget.entries.take(10).toList();
     dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
     entrySelected2 = widget.entrySelected;
-    if (widget.controller != null) widget.controller!.addListener(_onTextChanged);
+    if (widget.controller != null) {
+      widget.controller!.addListener(_onTextChanged);
+    }
   }
 
   void _onTextChanged() {
@@ -64,12 +66,11 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
       label: entry.title,
       leadingIcon: widget.isShowCodigo ? CircleAvatar(child: Text('${entry.codigo}')) : const SizedBox(),
       labelWidget: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
           if (entry.subTitle.isNotEmpty) Text(entry.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
-          if (entry.details != null) SizedBox(height: 16, child: FittedBox(fit: BoxFit.contain, child: entry.details))
+          if (entry.details != null) SizedBox(height: 16, child: FittedBox(child: entry.details))
         ],
       ),
     );
@@ -95,16 +96,16 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
           constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            borderSide: BorderSide(),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
         ),
         onSelected: (EntryAutocomplete? entry) {
           widget.onPressed?.call(entry!);
-          if (widget.controller != null) widget.controller!.text == entry!.title;
+          if (widget.controller != null) {
+            widget.controller!.text = entry!.title;
+          }
         },
         dropdownMenuEntries: dropdownMenuEntries,
       ),

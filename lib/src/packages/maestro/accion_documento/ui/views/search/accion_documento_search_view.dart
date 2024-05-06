@@ -16,7 +16,9 @@ class AccionDocumentoSearchView extends StatelessWidget {
 
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (context, state) {
-        if (state is AccionDocumentoExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is AccionDocumentoExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
       },
       child: Stack(
         children: [
@@ -50,7 +52,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && typeController.text.isEmpty;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && typeController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;
@@ -122,20 +124,20 @@ class _BluildDataTable extends StatefulWidget {
 
 class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = [];
+  void onRowChecked(List<Map<String, dynamic>> event) {
+    listUpdate.clear();
+    setState(() => listUpdate.addAll(event));
+  }
+
+  void onPressedSave() {
+    for (final Map<String, dynamic> map in listUpdate) {
+      final request = AccionDocumentoRequest.fromMap(map);
+      context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
-        final request = AccionDocumentoRequest.fromMap(map);
-        context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
-      }
-    }
-
     Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, List<String> tiposList) {
       return {
         'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
@@ -154,7 +156,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
         if (state is AccionDocumentoConsultedState) {
           final tiposList = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (AccionDocumento accionDocumento in state.accionDocumentos) {
+          for (final AccionDocumento accionDocumento in state.accionDocumentos) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
             plutoRes.add(rowData);
           }

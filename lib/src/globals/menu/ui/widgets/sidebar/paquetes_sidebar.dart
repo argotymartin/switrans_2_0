@@ -11,7 +11,11 @@ class PaquetesSidebar extends StatefulWidget {
   final PaqueteMenu paquete;
   final bool isMimimize;
 
-  const PaquetesSidebar({super.key, required this.paquete, this.isMimimize = false});
+  const PaquetesSidebar({
+    required this.paquete,
+    this.isMimimize = false,
+    super.key,
+  });
 
   @override
   State<PaquetesSidebar> createState() => _PaquetesSidebarState();
@@ -24,7 +28,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
   Widget build(BuildContext context) {
     bool isEntered = widget.paquete.isSelected;
     final colorScheme = Theme.of(context).colorScheme;
-    List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
+    final List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
     return Column(
       children: [
         InkWell(
@@ -32,8 +36,10 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
             setState(
               () {
                 isEntered = !isEntered;
-                context.read<MenuSidebarBloc>().onPaqueteSelected(widget.paquete, isEntered);
-                widget.isMimimize ? showPopoverImpl(context, modulos, widget.paquete) : null;
+                context.read<MenuSidebarBloc>().onPaqueteSelected(isSelected: isEntered, paqueteMenu: widget.paquete);
+                if (widget.isMimimize) {
+                  showPopoverImpl(context, modulos, widget.paquete);
+                }
               },
             );
           },
@@ -65,10 +71,10 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   final bool isHovered;
 
   const BuildOptionPaqueteMenu({
-    super.key,
     required this.paquete,
     required this.isMinimized,
     required this.isHovered,
+    super.key,
   });
 
   @override
@@ -83,7 +89,6 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),

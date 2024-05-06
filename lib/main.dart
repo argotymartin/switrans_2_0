@@ -1,9 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/foundation.dart';
 // ignore: depend_on_referenced_packages
 //import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
@@ -15,6 +16,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/acci
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/simple_bloc_observer.dart';
 
 Future<void> main() async {
@@ -42,6 +44,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
         BlocProvider<AccionDocumentoBloc>(create: (_) => injector<AccionDocumentoBloc>()),
         BlocProvider<ServicioEmpresarialBloc>(create: (_) => injector<ServicioEmpresarialBloc>()),
+        BlocProvider<UnidadNegocioBloc>(create: (_) => injector<UnidadNegocioBloc>()),
         BlocProvider<ModuloBloc>(create: (_) => injector<ModuloBloc>()),
       ],
       child: const MyMaterialApp(),
@@ -69,8 +72,8 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   Future<void> _init() async {
     final authBloc = context.read<AuthBloc>();
     final paqueteMenuBloc = context.read<MenuSidebarBloc>();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token') ?? '';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String stringValue = prefs.getString('token') ?? '';
     isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
       paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
@@ -83,6 +86,12 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
       duration: Duration(milliseconds: 1000),
       child: _BuildMaterialApp(),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('isTokenValid', isTokenValid));
   }
 }
 

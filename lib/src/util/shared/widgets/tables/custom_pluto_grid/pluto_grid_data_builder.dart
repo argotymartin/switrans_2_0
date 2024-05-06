@@ -4,21 +4,26 @@ import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PlutoGridDataBuilder extends StatefulWidget {
   final List<Map<String, DataItemGrid>> plutoData;
-  final Function(dynamic value)? onRowChecked;
+  final Function(List<Map<String, dynamic>> value)? onRowChecked;
   final Function()? onPressedSave;
 
-  const PlutoGridDataBuilder({super.key, required this.plutoData, this.onRowChecked, this.onPressedSave});
+  const PlutoGridDataBuilder({
+    required this.plutoData,
+    this.onRowChecked,
+    this.onPressedSave,
+    super.key,
+  });
 
   @override
   State<PlutoGridDataBuilder> createState() => _PlutoGridDataBuilderState();
 }
 
 class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
-  List listValues = [];
+  List<Map<String, dynamic>> listValues = [];
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {
-      List<PlutoColumn> columns = [];
+      final List<PlutoColumn> columns = [];
       widget.plutoData.first.forEach((key, v) {
         final tipo = v.type;
         final bool isEdit = v.edit;
@@ -28,16 +33,13 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: false,
-              enableAutoEditing: false,
               enableColumnDrag: false,
               enableContextMenu: false,
-              applyFormatterInEditing: false,
               enableDropToResize: false,
               enableFilterMenuItem: false,
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              minWidth: 80,
               width: 80,
               renderer: (renderContext) => _BuildFieldItem(renderContext: renderContext),
             ),
@@ -71,7 +73,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
-              enableAutoEditing: false,
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
@@ -107,7 +108,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       final List<PlutoRow> dataRows = [];
 
       widget.plutoData.asMap().forEach((index, dato) {
-        Map<String, dynamic> dataColumn = {};
+        final Map<String, dynamic> dataColumn = {};
         dato.forEach((key, value) {
           dataColumn.addEntries({key: value.value}.entries);
         });
@@ -118,16 +119,18 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       return dataRows;
     }
 
-    Map<int, Map<String, dynamic>> selectedMap = {};
+    final Map<int, Map<String, dynamic>> selectedMap = {};
     return Column(
       children: [
         CustomPlutoGridTable(
           columns: buildColumns(context),
           rows: buildDataRows(context),
           onRowChecked: (event) {
-            if (event.row == null || event.rowIdx == null || event.isChecked == null) return;
-            if (event.isChecked! == true) {
-              Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
+            if (event.row == null || event.rowIdx == null || event.isChecked == null) {
+              return;
+            }
+            if (event.isChecked!) {
+              final Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
                 (entry) {
                   if (entry.value.column.type.isSelect) {
                     return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);
@@ -139,14 +142,14 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             } else {
               selectedMap.remove(event.rowIdx);
             }
-            print(selectedMap);
+            //print(selectedMap);
             setState(() => listValues = selectedMap.values.toList());
             widget.onRowChecked!.call(listValues);
           },
         ),
         BuildButtonFormSave(
           onPressed: widget.onPressedSave!,
-          enabled: listValues.isEmpty ? true : false,
+          enabled: listValues.isEmpty,
           icon: Icons.save,
           label: "Actualizar",
           cantdiad: listValues.length,

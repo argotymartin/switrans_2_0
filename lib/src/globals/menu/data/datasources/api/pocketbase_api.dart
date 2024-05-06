@@ -18,11 +18,11 @@ class PocketbaseAPI {
 
     final List<dynamic> paquetes = response.data['items'];
 
-    for (var paquete in paquetes) {
+    for (final paquete in paquetes) {
       final responseModulos = await getModulosByPaquete(paquete["id"]);
       final List<dynamic> modulos = responseModulos.data['items'];
 
-      for (var modulo in modulos) {
+      for (final modulo in modulos) {
         final responsePaginas = await getPagesByModulo(modulo["id"]);
         final List<dynamic> paginas = responsePaginas.data['items'];
         modulo["paginas"] = paginas;

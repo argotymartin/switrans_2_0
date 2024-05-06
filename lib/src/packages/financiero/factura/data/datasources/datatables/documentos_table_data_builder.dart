@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class DocumentosTableDataBuilder {
   static List<PlutoColumn> buildColumns(BuildContext context) {
@@ -39,7 +40,6 @@ class DocumentosTableDataBuilder {
       PlutoColumn(
         title: 'Remesa',
         field: 'remesa',
-        applyFormatterInEditing: false,
         width: 240,
         minWidth: 240,
         type: PlutoColumnType.text(),
@@ -125,10 +125,10 @@ class DocumentosTableDataBuilder {
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
     final List<PlutoRow> dataRows = [];
     documentos.asMap().forEach((index, remesa) {
-      double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
-      double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
+      final double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
+      final double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
 
-      Map<String, String> infoRemesaMap = {
+      final Map<String, String> infoRemesaMap = {
         'remesa': "${remesa.impreso} (${remesa.remesa})",
         'centroCosto': remesa.cencosNombre,
         'tipo': remesa.tipoRemesa,
@@ -136,12 +136,12 @@ class DocumentosTableDataBuilder {
         'destino': remesa.destino,
       };
 
-      Map<String, dynamic> infoAlertsMap = {
+      final Map<String, dynamic> infoAlertsMap = {
         'anulacionTrafico': remesa.anulacionTrafico,
         'isDigitalizado': true,
       };
 
-      Map<String, dynamic> obsMap = {
+      final Map<String, dynamic> obsMap = {
         'observacion': remesa.observacion,
         'remision': remesa.remision,
       };
@@ -167,9 +167,9 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return BlocListener<ItemDocumentoBloc, ItemDocumentoState>(
       listener: (context, state) {
-        List<ItemDocumento> itemDocumentos = state.itemDocumentos;
+        final List<ItemDocumento> itemDocumentos = state.itemDocumentos;
         final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
+        final bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
 
         rendererContext.cell.row.setChecked(isPresent);
       },
@@ -193,12 +193,11 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledAlerts(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final anulacionTrafico = remesaMap['anulacionTrafico'];
     final isDigitalizado = remesaMap['isDigitalizado'];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         isDigitalizado
@@ -219,7 +218,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledRemesa(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final remesaText = remesaMap['remesa'];
     final centroCosto = remesaMap['centroCosto'];
     final tipo = remesaMap['tipo'];
@@ -250,7 +249,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledObservaciones(rendererContext) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final obsRemesa = remesaMap['observacion'];
     final remision = remesaMap['remision'];
     return SelectionArea(
@@ -343,7 +342,6 @@ Widget buildRenderSumFooter(rendererContext) {
   return PlutoAggregateColumnFooter(
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
-    format: '#,###',
     alignment: Alignment.centerRight,
     titleSpanBuilder: (text) {
       return [
@@ -366,7 +364,6 @@ class _DetailRemesa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(icon, size: 16),
         Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),

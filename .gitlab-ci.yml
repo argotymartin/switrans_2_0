@@ -1,0 +1,9 @@
+image: cirrusci/flutter:latest
+
+stages:
+  - lints
+
+lints:
+  stage: lints
+  script:
+    - /home/evargas/Documentos/flutter/bin/flutter analyze

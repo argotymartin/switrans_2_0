@@ -38,13 +38,12 @@ class _TextInputState extends State<TextInput> {
       },
       decoration: InputDecoration(
           errorMaxLines: 1,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
           border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
-              width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(

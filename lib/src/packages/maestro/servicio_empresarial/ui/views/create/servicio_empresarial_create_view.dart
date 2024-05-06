@@ -15,7 +15,9 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (context, state) {
-        if (state is ServicioEmpresarialExceptionState) ErrorDialog.showDioException(context, state.exception);
+        if (state is ServicioEmpresarialExceptionState) {
+          ErrorDialog.showDioException(context, state.exception);
+        }
 
         if (state is ServicioEmpresarialSuccesState) {
           final request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
@@ -23,19 +25,15 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
           context.go('/maestros/servicio_empresarial/buscar');
         }
       },
-      child: Stack(
+      child: ListView(
+        padding: const EdgeInsets.only(right: 32, top: 8),
+        physics: const ClampingScrollPhysics(),
         children: [
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: [
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
-                title: "Registrar Nuevo",
-                icon: Icons.add_circle_outline_outlined,
-                child: _BuildFieldsForm(),
-              ),
-            ],
+          BuildViewDetail(path: fullPath),
+          const WhiteCard(
+            title: "Registrar Nuevo",
+            icon: Icons.add_circle_outline_outlined,
+            child: _BuildFieldsForm(),
           ),
         ],
       ),

@@ -20,11 +20,11 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
     on<ErrorDocumentoEvent>((event, emit) => emit(DocumentoErrorState(error: event.exception)));
   }
 
-  Future<List<Documento>> getDocumentos(final FacturaRequest request) async {
+  Future<List<Documento>> getDocumentos(FacturaRequest request) async {
     add(const GetDocumentoEvent());
     final resp = await _repository.getDocumentosService(request);
     if (resp.data != null) {
-      List<Documento> documentos = resp.data!;
+      final List<Documento> documentos = resp.data!;
       add(ChangedDocumentoEvent(documentos));
       return resp.data!;
     } else {
@@ -37,11 +37,13 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
     final codigosUnicos = state.documentos.map((doc) => doc.cencosCodigo).toSet();
 
     final centros = <int, String>{};
-    for (int codigo in codigosUnicos) {
+    for (final int codigo in codigosUnicos) {
       final documento = state.documentos.firstWhere((doc) => doc.cencosCodigo == codigo);
       centros[codigo] = documento.cencosNombre;
     }
-    if (centros.isEmpty) centros[0] = "No tengo centro de costo";
+    if (centros.isEmpty) {
+      centros[0] = "No tengo centro de costo";
+    }
 
     return centros.entries.toList();
   }

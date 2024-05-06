@@ -31,7 +31,6 @@ class ItemDocumentoModel extends ItemDocumento {
         tipo: "",
         total: 0,
         valor: 0,
-        valorIva: 0,
         porcentajeIva: 19,
       );
 }

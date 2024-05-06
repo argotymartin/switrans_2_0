@@ -6,10 +6,10 @@ class CurrencyLabel extends StatelessWidget {
   final String text;
   final double fontSize;
   const CurrencyLabel({
-    super.key,
     required this.color,
     required this.text,
     this.fontSize = 16.0,
+    super.key,
   });
 
   @override

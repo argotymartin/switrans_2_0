@@ -3,7 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LogoSidebar extends StatelessWidget {
   final bool isMenuIcon;
-  const LogoSidebar({super.key, required this.isMenuIcon});
+  const LogoSidebar({
+    required this.isMenuIcon,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

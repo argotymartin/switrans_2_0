@@ -5,7 +5,10 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class MenuLayout extends StatelessWidget {
   final Widget child;
-  const MenuLayout({super.key, required this.child});
+  const MenuLayout({
+    required this.child,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,6 @@ class CustomEndDrawer extends StatelessWidget {
             ),
           ),
           const Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Theme Colors"),

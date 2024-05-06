@@ -8,12 +8,12 @@ class CustomPlutoGridTable extends StatelessWidget {
   final Function(PlutoGridOnRowCheckedEvent value)? onRowDoubleTap;
   final bool columnFilter;
   const CustomPlutoGridTable({
-    super.key,
     required this.columns,
     required this.rows,
     this.onRowDoubleTap,
     this.onRowChecked,
     this.columnFilter = false,
+    super.key,
   });
 
   @override
@@ -21,7 +21,7 @@ class CustomPlutoGridTable extends StatelessWidget {
     late PlutoGridStateManager stateManager;
     const double rowHeight = 48;
     const double titleHeight = 48;
-    double columnFilterHeight = columnFilter ? 36 : 0;
+    final double columnFilterHeight = columnFilter ? 36 : 0;
     return Container(
       height: (rowHeight * (rows.length + 1)) + (titleHeight + columnFilterHeight),
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -30,7 +30,9 @@ class CustomPlutoGridTable extends StatelessWidget {
         rows: rows,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
-          columnFilter ? stateManager.setShowColumnFilter(true) : null;
+          if (columnFilter) {
+            stateManager.setShowColumnFilter(true);
+          }
         },
         onRowChecked: onRowChecked,
         mode: PlutoGridMode.select,

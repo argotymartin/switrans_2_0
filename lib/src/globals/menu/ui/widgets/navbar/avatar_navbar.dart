@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class AvatarNavbar extends StatelessWidget {
   final double size;
-  const AvatarNavbar({super.key, required this.size});
+  const AvatarNavbar({
+    required this.size,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

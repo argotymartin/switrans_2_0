@@ -8,7 +8,10 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
   final PaginaMenu pagina;
-  const PaginasSidebar({super.key, required this.pagina});
+  const PaginasSidebar({
+    required this.pagina,
+    super.key,
+  });
 
   @override
   State<PaginasSidebar> createState() => _PaginasSidebarState();
@@ -26,7 +29,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       child: InkWell(
         onTap: () => setState(() {
           isEntered = !isEntered;
-          final path = context.read<MenuSidebarBloc>().onPaginaSelected(widget.pagina, isEntered);
+          final path = context.read<MenuSidebarBloc>().onPaginaSelected(isSelected: isEntered, paginaMenu: widget.pagina);
           context.go(path);
         }),
         child: Material(

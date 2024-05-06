@@ -18,7 +18,9 @@ class TipoImpuestoRequest {
       'usuario': usuario,
       'nombre': nombre,
     };
-    if (codigo != 0) data['codigo'] = codigo;
+    if (codigo != 0) {
+      data['codigo'] = codigo;
+    }
 
     return data;
   }
@@ -26,8 +28,12 @@ class TipoImpuestoRequest {
   String toPocketBaseFilter() {
     final List conditions = [];
 
-    if (nombre!.isNotEmpty) conditions.add("nombre~'$nombre'");
-    if (codigo != null) conditions.add("codigo=$codigo");
+    if (nombre!.isNotEmpty) {
+      conditions.add("nombre~'$nombre'");
+    }
+    if (codigo != null) {
+      conditions.add("codigo=$codigo");
+    }
 
     final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();
     final data = queryString.isNotEmpty ? "($queryString)" : "";

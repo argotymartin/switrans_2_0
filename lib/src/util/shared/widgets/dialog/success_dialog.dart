@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class SuccessDialog {
-  static showSuccesDialog(BuildContext context) {
+  static void showSuccesDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(

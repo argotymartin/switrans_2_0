@@ -3,7 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class TextSeparatorSidebar extends StatelessWidget {
   final String text;
-  const TextSeparatorSidebar({super.key, required this.text});
+  const TextSeparatorSidebar({
+    required this.text,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

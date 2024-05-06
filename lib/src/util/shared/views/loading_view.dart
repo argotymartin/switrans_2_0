@@ -8,7 +8,6 @@ class LoadingView extends StatelessWidget {
     return Center(
       child: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/animations/loading.gif"),

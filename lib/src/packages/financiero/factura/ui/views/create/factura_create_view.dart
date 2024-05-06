@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
@@ -38,7 +38,9 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
     const Duration duration = Duration(milliseconds: 1000);
     return BlocListener<DocumentoBloc, DocumentoState>(
       listener: (context, state) {
-        if (state is DocumentoErrorState) ErrorDialog.showDioException(context, state.error);
+        if (state is DocumentoErrorState) {
+          ErrorDialog.showDioException(context, state.error);
+        }
       },
       child: Stack(
         children: [
@@ -87,7 +89,7 @@ class _BuildFiltros extends StatelessWidget {
   Widget build(BuildContext context) {
     final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     final itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
-    List<Empresa> empresas = formFacturaBloc.state.empresas;
+    final List<Empresa> empresas = formFacturaBloc.state.empresas;
 
     final formKey = GlobalKey<FormState>();
     return Form(
@@ -126,7 +128,7 @@ class _BuildFiltros extends StatelessWidget {
                 onPressed: () {
                   final isValid = formKey.currentState!.validate();
                   itemDocumentoBloc.add(const ResetDocumentoEvent());
-                  formFacturaBloc.onPressedSearch(isValid);
+                  formFacturaBloc.onPressedSearch(isValid: isValid);
                 },
                 icon: const Icon(Icons.search_rounded),
                 label: const Text("Buscar", style: TextStyle(color: Colors.white)),
@@ -143,7 +145,7 @@ class _BuildFiltros extends StatelessWidget {
                   }
                   if (state is DocumentoSuccesState) {
                     final remesas = context.read<FormFacturaBloc>().remesasController.text;
-                    List<String> items = remesas.split(",");
+                    final List<String> items = remesas.split(",");
                     return Column(
                       children: [
                         Text(
@@ -184,14 +186,16 @@ class _FieldCliente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
-    List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
+    final List<Cliente> clientes = facturaFilterBloc.state.clientes;
+    final Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
     final TextEditingController controller = TextEditingController();
-    if (cliente != null) controller.text == cliente.nombre;
+    if (cliente != null) {
+      controller.text = cliente.nombre;
+    }
 
     void setValueCliente(EntryAutocomplete entry) {
-      formFacturaBloc.setClienteCodigo = entry.codigo;
-      controller.text == entry.title;
+      formFacturaBloc.clienteCodigo = entry.codigo;
+      controller.text = entry.title;
     }
 
     final List<EntryAutocomplete> entries = clientes.map((cliente) {
@@ -209,7 +213,6 @@ class _FieldCliente extends StatelessWidget {
     }).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
@@ -234,13 +237,12 @@ class _FieldTipoFactura extends StatelessWidget {
       context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.value));
     }
 
-    List<MenuEntry> entryMenus = const [
+    const List<MenuEntry> entryMenus = [
       MenuEntry(label: "Tipo 10", value: 10),
       MenuEntry(label: "Tipo 12", value: 12),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Tipo", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
@@ -265,7 +267,6 @@ class _FieldEmpresa extends StatelessWidget {
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
           spacing: 16,
           children: List.generate(
             empresas.length,
@@ -380,7 +381,6 @@ class _BuildItemFactura extends StatelessWidget {
             icon: Icons.file_copy_outlined,
             title: "Item Documentos",
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _BuildDetailsDocumentos(),
@@ -490,7 +490,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo > 0) {
         context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-        formFacturaBloc.setCentroCosto = value.codigo;
+        formFacturaBloc.centroCosto = value.codigo;
       }
     }
 
@@ -567,18 +567,18 @@ class _BuildButtonRegistrar extends StatelessWidget {
         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
         final documentos = facturaBloc.state.documentos;
         final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
-        double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
-        double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
-        double valorFaltante = totalDocumentos - totalPrefacturas;
+        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
+        final double valorFaltante = totalDocumentos - totalPrefacturas;
 
-        bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
-        bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
-        bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
-        bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
-        bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
-        bool isCentroCosto = formFacturaBloc.centroCosto > 0;
-        bool isFaltante = valorFaltante.toInt() == 0;
+        final bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
+        final bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
+        final bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
+        final bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
+        final bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
+        final bool isCentroCosto = formFacturaBloc.centroCosto > 0;
+        final bool isFaltante = valorFaltante.toInt() == 0;
 
         /*debugPrint("isTransporte: $isTransporte");
         debugPrint("isDocumento: $isDocumento");
@@ -596,10 +596,10 @@ class _BuildButtonRegistrar extends StatelessWidget {
           child: FilledButton.icon(
             onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
                 ? () {
-                    int centroCosto = formFacturaBloc.centroCosto;
-                    int clienteCodigo = formFacturaBloc.clienteCodigo;
-                    int empresaCodigo = formFacturaBloc.state.empresa;
-                    int usuario = authBloc.state.auth!.usuario.codigo;
+                    final int centroCosto = formFacturaBloc.centroCosto;
+                    final int clienteCodigo = formFacturaBloc.clienteCodigo;
+                    final int empresaCodigo = formFacturaBloc.state.empresa;
+                    final int usuario = authBloc.state.auth!.usuario.codigo;
                     final prefacturaRequest = PrefacturaRequest(
                       centroCosto: centroCosto,
                       cliente: clienteCodigo,

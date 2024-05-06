@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/datatables/documentos_table_data_builder.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/blocs/item_documento/item_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
 class TableDocumentos extends StatelessWidget {
   final List<Documento> documentos;
-  const TableDocumentos({super.key, required this.documentos});
+  const TableDocumentos({
+    required this.documentos,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

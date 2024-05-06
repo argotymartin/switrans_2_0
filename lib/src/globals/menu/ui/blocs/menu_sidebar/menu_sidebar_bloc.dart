@@ -30,32 +30,49 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     on<SearchMenuSidebarEvent>((event, emit) {
       emit(const MenuSidebarLoadingState());
 
+      if (event.query.isEmpty) {
+        emit(MenuSidebarSuccesState(paquetes: paquetes2));
+        return;
+      }
+
       final String encodedPackages = jsonEncode(paquetes2);
       final List<PaqueteMenu> filteredPackages =
-          jsonDecode(encodedPackages).map<PaqueteMenu>((dynamic packageJson) => PaqueteMenuModel.fromJson(packageJson)).toList();
+          jsonDecode(encodedPackages).map<PaqueteMenu>((packageJson) => PaqueteMenuModel.fromJson(packageJson)).toList();
 
-      for (var paquete in filteredPackages) {
+      for (final paquete in filteredPackages) {
         paquete.modulos = paquete.modulos.where((modulo) => modulo.texto.toLowerCase().contains(event.query.toLowerCase())).toList();
         paquete.isSelected = true;
       }
+      final paquetesfilter = filteredPackages.where((element) => element.modulos.isNotEmpty).toList();
 
-      emit(MenuSidebarSuccesState(paquetes: filteredPackages));
+      emit(MenuSidebarSuccesState(paquetes: paquetesfilter));
     });
   }
 
-  void onPaqueteSelected(PaqueteMenu paqueteMenu, bool isSelected) {
-    List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
-      paquete.isSelected = (paquete == paqueteMenu) ? isSelected : false;
+  void onPaqueteSelected({required PaqueteMenu paqueteMenu, required bool isSelected}) {
+    final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+      if (paquete == paqueteMenu) {
+        paquete.isSelected = isSelected;
+      } else {
+        paquete.isSelected = false;
+      }
       return paquete;
     }).toList();
 
     add(SelectedMenuSidebarEvent(paquetes));
   }
 
-  void onModuloSelected(ModuloMenu moduloMenu, bool isSelected) {
+  void onModuloSelected({
+    required ModuloMenu moduloMenu,
+    required bool isSelected,
+  }) {
     final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
       paquete.modulos = paquete.modulos.map((modulo) {
-        modulo.isSelected = (modulo == moduloMenu) ? isSelected : false;
+        if (modulo == moduloMenu) {
+          modulo.isSelected = isSelected;
+        } else {
+          modulo.isSelected = false;
+        }
         return modulo;
       }).toList();
       return paquete;
@@ -64,13 +81,22 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     add(SelectedMenuSidebarEvent(paquetes));
   }
 
-  String onPaginaSelected(PaginaMenu paginaMenu, bool isSelected) {
+  String onPaginaSelected({
+    required PaginaMenu paginaMenu,
+    required bool isSelected,
+  }) {
     String path = '';
     final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
       paquete.modulos = paquete.modulos.map((modulo) {
         modulo.paginas = modulo.paginas.map((pagina) {
-          pagina.isSelected = (pagina == paginaMenu) ? isSelected : false;
-          if (pagina == paginaMenu) path = '${paquete.path}${modulo.path}${pagina.path}';
+          if (pagina == paginaMenu) {
+            pagina.isSelected = isSelected;
+          } else {
+            pagina.isSelected = false;
+          }
+          if (pagina == paginaMenu) {
+            path = '${paquete.path}${modulo.path}${pagina.path}';
+          }
           return pagina;
         }).toList();
         return modulo;

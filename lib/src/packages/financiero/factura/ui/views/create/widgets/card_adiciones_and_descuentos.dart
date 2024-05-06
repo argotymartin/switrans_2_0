@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 enum TipoVariacion { adicion, descuento }
 
@@ -11,21 +11,21 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
   final String title;
   final Color color;
   const CardAdicionesAndDescuentos({
-    super.key,
     required this.documentos,
     required this.title,
     required this.color,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    TipoVariacion tipoVariacion = title == "ADICIONES" ? TipoVariacion.adicion : TipoVariacion.descuento;
+    final TipoVariacion tipoVariacion = title == "ADICIONES" ? TipoVariacion.adicion : TipoVariacion.descuento;
     return Container(
       padding: const EdgeInsets.only(bottom: 16, top: 8, right: 8, left: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color, width: 1),
+        border: Border.all(color: color),
       ),
       child: Column(
         children: [
@@ -65,7 +65,7 @@ class _BuildTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<TableRow> buildTableRows = documentos
+    final List<TableRow> buildTableRows = documentos
         .map(
           (documento) => TableRow(
             children: [
@@ -98,7 +98,7 @@ class _BuildTable extends StatelessWidget {
         )
         .toList();
 
-    double total = tipoVariacion == TipoVariacion.adicion
+    final double total = tipoVariacion == TipoVariacion.adicion
         ? documentos
             .map((documento) => documento.adiciones.fold(0, (total, adicion) => total + adicion.valor.toInt()))
             .fold(0, (total, subtotal) => total + subtotal)
@@ -107,7 +107,7 @@ class _BuildTable extends StatelessWidget {
             .fold(0, (total, subtotal) => total + subtotal);
 
     return Table(
-      border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+      border: TableBorder.all(color: Colors.grey.shade200),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: const {2: FractionColumnWidth(0.5)},
       children: [

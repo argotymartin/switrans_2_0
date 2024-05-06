@@ -16,7 +16,9 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (context, state) {
-        if (state is ServicioEmpresarialExceptionState) ErrorDialog.showDioException(context, state.exception);
+        if (state is ServicioEmpresarialExceptionState) {
+          ErrorDialog.showDioException(context, state.exception);
+        }
       },
       child: Stack(
         children: [
@@ -49,7 +51,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;
@@ -121,13 +123,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = [];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
+    void onRowChecked(List<Map<String, dynamic>> event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
+      for (final Map<String, dynamic> map in listUpdate) {
         final request = ServicioEmpresarialRequest.fromMapTable(map);
         context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(request));
       }
@@ -148,7 +150,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
       builder: (context, state) {
         if (state is ServicioEmpresarialConsultedState) {
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (ServicioEmpresarial servico in state.serviciosEmpresariales) {
+          for (final ServicioEmpresarial servico in state.serviciosEmpresariales) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(servico);
             plutoRes.add(rowData);
           }

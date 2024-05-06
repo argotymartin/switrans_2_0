@@ -11,7 +11,7 @@ class FinancieroRoutes {
   static const String packagePath = "finaciero";
 
   static List<ShellRoute> getRoutesFinaciero() {
-    List<ShellRoute> routes = [];
+    final List<ShellRoute> routes = [];
     routes.add(routerFactura());
     return routes;
   }
@@ -34,7 +34,9 @@ class FinancieroRoutes {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
             return BlocConsumer<FormFacturaBloc, FormFacturaState>(
               listener: (context, state) {
-                if (state is FormFacturaErrorState) ErrorDialog.showDioException(context, state.exception!);
+                if (state is FormFacturaErrorState) {
+                  ErrorDialog.showDioException(context, state.exception!);
+                }
               },
               builder: (context, stateFactura) {
                 return (stateFactura is FormFacturaLoadingState) ? const LoadingView() : const FacturaCreateView();

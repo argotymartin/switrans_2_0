@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/create/widgets/radio_buttons.dart';
-import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TableItemsDocumento extends StatelessWidget {
   const TableItemsDocumento({
@@ -32,7 +32,7 @@ class TableItemsDocumento extends StatelessWidget {
           ],
         );
         int index = 0;
-        List<TableRow> buildTableRows = state.itemDocumentos.map(
+        final List<TableRow> buildTableRows = state.itemDocumentos.map(
           (itemDocumento) {
             index++;
             return TableRow(
@@ -62,7 +62,7 @@ class TableItemsDocumento extends StatelessWidget {
           7: FractionColumnWidth(0.1),
         };
         return Table(
-          border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+          border: TableBorder.all(color: Colors.grey.shade200),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: columnWidth,
           children: [tableRowsTitle, ...buildTableRows],
@@ -129,7 +129,6 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
     entriesDocumentos.add(EntryAutocomplete(
       title: '0',
       subTitle: '( Sin documento )',
-      codigo: 0,
     ));
     final String entrySelected = widget.item.documento > 0 ? widget.item.documento.toString() : '';
     void setValueFactura(EntryAutocomplete value) {
@@ -143,7 +142,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
         });
       } else {
         setState(() {
-          widget.item.tipo == "SA";
+          widget.item.tipo = "SA";
           context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
         });
       }
@@ -201,10 +200,10 @@ class _BuildValor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChaneged(String value) {
-      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
-      double intValue = double.parse(textValue);
-      double newValorIva = intValue * item.porcentajeIva / 100;
+      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      final String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
+      final double intValue = double.parse(textValue);
+      final double newValorIva = intValue * item.porcentajeIva / 100;
 
       item.valor = intValue;
       item.valorIva = newValorIva;
@@ -252,9 +251,9 @@ class _BuildCantidad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChanged(String value) {
-      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
-      int intValue = int.parse(textValue);
+      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      final String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
+      final int intValue = int.parse(textValue);
       item.cantidad = intValue;
       item.total = (item.valor + item.valorIva) * item.cantidad;
       context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));

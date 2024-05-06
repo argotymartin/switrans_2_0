@@ -7,7 +7,7 @@ class ServicioEmpresarialDB {
   Future<Response> getServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     try {
       String where = '';
-      List conditions = [];
+      final List conditions = [];
       if (request.codigo != null) {
         conditions.add("seremp_codigo = ${request.codigo!}");
       }
@@ -21,7 +21,8 @@ class ServicioEmpresarialDB {
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
-      final sql = """SELECT se.seremp_codigo,
+      final sql = """
+              SELECT se.seremp_codigo,
                       se.seremp_nombre,
                       se.seremp_es_activo,
                       se.seremp_fecha_creacion,
@@ -33,7 +34,7 @@ class ServicioEmpresarialDB {
                 ORDER BY se.seremp_codigo""";
       final response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
       rethrow;
     }
@@ -42,7 +43,9 @@ class ServicioEmpresarialDB {
   Future<Response> setServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_servicio_empresariales', key: 'seremp_codigo');
 
-    final sql = """INSERT INTO public.tb_servicio_empresariales (seremp_codigo, 
+    final sql = """
+        INSERT INTO public.tb_servicio_empresariales (
+        seremp_codigo, 
         seremp_nombre, 
         usuario_creacion, 
         seremp_es_activo)
@@ -79,7 +82,7 @@ class ServicioEmpresarialDB {
 
       final resp = await getServicioEmpresarialDB(request);
       return resp;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
       rethrow;
     }

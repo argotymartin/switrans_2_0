@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio_strategy.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio.dart';
-import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio_strategy.dart';
+import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio_strategy.dart';
 
 class ErrorDialog {
@@ -15,7 +15,7 @@ class ErrorDialog {
     ErrorBackendDio: ErrorBackendDioStrategy(),
   };
 
-  static showDioException(BuildContext context, DioException exception) {
+  static void showDioException(BuildContext context, DioException exception) {
     if (exception.response?.data != null) {
       final Response response = exception.response!;
       final errorType = _getErrorType(response.data);
@@ -27,19 +27,17 @@ class ErrorDialog {
     }
   }
 
-  static _getErrorType(dynamic errorData) {
-    if (errorData is Map) {
-      if (errorData.containsKey('status') && errorData.containsKey('error')) {
-        return ErrorGenericDio;
-      } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
-        return ErrorPocketbaseDio;
-      } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
-        return ErrorBackendDio;
-      }
+  static dynamic _getErrorType(Map errorData) {
+    if (errorData.containsKey('status') && errorData.containsKey('error')) {
+      return ErrorGenericDio;
+    } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
+      return ErrorPocketbaseDio;
+    } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
+      return ErrorBackendDio;
     }
   }
 
-  static _showErrorDialog(BuildContext context, content) {
+  static void _showErrorDialog(BuildContext context, content) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(

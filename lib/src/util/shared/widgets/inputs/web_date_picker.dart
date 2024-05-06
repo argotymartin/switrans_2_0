@@ -56,7 +56,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     }
   }
 
-  void onChangeCalendarDatePicker(DateTime? selectedDate) async {
+  void onChangeCalendarDatePicker(DateTime? selectedDate) {
     setState(() {
       final selectedYear = selectedDate.parseToString('yyyy');
       if (selectedYear == currentYear) {
@@ -69,7 +69,9 @@ class _WebDatePickerState extends State<WebDatePicker> {
         setState(() {});
       }
     });
-    if (widget.onChange != null) widget.onChange!.call(selectedDate);
+    if (widget.onChange != null) {
+      widget.onChange!.call(selectedDate);
+    }
     _controller.text = _selectedDate.parseToString(dateformat);
     _focusNode.unfocus();
   }
@@ -170,7 +172,9 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
 extension StringExtension on String {
   DateTime parseToDateTime(String dateFormat) {
-    if (length > dateFormat.length) return DateTime.now();
+    if (length > dateFormat.length) {
+      return DateTime.now();
+    }
     try {
       return DateFormat(dateFormat).parse(this);
     } on FormatException catch (_) {
@@ -181,7 +185,9 @@ extension StringExtension on String {
 
 extension DateTimeExtension on DateTime? {
   String parseToString(String dateFormat) {
-    if (this == null) return '';
+    if (this == null) {
+      return '';
+    }
     return DateFormat(dateFormat).format(this!);
   }
 }

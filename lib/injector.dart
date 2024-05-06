@@ -18,7 +18,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/modulo_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/domain/modulo_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
@@ -28,8 +28,12 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/datasources
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositories/tipo_impuesto_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/db/unidad_negocio_db.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_db_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 
-final injector = GetIt.instance;
+final GetIt injector = GetIt.instance;
 
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
@@ -62,6 +66,10 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<ServicioEmpresarialDB>(ServicioEmpresarialDB());
   injector.registerSingleton<AbstractServicioEmpresarialRepository>(ServicioEmpresarialDBImpl(injector()));
   injector.registerSingleton<ServicioEmpresarialBloc>(ServicioEmpresarialBloc(injector()));
+
+  injector.registerSingleton<UnidadNegocioDB>(UnidadNegocioDB());
+  injector.registerSingleton<AbstractUnidadNegocioRepository>(UnidadNegocioRepositoryDBImpl(injector()));
+  injector.registerSingleton<UnidadNegocioBloc>(UnidadNegocioBloc(injector()));
 
   injector.registerSingleton<ModuloApiPocketBase>(ModuloApiPocketBase(injector()));
   injector.registerSingleton<AbstractModuloRepository>(ModuloRepositoryImpl(injector()));

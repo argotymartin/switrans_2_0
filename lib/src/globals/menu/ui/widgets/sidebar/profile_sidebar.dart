@@ -6,7 +6,10 @@ import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class ProfileSidebar extends StatelessWidget {
   final bool isMenuIcon;
-  const ProfileSidebar({super.key, required this.isMenuIcon});
+  const ProfileSidebar({
+    required this.isMenuIcon,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

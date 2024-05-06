@@ -13,11 +13,11 @@ class ValidateRoutes {
     final moduloBloc = context.read<MenuSidebarBloc>();
     final authBloc = context.read<AuthBloc>();
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token') ?? '';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String stringValue = prefs.getString('token') ?? '';
     final isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
-      int lengthModulos = moduloBloc.state.paquetes.length;
+      final int lengthModulos = moduloBloc.state.paquetes.length;
       if (lengthModulos < 1) {
         moduloBloc.add(const ActiveteMenuSidebarEvent());
       }

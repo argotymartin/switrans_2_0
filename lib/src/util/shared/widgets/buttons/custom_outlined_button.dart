@@ -9,13 +9,13 @@ class CustomOutlinedButton extends StatelessWidget {
   final IconData? icon;
 
   const CustomOutlinedButton({
-    super.key,
     required this.onPressed,
     required this.text,
     this.colorText = Colors.black,
     this.color = Colors.blue,
     this.isFilled = false,
     this.icon,
+    super.key,
   });
 
   @override

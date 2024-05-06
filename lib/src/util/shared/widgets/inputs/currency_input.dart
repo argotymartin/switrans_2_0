@@ -8,7 +8,13 @@ class CurrencyInput extends StatelessWidget {
   final Color color;
   final String initialValue;
   final Function(String result)? onChanged;
-  const CurrencyInput({super.key, this.controller, required this.color, this.onChanged, this.initialValue = "0"});
+  const CurrencyInput({
+    required this.color,
+    this.controller,
+    this.onChanged,
+    this.initialValue = "0",
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,9 @@ class CurrencyInput extends StatelessWidget {
       controller: controller,
       initialValue: currencyFormat.format(int.parse(initialValue)),
       onChanged: (value) {
-        if (onChanged != null) onChanged?.call(value);
+        if (onChanged != null) {
+          onChanged?.call(value);
+        }
       },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -29,7 +37,6 @@ class CurrencyInput extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primaryContainer,
-            width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
