@@ -3,18 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/web_date_picker_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
+import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ModuloSearchView extends StatelessWidget {
@@ -26,7 +18,9 @@ class ModuloSearchView extends StatelessWidget {
 
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (context, state) {
-        if (state is ModuloExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is ModuloExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
       },
       child: Stack(
         children: [
@@ -59,8 +53,8 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty &&
-          paqueteController.text.isEmpty && isActivo == null;
+      final isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty &&
+          paqueteController.text.isEmpty && isActivo;
 
       if (isCampoVacio) {
         isValid = false;
@@ -107,7 +101,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 isInProgress = true;
               }
               if (state is ModuloErrorFormState) {
-                error = state.error!;
+                error = state.error;
               }
               if (state is ModuloConsultedState) {
                 isInProgress = false;
@@ -143,13 +137,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(dynamic event) {
+    void onRowChecked(event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
-      for (Map<String, dynamic> map in listUpdate) {
+      for (final Map<String, dynamic> map in listUpdate) {
         final request = ModuloRequest.fromMap(map);
         context.read<ModuloBloc>().add(UpdateModuloEvent(request));
       }
@@ -175,7 +169,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
         if (state is ModuloConsultedState) {
           final tiposList = context.read<ModuloBloc>().paquetes.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
           final List<Map<String, DataItemGrid>> plutoRes = [];
-          for (Modulo modulo in state.modulos) {
+          for (final Modulo modulo in state.modulos) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo, tiposList);
             plutoRes.add(rowData);
           }

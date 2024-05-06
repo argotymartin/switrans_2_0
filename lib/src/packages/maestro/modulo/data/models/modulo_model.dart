@@ -1,4 +1,4 @@
-import '../../domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 
 class ModuloModel extends Modulo {
   ModuloModel({

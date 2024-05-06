@@ -3,15 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_rows_form.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 
@@ -23,7 +18,9 @@ class ModuloCreateView extends StatelessWidget {
         GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (context, state) {
-        if (state is ModuloExceptionState) ErrorDialog.showDioException(context, state.exception!);
+        if (state is ModuloExceptionState) {
+          ErrorDialog.showDioException(context, state.exception!);
+        }
 
         if (state is ModuloSuccessState) {
           context.go('/maestros/modulo/buscar');

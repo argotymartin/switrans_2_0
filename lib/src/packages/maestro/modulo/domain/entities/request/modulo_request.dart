@@ -33,15 +33,33 @@ class ModuloRequest {
       'paquete': paquete,
       'modulo_activo': moduloActivo
     };
-    if (moduloId != 0) data['id'] = '$moduloId';
-    if (moduloCodigo != 0) data['modulo_codigo'] = moduloCodigo;
-    if (moduloNombre!.isEmpty) data['modulo_nombre'] = '$moduloNombre';
-    if (moduloDetalles!.isEmpty) data['modulo_detalles'] = '$moduloDetalles';
-    if (moduloPath!.isEmpty) data['modulo_path'] = '$moduloPath';
-    if (moduloVisible != null) data['modulo_visible'] = moduloVisible;
-    if (moduloIcono!.isEmpty) data['modulo_icono'] = '$moduloIcono';
-    if (paquete!.isEmpty) data['paquete'] = paquete;
-    if (moduloActivo != null) data['modulo_activo'] = moduloActivo;
+    if (moduloId != 0) {
+      data['id'] = '$moduloId';
+    }
+    if (moduloCodigo != 0) {
+      data['modulo_codigo'] = moduloCodigo;
+    }
+    if (moduloNombre!.isEmpty) {
+      data['modulo_nombre'] = '$moduloNombre';
+    }
+    if (moduloDetalles!.isEmpty) {
+      data['modulo_detalles'] = '$moduloDetalles';
+    }
+    if (moduloPath!.isEmpty) {
+      data['modulo_path'] = '$moduloPath';
+    }
+    if (moduloVisible != null) {
+      data['modulo_visible'] = moduloVisible;
+    }
+    if (moduloIcono!.isEmpty) {
+      data['modulo_icono'] = '$moduloIcono';
+    }
+    if (paquete!.isEmpty) {
+      data['paquete'] = paquete;
+    }
+    if (moduloActivo != null) {
+      data['modulo_activo'] = moduloActivo;
+    }
 
     return data;
   }

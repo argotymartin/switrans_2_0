@@ -16,11 +16,10 @@ class FieldPaquete extends StatelessWidget {
     }
 
     final paquetes = context.read<ModuloBloc>().paquetes;
-    List<EntryAutocomplete> entryMenus = paquetes.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+    final List<EntryAutocomplete> entryMenus = paquetes.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Paquete", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
