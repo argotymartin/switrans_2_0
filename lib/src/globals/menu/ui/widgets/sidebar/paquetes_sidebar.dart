@@ -89,7 +89,6 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),

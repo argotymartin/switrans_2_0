@@ -25,7 +25,7 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color, width: 1),
+        border: Border.all(color: color),
       ),
       child: Column(
         children: [
@@ -107,7 +107,7 @@ class _BuildTable extends StatelessWidget {
             .fold(0, (total, subtotal) => total + subtotal);
 
     return Table(
-      border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+      border: TableBorder.all(color: Colors.grey.shade200),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: const {2: FractionColumnWidth(0.5)},
       children: [

@@ -36,9 +36,8 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
       }
 
       final String encodedPackages = jsonEncode(paquetes2);
-      final List<PaqueteMenu> filteredPackages = jsonDecode(encodedPackages)
-          .map<PaqueteMenu>((Map<String, dynamic> packageJson) => PaqueteMenuModel.fromJson(packageJson))
-          .toList();
+      final List<PaqueteMenu> filteredPackages =
+          jsonDecode(encodedPackages).map<PaqueteMenu>((packageJson) => PaqueteMenuModel.fromJson(packageJson)).toList();
 
       for (var paquete in filteredPackages) {
         paquete.modulos = paquete.modulos.where((modulo) => modulo.texto.toLowerCase().contains(event.query.toLowerCase())).toList();

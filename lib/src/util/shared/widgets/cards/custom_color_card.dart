@@ -43,7 +43,6 @@ class CustomColorCard extends StatelessWidget {
                   Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer),
                   const SizedBox(width: 4),
                   FittedBox(
-                    fit: BoxFit.contain,
                     child: Text(
                       title!,
                       style: GoogleFonts.roboto(

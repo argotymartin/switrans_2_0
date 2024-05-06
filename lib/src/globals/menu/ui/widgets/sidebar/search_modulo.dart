@@ -13,7 +13,6 @@ class SearchModulo extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       color: colorScheme.onPrimaryContainer.withOpacity(0.1),
       child: Align(
-        alignment: Alignment.center,
         child: TextField(
           cursorColor: Colors.white,
           controller: controller,
@@ -30,13 +29,11 @@ class SearchModulo extends StatelessWidget {
             fillColor: colorScheme.onPrimaryContainer,
             filled: true,
             hintStyle: TextStyle(color: colorScheme.outlineVariant, fontSize: 14, fontWeight: FontWeight.w300),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             constraints: const BoxConstraints(maxHeight: 38, minHeight: 32),
             border: OutlineInputBorder(
               borderSide: BorderSide(
                 color: colorScheme.primary,
-                width: 1,
-                strokeAlign: BorderSide.strokeAlignInside,
               ),
             ),
             focusedBorder: OutlineInputBorder(

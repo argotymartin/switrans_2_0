@@ -39,7 +39,6 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
                       SizedBox(
                         height: 24,
                         child: FittedBox(
-                          fit: BoxFit.contain,
                           child: Text(
                             widget.title,
                             style: GoogleFonts.roboto(

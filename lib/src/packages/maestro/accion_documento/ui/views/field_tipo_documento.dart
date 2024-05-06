@@ -20,7 +20,6 @@ class FieldTipoDocumento extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Tipo Documento", style: AppTheme.titleStyle),
         const SizedBox(height: 8),

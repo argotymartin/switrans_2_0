@@ -39,7 +39,6 @@ class DocumentosTableDataBuilder {
       PlutoColumn(
         title: 'Remesa',
         field: 'remesa',
-        applyFormatterInEditing: false,
         width: 240,
         minWidth: 240,
         type: PlutoColumnType.text(),
@@ -198,7 +197,6 @@ class DocumentosTableDataBuilder {
     final isDigitalizado = remesaMap['isDigitalizado'];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         isDigitalizado
@@ -343,7 +341,6 @@ Widget buildRenderSumFooter(rendererContext) {
   return PlutoAggregateColumnFooter(
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
-    format: '#,###',
     alignment: Alignment.centerRight,
     titleSpanBuilder: (text) {
       return [
@@ -366,7 +363,6 @@ class _DetailRemesa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(icon, size: 16),
         Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),

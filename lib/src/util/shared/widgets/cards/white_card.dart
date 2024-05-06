@@ -30,7 +30,6 @@ class WhiteCard extends StatelessWidget {
                 Icon(icon),
                 const SizedBox(width: 4),
                 FittedBox(
-                  fit: BoxFit.contain,
                   child: Text(
                     title!,
                     style: GoogleFonts.roboto(

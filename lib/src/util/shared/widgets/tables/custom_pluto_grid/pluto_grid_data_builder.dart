@@ -33,16 +33,13 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: false,
-              enableAutoEditing: false,
               enableColumnDrag: false,
               enableContextMenu: false,
-              applyFormatterInEditing: false,
               enableDropToResize: false,
               enableFilterMenuItem: false,
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              minWidth: 80,
               width: 80,
               renderer: (renderContext) => _BuildFieldItem(renderContext: renderContext),
             ),
@@ -76,7 +73,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
-              enableAutoEditing: false,
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),

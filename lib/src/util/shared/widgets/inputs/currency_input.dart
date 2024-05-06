@@ -37,7 +37,6 @@ class CurrencyInput extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primaryContainer,
-            width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(

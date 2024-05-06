@@ -56,7 +56,6 @@ class _MyAppState extends State<RadioButtons> {
               Transform.scale(
                 scale: 0.8,
                 child: Radio<Option>(
-                  toggleable: false,
                   value: Option.option2,
                   groupValue: selectedOption,
                   splashRadius: 2,

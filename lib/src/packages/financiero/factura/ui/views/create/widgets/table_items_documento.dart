@@ -62,7 +62,7 @@ class TableItemsDocumento extends StatelessWidget {
           7: FractionColumnWidth(0.1),
         };
         return Table(
-          border: TableBorder.all(color: Colors.grey.shade200, width: 1),
+          border: TableBorder.all(color: Colors.grey.shade200),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: columnWidth,
           children: [tableRowsTitle, ...buildTableRows],
@@ -129,7 +129,6 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
     entriesDocumentos.add(EntryAutocomplete(
       title: '0',
       subTitle: '( Sin documento )',
-      codigo: 0,
     ));
     final String entrySelected = widget.item.documento > 0 ? widget.item.documento.toString() : '';
     void setValueFactura(EntryAutocomplete value) {

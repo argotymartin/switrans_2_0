@@ -213,7 +213,6 @@ class _FieldCliente extends StatelessWidget {
     }).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
@@ -244,7 +243,6 @@ class _FieldTipoFactura extends StatelessWidget {
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text("Tipo", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
@@ -269,7 +267,6 @@ class _FieldEmpresa extends StatelessWidget {
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
           spacing: 16,
           children: List.generate(
             empresas.length,
@@ -384,7 +381,6 @@ class _BuildItemFactura extends StatelessWidget {
             icon: Icons.file_copy_outlined,
             title: "Item Documentos",
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _BuildDetailsDocumentos(),

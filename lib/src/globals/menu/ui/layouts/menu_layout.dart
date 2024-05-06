@@ -73,7 +73,6 @@ class CustomEndDrawer extends StatelessWidget {
             ),
           ),
           const Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Theme Colors"),
