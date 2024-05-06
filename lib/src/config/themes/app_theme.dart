@@ -23,11 +23,10 @@ class AppTheme {
       textSelectionTheme: const TextSelectionThemeData(),
       dataTableTheme: const DataTableThemeData(checkboxHorizontalMargin: 20),
       scrollbarTheme: ScrollbarThemeData(
-        //isAlwaysShown: true, // Mostrar siempre la barra de desplazamiento
-        thickness: MaterialStateProperty.all(16.0), // Grosor de la barra
-        radius: const Radius.circular(6.0), // Radio de los bordes de la barra
-        thumbColor: MaterialStateProperty.all(Colors.grey), // Color del pulgar de la barra
-        trackColor: MaterialStateProperty.all(Colors.blueGrey), // Color del riel de la barra
+        thickness: MaterialStateProperty.all(16),
+        radius: const Radius.circular(6),
+        thumbColor: MaterialStateProperty.all(Colors.grey),
+        trackColor: MaterialStateProperty.all(Colors.blueGrey),
         crossAxisMargin: 0,
         thumbVisibility: const MaterialStatePropertyAll(true),
         interactive: true,
