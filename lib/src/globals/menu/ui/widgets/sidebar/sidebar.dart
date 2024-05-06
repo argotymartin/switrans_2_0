@@ -56,12 +56,12 @@ class Sidebar extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: OutlinedButton.icon(
-                              label: Text("Salir", style: TextStyle(color: Colors.white)),
+                              label: const Text("Salir", style: TextStyle(color: Colors.white)),
                               onPressed: () {
                                 context.read<AuthBloc>().onLogoutAuthEvent();
                                 context.go(AppRouter.login);
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.logout_outlined,
                                 color: Colors.white,
                               ),
