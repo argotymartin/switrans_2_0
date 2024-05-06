@@ -16,7 +16,7 @@ class FieldTipoDocumento extends StatelessWidget {
     }
 
     final acciones = context.read<AccionDocumentoBloc>().tipos;
-    List<EntryAutocomplete> entryMenus = acciones.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+    final List<EntryAutocomplete> entryMenus = acciones.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

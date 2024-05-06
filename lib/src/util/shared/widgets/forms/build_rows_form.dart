@@ -10,7 +10,7 @@ class BuildRowsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> childrenList = [];
+    final List<Widget> childrenList = [];
     children.forEachIndexed((index, child) {
       childrenList.add(Expanded(child: child));
       if (index + 1 < children.length && children.length > 1) {

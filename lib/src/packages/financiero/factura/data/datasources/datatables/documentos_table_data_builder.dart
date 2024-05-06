@@ -125,10 +125,10 @@ class DocumentosTableDataBuilder {
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
     final List<PlutoRow> dataRows = [];
     documentos.asMap().forEach((index, remesa) {
-      double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
-      double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
+      final double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
+      final double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
 
-      Map<String, String> infoRemesaMap = {
+      final Map<String, String> infoRemesaMap = {
         'remesa': "${remesa.impreso} (${remesa.remesa})",
         'centroCosto': remesa.cencosNombre,
         'tipo': remesa.tipoRemesa,
@@ -136,12 +136,12 @@ class DocumentosTableDataBuilder {
         'destino': remesa.destino,
       };
 
-      Map<String, dynamic> infoAlertsMap = {
+      final Map<String, dynamic> infoAlertsMap = {
         'anulacionTrafico': remesa.anulacionTrafico,
         'isDigitalizado': true,
       };
 
-      Map<String, dynamic> obsMap = {
+      final Map<String, dynamic> obsMap = {
         'observacion': remesa.observacion,
         'remision': remesa.remision,
       };
@@ -167,9 +167,9 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return BlocListener<ItemDocumentoBloc, ItemDocumentoState>(
       listener: (context, state) {
-        List<ItemDocumento> itemDocumentos = state.itemDocumentos;
+        final List<ItemDocumento> itemDocumentos = state.itemDocumentos;
         final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
+        final bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
 
         rendererContext.cell.row.setChecked(isPresent);
       },
@@ -193,7 +193,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledAlerts(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final anulacionTrafico = remesaMap['anulacionTrafico'];
     final isDigitalizado = remesaMap['isDigitalizado'];
 
@@ -218,7 +218,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledRemesa(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final remesaText = remesaMap['remesa'];
     final centroCosto = remesaMap['centroCosto'];
     final tipo = remesaMap['tipo'];
@@ -249,7 +249,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledObservaciones(rendererContext) {
     final cellValue = rendererContext.cell.value.toString();
-    Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final obsRemesa = remesaMap['observacion'];
     final remision = remesaMap['remision'];
     return SelectionArea(

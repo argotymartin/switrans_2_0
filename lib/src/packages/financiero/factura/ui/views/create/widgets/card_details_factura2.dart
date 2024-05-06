@@ -21,10 +21,10 @@ class CardDetailsFactura2 extends StatelessWidget {
         final documentos = facturaBloc.state.documentos;
         final itemDocumento = state.itemDocumentos.where((element) => element.documento > 0);
 
-        double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        double totalImpuestos = itemDocumento.fold(0, (total, item) => total + item.valorIva);
-        double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
-        double valorFaltante = totalDocumentos - totalPrefacturas;
+        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumento.fold(0, (total, item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
+        final double valorFaltante = totalDocumentos - totalPrefacturas;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

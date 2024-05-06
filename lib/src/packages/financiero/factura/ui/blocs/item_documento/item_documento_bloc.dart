@@ -12,7 +12,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
   ItemDocumentoBloc(this._formBloc) : super(const ItemDocumentoInitialState()) {
     on<AddItemTransporteFacturaEvent>((event, emit) {
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
-      ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
+      final ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       if (!itemDocumentos.contains(prefactura)) {
         itemDocumentos.add(prefactura);
       }
@@ -24,7 +24,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
     on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      ItemDocumento preFactura = ItemDocumentoModel.init();
+      final ItemDocumento preFactura = ItemDocumentoModel.init();
       if (!preFacturas.contains(preFactura)) {
         preFacturas.add(preFactura);
       }
@@ -36,14 +36,14 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
     on<RemoveItemDocumentoEvent>((event, emit) {
       final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
-      ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
+      final ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       final newPrefacturas = preFacturas..removeWhere((element) => element.documento == prefactura.documento);
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: newPrefacturas));
     });
 
     on<RemoveItemByPositionFacturaEvent>((event, emit) async {
-      int index = event.index - 1;
+      final int index = event.index - 1;
       final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
 
       emit(const ItemDocumentoLoadingState());

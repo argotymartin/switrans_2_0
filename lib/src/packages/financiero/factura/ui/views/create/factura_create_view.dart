@@ -89,7 +89,7 @@ class _BuildFiltros extends StatelessWidget {
   Widget build(BuildContext context) {
     final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     final itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
-    List<Empresa> empresas = formFacturaBloc.state.empresas;
+    final List<Empresa> empresas = formFacturaBloc.state.empresas;
 
     final formKey = GlobalKey<FormState>();
     return Form(
@@ -145,7 +145,7 @@ class _BuildFiltros extends StatelessWidget {
                   }
                   if (state is DocumentoSuccesState) {
                     final remesas = context.read<FormFacturaBloc>().remesasController.text;
-                    List<String> items = remesas.split(",");
+                    final List<String> items = remesas.split(",");
                     return Column(
                       children: [
                         Text(
@@ -186,8 +186,8 @@ class _FieldCliente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
-    List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
+    final List<Cliente> clientes = facturaFilterBloc.state.clientes;
+    final Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
     final TextEditingController controller = TextEditingController();
     if (cliente != null) {
       controller.text = cliente.nombre;
@@ -237,7 +237,7 @@ class _FieldTipoFactura extends StatelessWidget {
       context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.value));
     }
 
-    List<MenuEntry> entryMenus = const [
+    const List<MenuEntry> entryMenus = [
       MenuEntry(label: "Tipo 10", value: 10),
       MenuEntry(label: "Tipo 12", value: 12),
     ];
@@ -567,18 +567,18 @@ class _BuildButtonRegistrar extends StatelessWidget {
         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
         final documentos = facturaBloc.state.documentos;
         final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
-        double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
-        double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
-        double valorFaltante = totalDocumentos - totalPrefacturas;
+        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
+        final double valorFaltante = totalDocumentos - totalPrefacturas;
 
-        bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
-        bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
-        bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
-        bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
-        bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
-        bool isCentroCosto = formFacturaBloc.centroCosto > 0;
-        bool isFaltante = valorFaltante.toInt() == 0;
+        final bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
+        final bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
+        final bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
+        final bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
+        final bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
+        final bool isCentroCosto = formFacturaBloc.centroCosto > 0;
+        final bool isFaltante = valorFaltante.toInt() == 0;
 
         /*debugPrint("isTransporte: $isTransporte");
         debugPrint("isDocumento: $isDocumento");
@@ -596,10 +596,10 @@ class _BuildButtonRegistrar extends StatelessWidget {
           child: FilledButton.icon(
             onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
                 ? () {
-                    int centroCosto = formFacturaBloc.centroCosto;
-                    int clienteCodigo = formFacturaBloc.clienteCodigo;
-                    int empresaCodigo = formFacturaBloc.state.empresa;
-                    int usuario = authBloc.state.auth!.usuario.codigo;
+                    final int centroCosto = formFacturaBloc.centroCosto;
+                    final int clienteCodigo = formFacturaBloc.clienteCodigo;
+                    final int empresaCodigo = formFacturaBloc.state.empresa;
+                    final int usuario = authBloc.state.auth!.usuario.codigo;
                     final prefacturaRequest = PrefacturaRequest(
                       centroCosto: centroCosto,
                       cliente: clienteCodigo,

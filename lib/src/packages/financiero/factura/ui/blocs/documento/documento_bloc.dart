@@ -24,7 +24,7 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
     add(const GetDocumentoEvent());
     final resp = await _repository.getDocumentosService(request);
     if (resp.data != null) {
-      List<Documento> documentos = resp.data!;
+      final List<Documento> documentos = resp.data!;
       add(ChangedDocumentoEvent(documentos));
       return resp.data!;
     } else {

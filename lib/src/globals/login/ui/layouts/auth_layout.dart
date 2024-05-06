@@ -55,7 +55,7 @@ class _DesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double width = size.width < 780 ? size.width * 0.8 : 500;
+    final double width = size.width < 780 ? size.width * 0.8 : 500;
     return SizedBox(
       width: size.width,
       height: size.height * 0.95,

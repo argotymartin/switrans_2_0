@@ -23,7 +23,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {
-      List<PlutoColumn> columns = [];
+      final List<PlutoColumn> columns = [];
       widget.plutoData.first.forEach((key, v) {
         final tipo = v.type;
         final bool isEdit = v.edit;
@@ -108,7 +108,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       final List<PlutoRow> dataRows = [];
 
       widget.plutoData.asMap().forEach((index, dato) {
-        Map<String, dynamic> dataColumn = {};
+        final Map<String, dynamic> dataColumn = {};
         dato.forEach((key, value) {
           dataColumn.addEntries({key: value.value}.entries);
         });
@@ -119,7 +119,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       return dataRows;
     }
 
-    Map<int, Map<String, dynamic>> selectedMap = {};
+    final Map<int, Map<String, dynamic>> selectedMap = {};
     return Column(
       children: [
         CustomPlutoGridTable(
@@ -130,7 +130,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               return;
             }
             if (event.isChecked!) {
-              Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
+              final Map<String, dynamic> mapRow = Map.fromEntries(event.row!.cells.entries.map(
                 (entry) {
                   if (entry.value.column.type.isSelect) {
                     return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);

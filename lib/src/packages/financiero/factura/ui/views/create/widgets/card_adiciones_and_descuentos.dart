@@ -19,7 +19,7 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TipoVariacion tipoVariacion = title == "ADICIONES" ? TipoVariacion.adicion : TipoVariacion.descuento;
+    final TipoVariacion tipoVariacion = title == "ADICIONES" ? TipoVariacion.adicion : TipoVariacion.descuento;
     return Container(
       padding: const EdgeInsets.only(bottom: 16, top: 8, right: 8, left: 8),
       decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class _BuildTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<TableRow> buildTableRows = documentos
+    final List<TableRow> buildTableRows = documentos
         .map(
           (documento) => TableRow(
             children: [
@@ -98,7 +98,7 @@ class _BuildTable extends StatelessWidget {
         )
         .toList();
 
-    double total = tipoVariacion == TipoVariacion.adicion
+    final double total = tipoVariacion == TipoVariacion.adicion
         ? documentos
             .map((documento) => documento.adiciones.fold(0, (total, adicion) => total + adicion.valor.toInt()))
             .fold(0, (total, subtotal) => total + subtotal)

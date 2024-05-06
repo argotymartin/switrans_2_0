@@ -60,7 +60,7 @@ class AuthView extends StatelessWidget {
   }
 
   String? onValidateUser(String? value) {
-    RegExp regExp = RegExp(r'^[a-zA-Z]+\.[a-zA-Z]+$');
+    final RegExp regExp = RegExp(r'^[a-zA-Z]+\.[a-zA-Z]+$');
     if (value == null || value.isEmpty) {
       return "Ingrese su usuario";
     }

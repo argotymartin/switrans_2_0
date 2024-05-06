@@ -41,7 +41,7 @@ class Sidebar extends StatelessWidget {
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Paquetes'),
                           BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
                             builder: (context, stateModulo) {
-                              List<PaquetesSidebar> paquetesSidebar = [];
+                              final List<PaquetesSidebar> paquetesSidebar = [];
                               for (final PaqueteMenu paquete in stateModulo.paquetes) {
                                 paquetesSidebar.add(PaquetesSidebar(
                                   paquete: paquete,
@@ -54,9 +54,9 @@ class Sidebar extends StatelessWidget {
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: state.isMinimize ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
                             child: OutlinedButton.icon(
-                              label: const Text("Salir", style: TextStyle(color: Colors.white)),
+                              label: state.isMinimize ? const SizedBox() : const Text("Salir", style: TextStyle(color: Colors.white)),
                               onPressed: () {
                                 context.read<AuthBloc>().onLogoutAuthEvent();
                                 context.go(AppRouter.login);

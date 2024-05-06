@@ -21,7 +21,7 @@ class CustomPlutoGridTable extends StatelessWidget {
     late PlutoGridStateManager stateManager;
     const double rowHeight = 48;
     const double titleHeight = 48;
-    double columnFilterHeight = columnFilter ? 36 : 0;
+    final double columnFilterHeight = columnFilter ? 36 : 0;
     return Container(
       height: (rowHeight * (rows.length + 1)) + (titleHeight + columnFilterHeight),
       padding: const EdgeInsets.symmetric(vertical: 16),

@@ -7,7 +7,7 @@ class ServicioEmpresarialDB {
   Future<Response> getServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     try {
       String where = '';
-      List conditions = [];
+      final List conditions = [];
       if (request.codigo != null) {
         conditions.add("seremp_codigo = ${request.codigo!}");
       }

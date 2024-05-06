@@ -11,7 +11,7 @@ class FinancieroRoutes {
   static const String packagePath = "finaciero";
 
   static List<ShellRoute> getRoutesFinaciero() {
-    List<ShellRoute> routes = [];
+    final List<ShellRoute> routes = [];
     routes.add(routerFactura());
     return routes;
   }

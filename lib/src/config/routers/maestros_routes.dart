@@ -16,7 +16,7 @@ class MaestrosRoutes {
   static const String packagePath = "/maestros";
 
   static List<ShellRoute> getRoutesMaestros() {
-    List<ShellRoute> routes = [];
+    final List<ShellRoute> routes = [];
     routes.add(accionDocumentos());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());

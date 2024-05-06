@@ -55,7 +55,7 @@ class _DatetimeInput extends State<DatetimeInput> {
             );
 
             if (pickedDate != null) {
-              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+              final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
               setState(() {
                 widget.controller.text = formattedDate;
               });

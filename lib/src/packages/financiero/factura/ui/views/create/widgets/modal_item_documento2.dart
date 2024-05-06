@@ -27,7 +27,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
     final size = MediaQuery.of(context).size;
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (context, state) {
-        List<ItemDocumento> itemDocumento = state.itemDocumentos.where((prefactura) => prefactura.documento != 0).toList();
+        final List<ItemDocumento> itemDocumento = state.itemDocumentos.where((prefactura) => prefactura.documento != 0).toList();
         return Container(
           padding: const EdgeInsets.only(right: 24),
           height: 64,
@@ -47,7 +47,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                     scrollDirection: Axis.horizontal,
                     itemCount: itemDocumento.length,
                     itemBuilder: (BuildContext context, int index) {
-                      ItemDocumento preFactura = itemDocumento[index];
+                      final ItemDocumento preFactura = itemDocumento[index];
 
                       return Container(
                         decoration: BoxDecoration(

@@ -7,7 +7,7 @@ class AccionDocumentoDB {
   Future<Response> getAccionDocumentosDB(AccionDocumentoRequest request) async {
     try {
       String where = '';
-      List conditions = [];
+      final List conditions = [];
 
       if (request.tipoDocumento != null) {
         if (request.tipoDocumento!.isNotEmpty) {

@@ -32,7 +32,7 @@ class TableItemsDocumento extends StatelessWidget {
           ],
         );
         int index = 0;
-        List<TableRow> buildTableRows = state.itemDocumentos.map(
+        final List<TableRow> buildTableRows = state.itemDocumentos.map(
           (itemDocumento) {
             index++;
             return TableRow(
@@ -200,10 +200,10 @@ class _BuildValor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChaneged(String value) {
-      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
-      double intValue = double.parse(textValue);
-      double newValorIva = intValue * item.porcentajeIva / 100;
+      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      final String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
+      final double intValue = double.parse(textValue);
+      final double newValorIva = intValue * item.porcentajeIva / 100;
 
       item.valor = intValue;
       item.valorIva = newValorIva;
@@ -251,9 +251,9 @@ class _BuildCantidad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChanged(String value) {
-      String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
-      int intValue = int.parse(textValue);
+      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
+      final String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
+      final int intValue = int.parse(textValue);
       item.cantidad = intValue;
       item.total = (item.valor + item.valorIva) * item.cantidad;
       context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));

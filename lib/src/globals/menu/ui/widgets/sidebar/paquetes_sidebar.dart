@@ -28,7 +28,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
   Widget build(BuildContext context) {
     bool isEntered = widget.paquete.isSelected;
     final colorScheme = Theme.of(context).colorScheme;
-    List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
+    final List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
     return Column(
       children: [
         InkWell(

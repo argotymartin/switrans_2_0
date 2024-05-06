@@ -11,8 +11,8 @@ class MenuButtonNavar extends StatelessWidget {
     final OverlayPortalController tooltipController = OverlayPortalController();
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (context, state) {
-        bool isOpenMenu = state.isOpenMenu;
-        bool isMinimize = state.isMinimize;
+        final bool isOpenMenu = state.isOpenMenu;
+        final bool isMinimize = state.isMinimize;
         double positionedLeft = 0;
 
         if (isOpenMenu) {

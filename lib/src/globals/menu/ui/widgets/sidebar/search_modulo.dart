@@ -8,7 +8,7 @@ class SearchModulo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    TextEditingController controller = TextEditingController();
+    final TextEditingController controller = TextEditingController();
     return Container(
       padding: const EdgeInsets.all(8),
       color: colorScheme.onPrimaryContainer.withOpacity(0.1),

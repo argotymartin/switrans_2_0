@@ -32,11 +32,11 @@ class TextAreaDocumentos extends StatelessWidget {
     }
     RegExp regexRemesas = RegExp("");
 
-    RegExp regex = RegExp(r'^[0-9, -]+$');
+    final RegExp regex = RegExp(r'^[0-9, -]+$');
     if (!regex.hasMatch(value)) {
       return "Los valores de texto no estan permitidos";
     }
-    List<String> remesas = value
+    final List<String> remesas = value
         .split(",")
         .map((remesa) => remesa.trim())
         .takeWhile((remesa) => remesa != value.split(",").last.trim())
@@ -46,8 +46,8 @@ class TextAreaDocumentos extends StatelessWidget {
       return null;
     }
     String title = "";
-    RegExp regexGeneral = RegExp(r'^\d{6,7}$');
-    RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
+    final RegExp regexGeneral = RegExp(r'^\d{6,7}$');
+    final RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
     if (regexGeneral.hasMatch(remesas.first)) {
       regexRemesas = regexGeneral;
@@ -59,7 +59,7 @@ class TextAreaDocumentos extends StatelessWidget {
       return "Los valores digitados no parecen ser remesas validas";
     }
 
-    List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
+    final List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
 
     if (remesasDiferentes.isNotEmpty) {
       if (remesasDiferentes.first != "") {

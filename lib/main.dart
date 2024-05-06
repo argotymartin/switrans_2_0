@@ -68,8 +68,8 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   Future<void> _init() async {
     final authBloc = context.read<AuthBloc>();
     final paqueteMenuBloc = context.read<MenuSidebarBloc>();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token') ?? '';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String stringValue = prefs.getString('token') ?? '';
     isTokenValid = await authBloc.onValidateToken(stringValue);
     if (isTokenValid) {
       paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());

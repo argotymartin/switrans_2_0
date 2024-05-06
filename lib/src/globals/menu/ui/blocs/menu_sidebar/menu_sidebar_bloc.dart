@@ -49,11 +49,8 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     });
   }
 
-  void onPaqueteSelected({
-    required PaqueteMenu paqueteMenu,
-    required bool isSelected,
-  }) {
-    List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
+  void onPaqueteSelected({required PaqueteMenu paqueteMenu, required bool isSelected}) {
+    final List<PaqueteMenu> paquetes = state.paquetes.map((paquete) {
       if (paquete == paqueteMenu) {
         paquete.isSelected = isSelected;
       } else {

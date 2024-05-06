@@ -54,8 +54,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    List<Cliente> clientes = state.clientes;
-    List<Empresa> empresas = state.empresas;
+    final List<Cliente> clientes = state.clientes;
+    final List<Empresa> empresas = state.empresas;
     String error = state.error;
     int tipoFactura = state.tipoFactura;
     int empresa = state.empresa;
@@ -80,11 +80,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   void _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    List<Cliente> clientes = state.clientes;
-    List<Empresa> empresas = state.empresas;
-    String error = state.error;
-    int tipoFactura = state.tipoFactura;
-    int empresa = state.empresa;
+    final List<Cliente> clientes = state.clientes;
+    final List<Empresa> empresas = state.empresas;
+    final String error = state.error;
+    final int tipoFactura = state.tipoFactura;
+    final int empresa = state.empresa;
 
     emit(const FormFacturaLoadingState());
     emit(FormFacturaSuccesState(

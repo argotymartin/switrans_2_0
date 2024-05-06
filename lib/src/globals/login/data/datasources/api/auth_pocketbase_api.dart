@@ -10,7 +10,7 @@ class AuthPocketbaseApi {
 
   Future<Response> getinfoUser(UsuarioRequest params) async {
     const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
-    String jsonRequest = jsonEncode(params.toJson());
+    final String jsonRequest = jsonEncode(params.toJson());
     final response = await _dio.post(url, data: jsonRequest);
     return response;
   }
@@ -29,7 +29,7 @@ class AuthPocketbaseApi {
 
   Future<Response> getUsuarioByID(UsuarioRequest params) async {
     const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
-    String jsonRequest = jsonEncode(params.toJson());
+    final String jsonRequest = jsonEncode(params.toJson());
     final response = await _dio.post(url, data: jsonRequest);
     return response;
   }

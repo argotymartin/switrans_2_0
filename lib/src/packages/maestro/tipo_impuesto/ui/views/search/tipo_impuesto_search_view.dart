@@ -49,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
 
       if (isCampoVacio) {
         isValid = false;
