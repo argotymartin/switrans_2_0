@@ -187,11 +187,13 @@ class _FieldCliente extends StatelessWidget {
     List<Cliente> clientes = facturaFilterBloc.state.clientes;
     Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
     final TextEditingController controller = TextEditingController();
-    if (cliente != null) controller.text == cliente.nombre;
+    if (cliente != null) {
+      controller.text = cliente.nombre;
+    }
 
     void setValueCliente(EntryAutocomplete entry) {
       formFacturaBloc.setClienteCodigo = entry.codigo;
-      controller.text == entry.title;
+      controller.text = entry.title;
     }
 
     final List<EntryAutocomplete> entries = clientes.map((cliente) {

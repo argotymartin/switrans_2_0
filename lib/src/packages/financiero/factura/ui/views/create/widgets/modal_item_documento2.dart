@@ -37,7 +37,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
             builder: (context, child) => Transform.translate(
               offset: Offset(0, tralateAnimation.value),
               child: InkWell(
-                onTap: () => formulario.moveBottomAllScroll(),
+                onTap: () async => formulario.moveBottomAllScroll(),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,

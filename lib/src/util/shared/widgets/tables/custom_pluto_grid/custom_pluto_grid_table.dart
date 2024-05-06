@@ -30,7 +30,7 @@ class CustomPlutoGridTable extends StatelessWidget {
         rows: rows,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
-          columnFilter ? stateManager.setShowColumnFilter(true) : null;
+          if (columnFilter) stateManager.setShowColumnFilter(true);
         },
         onRowChecked: onRowChecked,
         mode: PlutoGridMode.select,

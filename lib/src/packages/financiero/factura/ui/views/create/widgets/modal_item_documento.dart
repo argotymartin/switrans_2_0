@@ -34,7 +34,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
             child: Transform.translate(
               offset: Offset(tralateAnimation.value, 0),
               child: InkWell(
-                onTap: () => formulario.moveBottomAllScroll(),
+                onTap: () async => formulario.moveBottomAllScroll(),
                 child: const Row(
                   children: [
                     Expanded(child: SizedBox()),

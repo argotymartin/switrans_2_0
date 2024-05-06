@@ -104,7 +104,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         ),
         onSelected: (EntryAutocomplete? entry) {
           widget.onPressed?.call(entry!);
-          if (widget.controller != null) widget.controller!.text == entry!.title;
+          if (widget.controller != null) widget.controller!.text = entry!.title;
         },
         dropdownMenuEntries: dropdownMenuEntries,
       ),

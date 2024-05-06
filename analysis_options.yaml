@@ -1,30 +1,44 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
-
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
+  # https://dart.dev/tools/linter-rules
+
   rules:
-    always_declare_return_types: true
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    always_declare_return_types: true # Declarar tipos de retorno de métodos.
+    always_use_package_imports: true # Evite importaciones relativas de archivos en formato lib/
+    avoid_dynamic_calls: false # Evite llamadas a métodos o accesos a propiedades en un objetivo "dinámico".
+    avoid_empty_else: true # Evite declaraciones vacías en cláusulas else.
+    avoid_print: true # Evite printllamadas en código de producción.
+    avoid_relative_lib_imports: true # Evite importaciones relativas de archivos en formato lib/
+    avoid_slow_async_io: true # Evite dart:iolos métodos asincrónicos lentos.
+    avoid_type_to_string: true # Evitar.toString() en el código de producción ya que los resultados pueden minimizarse.
+    avoid_types_as_parameter_names: true # Evite tipos como nombres de parámetros.
+    avoid_web_libraries_in_flutter: true # Evite el uso de bibliotecas solo web fuera de los paquetes de complementos web de Flutter.
+    cancel_subscriptions: true # Cancelar instancias de dart.async.StreamSubscription.
+    close_sinks: true # Cerrar instancias de dart.core.Sink.
+    collection_methods_unrelated_type: true # Invocación de varios métodos de recopilación con argumentos de tipos no relacionados.
+    comment_references: true # Solo referencia en identificadores de alcance en los comentarios del documento
+    control_flow_in_finally: true # Evite el flujo de control en los bloques finales.
+    deprecated_member_use_from_same_package: true # Evite el uso de elementos obsoletos dentro del paquete en el que están declarados.
+    empty_statements: true # Evite declaraciones vacías.
+    hash_and_equals: true # Anule siempre hashCodesi anula ==.
+    implicit_reopen: true # No reabrir clases implícitamente.
+    invalid_case_patterns: true # Utilice expresiones de casos que sean válidas en Dart 3.0
+    literal_only_boolean_expressions:  true # Expresión booleana compuesta únicamente con literales.
+    no_adjacent_strings_in_list: true # No utilice cadenas adyacentes en la lista.
+    no_duplicate_case_values: true # No utilice más de un caso con el mismo valor
+    no_logic_in_create_state: true # No pongas ninguna lógica en createState.
+    no_wildcard_variable_uses: true # No utilice parámetros ni variables comodín.
+    prefer_void_to_null: false # No utilice el tipo Null, a menos que esté seguro de que no desea void.
+    test_types_in_equals: true # Argumentos de tipo de prueba en el operador ==(Objeto otro)
+    throw_in_finally: true # Evite throwbloquear finalmente.
+    unnecessary_statements: true # Evite el uso de declaraciones innecesarias.
+    unrelated_type_equality_checks: true # Invocación del operador de igualdad ==con referencias de tipos no relacionados.
+    unsafe_html: true # Evite las API HTML inseguras.
+    use_build_context_synchronously: true # No utilice BuildContexts en espacios asíncronos.
+    use_key_in_widget_constructors: true # Utilice una sintaxis de expresión regular válida.
 
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    #diagnostic_describe_all_properties: false
+    #discarded_futures: true 
+    

@@ -11,7 +11,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
 
-import '../../packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";

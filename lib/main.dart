@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -81,6 +82,12 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
       duration: Duration(milliseconds: 1000),
       child: _BuildMaterialApp(),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('isTokenValid', isTokenValid));
   }
 }
 

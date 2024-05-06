@@ -93,7 +93,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   Future moveScroll(double offset) =>
       scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
-  void moveBottomAllScroll() {
+  Future<void> moveBottomAllScroll() async {
     //animationController.reset();
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,

@@ -143,7 +143,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
         });
       } else {
         setState(() {
-          widget.item.tipo == "SA";
+          widget.item.tipo = "SA";
           context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
         });
       }

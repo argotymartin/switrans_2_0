@@ -13,7 +13,7 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is AuthErrorState) {
             context.pop();
             ErrorDialog.showDioException(context, state.error!);
