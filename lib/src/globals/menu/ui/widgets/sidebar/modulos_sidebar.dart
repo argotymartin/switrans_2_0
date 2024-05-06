@@ -27,7 +27,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
         InkWell(
           onTap: () => setState(() {
             isEntered = !isEntered;
-            context.read<MenuSidebarBloc>().onModuloSelected(widget.modulo, isEntered);
+            context.read<MenuSidebarBloc>().onModuloSelected(isSelected: isEntered, moduloMenu: widget.modulo);
           }),
           child: MouseRegion(
             onEnter: (_) => setState(() => isHovered = true),

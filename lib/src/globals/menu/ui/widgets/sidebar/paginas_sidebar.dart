@@ -29,7 +29,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       child: InkWell(
         onTap: () => setState(() {
           isEntered = !isEntered;
-          final path = context.read<MenuSidebarBloc>().onPaginaSelected(widget.pagina, isEntered);
+          final path = context.read<MenuSidebarBloc>().onPaginaSelected(isSelected: isEntered, paginaMenu: widget.pagina);
           context.go(path);
         }),
         child: Material(

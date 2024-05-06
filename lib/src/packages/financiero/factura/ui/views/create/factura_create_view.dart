@@ -128,7 +128,7 @@ class _BuildFiltros extends StatelessWidget {
                 onPressed: () {
                   final isValid = formKey.currentState!.validate();
                   itemDocumentoBloc.add(const ResetDocumentoEvent());
-                  formFacturaBloc.onPressedSearch(isValid);
+                  formFacturaBloc.onPressedSearch(isValid: isValid);
                 },
                 icon: const Icon(Icons.search_rounded),
                 label: const Text("Buscar", style: TextStyle(color: Colors.white)),

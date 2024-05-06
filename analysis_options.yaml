@@ -15,19 +15,19 @@ linter:
     avoid_catches_without_on_clauses: true
     avoid_catching_errors: true
     avoid_classes_with_only_static_members: false
-    avoid_double_and_int_checks: false
+    avoid_double_and_int_checks: true
     avoid_dynamic_calls: false
-    avoid_empty_else: false
-    avoid_equals_and_hash_code_on_mutable_classes: false
-    avoid_escaping_inner_quotes: false
-    avoid_field_initializers_in_const_classes: false
-    avoid_final_parameters: false
-    avoid_function_literals_in_foreach_calls: false
-    avoid_implementing_value_types: false
-    avoid_init_to_null: false
-    avoid_js_rounded_ints: false
-    avoid_multiple_declarations_per_line: false
-    avoid_null_checks_in_equality_operators: false
+    avoid_empty_else: true
+    avoid_equals_and_hash_code_on_mutable_classes: true
+    avoid_escaping_inner_quotes: true
+    avoid_field_initializers_in_const_classes: true
+    avoid_final_parameters: true
+    avoid_function_literals_in_foreach_calls: true
+    avoid_implementing_value_types: true
+    avoid_init_to_null: true
+    avoid_js_rounded_ints: true
+    avoid_multiple_declarations_per_line: true
+    avoid_null_checks_in_equality_operators: true
     avoid_positional_boolean_parameters: false
     avoid_print: false
     avoid_private_typedef_functions: false

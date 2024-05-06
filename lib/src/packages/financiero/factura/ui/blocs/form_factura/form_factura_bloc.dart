@@ -108,10 +108,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  void onPressedSearch(bool isValid) async {
-    //fechaInicioController.text = "2023-01-01";
-    //fechaFinController.text = "2024-01-01";
-
+  void onPressedSearch({required bool isValid}) async {
     final empresa = state.empresa;
     final tipoFactura = state.tipoFactura;
     final remesas = remesasController.text;

@@ -11,7 +11,7 @@ class BreadcrumbTrail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('EEEE, MMMM d \'del\' y', 'es').format(now);
+    String formattedDate = DateFormat("EEEE, MMMM d 'del' y", 'es').format(now);
 
     List<Widget> result = [];
     bool primeraIteracion = true;
