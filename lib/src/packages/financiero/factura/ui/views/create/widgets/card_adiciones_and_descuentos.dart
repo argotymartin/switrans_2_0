@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 enum TipoVariacion { adicion, descuento }
 

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio_strategy.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio.dart';
-import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio_strategy.dart';
+import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio_strategy.dart';
 
 class ErrorDialog {

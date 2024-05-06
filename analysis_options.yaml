@@ -52,21 +52,21 @@ linter:
     camel_case_types: true
     cancel_subscriptions: true
     cascade_invocations: false
-    cast_nullable_to_non_nullable: false
-    close_sinks: false
-    collection_methods_unrelated_type: false
-    combinators_ordering: false
-    comment_references: false
-    conditional_uri_does_not_exist: false
-    constant_identifier_names: false
-    control_flow_in_finally: false
-    curly_braces_in_flow_control_structures: false
-    dangling_library_doc_comments: false
-    depend_on_referenced_packages: false
-    deprecated_consistency: false
-    deprecated_member_use_from_same_package: false
+    cast_nullable_to_non_nullable: true
+    close_sinks: true
+    collection_methods_unrelated_type: true
+    combinators_ordering: true
+    comment_references: true
+    conditional_uri_does_not_exist: true
+    constant_identifier_names: true
+    control_flow_in_finally: true
+    curly_braces_in_flow_control_structures: true
+    dangling_library_doc_comments: true
+    depend_on_referenced_packages: true
+    deprecated_consistency: true
+    deprecated_member_use_from_same_package: true
     diagnostic_describe_all_properties: false
-    directives_ordering: false
+    directives_ordering: true
     discarded_futures: false
     do_not_use_environment: false
     empty_catches: false
