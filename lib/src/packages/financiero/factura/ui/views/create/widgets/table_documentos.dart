@@ -34,8 +34,17 @@ class TableDocumentos extends StatelessWidget {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
             },
-            onRowDoubleTap: (event) => onRowDoubleTap(event, documentos, itemFacturaBloc, stateManager),
-            onRowChecked: (event) => onRowChecked(event, documentos, itemFacturaBloc),
+            onRowDoubleTap: (event) => onRowDoubleTap(
+              event: event,
+              documentos: documentos,
+              itemFacturaBloc: itemFacturaBloc,
+              stateManager: stateManager,
+            ),
+            onRowChecked: (event) => onRowChecked(
+              event: event,
+              documentos: documentos,
+              itemFacturaBloc: itemFacturaBloc,
+            ),
             configuration: PlutoGridConfiguration(
               style: PlutoGridStyleConfig(
                 checkedColor: Theme.of(context).colorScheme.primaryContainer,
@@ -58,7 +67,12 @@ class TableDocumentos extends StatelessWidget {
     );
   }
 
-  void onRowDoubleTap(event, documentos, itemFacturaBloc, stateManager) {
+  void onRowDoubleTap({
+    required PlutoGridOnRowDoubleTapEvent event,
+    required List<Documento> documentos,
+    required ItemDocumentoBloc itemFacturaBloc,
+    required PlutoGridStateManager stateManager,
+  }) {
     final Documento documento = documentos[event.rowIdx];
     if (event.row.checked!) {
       stateManager.setRowChecked(event.row, false);
@@ -69,7 +83,11 @@ class TableDocumentos extends StatelessWidget {
     }
   }
 
-  void onRowChecked(event, documentos, itemFacturaBloc) {
+  void onRowChecked({
+    required PlutoGridOnRowCheckedEvent event,
+    required List<Documento> documentos,
+    required ItemDocumentoBloc itemFacturaBloc,
+  }) {
     if (event.isAll && event.isChecked != null) {
       for (final documento in documentos) {
         if (event.isChecked!) {

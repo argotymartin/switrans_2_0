@@ -152,18 +152,18 @@ linter:
     public_member_api_docs: false
     recursive_getters: true
     require_trailing_commas: true
-    secure_pubspec_urls: false
-    sized_box_for_whitespace: false
-    sized_box_shrink_expand: false
-    slash_for_doc_comments: false
-    sort_child_properties_last: false
+    secure_pubspec_urls: true
+    sized_box_for_whitespace: true
+    sized_box_shrink_expand: true
+    slash_for_doc_comments: true
+    sort_child_properties_last: true
     sort_constructors_first: false
-    sort_pub_dependencies: false
-    sort_unnamed_constructors_first: false
-    test_types_in_equals: false
-    throw_in_finally: false
-    tighten_type_of_initializing_formals: false
-    type_annotate_public_apis: false
+    sort_pub_dependencies: true
+    sort_unnamed_constructors_first: true
+    test_types_in_equals: true
+    throw_in_finally: true
+    tighten_type_of_initializing_formals: true
+    type_annotate_public_apis: true
     type_init_formals: false
     type_literal_in_constant_pattern: false
     unawaited_futures: false

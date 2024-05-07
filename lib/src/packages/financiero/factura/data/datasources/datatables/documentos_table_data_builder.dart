@@ -247,7 +247,7 @@ class DocumentosTableDataBuilder {
     );
   }
 
-  static Widget buildFiledObservaciones(rendererContext) {
+  static Widget buildFiledObservaciones(PlutoColumnRendererContext rendererContext) {
     final cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
     final obsRemesa = remesaMap['observacion'];
@@ -296,20 +296,11 @@ class DocumentosTableDataBuilder {
     );
   }
 
-  static Widget buildFieldValuesCurrency(rendererContext, Color color) {
+  static Widget buildFieldValuesCurrency(PlutoColumnRendererContext rendererContext, Color color) {
     return SelectableText(
       rendererContext.column.type.applyFormat(rendererContext.cell.value),
       style: TextStyle(color: color, fontSize: 12),
       textAlign: TextAlign.end,
-    );
-  }
-
-  Padding divider(context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Container(
-        width: double.infinity,
-      ),
     );
   }
 
@@ -338,7 +329,7 @@ class DocumentosTableDataBuilder {
   }
 }
 
-Widget buildRenderSumFooter(rendererContext) {
+Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext) {
   return PlutoAggregateColumnFooter(
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
