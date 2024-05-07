@@ -404,7 +404,7 @@ class _BuildTableItemsDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: Theme.of(context).colorScheme.onPrimary,
       child: Column(
         children: [
