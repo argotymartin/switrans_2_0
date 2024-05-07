@@ -36,7 +36,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
               color: isHovered || widget.modulo.isSelected
                   ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.3)
                   : Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.2),
-              child: Container(
+              child: DecoratedBox(
                 decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.black26))),
                 child: Container(
                   margin: EdgeInsets.only(left: isHovered ? 40 : 40.5, top: 10, bottom: 10, right: 10),

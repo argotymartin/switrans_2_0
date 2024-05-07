@@ -38,7 +38,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
               offset: Offset(0, tralateAnimation.value),
               child: InkWell(
                 onTap: () async => formulario.moveBottomAllScroll(),
-                child: Container(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(8),
