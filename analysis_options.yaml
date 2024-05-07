@@ -205,12 +205,12 @@ linter:
     use_late_for_private_fields_and_variables: true
     use_named_constants: true
     use_raw_strings: true
-    use_rethrow_when_possible: false
-    use_setters_to_change_properties: false
-    use_string_buffers: false
-    use_string_in_part_of_directives: false
-    use_super_parameters: false
-    use_test_throws_matchers: false
-    use_to_and_as_if_applicable: false
-    valid_regexps: false
-    void_checks: false
+    use_rethrow_when_possible: true
+    use_setters_to_change_properties: true
+    use_string_buffers: true
+    use_string_in_part_of_directives: true
+    use_super_parameters: true
+    use_test_throws_matchers: true
+    use_to_and_as_if_applicable: true
+    valid_regexps: true
+    void_checks: true
