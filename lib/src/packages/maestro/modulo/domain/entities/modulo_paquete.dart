@@ -1,10 +1,10 @@
- class ModuloPaquete {
+class ModuloPaquete {
   String paqueteId;
-   int codigo;
-   String nombre;
-   String icono;
-   bool visible;
-   String path;
+  int codigo;
+  String nombre;
+  String icono;
+  bool visible;
+  String path;
 
   ModuloPaquete({
     required this.paqueteId,
@@ -12,6 +12,6 @@
     required this.nombre,
     required this.icono,
     required this.visible,
-    required this.path
+    required this.path,
   });
- }
+}

@@ -12,7 +12,7 @@ class ModuloApiPocketBase {
   ModuloApiPocketBase(this._dio);
 
   Future<Response> getModulosApi(ModuloRequest request) async {
-    final paqueteId =  request.paquete == null ? '' : await getPaqueteId(request.paquete!);
+    final paqueteId = request.paquete == null ? '' : await getPaqueteId(request.paquete!);
     paqueteId.isEmpty ? request.paquete : request.paquete = paqueteId;
     const url = '$kPocketBaseUrl/api/collections/modulo/records';
     final queryParameters = {"filter": FilterPocketBase().toPocketBaseFilter(request)};
@@ -34,8 +34,11 @@ class ModuloApiPocketBase {
     final url = '$kPocketBaseUrl/api/collections/modulo/records/${request.moduloId}?';
     final paqueteId = await getPaqueteId(request.paquete!);
     paqueteId.isEmpty ? request.paquete : request.paquete = paqueteId;
-    final response = await _dio.patch(url, data: request.toJson(),
-        options: Options(headers: {'Authorization': kTokenPocketBase}));
+    final response = await _dio.patch(
+      url,
+      data: request.toJson(),
+      options: Options(headers: {'Authorization': kTokenPocketBase}),
+    );
     return response;
   }
 
@@ -46,7 +49,7 @@ class ModuloApiPocketBase {
   }
 
   Future<int> getMaxModuloCodigo() async {
-    int  maxModuloCodigo = 0;
+    int maxModuloCodigo = 0;
     final httpResponse = await getModulosApi(ModuloRequest());
     if (httpResponse.data != null) {
       final resp = httpResponse.data['items'];
@@ -90,5 +93,4 @@ class ModuloApiPocketBase {
     }
     return data;
   }
-
 }

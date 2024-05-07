@@ -1,14 +1,14 @@
 class Modulo {
-   String moduloId;
-   int moduloCodigo;
-   String moduloNombre;
-   String moduloDetalles;
-   String moduloPath;
-   bool moduloVisible;
-   String moduloIcono;
-   String paquete;
-   bool moduloActivo;
-   String fechaCreacion;
+  String moduloId;
+  int moduloCodigo;
+  String moduloNombre;
+  String moduloDetalles;
+  String moduloPath;
+  bool moduloVisible;
+  String moduloIcono;
+  String paquete;
+  bool moduloActivo;
+  String fechaCreacion;
 
   Modulo({
     required this.moduloId,
@@ -20,6 +20,6 @@ class Modulo {
     required this.moduloIcono,
     required this.paquete,
     required this.moduloActivo,
-    required this.fechaCreacion
+    required this.fechaCreacion,
   });
 }

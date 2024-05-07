@@ -1,12 +1,12 @@
 class ModuloRequest {
   final String? moduloId;
-  late  int? moduloCodigo;
+  late int? moduloCodigo;
   final String? moduloNombre;
   final String? moduloDetalles;
-  late  String? moduloPath;
+  late String? moduloPath;
   final bool? moduloVisible;
   final String? moduloIcono;
-  late  String? paquete;
+  late String? paquete;
   final bool? moduloActivo;
 
   ModuloRequest({
@@ -18,7 +18,7 @@ class ModuloRequest {
     this.moduloVisible,
     this.moduloIcono,
     this.paquete,
-    this.moduloActivo
+    this.moduloActivo,
   });
 
   Map<String, dynamic> toJson() {
@@ -31,9 +31,9 @@ class ModuloRequest {
       'modulo_visible': moduloVisible,
       'modulo_icono': '$moduloIcono',
       'paquete': paquete,
-      'modulo_activo': moduloActivo
+      'modulo_activo': moduloActivo,
     };
-    if (moduloId != 0) {
+    if (moduloId != '0') {
       data['id'] = '$moduloId';
     }
     if (moduloCodigo != 0) {
@@ -73,20 +73,19 @@ class ModuloRequest {
       'modulo_visible': moduloVisible,
       'modulo_icono': moduloIcono,
       'paquete': paquete,
-      'modulo_activo': moduloActivo
+      'modulo_activo': moduloActivo,
     };
   }
 
   factory ModuloRequest.fromMap(Map<String, dynamic> map) => ModuloRequest(
-    moduloId: map['id'],
-    moduloCodigo: map['codigo'],
-    moduloNombre: map['nombre'],
-    moduloDetalles: map['detalles'],
-    moduloPath: map['path'],
-    moduloVisible: map['visible'],
-    moduloIcono: map['icono'],
-    paquete: map['paquete'],
-    moduloActivo: map['activo']
-  );
-
+        moduloId: map['id'],
+        moduloCodigo: map['codigo'],
+        moduloNombre: map['nombre'],
+        moduloDetalles: map['detalles'],
+        moduloPath: map['path'],
+        moduloVisible: map['visible'],
+        moduloIcono: map['icono'],
+        paquete: map['paquete'],
+        moduloActivo: map['activo'],
+      );
 }

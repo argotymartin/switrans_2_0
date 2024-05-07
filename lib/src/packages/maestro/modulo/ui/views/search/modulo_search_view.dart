@@ -30,7 +30,7 @@ class ModuloSearchView extends StatelessWidget {
             children: [
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BluildDataTable()
+              const _BluildDataTable(),
             ],
           ),
         ],
@@ -38,6 +38,7 @@ class ModuloSearchView extends StatelessWidget {
     );
   }
 }
+
 class _BuildFieldsForm extends StatelessWidget {
   const _BuildFieldsForm();
   @override
@@ -53,8 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty &&
-          paqueteController.text.isEmpty && isActivo;
+      final isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && paqueteController.text.isEmpty && isActivo;
 
       if (isCampoVacio) {
         isValid = false;
@@ -66,11 +66,12 @@ class _BuildFieldsForm extends StatelessWidget {
           moduloNombre: nombreController.text,
           moduloCodigo: int.tryParse(codigoController.text),
           paquete: paqueteController.text,
-          moduloActivo: isActivo
+          moduloActivo: isActivo,
         );
         context.read<ModuloBloc>().add(GetModuloEvent(request));
       }
     }
+
     return Form(
       key: formKey,
       child: Column(
@@ -86,9 +87,9 @@ class _BuildFieldsForm extends StatelessWidget {
                 children: [
                   Text("Activo", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput( value: isActivo, onChanged: (newValue) => isActivo = newValue),
-                ]
-              )
+                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                ],
+              ),
             ],
           ),
           BlocBuilder<ModuloBloc, ModuloState>(
@@ -179,8 +180,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
         }
         return const SizedBox();
-      }
+      },
     );
   }
-
 }

@@ -9,13 +9,11 @@ import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
-
 class ModuloCreateView extends StatelessWidget {
   const ModuloCreateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final fullPath =
-        GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (context, state) {
         if (state is ModuloExceptionState) {
@@ -34,9 +32,10 @@ class ModuloCreateView extends StatelessWidget {
             children: [
               BuildViewDetail(path: fullPath),
               const WhiteCard(
-                  title: "Registrar Nuevo",
-                  icon: Icons.storage_outlined,
-                  child: _BuildFieldsForm()),
+                title: "Registrar Nuevo",
+                icon: Icons.storage_outlined,
+                child: _BuildFieldsForm(),
+              ),
             ],
           ),
         ],
@@ -66,7 +65,10 @@ class _BuildFieldsForm extends StatelessWidget {
             children: [
               TextInputTitle(title: "Nombre", controller: nombreController),
               TextInputTitle(title: "Icono", controller: iconoController),
-              TextInputTitle(title: "Detalle Modulo", controller: detalleController,),
+              TextInputTitle(
+                title: "Detalle Modulo",
+                controller: detalleController,
+              ),
             ],
           ),
           BuildRowsForm(
@@ -77,17 +79,17 @@ class _BuildFieldsForm extends StatelessWidget {
                 children: [
                   Text("Visible", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput( value: isVisible, onChanged: (newValue) => isVisible = newValue),
-                ]
+                  SwitchBoxInput(value: isVisible, onChanged: (newValue) => isVisible = newValue),
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Activo", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput( value: isActivo, onChanged: (newValue) => isActivo = newValue),
-                ]
-              )
+                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                ],
+              ),
             ],
           ),
           FilledButton.icon(
@@ -101,7 +103,7 @@ class _BuildFieldsForm extends StatelessWidget {
                   paquete: paqueteController.text,
                   moduloPath: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
                   moduloVisible: isVisible,
-                  moduloActivo: isActivo
+                  moduloActivo: isActivo,
                 );
                 context.read<ModuloBloc>().add(SetModuloEvent(request));
               }
