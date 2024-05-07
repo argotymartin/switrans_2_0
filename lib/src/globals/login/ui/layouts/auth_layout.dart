@@ -23,7 +23,7 @@ class AuthLayout extends StatelessWidget {
             context.go("/");
           }
           if (state is AuthLoadInProgressState) {
-            showDialog(
+            await showDialog(
               context: context,
               builder: (_) => AlertDialog(
                 backgroundColor: Colors.white.withOpacity(0.4),

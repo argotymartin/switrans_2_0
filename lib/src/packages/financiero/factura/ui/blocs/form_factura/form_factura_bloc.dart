@@ -107,7 +107,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   Future<void> moveBottomAllScroll() async {
     //animationController.reset();
-    scrollController.animateTo(
+    await scrollController.animateTo(
       scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 1000),
       curve: Curves.easeIn,
@@ -152,11 +152,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
       if (resp.isNotEmpty) {
         add(const SuccesFormFacturaEvent());
-        moveScroll(450);
+        await moveScroll(450);
       }
       if (tipoFactura == 10) {
         add(const SuccesFormFacturaEvent());
-        moveScroll(450);
+        await moveScroll(450);
       }
     }
   }

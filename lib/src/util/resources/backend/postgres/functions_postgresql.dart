@@ -7,7 +7,7 @@ class FunctionsPostgresql {
     final String sql = "SELECT COALESCE(MAX($key), 1) + 1 FROM $table;";
     final result = await conn.execute(sql);
     result.first.first;
-    conn.close();
+    await conn.close();
     return result.first.first.toString();
   }
 
@@ -23,7 +23,7 @@ class FunctionsPostgresql {
       data: resultMapList,
       statusCode: 200,
     );
-    conn.close();
+    await conn.close();
     return response;
   }
 }

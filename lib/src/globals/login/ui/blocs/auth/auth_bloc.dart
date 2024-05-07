@@ -23,12 +23,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onActivateUser(LoginAuthEvent event, Emitter<AuthState> emit) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', "");
+    await prefs.setString('token', "");
     emit(const AuthLoadInProgressState());
     final dataState = await _repository.signin(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
       emit(AuthSuccesState(auth: dataState.data!, isSignedIn: true));
-      prefs.setString('token', dataState.data!.token);
+      await prefs.setString('token', dataState.data!.token);
     }
     if (dataState.error != null) {
       emit(AuthErrorState(error: dataState.error));
@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> onLogoutAuthEvent() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', "");
+    await prefs.setString('token', "");
     add(const LogoutAuthEvent());
   }
 

@@ -164,9 +164,9 @@ linter:
     throw_in_finally: true
     tighten_type_of_initializing_formals: true
     type_annotate_public_apis: true
-    type_init_formals: false
-    type_literal_in_constant_pattern: false
-    unawaited_futures: false
+    type_init_formals: true
+    type_literal_in_constant_pattern: true
+    unawaited_futures: true
     unnecessary_await_in_return: false
     unnecessary_brace_in_string_interps: false
     unnecessary_breaks: false
