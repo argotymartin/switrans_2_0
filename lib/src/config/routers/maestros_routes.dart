@@ -22,7 +22,7 @@ class MaestrosRoutes {
   static const String packagePath = "/maestros";
 
   static List<ShellRoute> getRoutesMaestros() {
-    final List<ShellRoute> routes = [];
+    final List<ShellRoute> routes = <ShellRoute>[];
     routes.add(accionDocumentos());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());
@@ -34,10 +34,10 @@ class MaestrosRoutes {
   static ShellRoute accionDocumentos() {
     const String modulePath = "accion_documentos";
     return ShellRoute(
-      builder: (context, state, child) {
-        return FutureBuilder(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return FutureBuilder<void>(
           future: context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
@@ -45,10 +45,10 @@ class MaestrosRoutes {
           },
         );
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
-          builder: (context, GoRouterState state) {
+          builder: (BuildContext context, GoRouterState state) {
             return const AccionDocumentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -65,13 +65,13 @@ class MaestrosRoutes {
   static ShellRoute routerTipoImpuesto() {
     const String modulePath = "tipo_impuesto";
     return ShellRoute(
-      builder: (context, state, child) {
+      builder: (BuildContext context, GoRouterState state, Widget child) {
         return MenuLayout(child: child);
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
-          builder: (context, GoRouterState state) {
+          builder: (BuildContext context, GoRouterState state) {
             return const TipoImpuestoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -88,10 +88,10 @@ class MaestrosRoutes {
   static ShellRoute routerServicioEmpresarial() {
     const String modulePath = "servicio_empresarial";
     return ShellRoute(
-      builder: (context, state, child) {
+      builder: (BuildContext context, GoRouterState state, Widget child) {
         return MenuLayout(child: child);
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (_, __) => const ServicioEmpresarialCreateView(),
@@ -109,10 +109,10 @@ class MaestrosRoutes {
   static ShellRoute routerUnidadNegocio() {
     const String modulePath = "unidad_negocio";
     return ShellRoute(
-      builder: (context, state, child) {
-        return FutureBuilder(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return FutureBuilder<void>(
           future: context.read<UnidadNegocioBloc>().onGetEmpresas(),
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
@@ -120,7 +120,7 @@ class MaestrosRoutes {
           },
         );
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (_, __) => const UnidadNegocioCreateView(),
@@ -138,10 +138,10 @@ class MaestrosRoutes {
   static ShellRoute routerModulo() {
     const String modulePath = "modulo";
     return ShellRoute(
-      builder: (context, state, child) {
-        return FutureBuilder(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return FutureBuilder<void>(
           future: context.read<ModuloBloc>().onGetPaquetes(),
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
@@ -149,14 +149,13 @@ class MaestrosRoutes {
           },
         );
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
-          builder: (context, GoRouterState state) {
+          builder: (BuildContext context, GoRouterState state) {
             return const ModuloCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
-
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",

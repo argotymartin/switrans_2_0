@@ -20,7 +20,7 @@ class ItemDocumento {
     required this.valorIva,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "documento": documento,
         "tipo": tipo,
         "descripcion": descripcion,

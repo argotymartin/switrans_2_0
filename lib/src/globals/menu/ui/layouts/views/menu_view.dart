@@ -8,14 +8,14 @@ class MenuView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: const ClampingScrollPhysics(),
-      children: [
+      children: <Widget>[
         Text('Menu Principal', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 10),
         const WhiteCard(
           icon: Icons.menu,
           title: 'Menu',
           child: Column(
-            children: [
+            children: <Widget>[
               Text('Aca va a ser el menu'),
             ],
           ),

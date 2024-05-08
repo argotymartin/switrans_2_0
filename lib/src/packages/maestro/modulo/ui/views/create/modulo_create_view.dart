@@ -13,9 +13,9 @@ class ModuloCreateView extends StatelessWidget {
   const ModuloCreateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<ModuloBloc, ModuloState>(
-      listener: (context, state) {
+      listener: (BuildContext context, ModuloState state) {
         if (state is ModuloExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
@@ -25,11 +25,11 @@ class ModuloCreateView extends StatelessWidget {
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(
                 title: "Registrar Nuevo",
@@ -55,14 +55,14 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController paqueteController = TextEditingController();
     bool isVisible = true;
     bool isActivo = true;
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController),
               TextInputTitle(title: "Icono", controller: iconoController),
               TextInputTitle(
@@ -72,31 +72,31 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               FieldPaquete(paqueteController),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text("Visible", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput(value: isVisible, onChanged: (newValue) => isVisible = newValue),
+                  SwitchBoxInput(value: isVisible, onChanged: (bool newValue) => isVisible = newValue),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text("Activo", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
                 ],
               ),
             ],
           ),
           FilledButton.icon(
             onPressed: () async {
-              final isValid = formKey.currentState!.validate();
+              final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final request = ModuloRequest(
+                final ModuloRequest request = ModuloRequest(
                   moduloDetalles: detalleController.text,
                   moduloIcono: iconoController.text,
                   moduloNombre: nombreController.text,

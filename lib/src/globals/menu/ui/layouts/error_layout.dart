@@ -14,7 +14,7 @@ class ErrorLayout extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Text(goRouterState.error.toString()),
             const SizedBox(height: 20),
             MaterialButton(

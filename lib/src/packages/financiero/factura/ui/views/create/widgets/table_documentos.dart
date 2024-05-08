@@ -16,14 +16,14 @@ class TableDocumentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late PlutoGridStateManager stateManager;
-    final itemFacturaBloc = context.read<ItemDocumentoBloc>();
-    final size = MediaQuery.of(context).size;
+    final ItemDocumentoBloc itemFacturaBloc = context.read<ItemDocumentoBloc>();
+    final Size size = MediaQuery.of(context).size;
     final double rowHeight = size.height * 0.16;
     const double titleHeight = 48;
     const double columnFilterHeight = 36;
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ItemDocumentoState state) {
         return Container(
           height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -34,13 +34,13 @@ class TableDocumentos extends StatelessWidget {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
             },
-            onRowDoubleTap: (event) => onRowDoubleTap(
+            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) => onRowDoubleTap(
               event: event,
               documentos: documentos,
               itemFacturaBloc: itemFacturaBloc,
               stateManager: stateManager,
             ),
-            onRowChecked: (event) => onRowChecked(
+            onRowChecked: (PlutoGridOnRowCheckedEvent event) => onRowChecked(
               event: event,
               documentos: documentos,
               itemFacturaBloc: itemFacturaBloc,
@@ -89,7 +89,7 @@ class TableDocumentos extends StatelessWidget {
     required ItemDocumentoBloc itemFacturaBloc,
   }) {
     if (event.isAll && event.isChecked != null) {
-      for (final documento in documentos) {
+      for (final Documento documento in documentos) {
         if (event.isChecked!) {
           itemFacturaBloc.add(AddItemTransporteFacturaEvent(documento: documento));
         } else {

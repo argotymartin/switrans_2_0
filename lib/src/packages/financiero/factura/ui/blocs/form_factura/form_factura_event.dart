@@ -4,7 +4,7 @@ abstract class FormFacturaEvent extends Equatable {
   const FormFacturaEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class GetFormFacturaEvent extends FormFacturaEvent {

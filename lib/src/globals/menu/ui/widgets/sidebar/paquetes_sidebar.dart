@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
@@ -27,10 +28,10 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
   @override
   Widget build(BuildContext context) {
     bool isEntered = widget.paquete.isSelected;
-    final colorScheme = Theme.of(context).colorScheme;
-    final List<ModulosSidebar> modulos = widget.paquete.modulos.map((modulo) => ModulosSidebar(modulo: modulo)).toList();
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final List<ModulosSidebar> modulos = widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo)).toList();
     return Column(
-      children: [
+      children: <Widget>[
         InkWell(
           onTap: () {
             setState(
@@ -79,17 +80,17 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return SizedBox(
       height: 46,
       child: Row(
-        children: [
+        children: <Widget>[
           paquete.isSelected ? Container(width: 4, height: 48, color: colorScheme.primaryContainer) : const SizedBox(width: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
-              children: [
+              children: <Widget>[
                 Icon(
                   IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),
                   color: isHovered || paquete.isSelected ? colorScheme.onTertiary : colorScheme.onTertiary.withOpacity(0.6),
@@ -143,13 +144,13 @@ Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modul
     direction: PopoverDirection.right,
     constraints: BoxConstraints.loose(const Size.fromWidth(250)),
     arrowWidth: 60,
-    bodyBuilder: (context) => SingleChildScrollView(
+    bodyBuilder: (BuildContext context) => SingleChildScrollView(
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
             padding: const EdgeInsets.all(8),
             child: Column(
-              children: [
+              children: <Widget>[
                 Text(
                   paquete.nombre,
                   style: const TextStyle(

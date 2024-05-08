@@ -1,13 +1,13 @@
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
 class FacturaDataTest {
-  static final List<Empresa> empresasResponse = [
+  static final List<Empresa> empresasResponse = <Empresa>[
     Empresa(codigo: 1, nombre: "MCT", nit: "83004861"),
     Empresa(codigo: 2, nombre: "MARKETING E INVERSIONES S.A.S.", nit: "8060029537"),
     Empresa(codigo: 12, nombre: "FERRICAR S.A.S", nit: "9010511090"),
   ];
 
-  static final List<Cliente> clinetesResponse = [
+  static final List<Cliente> clinetesResponse = <Cliente>[
     Cliente(codigo: 2988, nombre: "ROLDAN Y COMPANIA S.A.S.", identificacion: "890903069", telefono: "3520687"),
     Cliente(codigo: 2486, nombre: "INDUFAST S.A.S", identificacion: "900549320", telefono: "6917705"),
     Cliente(codigo: 2975, nombre: "E2 ENERGIA EFICIENTE S.A. E.S.P.", identificacion: "802025052", telefono: "3306266"),
@@ -15,7 +15,7 @@ class FacturaDataTest {
     Cliente(codigo: 1409, nombre: "GEODIS COLOMBIA LTDA.", identificacion: "830055467", telefono: "6020100"),
   ];
 
-  static final List<Documento> remesasResponse = [
+  static final List<Documento> remesasResponse = <Documento>[
     Documento(
       remesa: 443534,
       impreso: "01048-15895",
@@ -37,8 +37,8 @@ class FacturaDataTest {
       total: 100.0,
       flete: 100000.0,
       anulacionTrafico: false,
-      adiciones: [],
-      descuentos: [Descuento(codigo: 10948, tipo: "error Cliente", valor: 100.0)],
+      adiciones: <Adicion>[],
+      descuentos: <Descuento>[Descuento(codigo: 10948, tipo: "error Cliente", valor: 100.0)],
     ),
     Documento(
       remesa: 736918,
@@ -61,8 +61,8 @@ class FacturaDataTest {
       total: 3400000.0,
       flete: 3400000.0,
       anulacionTrafico: true,
-      adiciones: [Adicion(codigo: 202444, tipo: "devolucion contenedor 1x40", valor: 260000.0)],
-      descuentos: [],
+      adiciones: <Adicion>[Adicion(codigo: 202444, tipo: "devolucion contenedor 1x40", valor: 260000.0)],
+      descuentos: <Descuento>[],
     ),
     Documento(
       remesa: 736801,
@@ -85,11 +85,11 @@ class FacturaDataTest {
       total: 202500.0,
       flete: 202500.0,
       anulacionTrafico: false,
-      adiciones: [
+      adiciones: <Adicion>[
         Adicion(codigo: 202245, tipo: "punto adicional", valor: 30000.0),
         Adicion(codigo: 202244, tipo: "descargue", valor: 70000.0),
       ],
-      descuentos: [],
+      descuentos: <Descuento>[],
     ),
     Documento(
       remesa: 736978,
@@ -112,8 +112,8 @@ class FacturaDataTest {
       total: 250000.0,
       flete: 250000.0,
       anulacionTrafico: false,
-      adiciones: [Adicion(codigo: 202305, tipo: "acompanamiento", valor: 85000.0)],
-      descuentos: [],
+      adiciones: <Adicion>[Adicion(codigo: 202305, tipo: "acompanamiento", valor: 85000.0)],
+      descuentos: <Descuento>[],
     ),
   ];
 }

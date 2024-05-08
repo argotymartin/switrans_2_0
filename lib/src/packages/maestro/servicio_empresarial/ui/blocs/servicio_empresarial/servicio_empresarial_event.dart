@@ -4,7 +4,7 @@ sealed class ServicioEmpresarialEvent extends Equatable {
   const ServicioEmpresarialEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class GetServicioEmpresarialEvent extends ServicioEmpresarialEvent {

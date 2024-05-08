@@ -38,9 +38,9 @@ class TextAreaDocumentos extends StatelessWidget {
     }
     final List<String> remesas = value
         .split(",")
-        .map((remesa) => remesa.trim())
-        .takeWhile((remesa) => remesa != value.split(",").last.trim())
-        .where((remesa) => regexRemesas.hasMatch(remesa))
+        .map((String remesa) => remesa.trim())
+        .takeWhile((String remesa) => remesa != value.split(",").last.trim())
+        .where((String remesa) => regexRemesas.hasMatch(remesa))
         .toList();
     if (remesas.isEmpty) {
       return null;
@@ -59,7 +59,7 @@ class TextAreaDocumentos extends StatelessWidget {
       return "Los valores digitados no parecen ser remesas validas";
     }
 
-    final List<String> remesasDiferentes = remesas.where((remesa) => !regexRemesas.hasMatch(remesa)).toList();
+    final List<String> remesasDiferentes = remesas.where((String remesa) => !regexRemesas.hasMatch(remesa)).toList();
 
     if (remesasDiferentes.isNotEmpty) {
       if (remesasDiferentes.first != "") {

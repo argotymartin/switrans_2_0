@@ -16,7 +16,7 @@ class ErrorModal extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        children: [
+        children: <Widget>[
           const Icon(Icons.error, color: Colors.white),
           const SizedBox(width: 8),
           Text(title, style: const TextStyle(color: Colors.white)),

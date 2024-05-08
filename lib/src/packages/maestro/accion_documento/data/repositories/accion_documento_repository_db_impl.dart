@@ -14,45 +14,46 @@ class AccionDocumentoRepositoryDBImpl extends BaseApiRepository implements Abstr
 
   @override
   Future<DataState<List<AccionDocumento>>> getAccionDocumentosService(AccionDocumentoRequest request) async {
-    final httpResponse = await getStateOf(request: () => _accionDocumentoDB.getAccionDocumentosDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _accionDocumentoDB.getAccionDocumentosDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data;
-      final response = List<AccionDocumento>.from(resp.map((x) => AccionDocumentoModel.fromJson(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data;
+      final List<AccionDocumento> response = List<AccionDocumento>.from(resp.map((dynamic x) => AccionDocumentoModel.fromJson(x)));
+      return DataSuccess<List<AccionDocumento>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<AccionDocumento>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<AccionDocumento>> setAccionDocumentosService(AccionDocumentoRequest request) async {
-    final httpResponse = await getStateOf(request: () => _accionDocumentoDB.setAccionDocumentosDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _accionDocumentoDB.setAccionDocumentosDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
-      final AccionDocumentoModel response = AccionDocumentoModel.fromJson(resp);
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data[0];
+      final AccionDocumento response = AccionDocumentoModel.fromJson(resp);
+      return DataSuccess<AccionDocumento>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<AccionDocumento>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<TipoDocumentoAccionDocumento>>> getTipoDocumentosService() async {
-    final httpResponse = await getStateOf(request: () => _accionDocumentoDB.getTipoDocumentosDB());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _accionDocumentoDB.getTipoDocumentosDB());
     if (httpResponse.data != null) {
-      final resp = httpResponse.data;
-      final response = List<TipoDocumentoAccionDocumento>.from(resp.map((x) => TipoDocumentoAccionDocumentoModel.fromJson(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data;
+      final List<TipoDocumentoAccionDocumento> response =
+          List<TipoDocumentoAccionDocumento>.from(resp.map((dynamic x) => TipoDocumentoAccionDocumentoModel.fromJson(x)));
+      return DataSuccess<List<TipoDocumentoAccionDocumento>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<TipoDocumentoAccionDocumento>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<AccionDocumento>> updateAccionDocumentosService(AccionDocumentoRequest request) async {
-    final httpResponse = await getStateOf(request: () => _accionDocumentoDB.updateAccionDocumentosDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _accionDocumentoDB.updateAccionDocumentosDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
-      final AccionDocumentoModel response = AccionDocumentoModel.fromJson(resp);
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data[0];
+      final AccionDocumento response = AccionDocumentoModel.fromJson(resp);
+      return DataSuccess<AccionDocumento>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<AccionDocumento>(httpResponse.error!);
   }
 }

@@ -25,10 +25,10 @@ class BuildButtonFormSave extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          children: <Widget>[
             const SizedBox(width: 8),
             isInProgress
                 ? Transform.scale(scale: 0.8, child: const CircularProgressIndicator(strokeWidth: 2.0))

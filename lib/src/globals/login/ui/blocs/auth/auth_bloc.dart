@@ -14,18 +14,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AbstractAuthRepository _repository;
 
   AuthBloc(this._repository) : super(const AuthInitialState()) {
-    on<GetAuthEvent>((event, emit) {});
+    on<GetAuthEvent>((GetAuthEvent event, Emitter<AuthState> emit) {});
     on<LoginAuthEvent>(_onActivateUser);
 
-    on<LogoutAuthEvent>(((event, emit) => emit(const AuthInitialState())));
-    on<ValidateAuthEvent>(((event, emit) => emit(AuthSuccesState(auth: event.auth))));
+    on<LogoutAuthEvent>(((LogoutAuthEvent event, Emitter<AuthState> emit) => emit(const AuthInitialState())));
+    on<ValidateAuthEvent>(((ValidateAuthEvent event, Emitter<AuthState> emit) => emit(AuthSuccesState(auth: event.auth))));
   }
 
   Future<void> _onActivateUser(LoginAuthEvent event, Emitter<AuthState> emit) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', "");
     emit(const AuthLoadInProgressState());
-    final dataState = await _repository.signin(event.params);
+    final DataState<Auth> dataState = await _repository.signin(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
       emit(AuthSuccesState(auth: dataState.data!, isSignedIn: true));
       await prefs.setString('token', dataState.data!.token);
@@ -43,8 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<bool> onValidateToken(String token) async {
     bool isValid = false;
-    final params = UsuarioRequest(token: token);
-    final dataState = await _repository.validateToken(params);
+    final UsuarioRequest params = UsuarioRequest(token: token);
+    final DataState<Auth> dataState = await _repository.validateToken(params);
     if (dataState is DataSuccess && dataState.data != null) {
       add(ValidateAuthEvent(dataState.data!));
       isValid = true;

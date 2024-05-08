@@ -9,7 +9,7 @@ class UsuarioRequest {
     this.token = '',
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'identity': identity,
         'password': password,
         'token': token,

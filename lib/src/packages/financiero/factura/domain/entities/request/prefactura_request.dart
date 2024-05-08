@@ -22,14 +22,14 @@ class PrefacturaRequest {
     required this.items,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "centroCosto": centroCosto,
         "cliente": cliente,
         "empresa": empresa,
         "usuario": usuario,
         "valorImpuesto": valorImpuesto,
         "valorNeto": valorNeto,
-        "documentos": List<dynamic>.from(documentos.map((x) => x.toJson())),
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "documentos": List<dynamic>.from(documentos.map((Documento x) => x.toJson())),
+        "items": List<dynamic>.from(items.map((ItemDocumento x) => x.toJson())),
       };
 }

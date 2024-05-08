@@ -14,45 +14,44 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
 
   @override
   Future<DataState<List<Modulo>>> getModulosService(ModuloRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.getModulosApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosApi(request));
     if (httpResponse.data != null) {
-      final items = httpResponse.data['items'];
-      final response = List<Modulo>.from(items.map((x) => ModuloModel.fromJson(x)));
-      final data = await _api.getPaqueteNombre(response);
-      return DataSuccess(data);
+      final dynamic items = httpResponse.data['items'];
+      final List<Modulo> response = List<Modulo>.from(items.map((dynamic x) => ModuloModel.fromJson(x)));
+      final List<Modulo> data = await _api.getPaqueteNombre(response);
+      return DataSuccess<List<Modulo>>(data);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<Modulo>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<Modulo>> setModuloService(ModuloRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.setModuloApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setModuloApi(request));
     if (httpResponse.data != null) {
       final Modulo response = ModuloModel.fromJson(httpResponse.data);
-      return DataSuccess(response);
+      return DataSuccess<Modulo>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<Modulo>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<ModuloPaquete>>> getPaquetesService() async {
-    final httpResponse = await getStateOf(request: () => _api.getPaquetesApi());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaquetesApi());
     if (httpResponse.data != null) {
-      final resp = httpResponse.data['items'];
-      final List<ModuloPaquete> response = List<ModuloPaquete>.from(resp.map((x) => ModuloPaqueteModel.fromJson(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data['items'];
+      final List<ModuloPaquete> response = List<ModuloPaquete>.from(resp.map((dynamic x) => ModuloPaqueteModel.fromJson(x)));
+      return DataSuccess<List<ModuloPaquete>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<ModuloPaquete>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<Modulo>> updateModuloService(ModuloRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.updateModuloApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateModuloApi(request));
     if (httpResponse.data != null) {
       final Modulo response = ModuloModel.fromJson(httpResponse.data);
-      return DataSuccess(response);
+      return DataSuccess<Modulo>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<Modulo>(httpResponse.error!);
   }
-
 }

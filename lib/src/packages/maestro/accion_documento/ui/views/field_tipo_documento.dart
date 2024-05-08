@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -15,12 +16,16 @@ class FieldTipoDocumento extends StatelessWidget {
       typeController.text = entry.codigo.toString();
     }
 
-    final acciones = context.read<AccionDocumentoBloc>().tipos;
-    final List<EntryAutocomplete> entryMenus = acciones.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+    final List<TipoDocumentoAccionDocumento> acciones = context.read<AccionDocumentoBloc>().tipos;
+    final List<EntryAutocomplete> entryMenus = acciones
+        .map(
+          (TipoDocumentoAccionDocumento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo),
+        )
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Tipo Documento", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(

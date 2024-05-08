@@ -8,12 +8,12 @@ sealed class ThemeState extends Equatable {
 
 final class ThemeInitial extends ThemeState {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 final class ThemeDark extends ThemeState {
   const ThemeDark({super.isDarkmode, super.color});
 
   @override
-  List<Object> get props => [isDarkmode, color];
+  List<Object> get props => <Object>[isDarkmode, color];
 }

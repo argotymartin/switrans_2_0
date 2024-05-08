@@ -6,16 +6,16 @@ class TipoImpuestoApi {
   final Dio _dio;
   TipoImpuestoApi(this._dio);
 
-  Future<Response> getTipoImpuestosApi(TipoImpuestoRequest request) async {
-    const url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
-    final queryParameters = {"filter": request.toPocketBaseFilter()};
-    final response = await _dio.get('$url/', queryParameters: queryParameters);
+  Future<Response<dynamic>> getTipoImpuestosApi(TipoImpuestoRequest request) async {
+    const String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
+    final Map<String, String> queryParameters = <String, String>{"filter": request.toPocketBaseFilter()};
+    final Response<dynamic> response = await _dio.get('$url/', queryParameters: queryParameters);
     return response;
   }
 
-  Future<Response> setTipoImpuestoApi(TipoImpuestoRequest request) async {
-    const url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
-    final response = await _dio.post('$url/', data: request.toJson());
+  Future<Response<dynamic>> setTipoImpuestoApi(TipoImpuestoRequest request) async {
+    const String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
+    final Response<dynamic> response = await _dio.post('$url/', data: request.toJson());
     return response;
   }
 }

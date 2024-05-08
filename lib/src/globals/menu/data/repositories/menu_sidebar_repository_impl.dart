@@ -11,12 +11,13 @@ class MenuSidebarRespositoryImpl extends BaseApiRepository implements AbstractMe
   MenuSidebarRespositoryImpl(this._api);
   @override
   Future<DataState<List<PaqueteMenu>>> getModulos() async {
-    final httpResponse = await getStateOf(request: () => _api.getModulosAll());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosAll());
     if (httpResponse.data != null) {
       final List<dynamic> items = httpResponse.data['items'];
-      final List<PaqueteMenu> response = items.cast<Map<String, dynamic>>().map((x) => PaqueteMenuModel.fromJsonPocketBase(x)).toList();
-      return DataSuccess(response);
+      final List<PaqueteMenu> response =
+          items.cast<Map<String, dynamic>>().map((Map<String, dynamic> x) => PaqueteMenuModel.fromJsonPocketBase(x)).toList();
+      return DataSuccess<List<PaqueteMenu>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<PaqueteMenu>>(httpResponse.error!);
   }
 }

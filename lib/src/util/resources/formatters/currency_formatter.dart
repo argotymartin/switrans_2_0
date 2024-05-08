@@ -15,8 +15,8 @@ class CurrencyFormatter extends TextInputFormatter {
       return newValue.copyWith(text: '');
     }
 
-    final num value = int.tryParse(newValue.text) ?? 0;
-    final formattedValue = _currencyFormat.format(value);
+    final int value = int.tryParse(newValue.text) ?? 0;
+    final String formattedValue = _currencyFormat.format(value);
 
     return newValue.copyWith(
       text: formattedValue,

@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class BaseApiRepository {
-  Future<DataState> getStateOf({required Future<Response<dynamic>> Function() request}) async {
+  Future<DataState<dynamic>> getStateOf({required Future<Response<dynamic>> Function() request}) async {
     try {
-      final httpResponse = await request();
+      final dynamic httpResponse = await request();
       if ((httpResponse.statusCode == HttpStatus.ok || httpResponse.statusCode == HttpStatus.created) && httpResponse.data != null) {
-        return DataSuccess(httpResponse.data!);
+        return DataSuccess<dynamic>(httpResponse.data!);
       } else {
         throw DioException(
           response: httpResponse,
@@ -16,7 +16,7 @@ abstract class BaseApiRepository {
         );
       }
     } on DioException catch (error) {
-      return DataFailed(error);
+      return DataFailed<dynamic>(error);
     }
   }
 }

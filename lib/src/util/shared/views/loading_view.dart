@@ -9,7 +9,7 @@ class LoadingView extends StatelessWidget {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Image.asset("assets/animations/loading.gif"),
             const SizedBox(height: 4),
             const Text("Por favor espere..."),

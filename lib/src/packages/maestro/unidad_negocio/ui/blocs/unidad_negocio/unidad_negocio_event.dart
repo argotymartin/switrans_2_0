@@ -4,7 +4,7 @@ abstract class UnidadNegocioEvent extends Equatable {
   const UnidadNegocioEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class GetUnidadNegocioEvent extends UnidadNegocioEvent {

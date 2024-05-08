@@ -24,17 +24,18 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        final List<ItemDocumento> itemDocumento = state.itemDocumentos.where((prefactura) => prefactura.documento != 0).toList();
+      builder: (BuildContext context, ItemDocumentoState state) {
+        final List<ItemDocumento> itemDocumento =
+            state.itemDocumentos.where((ItemDocumento prefactura) => prefactura.documento != 0).toList();
         return Container(
           padding: const EdgeInsets.only(right: 24),
           height: 64,
           width: size.width,
           child: AnimatedBuilder(
             animation: formulario.animationController,
-            builder: (context, child) => Transform.translate(
+            builder: (BuildContext context, Widget? child) => Transform.translate(
               offset: Offset(0, tralateAnimation.value),
               child: InkWell(
                 onTap: () async => formulario.moveBottomAllScroll(),
@@ -58,7 +59,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
                         margin: const EdgeInsets.all(8),
                         child: Center(
                           child: Row(
-                            children: [
+                            children: <Widget>[
                               const Icon(Icons.file_copy),
                               Text("${preFactura.documentoImpreso}  (${preFactura.documento})"),
                             ],

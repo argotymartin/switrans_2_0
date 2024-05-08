@@ -4,7 +4,7 @@ sealed class ItemDocumentoEvent extends Equatable {
   const ItemDocumentoEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class GetItemDocumentoEvent extends ItemDocumentoEvent {

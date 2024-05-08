@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 part 'form_factura_event.dart';
 part 'form_factura_state.dart';
@@ -38,8 +39,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(const FormFacturaLoadingState());
-    final dataStateClientes = await _repository.getClientes();
-    final dataStateEmpresas = await _repository.getEmpresasService();
+    final DataState<List<Cliente>> dataStateClientes = await _repository.getClientes();
+    final DataState<List<Empresa>> dataStateEmpresas = await _repository.getEmpresasService();
     if (dataStateClientes.error != null) {
       emit(FormFacturaErrorState(exception: dataStateClientes.error));
     }
@@ -102,7 +103,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  Future moveScroll(double offset) =>
+  Future<void> moveScroll(double offset) =>
       scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
   Future<void> moveBottomAllScroll() async {
@@ -115,11 +116,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Future<void> onPressedSearch({required bool isValid}) async {
-    final empresa = state.empresa;
-    final tipoFactura = state.tipoFactura;
-    final remesas = remesasController.text;
-    final inicio = fechaInicioController.text;
-    final fin = fechaFinController.text;
+    final int empresa = state.empresa;
+    final int tipoFactura = state.tipoFactura;
+    final String remesas = remesasController.text;
+    final String inicio = fechaInicioController.text;
+    final String fin = fechaFinController.text;
 
     String error = "";
     if (empresa <= 0) {
@@ -162,12 +163,12 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Cliente getClienteSelected() {
-    final Cliente cliente = state.clientes.firstWhere((element) => element.codigo == clienteCodigo);
+    final Cliente cliente = state.clientes.firstWhere((Cliente element) => element.codigo == clienteCodigo);
     return cliente;
   }
 
   Empresa getEmpresaSelected() {
-    final Empresa empresaSelect = state.empresas.firstWhere((element) => element.codigo == state.empresa);
+    final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
     return empresaSelect;
   }
 

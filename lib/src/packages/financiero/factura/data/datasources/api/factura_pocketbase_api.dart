@@ -6,26 +6,26 @@ class ClientePocketbaseAPI {
 
   ClientePocketbaseAPI(this._dio);
 
-  Future<Response> getClienteAll() async {
-    const url = '$kPocketBaseUrl/api/collections/cliente/records';
-    final response = await _dio.get('$url/');
+  Future<Response<dynamic>> getClienteAll() async {
+    const String url = '$kPocketBaseUrl/api/collections/cliente/records';
+    final Response<dynamic> response = await _dio.get('$url/');
     return response;
   }
 
-  Future<Response> getCliente(String parm) async {
-    const url = '$kPocketBaseUrl/api/collections/cliente/records';
-    final response = await _dio.get(
+  Future<Response<dynamic>> getCliente(String parm) async {
+    const String url = '$kPocketBaseUrl/api/collections/cliente/records';
+    final Response<dynamic> response = await _dio.get(
       '$url/',
-      queryParameters: {
+      queryParameters: <String, dynamic>{
         "filter": "(cliente_nombre~'$parm')",
       },
     );
     return response;
   }
 
-  Future<Response> getDataEmpresas() async {
-    const url = '$kPocketBaseUrl/api/collections/empresa/records';
-    final response = await _dio.get('$url/');
+  Future<Response<dynamic>> getDataEmpresas() async {
+    const String url = '$kPocketBaseUrl/api/collections/empresa/records';
+    final Response<dynamic> response = await _dio.get('$url/');
     return response;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
@@ -11,7 +12,7 @@ class FinancieroRoutes {
   static const String packagePath = "finaciero";
 
   static List<ShellRoute> getRoutesFinaciero() {
-    final List<ShellRoute> routes = [];
+    final List<ShellRoute> routes = <ShellRoute>[];
     routes.add(routerFactura());
     return routes;
   }
@@ -19,10 +20,10 @@ class FinancieroRoutes {
   static ShellRoute routerFactura() {
     const String modulePath = "factura";
     return ShellRoute(
-      builder: (context, state, child) {
+      builder: (BuildContext context, GoRouterState state, Widget child) {
         return MenuLayout(child: child);
       },
-      routes: [
+      routes: <RouteBase>[
         GoRoute(
           path: "/",
           builder: (_, GoRouterState state) => const MenuView(),
@@ -30,15 +31,15 @@ class FinancieroRoutes {
         ),
         GoRoute(
           path: "/$packagePath/$modulePath/registrar",
-          builder: (context, GoRouterState state) {
+          builder: (BuildContext context, GoRouterState state) {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
             return BlocConsumer<FormFacturaBloc, FormFacturaState>(
-              listener: (context, state) {
+              listener: (BuildContext context, FormFacturaState state) {
                 if (state is FormFacturaErrorState) {
                   ErrorDialog.showDioException(context, state.exception!);
                 }
               },
-              builder: (context, stateFactura) {
+              builder: (BuildContext context, FormFacturaState stateFactura) {
                 return (stateFactura is FormFacturaLoadingState) ? const LoadingView() : const FacturaCreateView();
               },
             );

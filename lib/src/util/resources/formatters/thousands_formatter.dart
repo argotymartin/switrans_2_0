@@ -16,7 +16,7 @@ class ThousandsFormatter extends TextInputFormatter {
     }
 
     final num value = int.tryParse(newValue.text) ?? 0;
-    final formattedValue = _numberFormat.format(value);
+    final String formattedValue = _numberFormat.format(value);
 
     return newValue.copyWith(
       text: formattedValue,

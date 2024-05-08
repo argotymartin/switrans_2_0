@@ -13,9 +13,9 @@ class BreadcrumbTrail extends StatelessWidget {
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat("EEEE, MMMM d 'del' y", 'es').format(now);
 
-    final List<Widget> result = [];
+    final List<Widget> result = <Widget>[];
     bool primeraIteracion = true;
-    for (final element in elements) {
+    for (final String element in elements) {
       if (primeraIteracion) {
         result.add(Text("Switrans", style: TextStyle(color: Colors.blue.shade500)));
         primeraIteracion = false; // Cambiar la variable para evitar repetir la acción
@@ -28,7 +28,7 @@ class BreadcrumbTrail extends StatelessWidget {
       result.add(const SizedBox(width: 4));
     }
     return Row(
-      children: [
+      children: <Widget>[
         Row(children: result),
         const Spacer(),
         Text(formattedDate, style: TextStyle(color: Colors.grey.shade600)),

@@ -24,7 +24,7 @@ class _IconNavbarState extends State<IconNavbar> {
       height: 48,
       width: 48,
       child: Stack(
-        children: [
+        children: <Widget>[
           Positioned(
             top: 8,
             left: 8,

@@ -2,7 +2,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request
 
 class FilterPocketBase extends ModuloRequest {
   String toPocketBaseFilter(ModuloRequest request) {
-    final List conditions = [];
+    final List<String> conditions = <String>[];
     if (request.moduloNombre != null && request.moduloNombre!.isNotEmpty) {
       conditions.add('modulo_nombre ~ "${request.moduloNombre!}"');
     }
@@ -19,12 +19,11 @@ class FilterPocketBase extends ModuloRequest {
       conditions.add('modulo_activo = ${request.moduloActivo!}');
     }
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
-    final data = queryString.isNotEmpty ? '($queryString)' : '';
+    final String data = queryString.isNotEmpty ? '($queryString)' : '';
     return data;
   }
 
   String formatToYYYYMMDD(String fecha) {
     return fecha.replaceAll(RegExp(r'/'), '-');
   }
-
 }

@@ -17,12 +17,12 @@ class MenuLayout extends StatelessWidget {
         backgroundColor: const Color(0xffedf2f9),
         endDrawer: const CustomEndDrawer(),
         body: Row(
-          children: [
+          children: <Widget>[
             const Sidebar(),
             Expanded(
               child: Stack(
                 alignment: Alignment.topCenter,
-                children: [
+                children: <Widget>[
                   Positioned(
                     top: 66,
                     left: 0,
@@ -57,11 +57,11 @@ class CustomEndDrawer extends StatelessWidget {
       width: 260,
       child: ListView(
         padding: const EdgeInsets.all(8),
-        children: [
+        children: <Widget>[
           const DrawerHeader(
             decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white))),
             child: Column(
-              children: [
+              children: <Widget>[
                 CircleAvatar(
                   maxRadius: 50,
                 ),
@@ -74,10 +74,10 @@ class CustomEndDrawer extends StatelessWidget {
           ),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text("Theme Colors"),
               Wrap(
-                children: [
+                children: <Widget>[
                   _BuildCircleColor(color: Colors.indigo),
                   _BuildCircleColor(color: Colors.teal),
                   _BuildCircleColor(color: Colors.blue),
@@ -135,7 +135,7 @@ class _BuildCircleColor extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
-              colors: [
+              colors: <Color>[
                 color.withOpacity(0.2),
                 color,
               ],

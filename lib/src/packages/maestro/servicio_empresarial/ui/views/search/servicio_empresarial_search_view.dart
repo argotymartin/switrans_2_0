@@ -12,20 +12,20 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
-      listener: (context, state) {
+      listener: (BuildContext context, ServicioEmpresarialState state) {
         if (state is ServicioEmpresarialExceptionState) {
           ErrorDialog.showDioException(context, state.exception);
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
               const _BluildDataTable(),
@@ -45,7 +45,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
 
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final ServicioEmpresarialBloc accionDocumentoBloc = context.read<ServicioEmpresarialBloc>();
 
@@ -58,7 +58,7 @@ class _BuildFieldsForm extends StatelessWidget {
         accionDocumentoBloc.add(const ErrorFormServicioEmpresarialEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
       if (isValid) {
-        final request = ServicioEmpresarialRequest(
+        final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
         );
@@ -70,15 +70,15 @@ class _BuildFieldsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
             ],
           ),
           BlocBuilder<ServicioEmpresarialBloc, ServicioEmpresarialState>(
-            builder: (context, state) {
+            builder: (BuildContext context, ServicioEmpresarialState state) {
               int cantidad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
@@ -91,7 +91,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 isConsulted = true;
                 cantidad = state.serviciosEmpresariales.length;
               } else if (state is ServicioEmpresarialSuccesState) {
-                final request = ServicioEmpresarialRequest(codigo: state.servicioEmpresarial!.codigo);
+                final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(codigo: state.servicioEmpresarial!.codigo);
                 accionDocumentoBloc.add(GetServicioEmpresarialEvent(request));
                 context.go('/maestros/servicio_empresarial/buscar');
               }
@@ -120,7 +120,7 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<Map<String, dynamic>> listUpdate = [];
+  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
   @override
   Widget build(BuildContext context) {
     void onRowChecked(List<Map<String, dynamic>> event) {
@@ -130,13 +130,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
     void onPressedSave() {
       for (final Map<String, dynamic> map in listUpdate) {
-        final request = ServicioEmpresarialRequest.fromMapTable(map);
+        final ServicioEmpresarialRequest request = ServicioEmpresarialRequest.fromMapTable(map);
         context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(request));
       }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(ServicioEmpresarial servicio) {
-      return {
+      return <String, DataItemGrid>{
         'codigo': DataItemGrid(type: Tipo.item, value: servicio.codigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: servicio.nombre, edit: true),
         'activo': DataItemGrid(type: Tipo.boolean, value: servicio.esActivo, edit: true),
@@ -147,9 +147,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     return BlocBuilder<ServicioEmpresarialBloc, ServicioEmpresarialState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ServicioEmpresarialState state) {
         if (state is ServicioEmpresarialConsultedState) {
-          final List<Map<String, DataItemGrid>> plutoRes = [];
+          final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final ServicioEmpresarial servico in state.serviciosEmpresariales) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(servico);
             plutoRes.add(rowData);

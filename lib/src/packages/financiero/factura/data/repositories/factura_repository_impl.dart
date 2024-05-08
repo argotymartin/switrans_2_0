@@ -13,43 +13,38 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   FacturaRepositoryImpl(this._api);
   @override
   Future<DataState<List<Empresa>>> getEmpresasService() async {
-    final httpResponse = await getStateOf(request: () => _api.getEmpresasApi());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getEmpresasApi());
     if (httpResponse.data != null) {
-      final resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Empresa> response = resp.data.cast<Map<String, dynamic>>().map((x) => EmpresaModel.fromJson(x)).toList();
-      return DataSuccess(response);
+      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
+      final List<Empresa> response =
+          resp.data.cast<Map<String, dynamic>>().map((Map<String, dynamic> x) => EmpresaModel.fromJson(x)).toList();
+      return DataSuccess<List<Empresa>>(response);
     }
-    return DataFailed(httpResponse.error!);
-    //return DataSuccess(FacturaDataTest.empresasResponse);
+    return DataFailed<List<Empresa>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<Cliente>>> getClientes() async {
-    final httpResponse = await getStateOf(request: () => _api.getClienteApi());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getClienteApi());
     if (httpResponse.data != null) {
-      final resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Cliente> response = resp.data.cast<Map<String, dynamic>>().map((x) => ClienteModel.fromJson(x)).toList();
+      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
+      final List<Cliente> response =
+          resp.data.cast<Map<String, dynamic>>().map((Map<String, dynamic> x) => ClienteModel.fromJson(x)).toList();
 
-      return DataSuccess(response);
+      return DataSuccess<List<Cliente>>(response);
     }
-    return DataFailed(httpResponse.error!);
-    //return DataSuccess(FacturaDataTest.clinetesResponse);
-  }
-
-  @override
-  Future<DataState<List<Cliente>>> getCliente(String param) {
-    throw UnimplementedError();
+    return DataFailed<List<Cliente>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<Documento>>> getDocumentosService(FacturaRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.getDocumentosApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDocumentosApi(request));
     if (httpResponse.data != null) {
-      final resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Documento> response = resp.data.cast<Map<String, dynamic>>().map((x) => DocumentoModel.fromJson(x)).toList();
-      return DataSuccess(response);
+      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
+      final List<Documento> response =
+          resp.data.cast<Map<String, dynamic>>().map((Map<String, dynamic> x) => DocumentoModel.fromJson(x)).toList();
+      return DataSuccess<List<Documento>>(response);
     }
-    return DataFailed(httpResponse.error!);
-    //return DataSuccess(FacturaDataTest.remesasResponse);
+    return DataFailed<List<Documento>>(httpResponse.error!);
   }
 }

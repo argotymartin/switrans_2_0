@@ -27,7 +27,7 @@ class _SwitchBoxInputState extends State<SwitchBoxInput> {
   Widget build(BuildContext context) {
     return Switch(
       value: _value,
-      onChanged: (value) {
+      onChanged: (bool value) {
         setState(() => _value = value);
         widget.onChanged?.call(value);
       },

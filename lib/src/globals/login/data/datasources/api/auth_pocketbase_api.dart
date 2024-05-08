@@ -8,20 +8,20 @@ class AuthPocketbaseApi {
   final Dio _dio;
   AuthPocketbaseApi(this._dio);
 
-  Future<Response> getinfoUser(UsuarioRequest params) async {
-    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
+  Future<Response<dynamic>> getinfoUser(UsuarioRequest params) async {
+    const String url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
     final String jsonRequest = jsonEncode(params.toJson());
-    final response = await _dio.post(url, data: jsonRequest);
+    final Response<dynamic> response = await _dio.post(url, data: jsonRequest);
     return response;
   }
 
-  Future<Response> setUser(UsuarioRequest params) async {
-    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/records';
-    final response = await _dio.patch(
+  Future<Response<dynamic>> setUser(UsuarioRequest params) async {
+    const String url = '$kPocketBaseUrl/api/collections/usuario_nedimo/records';
+    final Response<dynamic> response = await _dio.patch(
       '$url/${params.identity}',
-      data: {"usunedPhoneId": params.token},
+      data: <String, String>{"usunedPhoneId": params.token},
       options: Options(
-        headers: {
+        headers: <String, dynamic>{
           'Authorization': kTokenPocketBase, // Set the content-length.
         },
       ),
@@ -29,18 +29,18 @@ class AuthPocketbaseApi {
     return response;
   }
 
-  Future<Response> getUsuarioByID(UsuarioRequest params) async {
-    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
+  Future<Response<dynamic>> getUsuarioByID(UsuarioRequest params) async {
+    const String url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-with-password';
     final String jsonRequest = jsonEncode(params.toJson());
-    final response = await _dio.post(url, data: jsonRequest);
+    final Response<dynamic> response = await _dio.post(url, data: jsonRequest);
     return response;
   }
 
-  Future<Response> refreshToken(UsuarioRequest params) async {
-    const url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-refresh';
-    final headers = {'Authorization': params.token};
+  Future<Response<dynamic>> refreshToken(UsuarioRequest params) async {
+    const String url = '$kPocketBaseUrl/api/collections/usuario_nedimo/auth-refresh';
+    final Map<String, String> headers = <String, String>{'Authorization': params.token};
 
-    final response = await _dio.post(url, options: Options(headers: headers));
+    final Response<dynamic> response = await _dio.post(url, options: Options(headers: headers));
     return response;
   }
 }

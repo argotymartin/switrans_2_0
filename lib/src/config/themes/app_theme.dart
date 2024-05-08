@@ -5,7 +5,7 @@ class AppTheme {
   final Color color;
   AppTheme({this.color = Colors.black});
   ThemeData getTheme(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return ThemeData(
       useMaterial3: true,
       //brightness: Brightness.dark,
@@ -28,11 +28,11 @@ class AppTheme {
         thumbColor: MaterialStateProperty.all(Colors.grey),
         trackColor: MaterialStateProperty.all(Colors.blueGrey),
         crossAxisMargin: 0,
-        thumbVisibility: const MaterialStatePropertyAll(true),
+        thumbVisibility: const MaterialStatePropertyAll<bool>(true),
         interactive: true,
       ),
     );
   }
 
-  static final titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
+  static final TextStyle titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
 }

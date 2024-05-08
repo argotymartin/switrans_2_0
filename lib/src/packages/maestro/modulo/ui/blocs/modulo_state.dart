@@ -9,8 +9,8 @@ sealed class ModuloState extends Equatable {
   const ModuloState({
     this.modulo,
     this.exception,
-    this.modulos = const [],
-    this.paquetes = const [],
+    this.modulos = const <Modulo>[],
+    this.paquetes = const <ModuloPaquete>[],
     this.error = "",
   });
 }
@@ -18,48 +18,48 @@ sealed class ModuloState extends Equatable {
 class ModuloInitialState extends ModuloState {
   const ModuloInitialState();
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => <Object?>[];
 }
 
 class FormModuloDataState extends ModuloState {
   const FormModuloDataState({super.modulos, super.paquetes, super.error});
   @override
-  List<Object?> get props => [modulos, paquetes];
+  List<Object?> get props => <Object?>[modulos, paquetes];
 }
 
 class ModuloLoadingState extends ModuloState {
   const ModuloLoadingState();
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => <Object?>[];
 }
 
 class FormModuloRequestState extends ModuloState {
   const FormModuloRequestState({super.modulo, super.paquetes, super.error});
 
   @override
-  List<Object?> get props => [modulo, paquetes, error];
+  List<Object?> get props => <Object?>[modulo, paquetes, error];
 }
 
 class ModuloSuccessState extends ModuloState {
   const ModuloSuccessState({super.modulo, super.paquetes, super.error});
   @override
-  List<Object?> get props => [modulo, paquetes, error];
+  List<Object?> get props => <Object?>[modulo, paquetes, error];
 }
 
 class ModuloConsultedState extends ModuloState {
   const ModuloConsultedState({super.modulos});
   @override
-  List<Object?> get props => [modulos];
+  List<Object?> get props => <Object?>[modulos];
 }
 
 class ModuloExceptionState extends ModuloState {
   const ModuloExceptionState({super.exception});
   @override
-  List<DioException?> get props => [exception];
+  List<DioException?> get props => <DioException?>[exception];
 }
 
 class ModuloErrorFormState extends ModuloState {
   const ModuloErrorFormState({super.error});
   @override
-  List<Object?> get props => [error];
+  List<Object?> get props => <Object?>[error];
 }

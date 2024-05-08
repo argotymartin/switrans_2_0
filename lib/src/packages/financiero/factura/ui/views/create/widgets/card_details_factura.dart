@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -12,14 +14,14 @@ class CardDetailsFactura extends StatelessWidget {
   Widget build(BuildContext context) {
     final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        final documentos = facturaBloc.state.documentos;
-        final itemDocumento = state.itemDocumentos.where((element) => element.tipo.isNotEmpty);
+      builder: (BuildContext context, ItemDocumentoState state) {
+        final List<Documento> documentos = facturaBloc.state.documentos;
+        final Iterable<ItemDocumento> itemDocumento = state.itemDocumentos.where((ItemDocumento element) => element.tipo.isNotEmpty);
 
-        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        final double totalImpuestos = itemDocumento.fold(0, (total, item) => total + item.valorIva);
-        final double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
-        final itemDocumentoWhitDocumentos = itemDocumento.where((element) => element.documento > 0);
+        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumento.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumento.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
+        final Iterable<ItemDocumento> itemDocumentoWhitDocumentos = itemDocumento.where((ItemDocumento element) => element.documento > 0);
         final double valorFaltante = itemDocumentoWhitDocumentos.isNotEmpty ? (totalDocumentos - totalPrefacturas) : 0;
 
         return AnimatedSwitcher(
@@ -33,15 +35,15 @@ class CardDetailsFactura extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimary,
               border: Border.all(color: Theme.of(context).colorScheme.primaryContainer),
-              boxShadow: [
+              boxShadow: <BoxShadow>[
                 BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(-8, 0)),
               ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Cantidad Items:",
                       icon: Icons.file_copy_outlined,
@@ -55,7 +57,7 @@ class CardDetailsFactura extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Valor Total Documentos:",
                       icon: Icons.paid_outlined,
@@ -69,7 +71,7 @@ class CardDetailsFactura extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Valor Faltante:",
                       icon: Icons.money_off_outlined,
@@ -104,12 +106,13 @@ class _BuildItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w400, fontSize: 14);
+    final TextStyle textStyle =
+        TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w400, fontSize: 14);
 
     return SizedBox(
       width: 300,
       child: Row(
-        children: [
+        children: <Widget>[
           Icon(icon),
           const SizedBox(width: 8),
           Text(title, style: textStyle),

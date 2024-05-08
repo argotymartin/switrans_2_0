@@ -21,8 +21,8 @@ class DocumentoModel extends Documento {
     required super.total,
     required super.flete,
     required super.anulacionTrafico,
-    super.adiciones = const [],
-    super.descuentos = const [],
+    super.adiciones = const <Adicion>[],
+    super.descuentos = const <Descuento>[],
   });
 
   factory DocumentoModel.fromJson(Map<String, dynamic> json) => DocumentoModel(
@@ -45,7 +45,7 @@ class DocumentoModel extends Documento {
         total: json['total'],
         flete: json['flete'],
         anulacionTrafico: json['anulacionTrafico'],
-        adiciones: List<Adicion>.from(json["adiciones"].map((x) => Adicion.fromJson(x))),
-        descuentos: List<Descuento>.from(json["descuentos"].map((x) => Descuento.fromJson(x))),
+        adiciones: List<Adicion>.from(json["adiciones"].map((dynamic x) => Adicion.fromJson(x))),
+        descuentos: List<Descuento>.from(json["descuentos"].map((dynamic x) => Descuento.fromJson(x))),
       );
 }

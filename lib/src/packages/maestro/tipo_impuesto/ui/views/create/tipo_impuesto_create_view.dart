@@ -11,16 +11,16 @@ class TipoImpuestoCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, TipoImpuestoState state) {
         if (state is TipoImpuestoExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
 
         if (state is TipoImpuestoSuccesState) {
-          final request = TipoImpuestoRequest(
+          final TipoImpuestoRequest request = TipoImpuestoRequest(
             nombre: state.tipoImpuesto!.nombre,
           );
           context.read<TipoImpuestoBloc>().add(GetImpuestoEvent(request));
@@ -28,11 +28,11 @@ class TipoImpuestoCreateView extends StatelessWidget {
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
             ],
@@ -49,23 +49,23 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: controller),
               const SizedBox(),
             ],
           ),
           FilledButton.icon(
             onPressed: () {
-              final isValid = formKey.currentState!.validate();
+              final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final request = TipoImpuestoRequest(nombre: controller.text, usuario: 1);
+                final TipoImpuestoRequest request = TipoImpuestoRequest(nombre: controller.text, usuario: 1);
                 context.read<TipoImpuestoBloc>().add(SetImpuestoEvent(request));
               }
             },

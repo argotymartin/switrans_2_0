@@ -13,34 +13,35 @@ class ServicioEmpresarialDBImpl extends BaseApiRepository implements AbstractSer
 
   @override
   Future<DataState<List<ServicioEmpresarial>>> getServicioEmpresarialService(ServicioEmpresarialRequest request) async {
-    final httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.getServicioEmpresarialDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.getServicioEmpresarialDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data;
-      final response = List<ServicioEmpresarial>.from(resp.map((x) => ServicioEmpresarialModel.fromDB(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data;
+      final List<ServicioEmpresarial> response =
+          List<ServicioEmpresarial>.from(resp.map((dynamic x) => ServicioEmpresarialModel.fromDB(x)));
+      return DataSuccess<List<ServicioEmpresarial>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<ServicioEmpresarial>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<ServicioEmpresarial>> setServicioEmpresarialService(ServicioEmpresarialRequest request) async {
-    final httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.setServicioEmpresarialDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.setServicioEmpresarialDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
+      final dynamic resp = httpResponse.data[0];
       final ServicioEmpresarial response = ServicioEmpresarialModel.fromDB(resp);
-      return DataSuccess(response);
+      return DataSuccess<ServicioEmpresarial>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<ServicioEmpresarial>(httpResponse.error!);
   }
 
   @override
   Future<DataState<ServicioEmpresarial>> updateServicioEmpresarialService(ServicioEmpresarialRequest request) async {
-    final httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.updateServicioEmpresarialDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.updateServicioEmpresarialDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
+      final dynamic resp = httpResponse.data[0];
       final ServicioEmpresarial response = ServicioEmpresarialModel.fromDB(resp);
-      return DataSuccess(response);
+      return DataSuccess<ServicioEmpresarial>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<ServicioEmpresarial>(httpResponse.error!);
   }
 }

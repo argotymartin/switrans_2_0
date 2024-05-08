@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -16,8 +17,8 @@ class BuildViewDetail extends StatelessWidget {
     final List<String> breadcrumbTrails = path.split("/");
     final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
     late ModuloMenu moduloSelected;
-    for (final paquete in menuBloc.state.paquetes) {
-      for (final modulo in paquete.modulos) {
+    for (final PaqueteMenu paquete in menuBloc.state.paquetes) {
+      for (final ModuloMenu modulo in paquete.modulos) {
         if (modulo.path.contains(breadcrumbTrails[2])) {
           moduloSelected = modulo;
         }
@@ -25,11 +26,11 @@ class BuildViewDetail extends StatelessWidget {
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         BreadcrumbTrail(elements: breadcrumbTrails),
         const SizedBox(height: 10),
         Row(
-          children: [
+          children: <Widget>[
             Icon(IconData(int.parse(moduloSelected.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
             const SizedBox(width: 4),
             Text(moduloSelected.texto, style: Theme.of(context).textTheme.headlineLarge),

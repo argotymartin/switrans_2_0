@@ -7,7 +7,7 @@ class SearchModulo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextEditingController controller = TextEditingController();
     return Container(
       padding: const EdgeInsets.all(8),
@@ -19,9 +19,9 @@ class SearchModulo extends StatelessWidget {
           style: const TextStyle(
             color: Colors.white,
           ),
-          onChanged: (value) async {
-            final menusidebar = context.read<MenuSidebarBloc>();
-            await Future.delayed(const Duration(milliseconds: 500));
+          onChanged: (String value) async {
+            final MenuSidebarBloc menusidebar = context.read<MenuSidebarBloc>();
+            await Future<dynamic>.delayed(const Duration(milliseconds: 500));
 
             menusidebar.add(SearchMenuSidebarEvent(value));
           },

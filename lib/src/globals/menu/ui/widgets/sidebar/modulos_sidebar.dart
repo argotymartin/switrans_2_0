@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paginas_sidebar.dart';
 
@@ -21,9 +22,9 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
   bool isEntered = false;
   @override
   Widget build(BuildContext context) {
-    final paginas = widget.modulo.paginas.map((pagina) => PaginasSidebar(pagina: pagina)).toList();
+    final List<PaginasSidebar> paginas = widget.modulo.paginas.map((PaginaMenu pagina) => PaginasSidebar(pagina: pagina)).toList();
     return Column(
-      children: [
+      children: <Widget>[
         InkWell(
           onTap: () => setState(() {
             isEntered = !isEntered;
@@ -41,7 +42,7 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                 child: Container(
                   margin: EdgeInsets.only(left: isHovered ? 40 : 40.5, top: 10, bottom: 10, right: 10),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Container(
                         width: isHovered || widget.modulo.isSelected ? 10 : 8,
                         height: isHovered || widget.modulo.isSelected ? 10 : 8,

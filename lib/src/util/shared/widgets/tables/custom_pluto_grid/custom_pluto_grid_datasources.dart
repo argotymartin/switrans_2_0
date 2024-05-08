@@ -5,14 +5,14 @@ class TablePlutoGridDataSource {
   late List<PlutoRow> rows;
 
   static PlutoRow rowByColumns(List<PlutoColumn> columns, Map<String, dynamic> dataColumn) {
-    final cells = _cellsByColumn(columns, dataColumn);
+    final Map<String, PlutoCell> cells = _cellsByColumn(columns, dataColumn);
     return PlutoRow(cells: cells);
   }
 
   static Map<String, PlutoCell> _cellsByColumn(List<PlutoColumn> columns, Map<String, dynamic> dataColumn) {
-    return Map.fromEntries(
+    return Map<String, PlutoCell>.fromEntries(
       columns.map(
-        (column) => MapEntry(
+        (PlutoColumn column) => MapEntry<String, PlutoCell>(
           column.field,
           PlutoCell(value: dataColumn[column.field]),
         ),

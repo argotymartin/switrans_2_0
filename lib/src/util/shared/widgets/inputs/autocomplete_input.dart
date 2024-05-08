@@ -28,14 +28,15 @@ class AutocompleteInput extends StatefulWidget {
 }
 
 class _Autocomplete2InputState extends State<AutocompleteInput> {
-  List<DropdownMenuEntry<EntryAutocomplete>> dropdownMenuEntries = [];
+  List<DropdownMenuEntry<EntryAutocomplete>> dropdownMenuEntries = <DropdownMenuEntry<EntryAutocomplete>>[];
   String entrySelected2 = '';
 
   @override
   void initState() {
     super.initState();
-    final filteredEntries = widget.entries.take(10).toList();
-    dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
+    final List<EntryAutocomplete> filteredEntries = widget.entries.take(10).toList();
+    dropdownMenuEntries =
+        filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
     entrySelected2 = widget.entrySelected;
     if (widget.controller != null) {
       widget.controller!.addListener(_onTextChanged);
@@ -43,13 +44,15 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   }
 
   void _onTextChanged() {
-    final searchText = widget.controller!.text.toLowerCase();
+    final String searchText = widget.controller!.text.toLowerCase();
     if (mounted) {
       setState(() {
         entrySelected2 = '';
-        final filteredEntries = widget.entries.where((entry) => entry.title.toLowerCase().contains(searchText)).toList();
+        final List<EntryAutocomplete> filteredEntries =
+            widget.entries.where((EntryAutocomplete entry) => entry.title.toLowerCase().contains(searchText)).toList();
         if (searchText.length >= widget.minChractersSearch) {
-          dropdownMenuEntries = filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((entry) => buildItemMenuEntry(entry)).toList();
+          dropdownMenuEntries =
+              filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
         }
       });
     }
@@ -58,16 +61,16 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   DropdownMenuEntry<EntryAutocomplete> buildItemMenuEntry(EntryAutocomplete entry) {
     return DropdownMenuEntry<EntryAutocomplete>(
       style: const ButtonStyle(
-        padding: MaterialStatePropertyAll(EdgeInsets.all(8)),
-        side: MaterialStatePropertyAll(BorderSide(color: Colors.grey, width: 0.3)),
-        backgroundColor: MaterialStatePropertyAll(Colors.white),
+        padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8)),
+        side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: Colors.grey, width: 0.3)),
+        backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
       ),
       value: entry,
       label: entry.title,
       leadingIcon: widget.isShowCodigo ? CircleAvatar(child: Text('${entry.codigo}')) : const SizedBox(),
       labelWidget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
           if (entry.subTitle.isNotEmpty) Text(entry.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
           if (entry.details != null) SizedBox(height: 16, child: FittedBox(child: entry.details)),

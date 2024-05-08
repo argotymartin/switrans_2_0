@@ -10,7 +10,7 @@ import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class DocumentosTableDataBuilder {
   static List<PlutoColumn> buildColumns(BuildContext context) {
-    return [
+    return <PlutoColumn>[
       PlutoColumn(
         title: 'Item',
         field: 'item',
@@ -18,7 +18,7 @@ class DocumentosTableDataBuilder {
         enableRowChecked: true,
         minWidth: 88,
         width: 88,
-        renderer: (renderContext) => buildFiledItem(renderContext, context),
+        renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
       ),
       PlutoColumn(
         title: 'Alerts',
@@ -29,7 +29,7 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        renderer: (renderContext) => buildFiledAlerts(renderContext, context),
+        renderer: (PlutoColumnRendererContext renderContext) => buildFiledAlerts(renderContext, context),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -43,7 +43,7 @@ class DocumentosTableDataBuilder {
         width: 240,
         minWidth: 240,
         type: PlutoColumnType.text(),
-        renderer: (renderContext) => buildFiledRemesa(renderContext, context),
+        renderer: (PlutoColumnRendererContext renderContext) => buildFiledRemesa(renderContext, context),
       ),
       PlutoColumn(
         title: 'Obs',
@@ -61,7 +61,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 92,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
       PlutoColumn(
@@ -72,7 +72,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 92,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
       PlutoColumn(
@@ -83,7 +83,7 @@ class DocumentosTableDataBuilder {
         enableContextMenu: false,
         enableDropToResize: false,
         minWidth: 92,
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
       PlutoColumn(
@@ -94,7 +94,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 92,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
         footerRenderer: buildRenderSumFooter,
       ),
       PlutoColumn(
@@ -105,7 +105,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 92,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
         footerRenderer: buildRenderSumFooter,
       ),
       PlutoColumn(
@@ -117,18 +117,18 @@ class DocumentosTableDataBuilder {
         minWidth: 100,
         width: 120,
         type: PlutoColumnType.text(),
-        renderer: (rendererContext) => buildFieldAccion(rendererContext, context),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldAccion(rendererContext, context),
       ),
     ];
   }
 
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
-    final List<PlutoRow> dataRows = [];
-    documentos.asMap().forEach((index, remesa) {
-      final double totalAdiciones = remesa.adiciones.fold(0, (total, adicion) => total + adicion.valor);
-      final double totalDescuentos = remesa.descuentos.fold(0, (total, descuento) => total + descuento.valor);
+    final List<PlutoRow> dataRows = <PlutoRow>[];
+    documentos.asMap().forEach((int index, Documento remesa) {
+      final double totalAdiciones = remesa.adiciones.fold(0, (double total, Adicion adicion) => total + adicion.valor);
+      final double totalDescuentos = remesa.descuentos.fold(0, (double total, Descuento descuento) => total + descuento.valor);
 
-      final Map<String, String> infoRemesaMap = {
+      final Map<String, String> infoRemesaMap = <String, String>{
         'remesa': "${remesa.impreso} (${remesa.remesa})",
         'centroCosto': remesa.cencosNombre,
         'tipo': remesa.tipoRemesa,
@@ -136,17 +136,17 @@ class DocumentosTableDataBuilder {
         'destino': remesa.destino,
       };
 
-      final Map<String, dynamic> infoAlertsMap = {
+      final Map<String, dynamic> infoAlertsMap = <String, dynamic>{
         'anulacionTrafico': remesa.anulacionTrafico,
         'isDigitalizado': true,
       };
 
-      final Map<String, dynamic> obsMap = {
+      final Map<String, dynamic> obsMap = <String, dynamic>{
         'observacion': remesa.observacion,
         'remision': remesa.remision,
       };
 
-      final Map<String, dynamic> dataColumn = {
+      final Map<String, dynamic> dataColumn = <String, dynamic>{
         'item': index + 1,
         'alerts': jsonEncode(infoAlertsMap),
         'documento': remesa.remesa,
@@ -158,7 +158,7 @@ class DocumentosTableDataBuilder {
         'descuentos': totalDescuentos,
         'rcp': remesa.rcp,
       };
-      final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
+      final PlutoRow row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
       dataRows.add(row);
     });
     return dataRows;
@@ -166,10 +166,10 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return BlocListener<ItemDocumentoBloc, ItemDocumentoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, ItemDocumentoState state) {
         final List<ItemDocumento> itemDocumentos = state.itemDocumentos;
-        final docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        final bool isPresent = itemDocumentos.any((pre) => pre.documento == docuemnto && pre.tipo == "TR");
+        final int docuemnto = rendererContext.cell.row.cells["documento"]!.value;
+        final bool isPresent = itemDocumentos.any((ItemDocumento pre) => pre.documento == docuemnto && pre.tipo == "TR");
 
         rendererContext.cell.row.setChecked(isPresent);
       },
@@ -192,14 +192,14 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledAlerts(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    final cellValue = rendererContext.cell.value.toString();
+    final String cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
-    final anulacionTrafico = remesaMap['anulacionTrafico'];
-    final isDigitalizado = remesaMap['isDigitalizado'];
+    final bool anulacionTrafico = remesaMap['anulacionTrafico'];
+    final bool isDigitalizado = remesaMap['isDigitalizado'];
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         isDigitalizado
             ? const Icon(
                 Icons.image,
@@ -217,19 +217,19 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledRemesa(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    final cellValue = rendererContext.cell.value.toString();
+    final String cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
-    final remesaText = remesaMap['remesa'];
-    final centroCosto = remesaMap['centroCosto'];
-    final tipo = remesaMap['tipo'];
-    final origen = remesaMap['origen'];
-    final destino = remesaMap['destino'];
+    final String remesaText = remesaMap['remesa'];
+    final String centroCosto = remesaMap['centroCosto'];
+    final String tipo = remesaMap['tipo'];
+    final String origen = remesaMap['origen'];
+    final String destino = remesaMap['destino'];
 
     return SelectionArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           Text(
             remesaText,
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
@@ -248,18 +248,18 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledObservaciones(PlutoColumnRendererContext rendererContext) {
-    final cellValue = rendererContext.cell.value.toString();
+    final String cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
-    final obsRemesa = remesaMap['observacion'];
-    final remision = remesaMap['remision'];
+    final String obsRemesa = remesaMap['observacion'];
+    final String remision = remesaMap['remision'];
     return SelectionArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           RichText(
             text: TextSpan(
               style: const TextStyle(fontSize: 10, color: Colors.black),
-              children: [
+              children: <InlineSpan>[
                 const TextSpan(
                   text: 'Obs: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -277,7 +277,7 @@ class DocumentosTableDataBuilder {
           RichText(
             text: TextSpan(
               style: const TextStyle(fontSize: 10, color: Colors.black),
-              children: [
+              children: <InlineSpan>[
                 const TextSpan(
                   text: 'Remision: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -307,13 +307,13 @@ class DocumentosTableDataBuilder {
   static Widget buildFieldAccion(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         CustomSizeButton(
           onPressed: () {
-            rendererContext.stateManager.removeRows([rendererContext.row]);
-            final documentosAll = context.read<DocumentoBloc>().state.documentos;
-            final documento = documentosAll[rendererContext.rowIdx];
-            final List<Documento> documentos = List.from(documentosAll)..remove(documento);
+            rendererContext.stateManager.removeRows(<PlutoRow>[rendererContext.row]);
+            final List<Documento> documentosAll = context.read<DocumentoBloc>().state.documentos;
+            final Documento documento = documentosAll[rendererContext.rowIdx];
+            final List<Documento> documentos = List<Documento>.from(documentosAll)..remove(documento);
             context.read<DocumentoBloc>().add(ChangedDocumentoEvent(documentos));
             context.read<ItemDocumentoBloc>().add(RemoveItemDocumentoEvent(documento: documento));
           },
@@ -334,8 +334,8 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext) {
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
     alignment: Alignment.centerRight,
-    titleSpanBuilder: (text) {
-      return [
+    titleSpanBuilder: (String text) {
+      return <InlineSpan>[
         TextSpan(text: '\$ $text', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 12)),
       ];
     },
@@ -355,7 +355,7 @@ class _DetailRemesa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         Icon(icon, size: 16),
         Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         Container(

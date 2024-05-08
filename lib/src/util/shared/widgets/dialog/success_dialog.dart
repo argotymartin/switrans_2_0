@@ -9,7 +9,7 @@ class SuccessDialog {
         backgroundColor: Theme.of(context).colorScheme.background,
         content: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
               Text(
                 "Se grabo con exito",
@@ -19,7 +19,7 @@ class SuccessDialog {
             ],
           ),
         ),
-        actions: [
+        actions: <Widget>[
           FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
         ],
       ),

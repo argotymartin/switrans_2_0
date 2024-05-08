@@ -14,7 +14,7 @@ class ProfileSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
+      children: <Widget>[
         Image(
           height: isMenuIcon ? 94 : 152,
           width: kWidthSidebar,
@@ -30,17 +30,17 @@ class ProfileSidebar extends StatelessWidget {
             padding: isMenuIcon ? const EdgeInsets.only(top: 20) : const EdgeInsets.only(top: 48),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 const AvatarNavbar(size: 48),
                 isMenuIcon ? const SizedBox() : const SizedBox(width: 8),
                 isMenuIcon
                     ? const SizedBox()
                     : BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
+                        builder: (BuildContext context, AuthState state) {
                           if (state is AuthSuccesState) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: <Widget>[
                                 Text(
                                   state.auth!.usuario.nombre,
                                   style: const TextStyle(color: Colors.white),

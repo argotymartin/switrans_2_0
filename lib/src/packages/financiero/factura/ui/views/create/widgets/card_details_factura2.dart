@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -10,20 +12,20 @@ class CardDetailsFactura2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
+    final TextStyle textStyle = TextStyle(
       color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.w300,
       fontSize: 24,
     );
     final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        final documentos = facturaBloc.state.documentos;
-        final itemDocumento = state.itemDocumentos.where((element) => element.documento > 0);
+      builder: (BuildContext context, ItemDocumentoState state) {
+        final List<Documento> documentos = facturaBloc.state.documentos;
+        final Iterable<ItemDocumento> itemDocumento = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);
 
-        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        final double totalImpuestos = itemDocumento.fold(0, (total, item) => total + item.valorIva);
-        final double totalPrefacturas = itemDocumento.fold(0, (total, prefactura) => total + prefactura.total);
+        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumento.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumento.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
         final double valorFaltante = totalDocumentos - totalPrefacturas;
 
         return Container(
@@ -32,7 +34,7 @@ class CardDetailsFactura2 extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
+              colors: <Color>[
                 Theme.of(context).colorScheme.onPrimaryContainer,
                 Theme.of(context).colorScheme.primary,
               ],
@@ -43,9 +45,9 @@ class CardDetailsFactura2 extends StatelessWidget {
           child: FittedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Cantidad Items:",
                       icon: Icons.file_copy_outlined,
@@ -59,7 +61,7 @@ class CardDetailsFactura2 extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Valor Total Documentos:",
                       icon: Icons.paid_outlined,
@@ -74,7 +76,7 @@ class CardDetailsFactura2 extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: [
+                  children: <Widget>[
                     _BuildItemCard(
                       title: "Valor Faltante:",
                       icon: Icons.money_off_outlined,
@@ -109,7 +111,7 @@ class _BuildItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
+    final TextStyle textStyle = TextStyle(
       color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.w400,
       fontSize: 14,
@@ -119,7 +121,7 @@ class _BuildItemCard extends StatelessWidget {
       width: 340,
       height: 32,
       child: Row(
-        children: [
+        children: <Widget>[
           Icon(icon, color: Colors.white),
           const SizedBox(width: 8),
           Text(title, style: textStyle),

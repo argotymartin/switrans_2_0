@@ -27,7 +27,7 @@ class _TextInputState extends State<TextInput> {
       controller: widget.controller,
       initialValue: widget.initialValue.isNotEmpty ? widget.initialValue : null,
       onChanged: widget.onChanged,
-      validator: (value) {
+      validator: (String? value) {
         if (value != null) {
           if (value.length < widget.minLength) {
             setState(() {});

@@ -14,7 +14,7 @@ class TipoImpuestoRequest {
   });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
+    final Map<String, dynamic> data = <String, dynamic>{
       'usuario': usuario,
       'nombre': nombre,
     };
@@ -26,7 +26,7 @@ class TipoImpuestoRequest {
   }
 
   String toPocketBaseFilter() {
-    final List conditions = [];
+    final List<String> conditions = <String>[];
 
     if (nombre!.isNotEmpty) {
       conditions.add("nombre~'$nombre'");
@@ -36,7 +36,7 @@ class TipoImpuestoRequest {
     }
 
     final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();
-    final data = queryString.isNotEmpty ? "($queryString)" : "";
+    final String data = queryString.isNotEmpty ? "($queryString)" : "";
     return data;
   }
 }

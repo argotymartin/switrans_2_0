@@ -15,10 +15,10 @@ class UnidadNegocioSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
-      listener: (context, state) {
+      listener: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioFailedState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
@@ -26,7 +26,7 @@ class UnidadNegocioSearchView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: [
+        children: <Widget>[
           BuildViewDetail(path: fullPath),
           const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
           const _BluildDataTable(),
@@ -46,7 +46,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController empresaController = TextEditingController();
     bool? isActivo = true;
 
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final UnidadNegocioBloc unidadNegocioBloc = context.read<UnidadNegocioBloc>();
 
@@ -60,7 +60,7 @@ class _BuildFieldsForm extends StatelessWidget {
         unidadNegocioBloc.add(const ErrorFormUnidadNegocioEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
       if (isValid) {
-        final request = UnidadNegocioRequest(
+        final UnidadNegocioRequest request = UnidadNegocioRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
           empresa: empresaController.text,
@@ -74,24 +74,24 @@ class _BuildFieldsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               FieldUnidadNegocioEmpresa(empresaController),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text("Activo", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
                 ],
               ),
             ],
           ),
           BlocBuilder<UnidadNegocioBloc, UnidadNegocioState>(
-            builder: (context, state) {
+            builder: (BuildContext context, UnidadNegocioState state) {
               int cantidad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
@@ -104,7 +104,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 isConsulted = true;
                 cantidad = state.unidadNegocioList.length;
               } else if (state is UnidadNegocioSuccessState) {
-                final request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
+                final UnidadNegocioRequest request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
                 unidadNegocioBloc.add(GetUnidadNegocioEvent(request));
                 context.go('/maestros/unidad_negocio/buscar');
               }
@@ -133,23 +133,23 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<Map<String, dynamic>> listUpdate = [];
+  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(event) {
+    void onRowChecked(List<Map<String, dynamic>> event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
       for (final Map<String, dynamic> map in listUpdate) {
-        final request = UnidadNegocioRequestModel.fromMapTable(map);
+        final UnidadNegocioRequestModel request = UnidadNegocioRequestModel.fromMapTable(map);
         context.read<UnidadNegocioBloc>().add(UpdateUnidadNegocioEvent(request));
       }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(UnidadNegocio unidadNegocio) {
-      return {
+      return <String, DataItemGrid>{
         'codigo': DataItemGrid(type: Tipo.item, value: unidadNegocio.codigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: unidadNegocio.nombre, edit: true),
         'activo': DataItemGrid(type: Tipo.boolean, value: unidadNegocio.isActivo, edit: true),
@@ -160,9 +160,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     return BlocBuilder<UnidadNegocioBloc, UnidadNegocioState>(
-      builder: (context, state) {
+      builder: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioConsultedState) {
-          final List<Map<String, DataItemGrid>> plutoRes = [];
+          final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final UnidadNegocio unidadNegocio in state.unidadNegocioList) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(unidadNegocio);
             plutoRes.add(rowData);

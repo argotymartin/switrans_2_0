@@ -15,7 +15,7 @@ class LogoSidebar extends StatelessWidget {
         height: 66,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Image.asset(
               "assets/empresas/icon-multicompany.png",
               height: 48,

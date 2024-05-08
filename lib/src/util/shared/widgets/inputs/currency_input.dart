@@ -18,7 +18,7 @@ class CurrencyInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
+    final NumberFormat currencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
     if (controller != null) {
       controller!.text = currencyFormat.format(int.parse(controller!.text));
     }
@@ -26,7 +26,7 @@ class CurrencyInput extends StatelessWidget {
     return TextFormField(
       controller: controller,
       initialValue: currencyFormat.format(int.parse(initialValue)),
-      onChanged: (value) {
+      onChanged: (String value) {
         if (onChanged != null) {
           onChanged?.call(value);
         }

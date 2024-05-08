@@ -4,7 +4,7 @@ sealed class MenuSidebarEvent extends Equatable {
   const MenuSidebarEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class SearchMenuSidebarEvent extends MenuSidebarEvent {

@@ -30,11 +30,11 @@ class _MyAppState extends State<RadioButtons> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         SizedBox(
           width: 48,
           child: Row(
-            children: [
+            children: <Widget>[
               const Text("TR", style: TextStyle(fontSize: 10)),
               Transform.scale(
                 scale: 0.8,
@@ -51,7 +51,7 @@ class _MyAppState extends State<RadioButtons> {
         SizedBox(
           width: 48,
           child: Row(
-            children: [
+            children: <Widget>[
               const Text("SA", style: TextStyle(fontSize: 10)),
               Transform.scale(
                 scale: 0.8,

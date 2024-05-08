@@ -20,12 +20,12 @@ class WebDatePickerTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+      children: <Widget>[
         title.isNotEmpty ? Text(title, style: AppTheme.titleStyle) : const SizedBox(),
         title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         WebDatePicker(
           controller: controller,
-          onChange: (value) {},
+          onChange: (DateTime? value) {},
         ),
       ],
     );

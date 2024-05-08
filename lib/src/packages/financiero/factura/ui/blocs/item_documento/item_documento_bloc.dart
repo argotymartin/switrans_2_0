@@ -10,8 +10,8 @@ part 'item_documento_state.dart';
 class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
   final FormFacturaBloc _formBloc;
   ItemDocumentoBloc(this._formBloc) : super(const ItemDocumentoInitialState()) {
-    on<AddItemTransporteFacturaEvent>((event, emit) {
-      final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
+    on<AddItemTransporteFacturaEvent>((AddItemTransporteFacturaEvent event, Emitter<ItemDocumentoState> emit) {
+      final List<ItemDocumento> itemDocumentos = <ItemDocumento>[...state.itemDocumentos];
       final ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
       if (!itemDocumentos.contains(prefactura)) {
         itemDocumentos.add(prefactura);
@@ -22,8 +22,8 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       _formBloc.animationController.forward();
     });
 
-    on<AddItemServicioAdicionalFacturaEvent>((event, emit) async {
-      final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
+    on<AddItemServicioAdicionalFacturaEvent>((AddItemServicioAdicionalFacturaEvent event, Emitter<ItemDocumentoState> emit) async {
+      final List<ItemDocumento> preFacturas = <ItemDocumento>[...state.itemDocumentos];
       final ItemDocumento preFactura = ItemDocumentoModel.init();
       if (!preFacturas.contains(preFactura)) {
         preFacturas.add(preFactura);
@@ -34,38 +34,39 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
       // _formBloc.animationController.forward();
     });
 
-    on<RemoveItemDocumentoEvent>((event, emit) {
-      final List<ItemDocumento> preFacturas = [...state.itemDocumentos];
+    on<RemoveItemDocumentoEvent>((RemoveItemDocumentoEvent event, Emitter<ItemDocumentoState> emit) {
+      final List<ItemDocumento> preFacturas = <ItemDocumento>[...state.itemDocumentos];
       final ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
-      final newPrefacturas = preFacturas..removeWhere((element) => element.documento == prefactura.documento);
+      final List<ItemDocumento> newPrefacturas = preFacturas
+        ..removeWhere((ItemDocumento element) => element.documento == prefactura.documento);
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: newPrefacturas));
     });
 
-    on<RemoveItemByPositionFacturaEvent>((event, emit) async {
+    on<RemoveItemByPositionFacturaEvent>((RemoveItemByPositionFacturaEvent event, Emitter<ItemDocumentoState> emit) async {
       final int index = event.index - 1;
-      final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
+      final List<ItemDocumento> itemDocumentos = <ItemDocumento>[...state.itemDocumentos];
 
       emit(const ItemDocumentoLoadingState());
-      await Future.delayed(const Duration(milliseconds: 100));
-      final newItemDocumentos = itemDocumentos..removeAt(index);
+      await Future<dynamic>.delayed(const Duration(milliseconds: 100));
+      final List<ItemDocumento> newItemDocumentos = itemDocumentos..removeAt(index);
       emit(ItemDocumentoSuccesState(itemDocumentos: newItemDocumentos));
       //_formBloc.animationController.forward();
     });
 
-    on<ChangedItemDocumentoEvent>((event, emit) async {
-      final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
+    on<ChangedItemDocumentoEvent>((ChangedItemDocumentoEvent event, Emitter<ItemDocumentoState> emit) async {
+      final List<ItemDocumento> itemDocumentos = <ItemDocumento>[...state.itemDocumentos];
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
     });
 
-    on<GetItemDocumentoEvent>((event, emit) async {
-      final List<ItemDocumento> itemDocumentos = [...state.itemDocumentos];
+    on<GetItemDocumentoEvent>((GetItemDocumentoEvent event, Emitter<ItemDocumentoState> emit) async {
+      final List<ItemDocumento> itemDocumentos = <ItemDocumento>[...state.itemDocumentos];
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
     });
 
-    on<ResetDocumentoEvent>((event, emit) async {
+    on<ResetDocumentoEvent>((ResetDocumentoEvent event, Emitter<ItemDocumentoState> emit) async {
       emit(const ItemDocumentoLoadingState());
       emit(const ItemDocumentoInitialState());
     });

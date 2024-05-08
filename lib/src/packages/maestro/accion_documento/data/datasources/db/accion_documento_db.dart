@@ -4,10 +4,10 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
 
 class AccionDocumentoDB {
-  Future<Response> getAccionDocumentosDB(AccionDocumentoRequest request) async {
+  Future<Response<dynamic>> getAccionDocumentosDB(AccionDocumentoRequest request) async {
     try {
       String where = '';
-      final List conditions = [];
+      final List<String> conditions = <String>[];
 
       if (request.tipoDocumento != null) {
         if (request.tipoDocumento!.isNotEmpty) {
@@ -26,7 +26,7 @@ class AccionDocumentoDB {
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
-      final sql = """
+      final String sql = """
                 SELECT ad.accdoc_codigo,
                     ad.accdoc_nombre,
                     d.documento_nombre,
@@ -41,7 +41,7 @@ class AccionDocumentoDB {
               $where 
               ORDER BY ad.accdoc_codigo
               """;
-      final response = FunctionsPostgresql.executeQueryDB(sql);
+      final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
@@ -49,10 +49,10 @@ class AccionDocumentoDB {
     }
   }
 
-  Future<Response> setAccionDocumentosDB(AccionDocumentoRequest request) async {
-    final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_accion_documentos', key: 'accdoc_codigo');
+  Future<Response<dynamic>> setAccionDocumentosDB(AccionDocumentoRequest request) async {
+    final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_accion_documentos', key: 'accdoc_codigo');
 
-    final sql = """
+    final String sql = """
         INSERT INTO public.tb_accion_documentos (
             accdoc_codigo, 
             accdoc_nombre, 
@@ -66,14 +66,14 @@ class AccionDocumentoDB {
             ${request.isNaturalezaInversa} );
         """;
     await FunctionsPostgresql.executeQueryDB(sql);
-    final resp = await getAccionDocumentosDB(request);
+    final Response<dynamic> resp = await getAccionDocumentosDB(request);
     return resp;
   }
 
-  Future<Response> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
+  Future<Response<dynamic>> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
     try {
-      final fecha = DateTime.now();
-      final updateFields = [];
+      final DateTime fecha = DateTime.now();
+      final List<String> updateFields = <String>[];
 
       if (request.nombre != null) {
         updateFields.add("accdoc_nombre = '${request.nombre}'");
@@ -88,8 +88,8 @@ class AccionDocumentoDB {
         updateFields.add("accdoc_es_naturaleza_inversa = ${request.isNaturalezaInversa}");
       }
 
-      final updateFieldsStr = updateFields.join(', ');
-      final sql = """
+      final String updateFieldsStr = updateFields.join(', ');
+      final String sql = """
       UPDATE public.tb_accion_documentos
       SET accdoc_fecha_modificacion = '$fecha', $updateFieldsStr
       WHERE accdoc_codigo = ${request.codigo};""";
@@ -97,7 +97,7 @@ class AccionDocumentoDB {
       debugPrint("updateAccionDocumentosDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final resp = await getAccionDocumentosDB(request);
+      final Response<dynamic> resp = await getAccionDocumentosDB(request);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
@@ -105,10 +105,10 @@ class AccionDocumentoDB {
     }
   }
 
-  Future<Response> getTipoDocumentosDB() async {
-    const sql =
+  Future<Response<dynamic>> getTipoDocumentosDB() async {
+    const String sql =
         """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
-    final response = await FunctionsPostgresql.executeQueryDB(sql);
+    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 }

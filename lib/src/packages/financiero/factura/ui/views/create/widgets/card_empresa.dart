@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
@@ -20,7 +21,7 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (context, state) {
+      builder: (BuildContext context, FormFacturaState state) {
         final bool isActive = state.empresa == widget.empresa.codigo;
         String rutaImagen = "assets/empresas/icon-multicompany.png";
         Color color = Theme.of(context).colorScheme.primary;
@@ -39,12 +40,12 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
           color = Colors.orange;
         }
 
-        final hoveredTransform = Matrix4.identity()..scale(1.05);
-        final transform = isHovered ? hoveredTransform : Matrix4.identity();
+        final Matrix4 hoveredTransform = Matrix4.identity()..scale(1.05);
+        final Matrix4 transform = isHovered ? hoveredTransform : Matrix4.identity();
         return Material(
           child: MouseRegion(
-            onEnter: (event) => setState(() => isHovered = true),
-            onExit: (event) => setState(() => isHovered = false),
+            onEnter: (PointerEnterEvent event) => setState(() => isHovered = true),
+            onExit: (PointerExitEvent event) => setState(() => isHovered = false),
             child: AnimatedContainer(
               transform: transform,
               duration: const Duration(milliseconds: 200),
@@ -55,7 +56,7 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
                 decoration: BoxDecoration(
                   color: isActive ? color : Theme.of(context).colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(offset: const Offset(-4, 0), color: color),
                   ],
                 ),
@@ -65,7 +66,7 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
                   },
                   child: Center(
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         SizedBox(
                           height: 24,
                           width: 24,

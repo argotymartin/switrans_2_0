@@ -28,7 +28,7 @@ class _TextFormFieldLoginState extends State<TextFormFieldLogin> {
 
   @override
   Widget build(BuildContext context) {
-    final colorWhite = Colors.white.withOpacity(0.6);
+    final Color colorWhite = Colors.white.withOpacity(0.6);
     return TextFormField(
       style: const TextStyle(color: Colors.white),
       validator: widget.onValidator,

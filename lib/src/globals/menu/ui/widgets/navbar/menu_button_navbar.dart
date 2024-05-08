@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
@@ -10,7 +11,7 @@ class MenuButtonNavar extends StatelessWidget {
   Widget build(BuildContext context) {
     final OverlayPortalController tooltipController = OverlayPortalController();
     return BlocBuilder<MenuBloc, MenuState>(
-      builder: (context, state) {
+      builder: (BuildContext context, MenuState state) {
         final bool isOpenMenu = state.isOpenMenu;
         final bool isMinimize = state.isMinimize;
         double positionedLeft = 0;
@@ -28,7 +29,7 @@ class MenuButtonNavar extends StatelessWidget {
           positionedLeft = 16;
         }
         return MouseRegion(
-          onHover: (event) => tooltipController.toggle(),
+          onHover: (PointerHoverEvent event) => tooltipController.toggle(),
           child: OverlayPortal(
             controller: tooltipController,
             overlayChildBuilder: (BuildContext context) {
@@ -36,7 +37,7 @@ class MenuButtonNavar extends StatelessWidget {
                 top: 12,
                 left: positionedLeft,
                 child: MouseRegion(
-                  onExit: (event) => tooltipController.toggle(),
+                  onExit: (PointerExitEvent event) => tooltipController.toggle(),
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
@@ -45,7 +46,7 @@ class MenuButtonNavar extends StatelessWidget {
                       border: Border.all(color: Colors.grey.shade400),
                     ),
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         _BuildButton(
                           icon: Icons.menu_outlined,
                           onPressed: () {
@@ -104,8 +105,8 @@ class _BuildButtonState extends State<_BuildButton> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (event) => setState(() => isHover = true),
-      onExit: (event) => setState(() => isHover = false),
+      onEnter: (PointerEnterEvent event) => setState(() => isHover = true),
+      onExit: (PointerExitEvent event) => setState(() => isHover = false),
       child: Container(
         height: 40,
         width: 54,
@@ -123,7 +124,7 @@ class _BuildButtonState extends State<_BuildButton> {
         child: IconButton(
           color: isHover ? Colors.white : Colors.grey.shade400,
           style: ButtonStyle(
-            shape: MaterialStatePropertyAll(
+            shape: MaterialStatePropertyAll<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
               ),

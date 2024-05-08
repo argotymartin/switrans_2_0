@@ -11,20 +11,20 @@ class TipoImpuestoSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, TipoImpuestoState state) {
         if (state is TipoImpuestoExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
               const _BluildDataTable(),
@@ -43,7 +43,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final TipoImpuestoBloc tipoImpuestoBloc = context.read<TipoImpuestoBloc>();
 
@@ -56,7 +56,7 @@ class _BuildFieldsForm extends StatelessWidget {
         tipoImpuestoBloc.add(const ErrorFormTipoImpuestoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
       if (isValid) {
-        final request = TipoImpuestoRequest(
+        final TipoImpuestoRequest request = TipoImpuestoRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
           usuario: 1,
@@ -69,15 +69,15 @@ class _BuildFieldsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               NumberInputTitle(title: "Codigo", controller: codigoController),
             ],
           ),
           BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
-            builder: (context, state) {
+            builder: (BuildContext context, TipoImpuestoState state) {
               int cantdiad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
@@ -118,7 +118,7 @@ class _BluildDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, TipoImpuestoState state) {
         if (state is TipoImpuestoConsultedState) {
           //return CustomPlutoGridTable(
           //  columns: CustomPlutoGridDataBuilder.buildColumns(context),

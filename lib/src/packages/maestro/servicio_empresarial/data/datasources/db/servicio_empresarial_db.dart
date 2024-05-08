@@ -4,10 +4,10 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/en
 import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
 
 class ServicioEmpresarialDB {
-  Future<Response> getServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
+  Future<Response<dynamic>> getServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     try {
       String where = '';
-      final List conditions = [];
+      final List<String> conditions = <String>[];
       if (request.codigo != null) {
         conditions.add("seremp_codigo = ${request.codigo!}");
       }
@@ -21,7 +21,7 @@ class ServicioEmpresarialDB {
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
-      final sql = """
+      final String sql = """
               SELECT se.seremp_codigo,
                       se.seremp_nombre,
                       se.seremp_es_activo,
@@ -32,7 +32,7 @@ class ServicioEmpresarialDB {
                 LEFT JOIN public.tb_usuario u on u.usuario_codigo = se.usuario_creacion
                 $where 
                 ORDER BY se.seremp_codigo""";
-      final response = FunctionsPostgresql.executeQueryDB(sql);
+      final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
@@ -40,10 +40,10 @@ class ServicioEmpresarialDB {
     }
   }
 
-  Future<Response> setServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
-    final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_servicio_empresariales', key: 'seremp_codigo');
+  Future<Response<dynamic>> setServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
+    final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_servicio_empresariales', key: 'seremp_codigo');
 
-    final sql = """
+    final String sql = """
         INSERT INTO public.tb_servicio_empresariales (
         seremp_codigo, 
         seremp_nombre, 
@@ -55,14 +55,14 @@ class ServicioEmpresarialDB {
         true); """;
     debugPrint("insert SQL:  $sql");
     await FunctionsPostgresql.executeQueryDB(sql);
-    final resp = await getServicioEmpresarialDB(request);
+    final Response<dynamic> resp = await getServicioEmpresarialDB(request);
     return resp;
   }
 
-  Future<Response> updateServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
+  Future<Response<dynamic>> updateServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
     try {
-      final fecha = DateTime.now();
-      final updateFields = [];
+      final DateTime fecha = DateTime.now();
+      final List<String> updateFields = <String>[];
 
       if (request.nombre != null) {
         updateFields.add("seremp_nombre = '${request.nombre}'");
@@ -71,8 +71,8 @@ class ServicioEmpresarialDB {
         updateFields.add("seremp_es_activo = ${request.esActivo}");
       }
 
-      final updateFieldsStr = updateFields.join(', ');
-      final sql = """
+      final String updateFieldsStr = updateFields.join(', ');
+      final String sql = """
       UPDATE public.tb_servicio_empresariales
       SET seremp_fecha_modificacion = '$fecha', $updateFieldsStr
       WHERE seremp_codigo = ${request.codigo};""";
@@ -80,7 +80,7 @@ class ServicioEmpresarialDB {
       debugPrint("updateDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final resp = await getServicioEmpresarialDB(request);
+      final Response<dynamic> resp = await getServicioEmpresarialDB(request);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");

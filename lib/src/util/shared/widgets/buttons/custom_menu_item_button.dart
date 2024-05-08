@@ -28,9 +28,9 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
 
   @override
   Widget build(BuildContext context) {
-    final menus = widget.entries
+    final List<MenuEntry> menus = widget.entries
         .map(
-          (entry) => MenuEntry(
+          (MenuEntry entry) => MenuEntry(
             value: 1,
             label: entry.label,
             onPressed: () {
@@ -45,11 +45,11 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
 
     return MenuBar(
       style: MenuStyle(
-        elevation: const MaterialStatePropertyAll(0),
-        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-        side: MaterialStatePropertyAll(BorderSide(color: Theme.of(context).primaryColor)),
+        elevation: const MaterialStatePropertyAll<double>(0),
+        backgroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+        side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: Theme.of(context).primaryColor)),
       ),
-      children: [
+      children: <Widget>[
         SubmenuButton(
           leadingIcon: Icon(Icons.list_outlined, color: Theme.of(context).primaryColor),
           trailingIcon: Icon(Icons.expand_more_outlined, color: Theme.of(context).primaryColor),
@@ -75,7 +75,7 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
   List<Widget> buildMenuEntry(List<MenuEntry> selections, BuildContext context) {
     Widget buildSelection(MenuEntry selection) {
       return MenuItemButton(
-        style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
+        style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.white)),
         leadingIcon: Icon(Icons.circle_outlined, color: Theme.of(context).colorScheme.onPrimaryContainer),
         onPressed: selection.onPressed,
         trailingIcon: const SizedBox(width: 24),

@@ -26,7 +26,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
   late DateTime _firstDate;
   late DateTime _lastDate;
   bool _isEnterDateField = false;
-  final dateformat = 'yyyy/MM/dd';
+  final String dateformat = 'yyyy/MM/dd';
   final DateTime _currentDate = DateTime.now();
   String currentYear = "";
 
@@ -44,7 +44,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     }
 
     _focusNode.addListener(() async {
-      await Future.delayed(const Duration(milliseconds: 220));
+      await Future<dynamic>.delayed(const Duration(milliseconds: 220));
       _handleFocusChange();
     });
   }
@@ -58,7 +58,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
   void onChangeCalendarDatePicker(DateTime? selectedDate) {
     setState(() {
-      final selectedYear = selectedDate.parseToString('yyyy');
+      final String selectedYear = selectedDate.parseToString('yyyy');
       if (selectedYear == currentYear) {
         _overlayEntry.remove();
         _selectedDate = selectedDate;
@@ -78,10 +78,10 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
   OverlayEntry _createOverlayEntry() {
     final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
-    final size = renderBox!.size;
+    final Size size = renderBox!.size;
 
     return OverlayEntry(
-      builder: (context) => Positioned(
+      builder: (BuildContext context) => Positioned(
         width: 300,
         child: CompositedTransformFollower(
           link: _layerLink,
@@ -123,8 +123,8 @@ class _WebDatePickerState extends State<WebDatePicker> {
               border: const OutlineInputBorder(),
               suffixIcon: _buildPrefixIcon(),
             ),
-            onChanged: (dateString) {
-              final date = dateString.parseToDateTime(dateformat);
+            onChanged: (String dateString) {
+              final DateTime date = dateString.parseToDateTime(dateformat);
               if (date.isBefore(_firstDate)) {
                 _selectedDate = _firstDate;
               } else if (date.isAfter(_lastDate)) {

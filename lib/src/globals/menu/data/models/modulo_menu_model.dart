@@ -19,10 +19,10 @@ class ModuloMenuModel extends ModuloMenu {
         path: json['path'],
         paquete: json['paquete'],
         detalles: json['detalles'],
-        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJson(x))),
+        paginas: List<PaginaMenuModel>.from(json['paginas'].map((dynamic x) => PaginaMenuModel.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "codigo": codigo,
         "icono": icono,
         "texto": texto,
@@ -39,6 +39,6 @@ class ModuloMenuModel extends ModuloMenu {
         path: json['modulo_path'],
         paquete: json['paquete'],
         detalles: json['modulo_detalles'],
-        paginas: List<PaginaMenuModel>.from(json['paginas'].map((x) => PaginaMenuModel.fromJsonPocketbase(x))),
+        paginas: List<PaginaMenuModel>.from(json['paginas'].map((dynamic x) => PaginaMenuModel.fromJsonPocketbase(x))),
       );
 }

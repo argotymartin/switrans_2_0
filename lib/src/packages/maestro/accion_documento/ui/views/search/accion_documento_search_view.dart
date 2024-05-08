@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
@@ -12,20 +13,20 @@ class AccionDocumentoSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, AccionDocumentoState state) {
         if (state is AccionDocumentoExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
               const _BluildDataTable(),
@@ -46,7 +47,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController codigoController = TextEditingController();
     final TextEditingController typeController = TextEditingController();
 
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final AccionDocumentoBloc accionDocumentoBloc = context.read<AccionDocumentoBloc>();
 
@@ -59,7 +60,7 @@ class _BuildFieldsForm extends StatelessWidget {
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
       if (isValid) {
-        final request = AccionDocumentoRequest(
+        final AccionDocumentoRequest request = AccionDocumentoRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
           tipoDocumento: typeController.text,
@@ -72,16 +73,16 @@ class _BuildFieldsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               FieldTipoDocumento(typeController),
             ],
           ),
           BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
-            builder: (context, state) {
+            builder: (BuildContext context, AccionDocumentoState state) {
               int cantidad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
@@ -94,7 +95,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 isConsulted = true;
                 cantidad = state.accionDocumentos.length;
               } else if (state is AccionDocumentoSuccesState) {
-                final request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
+                final AccionDocumentoRequest request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
                 context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
                 context.go('/maestros/accion_documentos/buscar');
               }
@@ -123,7 +124,7 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<Map<String, dynamic>> listUpdate = [];
+  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
   void onRowChecked(List<Map<String, dynamic>> event) {
     listUpdate.clear();
     setState(() => listUpdate.addAll(event));
@@ -131,7 +132,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   void onPressedSave() {
     for (final Map<String, dynamic> map in listUpdate) {
-      final request = AccionDocumentoRequest.fromMap(map);
+      final AccionDocumentoRequest request = AccionDocumentoRequest.fromMap(map);
       context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
     }
   }
@@ -139,7 +140,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   @override
   Widget build(BuildContext context) {
     Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, List<String> tiposList) {
-      return {
+      return <String, DataItemGrid>{
         'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
         'tipo_documento': DataItemGrid(type: Tipo.select, value: accionDocumento.tipo, edit: true, dataList: tiposList),
@@ -152,10 +153,14 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, AccionDocumentoState state) {
         if (state is AccionDocumentoConsultedState) {
-          final tiposList = context.read<AccionDocumentoBloc>().tipos.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
-          final List<Map<String, DataItemGrid>> plutoRes = [];
+          final List<String> tiposList = context
+              .read<AccionDocumentoBloc>()
+              .tipos
+              .map((TipoDocumentoAccionDocumento e) => '${e.codigo}-${e.nombre.toUpperCase()}')
+              .toList();
+          final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final AccionDocumento accionDocumento in state.accionDocumentos) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
             plutoRes.add(rowData);

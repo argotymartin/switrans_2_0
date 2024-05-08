@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
@@ -14,20 +15,20 @@ class ModuloSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<ModuloBloc, ModuloState>(
-      listener: (context, state) {
+      listener: (BuildContext context, ModuloState state) {
         if (state is ModuloExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
               const _BluildDataTable(),
@@ -48,13 +49,14 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController paqueteController = TextEditingController();
     bool isActivo = true;
 
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final ModuloBloc moduloBloc = context.read<ModuloBloc>();
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && paqueteController.text.isEmpty && isActivo;
+      final bool isCampoVacio =
+          nombreController.text.isEmpty && codigoController.text.isEmpty && paqueteController.text.isEmpty && isActivo;
 
       if (isCampoVacio) {
         isValid = false;
@@ -62,7 +64,7 @@ class _BuildFieldsForm extends StatelessWidget {
       }
 
       if (isValid) {
-        final request = ModuloRequest(
+        final ModuloRequest request = ModuloRequest(
           moduloNombre: nombreController.text,
           moduloCodigo: int.tryParse(codigoController.text),
           paquete: paqueteController.text,
@@ -76,24 +78,24 @@ class _BuildFieldsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
               NumberInputTitle(title: "Codigo", controller: codigoController),
               FieldPaquete(paqueteController),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text("Activo", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (newValue) => isActivo = newValue),
+                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
                 ],
               ),
             ],
           ),
           BlocBuilder<ModuloBloc, ModuloState>(
-            builder: (context, state) {
+            builder: (BuildContext context, ModuloState state) {
               int cantdiad = 0;
               bool isConsulted = false;
               bool isInProgress = false;
@@ -134,24 +136,24 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<Map<String, dynamic>> listUpdate = [];
+  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
 
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(event) {
+    void onRowChecked(List<Map<String, dynamic>> event) {
       listUpdate.clear();
       setState(() => listUpdate.addAll(event));
     }
 
     void onPressedSave() {
       for (final Map<String, dynamic> map in listUpdate) {
-        final request = ModuloRequest.fromMap(map);
+        final ModuloRequest request = ModuloRequest.fromMap(map);
         context.read<ModuloBloc>().add(UpdateModuloEvent(request));
       }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo, List<String> tiposList) {
-      return {
+      return <String, DataItemGrid>{
         'id': DataItemGrid(type: Tipo.item, value: modulo.moduloId, edit: false),
         'codigo': DataItemGrid(type: Tipo.text, value: modulo.moduloCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: modulo.moduloNombre, edit: true),
@@ -166,10 +168,11 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     return BlocBuilder<ModuloBloc, ModuloState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ModuloState state) {
         if (state is ModuloConsultedState) {
-          final tiposList = context.read<ModuloBloc>().paquetes.map((e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
-          final List<Map<String, DataItemGrid>> plutoRes = [];
+          final List<String> tiposList =
+              context.read<ModuloBloc>().paquetes.map((ModuloPaquete e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
+          final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Modulo modulo in state.modulos) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo, tiposList);
             plutoRes.add(rowData);

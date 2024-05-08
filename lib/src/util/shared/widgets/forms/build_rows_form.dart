@@ -10,8 +10,8 @@ class BuildRowsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> childrenList = [];
-    children.forEachIndexed((index, child) {
+    final List<Widget> childrenList = <Widget>[];
+    children.forEachIndexed((int index, Widget child) {
       childrenList.add(Expanded(child: child));
       if (index + 1 < children.length && children.length > 1) {
         childrenList.add(const SizedBox(width: 24));

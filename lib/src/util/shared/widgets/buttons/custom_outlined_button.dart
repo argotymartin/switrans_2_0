@@ -23,8 +23,8 @@ class CustomOutlinedButton extends StatelessWidget {
     return icon == null
         ? OutlinedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(color),
-              foregroundColor: MaterialStatePropertyAll(color),
+              backgroundColor: MaterialStatePropertyAll<Color>(color),
+              foregroundColor: MaterialStatePropertyAll<Color>(color),
             ),
             onPressed: () => onPressed(),
             child: Padding(
@@ -39,8 +39,8 @@ class CustomOutlinedButton extends StatelessWidget {
             icon: Icon(icon, color: colorText),
             style: ButtonStyle(
               side: MaterialStateProperty.all(BorderSide(color: color)),
-              backgroundColor: MaterialStatePropertyAll(color),
-              foregroundColor: MaterialStatePropertyAll(color),
+              backgroundColor: MaterialStatePropertyAll<Color>(color),
+              foregroundColor: MaterialStatePropertyAll<Color>(color),
             ),
             onPressed: () => onPressed(),
             label: Text(

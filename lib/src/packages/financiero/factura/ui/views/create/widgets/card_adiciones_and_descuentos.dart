@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -28,9 +27,9 @@ class CardAdicionesAndDescuentos extends StatelessWidget {
         border: Border.all(color: color),
       ),
       child: Column(
-        children: [
+        children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               CircleAvatar(
                 radius: 14,
                 backgroundColor: color,
@@ -67,8 +66,8 @@ class _BuildTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<TableRow> buildTableRows = documentos
         .map(
-          (documento) => TableRow(
-            children: [
+          (Documento documento) => TableRow(
+            children: <Widget>[
               Center(
                 child: Text(
                   documento.remesa.toString(),
@@ -78,20 +77,20 @@ class _BuildTable extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: tipoVariacion == TipoVariacion.adicion
-                    ? documento.adiciones.map((a) => const Text("2021-02-02")).toList()
-                    : documento.descuentos.map((a) => const Text("2021-02-02")).toList(),
+                    ? documento.adiciones.map((Adicion a) => const Text("2021-02-02")).toList()
+                    : documento.descuentos.map((Descuento a) => const Text("2021-02-02")).toList(),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: tipoVariacion == TipoVariacion.adicion
-                    ? documento.adiciones.map((a) => Text(a.tipo.toUpperCase())).toList()
-                    : documento.descuentos.map((a) => Text(a.tipo.toUpperCase())).toList(),
+                    ? documento.adiciones.map((Adicion a) => Text(a.tipo.toUpperCase())).toList()
+                    : documento.descuentos.map((Descuento a) => Text(a.tipo.toUpperCase())).toList(),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: tipoVariacion == TipoVariacion.adicion
-                    ? documento.adiciones.map((a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList()
-                    : documento.descuentos.map((a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList(),
+                    ? documento.adiciones.map((Adicion a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList()
+                    : documento.descuentos.map((Descuento a) => CurrencyLabel(text: a.valor.toInt().toString(), color: color)).toList(),
               ),
             ],
           ),
@@ -100,20 +99,20 @@ class _BuildTable extends StatelessWidget {
 
     final double total = tipoVariacion == TipoVariacion.adicion
         ? documentos
-            .map((documento) => documento.adiciones.fold(0, (total, adicion) => total + adicion.valor.toInt()))
-            .fold(0, (total, subtotal) => total + subtotal)
+            .map((Documento documento) => documento.adiciones.fold(0, (int total, Adicion adicion) => total + adicion.valor.toInt()))
+            .fold(0, (double total, int subtotal) => total + subtotal)
         : documentos
-            .map((documento) => documento.descuentos.fold(0, (total, descuento) => total + descuento.valor.toInt()))
-            .fold(0, (total, subtotal) => total + subtotal);
+            .map((Documento documento) => documento.descuentos.fold(0, (int total, Descuento descuento) => total + descuento.valor.toInt()))
+            .fold(0, (double total, int subtotal) => total + subtotal);
 
     return Table(
       border: TableBorder.all(color: Colors.grey.shade200),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {2: FractionColumnWidth(0.5)},
-      children: [
+      columnWidths: const <int, TableColumnWidth>{2: FractionColumnWidth(0.5)},
+      children: <TableRow>[
         TableRow(
           decoration: BoxDecoration(color: Colors.grey.shade100),
-          children: [
+          children: <Widget>[
             TableCell(
               child: Container(
                 width: 4,
@@ -158,7 +157,7 @@ class _BuildTable extends StatelessWidget {
         ),
         ...buildTableRows,
         TableRow(
-          children: [
+          children: <Widget>[
             const TableCell(child: SizedBox()),
             const TableCell(child: SizedBox()),
             const TableCell(child: SizedBox()),

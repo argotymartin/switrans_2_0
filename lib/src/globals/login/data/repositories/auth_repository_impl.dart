@@ -13,25 +13,25 @@ class AuthRepositoryImpl extends BaseApiRepository implements AbstractAuthReposi
   AuthRepositoryImpl(this._api);
   @override
   Future<DataState<Auth>> signin(UsuarioRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.getinfoUser(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getinfoUser(request));
     if (httpResponse.data != null) {
       final PocketBaseResponse response = PocketBaseResponse.fromJson(httpResponse.data);
-      final resp = AuthModel.fromPocketbase(response);
-      return DataSuccess(resp);
+      final AuthModel resp = AuthModel.fromPocketbase(response);
+      return DataSuccess<Auth>(resp);
     } else {
-      return DataFailed(httpResponse.error!);
+      return DataFailed<Auth>(httpResponse.error!);
     }
   }
 
   @override
   Future<DataState<Auth>> validateToken(UsuarioRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.refreshToken(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.refreshToken(request));
     if (httpResponse.data != null) {
       final PocketBaseResponse response = PocketBaseResponse.fromJson(httpResponse.data);
-      final resp = AuthModel.fromPocketbase(response);
-      return DataSuccess(resp);
+      final AuthModel resp = AuthModel.fromPocketbase(response);
+      return DataSuccess<Auth>(resp);
     } else {
-      return DataFailed(httpResponse.error!);
+      return DataFailed<Auth>(httpResponse.error!);
     }
   }
 }

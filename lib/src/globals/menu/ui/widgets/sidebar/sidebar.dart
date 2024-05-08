@@ -14,12 +14,12 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return BlocBuilder<MenuBloc, MenuState>(
-      builder: (context, state) {
+      builder: (BuildContext context, MenuState state) {
         return state.isOpenMenu
             ? Column(
-                children: [
+                children: <Widget>[
                   Container(
                     width: state.isMinimize ? 80 : kWidthSidebar,
                     height: size.height * 0.92,
@@ -32,7 +32,7 @@ class Sidebar extends StatelessWidget {
                       ),
                       child: ListView(
                         physics: const ClampingScrollPhysics(),
-                        children: [
+                        children: <Widget>[
                           LogoSidebar(isMenuIcon: state.isMinimize),
                           ProfileSidebar(isMenuIcon: state.isMinimize),
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
@@ -40,8 +40,8 @@ class Sidebar extends StatelessWidget {
                           state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
                           state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Paquetes'),
                           BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
-                            builder: (context, stateModulo) {
-                              final List<PaquetesSidebar> paquetesSidebar = [];
+                            builder: (BuildContext context, MenuSidebarState stateModulo) {
+                              final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
                               for (final PaqueteMenu paquete in stateModulo.paquetes) {
                                 paquetesSidebar.add(
                                   PaquetesSidebar(
@@ -86,7 +86,7 @@ class Sidebar extends StatelessWidget {
       gradient: LinearGradient(
         begin: Alignment.centerRight,
         end: Alignment.centerLeft,
-        colors: [
+        colors: <Color>[
           Theme.of(context).colorScheme.primary,
           Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
         ],

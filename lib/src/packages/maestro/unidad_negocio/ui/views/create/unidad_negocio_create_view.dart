@@ -13,16 +13,16 @@ class UnidadNegocioCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
-      listener: (context, state) {
+      listener: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioFailedState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
 
         if (state is UnidadNegocioSuccessState) {
-          final request = UnidadNegocioRequest(nombre: state.unidadNegocio!.nombre);
+          final UnidadNegocioRequest request = UnidadNegocioRequest(nombre: state.unidadNegocio!.nombre);
           context.read<UnidadNegocioBloc>().add(GetUnidadNegocioEvent(request));
           context.go('/maestros/unidad_negocio/buscar');
         }
@@ -30,7 +30,7 @@ class UnidadNegocioCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: [
+        children: <Widget>[
           BuildViewDetail(path: fullPath),
           const WhiteCard(
             title: "Registrar Nuevo",
@@ -50,15 +50,15 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController empresaController = TextEditingController();
-    const isActivo = true;
-    final formKey = GlobalKey<FormState>();
+    const bool isActivo = true;
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldUnidadNegocioEmpresa(empresaController),
               const SwitchBoxInputTitle(title: "Activo", value: isActivo),
@@ -66,9 +66,9 @@ class _BuildFieldsForm extends StatelessWidget {
           ),
           FilledButton.icon(
             onPressed: () {
-              final isValid = formKey.currentState!.validate();
+              final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final request = UnidadNegocioRequest(
+                final UnidadNegocioRequest request = UnidadNegocioRequest(
                   nombre: nameController.text.toUpperCase(),
                   usuario: context.read<AuthBloc>().state.auth?.usuario.codigo,
                   empresa: empresaController.text,

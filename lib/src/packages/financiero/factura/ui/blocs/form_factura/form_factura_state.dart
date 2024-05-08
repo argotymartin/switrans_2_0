@@ -11,8 +11,8 @@ abstract class FormFacturaState extends Equatable {
     this.empresa = 1,
     this.tipoFactura = 10,
     this.error = "",
-    this.clientes = const [],
-    this.empresas = const [],
+    this.clientes = const <Cliente>[],
+    this.empresas = const <Empresa>[],
     this.exception,
   });
 }
@@ -21,39 +21,39 @@ class FormFacturaInitialState extends FormFacturaState {
   const FormFacturaInitialState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class FormFacturaDataState extends FormFacturaState {
   const FormFacturaDataState({super.clientes, super.empresas, super.empresa, super.error, super.tipoFactura});
 
   @override
-  List<Object> get props => [clientes, empresas];
+  List<Object> get props => <Object>[clientes, empresas];
 }
 
 class FormFacturaLoadingState extends FormFacturaState {
   const FormFacturaLoadingState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class FormFacturaRequestState extends FormFacturaState {
   const FormFacturaRequestState({super.empresa, super.error, super.clientes, super.empresas, super.tipoFactura});
   @override
-  List<Object> get props => [empresa, error, clientes, empresas, tipoFactura];
+  List<Object> get props => <Object>[empresa, error, clientes, empresas, tipoFactura];
 }
 
 class FormFacturaSuccesState extends FormFacturaState {
   const FormFacturaSuccesState({super.empresa, super.error, super.clientes, super.empresas, super.tipoFactura});
 
   @override
-  List<Object> get props => [empresa, error, clientes, empresas, tipoFactura];
+  List<Object> get props => <Object>[empresa, error, clientes, empresas, tipoFactura];
 }
 
 class FormFacturaErrorState extends FormFacturaState {
   const FormFacturaErrorState({super.exception});
 
   @override
-  List<DioException?> get props => [exception];
+  List<DioException?> get props => <DioException?>[exception];
 }

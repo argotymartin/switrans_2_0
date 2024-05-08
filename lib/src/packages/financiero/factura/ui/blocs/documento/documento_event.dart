@@ -4,7 +4,7 @@ sealed class DocumentoEvent extends Equatable {
   const DocumentoEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class GetFacturaEvent extends DocumentoEvent {

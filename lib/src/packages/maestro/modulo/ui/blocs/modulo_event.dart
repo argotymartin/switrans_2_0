@@ -1,14 +1,14 @@
-part of  'modulo_bloc.dart';
+part of 'modulo_bloc.dart';
 
 sealed class ModuloEvent extends Equatable {
   const ModuloEvent();
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class SetModuloEvent extends ModuloEvent {
-   final ModuloRequest request;
-   const SetModuloEvent(this.request);
+  final ModuloRequest request;
+  const SetModuloEvent(this.request);
 }
 
 class UpdateModuloEvent extends ModuloEvent {

@@ -6,7 +6,7 @@ class CustomTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Image.asset('assets/empresas/icon-multicompany.png', width: 60, height: 60),
         const SizedBox(height: 20),
         FittedBox(

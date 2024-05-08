@@ -15,45 +15,46 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
 
   @override
   Future<DataState<UnidadNegocio>> createUnidadNegocioService(UnidadNegocioRequest request) async {
-    final httpResponse = await getStateOf(request: () => _unidadNegocioDB.setUnidadNegocioDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.setUnidadNegocioDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
+      final dynamic resp = httpResponse.data[0];
       final UnidadNegocio response = UnidadNegocioModel.fromDB(resp);
-      return DataSuccess(response);
+      return DataSuccess<UnidadNegocio>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<UnidadNegocio>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<UnidadNegocio>>> getUnidadNegocioService(UnidadNegocioRequest request) async {
-    final httpResponse = await getStateOf(request: () => _unidadNegocioDB.getUnidadNegocioDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.getUnidadNegocioDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data;
-      final response = List<UnidadNegocio>.from(resp.map((x) => UnidadNegocioModel.fromDB(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data;
+      final List<UnidadNegocio> response = List<UnidadNegocio>.from(resp.map((dynamic x) => UnidadNegocioModel.fromDB(x)));
+      return DataSuccess<List<UnidadNegocio>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<UnidadNegocio>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<UnidadNegocio>> updateUnidadNegocioService(UnidadNegocioRequest request) async {
-    final httpResponse = await getStateOf(request: () => _unidadNegocioDB.updateUnidadNegocioDB(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.updateUnidadNegocioDB(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data[0];
+      final dynamic resp = httpResponse.data[0];
       final UnidadNegocio response = UnidadNegocioModel.fromDB(resp);
-      return DataSuccess(response);
+      return DataSuccess<UnidadNegocio>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<UnidadNegocio>(httpResponse.error!);
   }
 
   @override
   Future<DataState<List<UnidadNegocioEmpresa>>> getEmpresasService() async {
-    final httpResponse = await getStateOf(request: () => _unidadNegocioDB.getEmpresasDB());
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.getEmpresasDB());
     if (httpResponse.data != null) {
-      final resp = httpResponse.data;
-      final response = List<UnidadNegocioEmpresa>.from(resp.map((x) => UnidadNegocioEmpresaModel.fromDB(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data;
+      final List<UnidadNegocioEmpresa> response =
+          List<UnidadNegocioEmpresa>.from(resp.map((dynamic x) => UnidadNegocioEmpresaModel.fromDB(x)));
+      return DataSuccess<List<UnidadNegocioEmpresa>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<UnidadNegocioEmpresa>>(httpResponse.error!);
   }
 }

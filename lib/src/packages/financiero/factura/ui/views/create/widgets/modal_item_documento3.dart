@@ -25,10 +25,10 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ItemDocumentoState state) {
         return AnimatedBuilder(
           animation: formulario.animationController,
-          builder: (context, child) => AnimatedOpacity(
+          builder: (BuildContext context, Widget? child) => AnimatedOpacity(
             opacity: state.itemDocumentos.isEmpty ? 0.0 : 1.0,
             duration: const Duration(seconds: 1),
             child: Transform.translate(
@@ -36,7 +36,7 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
               child: InkWell(
                 onTap: () => formulario.moveBottomAllScroll(),
                 child: const Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(child: SizedBox()),
                     SizedBox(width: 720, child: CardDetailsFactura2()),
                   ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input.dart';
@@ -15,12 +16,13 @@ class FieldUnidadNegocioEmpresa extends StatelessWidget {
       empresaController.text = entry.codigo.toString();
     }
 
-    final empresas = context.read<UnidadNegocioBloc>().empresas;
-    final List<EntryAutocomplete> entryMenus = empresas.map((e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+    final List<UnidadNegocioEmpresa> empresas = context.read<UnidadNegocioBloc>().empresas;
+    final List<EntryAutocomplete> entryMenus =
+        empresas.map((UnidadNegocioEmpresa e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(

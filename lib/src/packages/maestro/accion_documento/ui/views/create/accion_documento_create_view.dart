@@ -12,26 +12,26 @@ class AccionDocumentoCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, AccionDocumentoState state) {
         if (state is AccionDocumentoExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
 
         if (state is AccionDocumentoSuccesState) {
-          final request = AccionDocumentoRequest(nombre: state.accionDocumento!.nombre);
+          final AccionDocumentoRequest request = AccionDocumentoRequest(nombre: state.accionDocumento!.nombre);
           context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
           context.go('/maestros/accion_documentos/buscar');
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(
                 title: "Registrar Nuevo",
@@ -54,14 +54,14 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController typeController = TextEditingController();
     const bool esInverso = false;
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nameController),
               FieldTipoDocumento(typeController),
               const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa"),
@@ -69,9 +69,9 @@ class _BuildFieldsForm extends StatelessWidget {
           ),
           FilledButton.icon(
             onPressed: () {
-              final isValid = formKey.currentState!.validate();
+              final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final request = AccionDocumentoRequest(
+                final AccionDocumentoRequest request = AccionDocumentoRequest(
                   nombre: nameController.text.toUpperCase(),
                   usuario: 1,
                   isNaturalezaInversa: esInverso,

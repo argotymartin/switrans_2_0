@@ -34,21 +34,21 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     const Duration duration = Duration(milliseconds: 1000);
     return BlocListener<DocumentoBloc, DocumentoState>(
-      listener: (context, state) {
+      listener: (BuildContext context, DocumentoState state) {
         if (state is DocumentoErrorState) {
           ErrorDialog.showDioException(context, state.error);
         }
       },
       child: Stack(
-        children: [
+        children: <Widget>[
           ListView(
             controller: context.read<FormFacturaBloc>().scrollController,
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: [
+            children: <Widget>[
               BuildViewDetail(path: fullPath),
               const SizedBox(height: 16),
               const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
@@ -87,22 +87,22 @@ class _BuildFiltros extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
-    final itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final ItemDocumentoBloc itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
     final List<Empresa> empresas = formFacturaBloc.state.empresas;
 
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
                     const SizedBox(width: 24),
                     const _FieldTipoFactura(),
@@ -116,7 +116,7 @@ class _BuildFiltros extends StatelessWidget {
           const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Expanded(child: _FieldRemesas(formFacturaBloc: formFacturaBloc)),
               const SizedBox(width: 24),
               Expanded(child: _FieldFechas(formFacturaBloc: formFacturaBloc)),
@@ -124,10 +124,10 @@ class _BuildFiltros extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Row(
-            children: [
+            children: <Widget>[
               FilledButton.icon(
                 onPressed: () {
-                  final isValid = formKey.currentState!.validate();
+                  final bool isValid = formKey.currentState!.validate();
                   itemDocumentoBloc.add(const ResetDocumentoEvent());
                   formFacturaBloc.onPressedSearch(isValid: isValid);
                 },
@@ -136,7 +136,7 @@ class _BuildFiltros extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               BlocBuilder<DocumentoBloc, DocumentoState>(
-                builder: (context, state) {
+                builder: (BuildContext context, DocumentoState state) {
                   if (state is DocumentoLoadingState) {
                     return const SizedBox(
                       width: 24,
@@ -145,10 +145,10 @@ class _BuildFiltros extends StatelessWidget {
                     );
                   }
                   if (state is DocumentoSuccesState) {
-                    final remesas = context.read<FormFacturaBloc>().remesasController.text;
+                    final String remesas = context.read<FormFacturaBloc>().remesasController.text;
                     final List<String> items = remesas.split(",");
                     return Column(
-                      children: [
+                      children: <Widget>[
                         Text(
                           remesas.isEmpty ? "Encontrados" : "Consultadas/Encontrados",
                           style: TextStyle(color: Theme.of(context).primaryColor),
@@ -167,7 +167,7 @@ class _BuildFiltros extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           BlocBuilder<FormFacturaBloc, FormFacturaState>(
-            builder: (context, state) {
+            builder: (BuildContext context, FormFacturaState state) {
               return (state.error != "") ? ErrorModal(title: state.error) : const SizedBox();
             },
           ),
@@ -186,9 +186,9 @@ class _FieldCliente extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final FormFacturaBloc facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     final List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    final Cliente? cliente = clientes.firstWhereOrNull((element) => element.codigo == formFacturaBloc.clienteCodigo);
+    final Cliente? cliente = clientes.firstWhereOrNull((Cliente element) => element.codigo == formFacturaBloc.clienteCodigo);
     final TextEditingController controller = TextEditingController();
     if (cliente != null) {
       controller.text = cliente.nombre;
@@ -199,13 +199,13 @@ class _FieldCliente extends StatelessWidget {
       controller.text = entry.title;
     }
 
-    final List<EntryAutocomplete> entries = clientes.map((cliente) {
+    final List<EntryAutocomplete> entries = clientes.map((Cliente cliente) {
       return EntryAutocomplete(
         title: cliente.nombre,
         subTitle: cliente.identificacion,
         codigo: cliente.codigo,
         details: Row(
-          children: [
+          children: <Widget>[
             const Icon(Icons.call, size: 16),
             Text(cliente.telefono, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w100)),
           ],
@@ -214,7 +214,7 @@ class _FieldCliente extends StatelessWidget {
     }).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
@@ -238,13 +238,13 @@ class _FieldTipoFactura extends StatelessWidget {
       context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.value));
     }
 
-    const List<MenuEntry> entryMenus = [
+    const List<MenuEntry> entryMenus = <MenuEntry>[
       MenuEntry(label: "Tipo 10", value: 10),
       MenuEntry(label: "Tipo 12", value: 12),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Tipo", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0, onPressed: onPressed),
@@ -264,14 +264,14 @@ class _FieldEmpresa extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         Wrap(
           spacing: 16,
-          children: List.generate(
+          children: List<Widget>.generate(
             empresas.length,
-            (index) => SizedBox(
+            (int index) => SizedBox(
               width: 180,
               child: BuildCardEmpresa(
                 empresa: empresas[index],
@@ -295,7 +295,7 @@ class _FieldRemesas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text("Remesas", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         TextAreaDocumentos(controller: formFacturaBloc.remesasController),
@@ -313,12 +313,12 @@ class _FieldFechas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return Wrap(
-      children: [
+      children: <Widget>[
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text("Inicio", style: AppTheme.titleStyle),
             const SizedBox(height: 8),
             SizedBox(
@@ -332,7 +332,7 @@ class _FieldFechas extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text("Fin", style: AppTheme.titleStyle),
               const SizedBox(height: 8),
               SizedBox(
@@ -354,7 +354,7 @@ class _BuildDocumentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DocumentoBloc, DocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, DocumentoState state) {
         if (state is DocumentoSuccesState) {
           if (state.documentos.isNotEmpty) {
             return WhiteCard(
@@ -376,14 +376,14 @@ class _BuildItemFactura extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (context, state) {
+      builder: (BuildContext context, FormFacturaState state) {
         if (state is FormFacturaSuccesState) {
           return const CustomColorCard(
             icon: Icons.file_copy_outlined,
             title: "Item Documentos",
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 _BuildDetailsDocumentos(),
                 _BuildTableItemsDocumento(),
                 Divider(height: 48, color: Colors.white),
@@ -407,13 +407,13 @@ class _BuildTableItemsDocumento extends StatelessWidget {
     return ColoredBox(
       color: Theme.of(context).colorScheme.onPrimary,
       child: Column(
-        children: [
+        children: <Widget>[
           const TableItemsDocumento(),
           const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               ElevatedButton.icon(
                 onPressed: () => context.read<ItemDocumentoBloc>().add(const AddItemServicioAdicionalFacturaEvent()),
                 icon: const Icon(Icons.add_card_rounded),
@@ -434,10 +434,10 @@ class _BuildDetailsDocumentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DocumentoBloc, DocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, DocumentoState state) {
         if (state is DocumentoSuccesState) {
-          final documentosAdicion = state.documentos.where((remesa) => remesa.adiciones.isNotEmpty).toList();
-          final documentosDescuentos = state.documentos.where((remesa) => remesa.descuentos.isNotEmpty).toList();
+          final List<Documento> documentosAdicion = state.documentos.where((Documento remesa) => remesa.adiciones.isNotEmpty).toList();
+          final List<Documento> documentosDescuentos = state.documentos.where((Documento remesa) => remesa.descuentos.isNotEmpty).toList();
 
           if (documentosAdicion.isNotEmpty || documentosDescuentos.isNotEmpty) {
             return Container(
@@ -446,7 +446,7 @@ class _BuildDetailsDocumentos extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   documentosAdicion.isNotEmpty
                       ? Expanded(child: CardAdicionesAndDescuentos(documentos: documentosAdicion, title: 'ADICIONES', color: Colors.green))
                       : const Expanded(child: SizedBox()),
@@ -472,13 +472,13 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formFacturaBloc = context.read<FormFacturaBloc>();
+    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
     final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
     final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
     final TextEditingController controllerCentroCosto = TextEditingController();
 
-    final centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
-    final entriesCentroCosto = centrosCosto.map((centro) {
+    final List<MapEntry<int, String>> centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
+    final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
       return EntryAutocomplete(
         codigo: centro.key,
         title: centro.value,
@@ -486,7 +486,8 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
       );
     }).toList();
 
-    final entrySelected2 = entriesCentroCosto.firstWhereOrNull((entry) => entry.codigo == formFacturaBloc.centroCosto);
+    final EntryAutocomplete? entrySelected2 =
+        entriesCentroCosto.firstWhereOrNull((EntryAutocomplete entry) => entry.codigo == formFacturaBloc.centroCosto);
     final String entrySelected = entrySelected2 != null ? entrySelected2.title : "";
 
     void setValueFactura(EntryAutocomplete value) {
@@ -497,24 +498,24 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     }
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ItemDocumentoState state) {
         if (state is ItemDocumentoSuccesState) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
+            children: <Widget>[
               SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     Row(
-                      children: [
+                      children: <Widget>[
                         const Icon(Icons.work_outline_outlined),
                         const SizedBox(width: 8),
                         Text(empresaSelect.nombre),
                       ],
                     ),
                     Row(
-                      children: [
+                      children: <Widget>[
                         const Icon(Icons.contact_emergency_outlined),
                         const SizedBox(width: 8),
                         Text(clienteSelect.nombre),
@@ -564,21 +565,21 @@ class _BuildButtonRegistrar extends StatelessWidget {
     final AuthBloc authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
+      builder: (BuildContext context, ItemDocumentoState state) {
         final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-        final documentos = facturaBloc.state.documentos;
-        final itemDocumentos = state.itemDocumentos.where((element) => element.documento > 0);
-        final double totalDocumentos = documentos.fold(0, (total, documento) => total + documento.rcp);
-        final double totalImpuestos = itemDocumentos.fold(0, (total, item) => total + item.valorIva);
-        final double totalPrefacturas = itemDocumentos.fold(0, (total, prefactura) => total + prefactura.total);
+        final List<Documento> documentos = facturaBloc.state.documentos;
+        final Iterable<ItemDocumento> itemDocumentos = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);
+        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
+        final double totalImpuestos = itemDocumentos.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
+        final double totalPrefacturas = itemDocumentos.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
         final double valorFaltante = totalDocumentos - totalPrefacturas;
 
-        final bool isTransporte = state.itemDocumentos.any((element) => element.tipo == "TR");
-        final bool isDocumento = !state.itemDocumentos.any((element) => element.documento <= 0);
-        final bool isCantidad = !state.itemDocumentos.any((element) => element.cantidad <= 0);
-        final bool isValor = !state.itemDocumentos.any((element) => element.valor <= 0);
-        final bool isDescripcion = state.itemDocumentos.any((element) => element.descripcion.isNotEmpty);
+        final bool isTransporte = state.itemDocumentos.any((ItemDocumento element) => element.tipo == "TR");
+        final bool isDocumento = !state.itemDocumentos.any((ItemDocumento element) => element.documento <= 0);
+        final bool isCantidad = !state.itemDocumentos.any((ItemDocumento element) => element.cantidad <= 0);
+        final bool isValor = !state.itemDocumentos.any((ItemDocumento element) => element.valor <= 0);
+        final bool isDescripcion = state.itemDocumentos.any((ItemDocumento element) => element.descripcion.isNotEmpty);
         final bool isCentroCosto = formFacturaBloc.centroCosto > 0;
         final bool isFaltante = valorFaltante.toInt() == 0;
 
@@ -602,7 +603,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
                     final int clienteCodigo = formFacturaBloc.clienteCodigo;
                     final int empresaCodigo = formFacturaBloc.state.empresa;
                     final int usuario = authBloc.state.auth!.usuario.codigo;
-                    final prefacturaRequest = PrefacturaRequest(
+                    final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
                       centroCosto: centroCosto,
                       cliente: clienteCodigo,
                       empresa: empresaCodigo,

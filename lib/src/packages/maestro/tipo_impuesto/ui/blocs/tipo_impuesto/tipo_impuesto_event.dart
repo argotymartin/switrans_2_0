@@ -4,7 +4,7 @@ sealed class TipoImpuestoEvent extends Equatable {
   const TipoImpuestoEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class SetImpuestoEvent extends TipoImpuestoEvent {

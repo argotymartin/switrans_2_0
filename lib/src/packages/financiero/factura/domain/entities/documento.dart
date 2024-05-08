@@ -48,7 +48,7 @@ class Documento {
     required this.descuentos,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "documento": remesa,
         "tarifa": total,
       };

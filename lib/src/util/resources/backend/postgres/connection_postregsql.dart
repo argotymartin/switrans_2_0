@@ -2,7 +2,7 @@ import 'package:postgres/postgres.dart';
 
 class ConnectionPostgresql {
   static Future<Connection> onConnect() async {
-    final conn = await Connection.open(
+    final Connection conn = await Connection.open(
       Endpoint(
         host: '192.168.102.23',
         database: 'switrans',

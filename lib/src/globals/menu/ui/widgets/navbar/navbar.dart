@@ -7,13 +7,13 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
+      children: <Widget>[
         Container(
           width: double.infinity,
           height: 66,
           decoration: buidBoxDecoration(context),
           child: Row(
-            children: [
+            children: <Widget>[
               const SizedBox(width: 10),
               const Spacer(),
               IconNavbar(
@@ -56,7 +56,7 @@ class Navbar extends StatelessWidget {
 
   BoxDecoration buidBoxDecoration(BuildContext context) => BoxDecoration(
         color: Colors.white,
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
             blurRadius: 22,

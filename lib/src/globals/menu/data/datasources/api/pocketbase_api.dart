@@ -6,24 +6,24 @@ class PocketbaseAPI {
 
   PocketbaseAPI(this._dio);
 
-  Future<Response> getModulosAll() async {
-    const url = '$kPocketBaseUrl/api/collections/paquete/records';
+  Future<Response<dynamic>> getModulosAll() async {
+    const String url = '$kPocketBaseUrl/api/collections/paquete/records';
 
-    final response = await _dio.get(
+    final Response<dynamic> response = await _dio.get(
       '$url/',
-      queryParameters: {
+      queryParameters: <String, dynamic>{
         "filter": "(visible=true)",
       },
     );
 
     final List<dynamic> paquetes = response.data['items'];
 
-    for (final paquete in paquetes) {
-      final responseModulos = await getModulosByPaquete(paquete["id"]);
+    for (final dynamic paquete in paquetes) {
+      final Response<dynamic> responseModulos = await getModulosByPaquete(paquete["id"]);
       final List<dynamic> modulos = responseModulos.data['items'];
 
-      for (final modulo in modulos) {
-        final responsePaginas = await getPagesByModulo(modulo["id"]);
+      for (final dynamic modulo in modulos) {
+        final Response<dynamic> responsePaginas = await getPagesByModulo(modulo["id"]);
         final List<dynamic> paginas = responsePaginas.data['items'];
         modulo["paginas"] = paginas;
       }
@@ -33,22 +33,22 @@ class PocketbaseAPI {
     return response;
   }
 
-  Future<Response> getModulosByPaquete(String paquete) async {
-    const url = '$kPocketBaseUrl/api/collections/modulo/records';
-    final response = await _dio.get(
+  Future<Response<dynamic>> getModulosByPaquete(String paquete) async {
+    const String url = '$kPocketBaseUrl/api/collections/modulo/records';
+    final Response<dynamic> response = await _dio.get(
       '$url/',
-      queryParameters: {
+      queryParameters: <String, dynamic>{
         "filter": "(paquete='$paquete')",
       },
     );
     return response;
   }
 
-  Future<Response> getPagesByModulo(String modulo) async {
-    const url = '$kPocketBaseUrl/api/collections/pagina/records';
-    final response = await _dio.get(
+  Future<Response<dynamic>> getPagesByModulo(String modulo) async {
+    const String url = '$kPocketBaseUrl/api/collections/pagina/records';
+    final Response<dynamic> response = await _dio.get(
       '$url/',
-      queryParameters: {
+      queryParameters: <String, String>{
         "filter": "(modulo='$modulo')",
       },
     );

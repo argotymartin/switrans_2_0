@@ -21,20 +21,20 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
   Widget build(BuildContext context) {
     //final expansionPanelCubit = context.watch<FormFacturaBloc>();
     return Column(
-      children: [
+      children: <Widget>[
         ExpansionPanelList(
-          expansionCallback: (panelIndex, _) {
+          expansionCallback: (int panelIndex, _) {
             isExpanded = !isExpanded;
             setState(() {});
           },
           children: <ExpansionPanel>[
             ExpansionPanel(
               backgroundColor: Colors.white,
-              headerBuilder: (context, isExpanded) {
+              headerBuilder: (BuildContext context, bool isExpanded) {
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       isExpanded ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
                       SizedBox(
                         height: 24,

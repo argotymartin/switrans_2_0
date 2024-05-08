@@ -8,7 +8,7 @@ sealed class AccionDocumentoState extends Equatable {
   const AccionDocumentoState({
     this.accionDocumento,
     this.exception,
-    this.accionDocumentos = const [],
+    this.accionDocumentos = const <AccionDocumento>[],
     this.error,
   });
 }
@@ -17,38 +17,38 @@ class AccionDocumentoInitialState extends AccionDocumentoState {
   const AccionDocumentoInitialState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AccionDocumentoLoadingState extends AccionDocumentoState {
   const AccionDocumentoLoadingState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AccionDocumentoSuccesState extends AccionDocumentoState {
   const AccionDocumentoSuccesState({super.accionDocumento});
 
   @override
-  List<Object> get props => [accionDocumento!];
+  List<Object> get props => <Object>[accionDocumento!];
 }
 
 class AccionDocumentoConsultedState extends AccionDocumentoState {
   const AccionDocumentoConsultedState({super.accionDocumentos});
 
   @override
-  List<Object> get props => [accionDocumentos];
+  List<Object> get props => <Object>[accionDocumentos];
 }
 
 class AccionDocumentoExceptionState extends AccionDocumentoState {
   const AccionDocumentoExceptionState({super.exception});
   @override
-  List<Object> get props => [exception!];
+  List<Object> get props => <Object>[exception!];
 }
 
 class AccionDocumentoErrorFormState extends AccionDocumentoState {
   const AccionDocumentoErrorFormState({super.error});
   @override
-  List<Object> get props => [error!];
+  List<Object> get props => <Object>[error!];
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nested/nested.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
@@ -33,7 +34,7 @@ class BlocsProviders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
+      providers: <SingleChildWidget>[
         BlocProvider<MenuBloc>(create: (_) => injector<MenuBloc>()),
         BlocProvider<ThemeCubit>(create: (_) => injector<ThemeCubit>()),
         BlocProvider<FormFacturaBloc>(create: (_) => injector<FormFacturaBloc>()),
@@ -70,8 +71,8 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   }
 
   Future<void> _init() async {
-    final authBloc = context.read<AuthBloc>();
-    final paqueteMenuBloc = context.read<MenuSidebarBloc>();
+    final AuthBloc authBloc = context.read<AuthBloc>();
+    final MenuSidebarBloc paqueteMenuBloc = context.read<MenuSidebarBloc>();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String stringValue = prefs.getString('token') ?? '';
     isTokenValid = await authBloc.onValidateToken(stringValue);
@@ -100,18 +101,18 @@ class _BuildMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeCubit>().state;
+    final ThemeState theme = context.watch<ThemeCubit>().state;
     return MaterialApp.router(
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       theme: AppTheme(color: theme.color).getTheme(context),
-      localizationsDelegates: const [
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
+      supportedLocales: const <Locale>[
         Locale('es', 'ES'),
       ],
     );

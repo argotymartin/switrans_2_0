@@ -22,8 +22,8 @@ class CustomColorCard extends StatelessWidget {
       decoration: buildBoxDeoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (title != null) ...[
+        children: <Widget>[
+          if (title != null) ...<Widget>[
             Container(
               height: 48,
               padding: const EdgeInsets.all(10),
@@ -32,14 +32,14 @@ class CustomColorCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
+                  colors: <Color>[
                     customColorFuchsiaBlue.shade400,
                     customColorFuchsiaBlue.shade300,
                   ],
                 ),
               ),
               child: Row(
-                children: [
+                children: <Widget>[
                   Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer),
                   const SizedBox(width: 4),
                   FittedBox(
@@ -67,7 +67,7 @@ class CustomColorCard extends StatelessWidget {
 
   BoxDecoration buildBoxDeoration() => BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
         ],
         color: Colors.white,

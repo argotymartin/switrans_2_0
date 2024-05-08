@@ -10,31 +10,31 @@ abstract class AuthState extends Equatable {
 class AuthInitialState extends AuthState {
   const AuthInitialState();
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AuthLoadInProgressState extends AuthState {
   const AuthLoadInProgressState();
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AuthUpdateState extends AuthState {
   const AuthUpdateState();
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AuthSuccesState extends AuthState {
   const AuthSuccesState({super.auth, super.isSignedIn});
 
   @override
-  List<Object?> get props => [super.auth];
+  List<Object?> get props => <Object?>[super.auth];
 }
 
 class AuthErrorState extends AuthState {
   const AuthErrorState({super.error});
 
   @override
-  List<Object?> get props => [error];
+  List<Object?> get props => <Object?>[error];
 }

@@ -11,16 +11,16 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
-      listener: (context, state) {
+      listener: (BuildContext context, ServicioEmpresarialState state) {
         if (state is ServicioEmpresarialExceptionState) {
           ErrorDialog.showDioException(context, state.exception);
         }
 
         if (state is ServicioEmpresarialSuccesState) {
-          final request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
+          final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
           context.read<ServicioEmpresarialBloc>().add(GetServicioEmpresarialEvent(request));
           context.go('/maestros/servicio_empresarial/buscar');
         }
@@ -28,7 +28,7 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: [
+        children: <Widget>[
           BuildViewDetail(path: fullPath),
           const WhiteCard(
             title: "Registrar Nuevo",
@@ -47,22 +47,22 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BuildRowsForm(
-            children: [
+            children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nameController),
             ],
           ),
           FilledButton.icon(
             onPressed: () {
-              final isValid = formKey.currentState!.validate();
+              final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final request = ServicioEmpresarialRequest(
+                final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(
                   nombre: nameController.text.toUpperCase(),
                   usuario: 1,
                 );

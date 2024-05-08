@@ -30,7 +30,7 @@ class _CustomTextInputState extends State<NumberInputTitle> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         widget.title.isNotEmpty ? Text(widget.title, style: AppTheme.titleStyle) : const SizedBox(),
         widget.title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         SizedBox(

@@ -10,7 +10,7 @@ class FooterSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return Container(
       height: size.height * 0.08,
       padding: isMinimize ? null : const EdgeInsets.symmetric(horizontal: 54),
@@ -20,7 +20,7 @@ class FooterSidebar extends StatelessWidget {
           ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 Icon(Icons.forum_outlined, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
                 Icon(Icons.telegram_sharp, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),
                 Icon(Icons.call_outlined, color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.6), size: 20),

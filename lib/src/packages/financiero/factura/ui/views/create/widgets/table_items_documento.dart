@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
@@ -16,10 +17,10 @@ class TableItemsDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (context, state) {
-        final tableRowsTitle = TableRow(
+      builder: (BuildContext context, ItemDocumentoState state) {
+        final TableRow tableRowsTitle = TableRow(
           decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
-          children: const [
+          children: const <Widget>[
             _CellTitle(title: "Item"),
             _CellTitle(title: "Documento"),
             _CellTitle(title: "Descripcion"),
@@ -33,10 +34,10 @@ class TableItemsDocumento extends StatelessWidget {
         );
         int index = 0;
         final List<TableRow> buildTableRows = state.itemDocumentos.map(
-          (itemDocumento) {
+          (ItemDocumento itemDocumento) {
             index++;
             return TableRow(
-              children: [
+              children: <Widget>[
                 _CellContent(child: _BuildFieldItem(index)),
                 _CellContent(child: _BuildFiledDocumento(item: itemDocumento)),
                 _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
@@ -51,7 +52,7 @@ class TableItemsDocumento extends StatelessWidget {
           },
         ).toList();
 
-        const columnWidth = {
+        const Map<int, FractionColumnWidth> columnWidth = <int, FractionColumnWidth>{
           0: FractionColumnWidth(0.04),
           1: FractionColumnWidth(0.18),
           2: FractionColumnWidth(0.3),
@@ -65,7 +66,7 @@ class TableItemsDocumento extends StatelessWidget {
           border: TableBorder.all(color: Colors.grey.shade200),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: columnWidth,
-          children: [tableRowsTitle, ...buildTableRows],
+          children: <TableRow>[tableRowsTitle, ...buildTableRows],
         );
       },
     );
@@ -116,14 +117,14 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
 
   @override
   Widget build(BuildContext context) {
-    final documentosAll = context.read<DocumentoBloc>().state.documentos;
+    final List<Documento> documentosAll = context.read<DocumentoBloc>().state.documentos;
 
-    final List<EntryAutocomplete> entriesDocumentos = documentosAll.map((documento) {
+    final List<EntryAutocomplete> entriesDocumentos = documentosAll.map((Documento documento) {
       return EntryAutocomplete(
         title: '${documento.remesa}',
         subTitle: '(${documento.impreso})',
         codigo: documento.remesa,
-        details: Row(children: [const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
+        details: Row(children: <Widget>[const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
       );
     }).toList();
     entriesDocumentos.add(
@@ -136,7 +137,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo != 0) {
         setState(() {
-          final Documento documento = documentosAll.firstWhere((element) => element.remesa == value.codigo);
+          final Documento documento = documentosAll.firstWhere((Documento element) => element.remesa == value.codigo);
           widget.item.documento = documento.remesa;
           widget.item.documentoImpreso = documento.impreso;
           widget.item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
@@ -151,7 +152,7 @@ class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
     }
 
     return Column(
-      children: [
+      children: <Widget>[
         AutocompleteInput(
           entrySelected: entrySelected,
           enabled: widget.item.tipo != "TR",
@@ -174,10 +175,10 @@ class _BuildFieldDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: (value) {
+      onChanged: (String value) {
         item.descripcion = value;
       },
-      inputFormatters: [UpperCaseFormatter()],
+      inputFormatters: <TextInputFormatter>[UpperCaseFormatter()],
       initialValue: CustomFunctions.limpiarTexto(item.descripcion),
       autovalidateMode: AutovalidateMode.always,
       maxLines: 7,
@@ -288,7 +289,7 @@ class _BuildFiledAccion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         CustomSizeButton(
           onPressed: () {
             context.read<ItemDocumentoBloc>().add(RemoveItemByPositionFacturaEvent(index: index));

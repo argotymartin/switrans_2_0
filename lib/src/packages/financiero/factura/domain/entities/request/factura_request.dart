@@ -13,7 +13,7 @@ class FacturaRequest {
   });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
+    final Map<String, dynamic> data = <String, dynamic>{
       'empresa': empresa,
       'cliente': cliente,
     };

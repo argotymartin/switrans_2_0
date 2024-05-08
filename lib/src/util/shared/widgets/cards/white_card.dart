@@ -23,10 +23,10 @@ class WhiteCard extends StatelessWidget {
       decoration: buildBoxDeoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (title != null) ...[
+        children: <Widget>[
+          if (title != null) ...<Widget>[
             Row(
-              children: [
+              children: <Widget>[
                 Icon(icon),
                 const SizedBox(width: 4),
                 FittedBox(
@@ -51,7 +51,7 @@ class WhiteCard extends StatelessWidget {
   BoxDecoration buildBoxDeoration() => BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
         ],
       );

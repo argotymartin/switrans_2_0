@@ -4,16 +4,16 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 class NotificationSlack {
-  final headers = {
+  final Map<String, String> headers = <String, String>{
     'Content-Type': 'application/json',
     'Authorization': 'Basic YW5kcmVzLmNhc3RhbmVkYTpBbmRyZXMyMDI0Ki4=',
   };
 
-  final dio = Dio();
+  final Dio dio = Dio();
 
-  FutureOr sendMessage(String message) async {
-    final data = json.encode({"text": message, "chanel": "notificaciones_system"});
-    final response = await dio.request(
+  FutureOr<void> sendMessage(String message) async {
+    final String data = json.encode(<String, String>{"text": message, "chanel": "notificaciones_system"});
+    final Response<dynamic> response = await dio.request(
       'https://192.168.24.152:8443/slack/send',
       options: Options(
         method: 'POST',

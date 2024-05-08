@@ -11,22 +11,22 @@ class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTi
   TipoImpuestoRepositoryImpl(this._api);
   @override
   Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService(TipoImpuestoRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.getTipoImpuestosApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getTipoImpuestosApi(request));
     if (httpResponse.data != null) {
-      final resp = httpResponse.data["items"];
-      final response = List<TipoImpuesto>.from(resp.map((x) => TipoImpuestoModel.fromJson(x)));
-      return DataSuccess(response);
+      final dynamic resp = httpResponse.data["items"];
+      final List<TipoImpuesto> response = List<TipoImpuesto>.from(resp.map((dynamic x) => TipoImpuestoModel.fromJson(x)));
+      return DataSuccess<List<TipoImpuesto>>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<List<TipoImpuesto>>(httpResponse.error!);
   }
 
   @override
   Future<DataState<TipoImpuesto>> setTipoImpuestoService(TipoImpuestoRequest request) async {
-    final httpResponse = await getStateOf(request: () => _api.setTipoImpuestoApi(request));
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setTipoImpuestoApi(request));
     if (httpResponse.data != null) {
       final TipoImpuesto response = TipoImpuestoModel.fromJson(httpResponse.data);
-      return DataSuccess(response);
+      return DataSuccess<TipoImpuesto>(response);
     }
-    return DataFailed(httpResponse.error!);
+    return DataFailed<TipoImpuesto>(httpResponse.error!);
   }
 }

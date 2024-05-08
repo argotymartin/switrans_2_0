@@ -12,7 +12,7 @@ class BackendErrorResponse {
         errorTrace: json["errorTrace"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "errorClient": errorClient,
         "errorTrace": errorTrace,
       };

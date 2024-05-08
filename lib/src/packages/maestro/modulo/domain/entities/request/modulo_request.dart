@@ -22,7 +22,7 @@ class ModuloRequest {
   });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
+    final Map<String, dynamic> data = <String, dynamic>{
       'id': '$moduloId',
       'modulo_codigo': moduloCodigo,
       'modulo_nombre': "$moduloNombre",
@@ -65,7 +65,7 @@ class ModuloRequest {
   }
 
   Map<String, dynamic> toJsonCreate() {
-    return {
+    return <String, dynamic>{
       'modulo_codigo': moduloCodigo,
       'modulo_nombre': moduloNombre,
       'modulo_detalles': moduloDetalles,

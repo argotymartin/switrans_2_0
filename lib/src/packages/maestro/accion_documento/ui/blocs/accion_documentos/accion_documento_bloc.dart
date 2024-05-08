@@ -3,17 +3,18 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
+import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 part 'accion_documento_event.dart';
 part 'accion_documento_state.dart';
 
 class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoState> {
   final AbstractAccionDocumentoRepository _repository;
-  List<TipoDocumentoAccionDocumento> tipos = [];
+  List<TipoDocumentoAccionDocumento> tipos = <TipoDocumentoAccionDocumento>[];
   AccionDocumentoBloc(this._repository) : super(const AccionDocumentoInitialState()) {
-    on<SetAccionDocumentoEvent>((event, emit) async {
+    on<SetAccionDocumentoEvent>((SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
       emit(const AccionDocumentoLoadingState());
-      final resp = await _repository.setAccionDocumentosService(event.request);
+      final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
       if (resp.data != null) {
         emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
       } else {
@@ -21,9 +22,9 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
       }
     });
 
-    on<UpdateAccionDocumentoEvent>((event, emit) async {
+    on<UpdateAccionDocumentoEvent>((UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
       emit(const AccionDocumentoLoadingState());
-      final resp = await _repository.updateAccionDocumentosService(event.request);
+      final DataState<AccionDocumento> resp = await _repository.updateAccionDocumentosService(event.request);
       if (resp.data != null) {
         emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
       } else {
@@ -31,9 +32,9 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
       }
     });
 
-    on<GetAccionDocumentoEvent>((event, emit) async {
+    on<GetAccionDocumentoEvent>((GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
       emit(const AccionDocumentoLoadingState());
-      final resp = await _repository.getAccionDocumentosService(event.request);
+      final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(event.request);
       if (resp.data != null) {
         emit(AccionDocumentoConsultedState(accionDocumentos: resp.data!));
       } else {
@@ -41,7 +42,7 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
       }
     });
 
-    on<ErrorFormAccionDocumentoEvent>((event, emit) async {
+    on<ErrorFormAccionDocumentoEvent>((ErrorFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
       emit(const AccionDocumentoLoadingState());
       emit(AccionDocumentoErrorFormState(error: event.error));
     });
@@ -49,7 +50,7 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
 
   Future<void> onGetTipoDocumento() async {
     if (tipos.isEmpty) {
-      final resp = await _repository.getTipoDocumentosService();
+      final DataState<List<TipoDocumentoAccionDocumento>> resp = await _repository.getTipoDocumentosService();
       tipos = resp.data!;
     }
   }

@@ -7,9 +7,10 @@ import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_generic_dio_strategy.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio_strategy.dart';
+import 'package:switrans_2_0/src/util/strategy/errors/error_strategy.dart';
 
 class ErrorDialog {
-  static final _errorStrategies = {
+  static final Map<Type, ErrorStrategy> _errorStrategies = <Type, ErrorStrategy>{
     ErrorGenericDio: ErrorGenericDioStrategy(),
     ErrorPocketbaseDio: ErrorPocketbaseDioStrategy(),
     ErrorBackendDio: ErrorBackendDioStrategy(),
@@ -17,17 +18,17 @@ class ErrorDialog {
 
   static void showDioException(BuildContext context, DioException exception) {
     if (exception.response?.data != null) {
-      final Response response = exception.response!;
-      final errorType = _getErrorType(response.data);
-      final strategy = _errorStrategies[errorType];
+      final Response<dynamic> response = exception.response!;
+      final dynamic errorType = _getErrorType(response.data);
+      final ErrorStrategy? strategy = _errorStrategies[errorType];
       if (strategy != null) {
-        final content = strategy.buildErrorWidget(context, response);
+        final Widget content = strategy.buildErrorWidget(context, response);
         _showErrorDialog(context, content);
       }
     }
   }
 
-  static dynamic _getErrorType(Map errorData) {
+  static dynamic _getErrorType(Map<dynamic, dynamic> errorData) {
     if (errorData.containsKey('status') && errorData.containsKey('error')) {
       return ErrorGenericDio;
     } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
@@ -37,14 +38,14 @@ class ErrorDialog {
     }
   }
 
-  static void _showErrorDialog(BuildContext context, content) {
+  static void _showErrorDialog(BuildContext context, dynamic content) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
         content: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
               Text(
                 "Ocurrio un error".toUpperCase(),
@@ -55,7 +56,7 @@ class ErrorDialog {
             ],
           ),
         ),
-        actions: [
+        actions: <Widget>[
           FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
         ],
       ),

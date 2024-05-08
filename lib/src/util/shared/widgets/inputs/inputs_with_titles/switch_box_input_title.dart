@@ -16,10 +16,10 @@ class SwitchBoxInputTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text(title, style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        SwitchBoxInput(onChanged: (newValue) => newValue = value),
+        SwitchBoxInput(onChanged: (bool newValue) => newValue = value),
       ],
     );
   }

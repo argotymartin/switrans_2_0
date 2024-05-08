@@ -19,15 +19,15 @@ class PlutoGridDataBuilder extends StatefulWidget {
 }
 
 class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
-  List<Map<String, dynamic>> listValues = [];
+  List<Map<String, dynamic>> listValues = <Map<String, dynamic>>[];
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {
-      final List<PlutoColumn> columns = [];
-      widget.plutoData.first.forEach((key, v) {
-        final tipo = v.type;
+      final List<PlutoColumn> columns = <PlutoColumn>[];
+      widget.plutoData.first.forEach((String key, DataItemGrid v) {
+        final Tipo tipo = v.type;
         final bool isEdit = v.edit;
-        final tilte = key.toUpperCase().replaceAll("_", " ");
+        final String tilte = key.toUpperCase().replaceAll("_", " ");
 
         if (tipo == Tipo.item) {
           columns.add(
@@ -41,7 +41,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               field: key,
               type: PlutoColumnType.text(),
               width: 80,
-              renderer: (renderContext) => _BuildFieldItem(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldItem(renderContext: renderContext),
             ),
           );
         }
@@ -53,12 +53,12 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldText(renderContext: renderContext),
             ),
           );
         }
         if (tipo == Tipo.select) {
-          final data = v.dataList!;
+          final List<String> data = v.dataList!;
           columns.add(
             PlutoColumn(
               enableEditingMode: isEdit,
@@ -76,7 +76,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
             ),
           );
         }
@@ -88,7 +88,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (renderContext) => _BuildFieldDate(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldDate(renderContext: renderContext),
             ),
           );
         }
@@ -100,49 +100,49 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           title: 'Guardar Cambios',
           field: 'cambios',
           type: PlutoColumnType.text(),
-          renderer: (renderContext) => _BuildFieldText(renderContext: renderContext),
+          renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldText(renderContext: renderContext),
         ),
       );
       return columns;
     }
 
     List<PlutoRow> buildDataRows(BuildContext context) {
-      final List<PlutoRow> dataRows = [];
+      final List<PlutoRow> dataRows = <PlutoRow>[];
 
-      widget.plutoData.asMap().forEach((index, dato) {
-        final Map<String, dynamic> dataColumn = {};
-        dato.forEach((key, value) {
-          dataColumn.addEntries({key: value.value}.entries);
+      widget.plutoData.asMap().forEach((int index, Map<String, DataItemGrid> dato) {
+        final Map<String, dynamic> dataColumn = <String, dynamic>{};
+        dato.forEach((String key, DataItemGrid value) {
+          dataColumn.addEntries(<String, dynamic>{key: value.value}.entries);
         });
-        dataColumn.addEntries({'cambios': ''}.entries);
-        final row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
+        dataColumn.addEntries(<String, String>{'cambios': ''}.entries);
+        final PlutoRow row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
         dataRows.add(row);
       });
       return dataRows;
     }
 
-    final Map<int, Map<String, dynamic>> selectedMap = {};
+    final Map<int, Map<String, dynamic>> selectedMap = <int, Map<String, dynamic>>{};
     return Column(
-      children: [
+      children: <Widget>[
         CustomPlutoGridTable(
           columns: buildColumns(context),
           rows: buildDataRows(context),
-          onRowChecked: (event) {
+          onRowChecked: (PlutoGridOnRowCheckedEvent event) {
             if (event.row == null || event.rowIdx == null || event.isChecked == null) {
               return;
             }
             if (event.isChecked!) {
-              final Map<String, dynamic> mapRow = Map.fromEntries(
+              final Map<String, dynamic> mapRow = Map<String, dynamic>.fromEntries(
                 event.row!.cells.entries.map(
-                  (entry) {
+                  (MapEntry<String, PlutoCell> entry) {
                     if (entry.value.column.type.isSelect) {
-                      return MapEntry(entry.key, entry.value.value.toString().split("-")[0]);
+                      return MapEntry<String, String>(entry.key, entry.value.value.toString().split("-")[0]);
                     }
-                    return MapEntry(entry.key, entry.value.value);
+                    return MapEntry<String, dynamic>(entry.key, entry.value.value);
                   },
                 ),
               );
-              selectedMap.addEntries({event.rowIdx!: mapRow}.entries);
+              selectedMap.addEntries(<int, Map<String, dynamic>>{event.rowIdx!: mapRow}.entries);
             } else {
               selectedMap.remove(event.rowIdx);
             }
@@ -189,11 +189,11 @@ class _BuildFieldDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateValue = renderContext.cell.value.toString().split(" ");
-    final fecha = dateValue[0];
-    final hora = dateValue[1].split(".")[0];
+    final List<String> dateValue = renderContext.cell.value.toString().split(" ");
+    final String fecha = dateValue[0];
+    final String hora = dateValue[1].split(".")[0];
     return Row(
-      children: [
+      children: <Widget>[
         const Icon(Icons.calendar_month, color: Colors.black54),
         Text(
           fecha,

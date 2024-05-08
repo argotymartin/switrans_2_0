@@ -5,13 +5,14 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
+import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 part 'modulo_event.dart';
 part 'modulo_state.dart';
 
 class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
   final AbstractModuloRepository _repository;
-  List<ModuloPaquete> paquetes = [];
+  List<ModuloPaquete> paquetes = <ModuloPaquete>[];
 
   ModuloBloc(this._repository) : super(const ModuloInitialState()) {
     on<SetModuloEvent>(_onSetModulo);
@@ -22,7 +23,7 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
 
   Future<void> _onSetModulo(SetModuloEvent event, Emitter<ModuloState> emit) async {
     emit(const ModuloLoadingState());
-    final response = await _repository.setModuloService(event.request);
+    final DataState<Modulo> response = await _repository.setModuloService(event.request);
     if (response.data != null) {
       emit(ModuloSuccessState(modulo: response.data));
     } else {
@@ -32,7 +33,7 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
 
   Future<void> _onUpdateModulo(UpdateModuloEvent event, Emitter<ModuloState> emit) async {
     emit(const ModuloLoadingState());
-    final response = await _repository.updateModuloService(event.request);
+    final DataState<Modulo> response = await _repository.updateModuloService(event.request);
     if (response.data != null) {
       emit(ModuloSuccessState(modulo: response.data));
     } else {
@@ -42,14 +43,13 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
 
   Future<void> _onGetModulo(GetModuloEvent event, Emitter<ModuloState> emit) async {
     emit(const ModuloLoadingState());
-    final response = await _repository.getModulosService(event.request);
+    final DataState<List<Modulo>> response = await _repository.getModulosService(event.request);
     if (response.data != null) {
       emit(ModuloConsultedState(modulos: response.data!));
     } else {
       emit(ModuloExceptionState(exception: response.error));
     }
   }
-
 
   Future<void> _onErrorFormModulo(ErrorFormModuloEvent event, Emitter<ModuloState> emit) async {
     emit(const ModuloLoadingState());
@@ -58,9 +58,8 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
 
   Future<void> onGetPaquetes() async {
     if (paquetes.isEmpty) {
-      final resp = await _repository.getPaquetesService();
+      final DataState<List<ModuloPaquete>> resp = await _repository.getPaquetesService();
       paquetes = resp.data!;
     }
   }
-
 }

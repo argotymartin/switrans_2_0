@@ -14,7 +14,7 @@ class CurrencyLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = NumberFormat.simpleCurrency(decimalDigits: 0);
+    final NumberFormat formatCurrency = NumberFormat.simpleCurrency(decimalDigits: 0);
     return Text(
       formatCurrency.format(int.parse(text)),
       style: TextStyle(color: color, fontWeight: FontWeight.w400, fontSize: fontSize),

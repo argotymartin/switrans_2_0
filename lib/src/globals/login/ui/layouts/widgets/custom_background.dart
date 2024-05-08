@@ -9,7 +9,7 @@ class CustomBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [Color(0xff183650), Colors.white]),
+        gradient: LinearGradient(colors: <Color>[Color(0xff183650), Colors.white]),
         image: DecorationImage(
           image: AssetImage('assets/login_background.jpg'),
           fit: BoxFit.cover,

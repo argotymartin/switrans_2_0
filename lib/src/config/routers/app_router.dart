@@ -6,7 +6,7 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class AppRouter {
   static String initialRoute = "/";
-  static const login = "/sign-in";
+  static const String login = "/sign-in";
 
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
@@ -19,6 +19,6 @@ class AppRouter {
       ...FinancieroRoutes.getRoutesFinaciero(),
       ...MaestrosRoutes.getRoutesMaestros(),
     ],
-    errorBuilder: (_, state) => ErrorLayout(goRouterState: state),
+    errorBuilder: (_, GoRouterState state) => ErrorLayout(goRouterState: state),
   );
 }

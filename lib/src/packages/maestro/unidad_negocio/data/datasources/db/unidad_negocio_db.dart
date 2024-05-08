@@ -4,10 +4,10 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
 
 class UnidadNegocioDB {
-  Future<Response> getUnidadNegocioDB(UnidadNegocioRequest request) async {
+  Future<Response<dynamic>> getUnidadNegocioDB(UnidadNegocioRequest request) async {
     try {
       String where = '';
-      final List conditions = [];
+      final List<String> conditions = <String>[];
 
       if (request.codigo != null) {
         conditions.add("tu.unineg_codigo = ${request.codigo!}");
@@ -27,7 +27,7 @@ class UnidadNegocioDB {
         where = "WHERE ${conditions.join(" AND ")}";
       }
 
-      final sql = """
+      final String sql = """
               SELECT TU.UNINEG_CODIGO,
                       TU.UNINEG_NOMBRE,
                       TU.UNINEG_ACTIVO,
@@ -39,7 +39,7 @@ class UnidadNegocioDB {
                       LEFT JOIN TB_EMPRESA E ON E.EMPRESA_CODIGO = TU.EMPRESA_CODIGO
                 $where 
                 ORDER BY tu.unineg_codigo""";
-      final response = FunctionsPostgresql.executeQueryDB(sql);
+      final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
       debugPrint("Error en getAccionDocumentosDB: $e");
@@ -47,10 +47,10 @@ class UnidadNegocioDB {
     }
   }
 
-  Future<Response> setUnidadNegocioDB(UnidadNegocioRequest request) async {
-    final max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_unidadnegocio', key: 'unineg_codigo');
+  Future<Response<dynamic>> setUnidadNegocioDB(UnidadNegocioRequest request) async {
+    final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_unidadnegocio', key: 'unineg_codigo');
 
-    final sql = """
+    final String sql = """
       INSERT INTO public.tb_unidadnegocio (
         unineg_codigo, 
         unineg_nombre, 
@@ -66,13 +66,13 @@ class UnidadNegocioDB {
         ); """;
     debugPrint("insert SQL:  $sql");
     await FunctionsPostgresql.executeQueryDB(sql);
-    final resp = await getUnidadNegocioDB(request);
+    final Response<dynamic> resp = await getUnidadNegocioDB(request);
     return resp;
   }
 
-  Future<Response> updateUnidadNegocioDB(UnidadNegocioRequest request) async {
+  Future<Response<dynamic>> updateUnidadNegocioDB(UnidadNegocioRequest request) async {
     try {
-      final updateFields = [];
+      final List<String> updateFields = <String>[];
 
       if (request.nombre != null) {
         updateFields.add("unineg_nombre = '${request.nombre}'");
@@ -81,13 +81,13 @@ class UnidadNegocioDB {
         updateFields.add("unineg_activo = ${request.isActivo}");
       }
       if (request.empresa != null) {
-        final empresa = await getEmpresaCodigoDB(request.empresa!);
+        final Response<dynamic> empresa = await getEmpresaCodigoDB(request.empresa!);
         updateFields.add("empresa_codigo = ${empresa.data[0]['empresa_codigo']}");
         request.empresa = '${empresa.data[0]['empresa_codigo']}';
       }
 
-      final updateFieldsStr = updateFields.join(', ');
-      final sql = """
+      final String updateFieldsStr = updateFields.join(', ');
+      final String sql = """
       UPDATE public.tb_unidadnegocio
       SET  $updateFieldsStr
       WHERE unineg_codigo = ${request.codigo};""";
@@ -95,7 +95,7 @@ class UnidadNegocioDB {
       debugPrint("updateDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final resp = await getUnidadNegocioDB(request);
+      final Response<dynamic> resp = await getUnidadNegocioDB(request);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");
@@ -103,16 +103,17 @@ class UnidadNegocioDB {
     }
   }
 
-  Future<Response> getEmpresasDB() async {
-    const sql =
+  Future<Response<dynamic>> getEmpresasDB() async {
+    const String sql =
         """SELECT EMPRESA_CODIGO, EMPRESA_NOMBRE FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE ORDER BY EMPRESA_NOMBRE ASC """;
-    final response = await FunctionsPostgresql.executeQueryDB(sql);
+    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 
-  Future<Response> getEmpresaCodigoDB(String empresaNombre) async {
-    final sql = """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_NOMBRE = '$empresaNombre' """;
-    final response = await FunctionsPostgresql.executeQueryDB(sql);
+  Future<Response<dynamic>> getEmpresaCodigoDB(String empresaNombre) async {
+    final String sql =
+        """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_NOMBRE = '$empresaNombre' """;
+    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 }

@@ -13,7 +13,7 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) async {
+        listener: (BuildContext context, AuthState state) async {
           if (state is AuthErrorState) {
             context.pop();
             ErrorDialog.showDioException(context, state.error!);
@@ -37,7 +37,7 @@ class AuthLayout extends StatelessWidget {
         },
         child: ListView(
           physics: const ClampingScrollPhysics(),
-          children: const [
+          children: const <Widget>[
             _DesktopBody(child: AuthView()),
             LinksBar(),
           ],
@@ -54,13 +54,13 @@ class _DesktopBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     final double width = size.width < 780 ? size.width * 0.8 : 500;
     return SizedBox(
       width: size.width,
       height: size.height * 0.95,
       child: Stack(
-        children: [
+        children: <Widget>[
           const CustomBackground(),
           Positioned(
             top: 40,
@@ -78,7 +78,7 @@ class _DesktopBody extends StatelessWidget {
               width: width,
               height: size.height * 0.2,
               child: Column(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 20),
                   const CustomTitle(),
                   const SizedBox(height: 20),
@@ -105,10 +105,10 @@ class BuildTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const SizedBox(width: 8),
         Row(
-          children: [
+          children: <Widget>[
             const SizedBox(width: 80),
             const Text(
               "Switrans 2.0",

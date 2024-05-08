@@ -17,7 +17,7 @@ class ModuloMenu {
     required this.paquete,
     required this.path,
     this.detalles = "",
-    this.paginas = const [],
+    this.paginas = const <PaginaMenu>[],
     this.isSelected = false,
   });
 }

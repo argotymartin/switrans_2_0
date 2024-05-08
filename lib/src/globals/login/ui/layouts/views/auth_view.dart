@@ -10,11 +10,11 @@ class AuthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final passController = TextEditingController();
-    final userController = TextEditingController();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final TextEditingController passController = TextEditingController();
+    final TextEditingController userController = TextEditingController();
     return Builder(
-      builder: (context) {
+      builder: (BuildContext context) {
         return Container(
           margin: const EdgeInsets.only(top: 20),
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -25,12 +25,12 @@ class AuthView extends StatelessWidget {
                 key: formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     TextFormFieldLogin(
                       icon: Icons.person_2_outlined,
                       placeHoder: "Usuario",
                       textController: userController,
-                      onFieldSubmitted: (value) => onFormSubmit(formKey, userController, passController, context),
+                      onFieldSubmitted: (String value) => onFormSubmit(formKey, userController, passController, context),
                       onValidator: onValidateUser,
                     ),
                     const SizedBox(height: 20),
@@ -38,7 +38,7 @@ class AuthView extends StatelessWidget {
                       icon: Icons.lock_outline_rounded,
                       placeHoder: "Contraseña",
                       textController: passController,
-                      onFieldSubmitted: (value) => onFormSubmit(formKey, userController, passController, context),
+                      onFieldSubmitted: (String value) => onFormSubmit(formKey, userController, passController, context),
                       onValidator: onValidatePass,
                       isPassword: true,
                     ),
@@ -86,9 +86,9 @@ class AuthView extends StatelessWidget {
     TextEditingController passController,
     BuildContext context,
   ) {
-    final isValid = formKey.currentState!.validate();
+    final bool isValid = formKey.currentState!.validate();
     if (isValid) {
-      final params = UsuarioRequest(identity: emailController.text, password: passController.text);
+      final UsuarioRequest params = UsuarioRequest(identity: emailController.text, password: passController.text);
       context.read<AuthBloc>().add(LoginAuthEvent(params: params));
     }
   }

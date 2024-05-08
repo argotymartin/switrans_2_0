@@ -17,7 +17,7 @@ class PaginaMenuModel extends PaginaMenu {
         path: json["path"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         "id": id,
         "modulo": modulo,
         "codigo": codigo,

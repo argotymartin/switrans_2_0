@@ -6,14 +6,14 @@ class LinksBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
 
     return Container(
       color: const Color(0xff183650),
       height: size.width > 1000 ? size.height * 0.054 : null,
       child: const Wrap(
         alignment: WrapAlignment.center,
-        children: [
+        children: <Widget>[
           LinkText(text: "Home"),
           LinkText(text: "Nosotros"),
           LinkText(text: "Ayuda"),

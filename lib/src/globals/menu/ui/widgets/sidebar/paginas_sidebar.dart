@@ -29,7 +29,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
       child: InkWell(
         onTap: () => setState(() {
           isEntered = !isEntered;
-          final path = context.read<MenuSidebarBloc>().onPaginaSelected(isSelected: isEntered, paginaMenu: widget.pagina);
+          final String path = context.read<MenuSidebarBloc>().onPaginaSelected(isSelected: isEntered, paginaMenu: widget.pagina);
           context.go(path);
         }),
         child: Material(
@@ -37,7 +37,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
               ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.5)
               : Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.4),
           child: Stack(
-            children: [
+            children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(left: 42.5),
                 color: Theme.of(context).colorScheme.primaryContainer,
@@ -47,7 +47,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
               Container(
                 margin: const EdgeInsets.only(left: 43, top: 10, bottom: 10, right: 10),
                 child: Row(
-                  children: [
+                  children: <Widget>[
                     Container(
                       width: 20,
                       height: isHovered || widget.pagina.isSelected ? 2 : 1,

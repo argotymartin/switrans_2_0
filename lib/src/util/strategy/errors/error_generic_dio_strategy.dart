@@ -5,18 +5,18 @@ import 'package:switrans_2_0/src/util/strategy/errors/error_strategy.dart';
 
 class ErrorGenericDioStrategy implements ErrorStrategy {
   @override
-  Widget buildErrorWidget(BuildContext context, Response response) {
+  Widget buildErrorWidget(BuildContext context, Response<dynamic> response) {
     return _buildErrorDioGeneric(context, response);
   }
 
-  Widget _buildErrorDioGeneric(BuildContext context, Response response) {
-    final error = ErrorGenericDio.fromJson(response.data);
-    final query = response.requestOptions.queryParameters;
-    final metodo = response.requestOptions.method;
+  Widget _buildErrorDioGeneric(BuildContext context, Response<dynamic> response) {
+    final ErrorGenericDio error = ErrorGenericDio.fromJson(response.data);
+    final Map<String, dynamic> query = response.requestOptions.queryParameters;
+    final String metodo = response.requestOptions.method;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         _buildErrorRow("Status", error.status),
         _buildErrorRow("Error", error.error),
         _buildErrorRow("Path", error.path),
@@ -27,9 +27,9 @@ class ErrorGenericDioStrategy implements ErrorStrategy {
   }
 
   Widget _buildErrorRow(String label, String value) {
-    final style = TextStyle(color: Colors.red.shade800, fontWeight: FontWeight.w500, fontSize: 16);
+    final TextStyle style = TextStyle(color: Colors.red.shade800, fontWeight: FontWeight.w500, fontSize: 16);
     return Row(
-      children: [
+      children: <Widget>[
         Text(label, style: style),
         const SizedBox(width: 8),
         Text(value),
