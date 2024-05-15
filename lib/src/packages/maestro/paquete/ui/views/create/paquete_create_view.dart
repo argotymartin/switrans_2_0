@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
@@ -10,9 +9,11 @@ import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PaqueteCreateView extends StatelessWidget {
   const PaqueteCreateView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+
     return BlocListener<PaqueteBloc, PaqueteState>(
       listener: (BuildContext context, PaqueteState state) {
         if (state is PaqueteExceptionState) {
@@ -20,12 +21,12 @@ class PaqueteCreateView extends StatelessWidget {
         }
 
         if (state is PaqueteSuccessState) {
+          final PaqueteRequest request = PaqueteRequest(paqueteNombre: state.paquete!.paqueteNombre);
+          context.read<PaqueteBloc>().add(GetPaqueteEvent(request));
           context.go('/maestros/paquete/buscar');
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
+        child:ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
             children: <Widget>[
@@ -37,9 +38,7 @@ class PaqueteCreateView extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
-    );
+      );
   }
 }
 
@@ -50,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController iconoController = TextEditingController();
-    bool isVisible = true;
+    const bool isVisible = true;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -60,19 +59,7 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildRowsForm(
             children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController),
-              TextInputTitle(title: "Icono", controller: iconoController),
-            ],
-          ),
-          BuildRowsForm(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Visible", style: AppTheme.titleStyle),
-                  const SizedBox(height: 8),
-                  SwitchBoxInput(value: isVisible, onChanged: (bool newValue) => isVisible = newValue),
-                ],
-              ),
+              const SwitchBoxInputTitle(title: "Visible", value: isVisible),
             ],
           ),
           FilledButton.icon(

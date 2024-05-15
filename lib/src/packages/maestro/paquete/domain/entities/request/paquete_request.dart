@@ -18,31 +18,28 @@ class PaqueteRequest {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
       'id': '$paqueteId',
-      'paquete_codigo': paqueteCodigo,
-      'paquete_nombre': "$paqueteNombre",
-      'paquete_path': '$paquetePath',
-      'paquete_visible': paqueteVisible,
-      'paquete_icono': '$paqueteIcono',
+      'codigo': paqueteCodigo,
+      'nombre': "$paqueteNombre",
+      'path': '$paquetePath',
+      'visible': paqueteVisible,
+      'icono': '$paqueteIcono',
     };
     if (paqueteId != '0') {
       data['id'] = '$paqueteId';
     }
     if (paqueteCodigo != 0) {
-      data['paquete_codigo'] = paqueteCodigo;
+      data['codigo'] = paqueteCodigo;
     }
     if (paqueteNombre!.isEmpty) {
-      data['paquete_nombre'] = '$paqueteNombre';
+      data['nombre'] = '$paqueteNombre';
     }
     if (paquetePath!.isEmpty) {
-      data['paquete_path'] = '$paquetePath';
+      data['path'] = '$paquetePath';
     }
-    if (paqueteVisible != null) {
-      data['paquete_visible'] = paqueteVisible;
-    }
+    data['visible'] = paqueteVisible;
     if (paqueteIcono!.isEmpty) {
-      data['paquete_icono'] = '$paqueteIcono';
+      data['icono'] = '$paqueteIcono';
     }
-
     return data;
   }
 
