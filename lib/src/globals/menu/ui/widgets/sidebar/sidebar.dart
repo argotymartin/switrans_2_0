@@ -27,7 +27,7 @@ class Sidebar extends StatelessWidget {
                     child: Theme(
                       data: ThemeData(
                         scrollbarTheme: ScrollbarThemeData(
-                          thickness: MaterialStateProperty.all(8.0),
+                          thickness: WidgetStateProperty.all(8.0),
                         ),
                       ),
                       child: ListView(

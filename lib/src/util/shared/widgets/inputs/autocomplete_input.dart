@@ -61,9 +61,9 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   DropdownMenuEntry<EntryAutocomplete> buildItemMenuEntry(EntryAutocomplete entry) {
     return DropdownMenuEntry<EntryAutocomplete>(
       style: const ButtonStyle(
-        padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8)),
-        side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: Colors.grey, width: 0.3)),
-        backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+        padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8)),
+        side: WidgetStatePropertyAll<BorderSide>(BorderSide(color: Colors.grey, width: 0.3)),
+        backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
       ),
       value: entry,
       label: entry.title,
