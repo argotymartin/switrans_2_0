@@ -23,12 +23,12 @@ class AppTheme {
       textSelectionTheme: const TextSelectionThemeData(),
       dataTableTheme: const DataTableThemeData(checkboxHorizontalMargin: 20),
       scrollbarTheme: ScrollbarThemeData(
-        thickness: MaterialStateProperty.all(16),
+        thickness: WidgetStateProperty.all(16),
         radius: const Radius.circular(6),
-        thumbColor: MaterialStateProperty.all(Colors.grey),
-        trackColor: MaterialStateProperty.all(Colors.blueGrey),
+        thumbColor: WidgetStateProperty.all(Colors.grey),
+        trackColor: WidgetStateProperty.all(Colors.blueGrey),
         crossAxisMargin: 0,
-        thumbVisibility: const MaterialStatePropertyAll<bool>(true),
+        thumbVisibility: const WidgetStatePropertyAll<bool>(true),
         interactive: true,
       ),
     );

@@ -50,7 +50,7 @@ class CustomPlutoGridTable extends StatelessWidget {
             enableRowColorAnimation: true,
             rowHeight: rowHeight,
             gridBorderRadius: BorderRadius.circular(8),
-            evenRowColor: Theme.of(context).colorScheme.surfaceVariant,
+            evenRowColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             gridBorderColor: Theme.of(context).colorScheme.primary,
           ),
           columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),

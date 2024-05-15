@@ -124,7 +124,7 @@ class _BuildButtonState extends State<_BuildButton> {
         child: IconButton(
           color: isHover ? Colors.white : Colors.grey.shade400,
           style: ButtonStyle(
-            shape: MaterialStatePropertyAll<OutlinedBorder>(
+            shape: WidgetStatePropertyAll<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
               ),

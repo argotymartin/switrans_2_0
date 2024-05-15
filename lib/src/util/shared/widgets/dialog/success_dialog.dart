@@ -6,14 +6,14 @@ class SuccessDialog {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Icon(Icons.info_outline_rounded, size: 80, color: Theme.of(context).colorScheme.error),
               Text(
                 "Se grabo con exito",
-                style: TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 24),
+                style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 24),
               ),
               const SizedBox(height: 16),
             ],

@@ -22,7 +22,7 @@ class ProfileSidebar extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         Container(
-          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
           height: isMenuIcon ? 94 : 152,
         ),
         Center(
