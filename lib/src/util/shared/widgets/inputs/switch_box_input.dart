@@ -31,8 +31,8 @@ class _SwitchBoxInputState extends State<SwitchBoxInput> {
         setState(() => _value = value);
         widget.onChanged?.call(value);
       },
-      thumbIcon: MaterialStateProperty.resolveWith<Icon>(
-        (Set<MaterialState> states) {
+      thumbIcon: WidgetStateProperty.resolveWith<Icon>(
+        (Set<WidgetState> states) {
           if (_value) {
             return const Icon(Icons.check, color: Colors.black);
           } else {
