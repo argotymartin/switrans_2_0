@@ -4,6 +4,7 @@ class Paquete {
   String paqueteNombre;
   String paquetePath;
   bool paqueteVisible;
+  bool paqueteActivo;
   String paqueteIcono;
   String fechaCreacion;
 
@@ -13,6 +14,7 @@ class Paquete {
     required this.paqueteNombre,
     required this.paquetePath,
     required this.paqueteVisible,
+    required this.paqueteActivo,
     required this.paqueteIcono,
     required this.fechaCreacion,
   });

@@ -58,8 +58,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController),
-              const SwitchBoxInputTitle(title: "Visible", value: isVisible),
+              TextInputTitle(title: "Nombre", controller: nombreController, isFormatTextNumber: true),
+              TextInputTitle(title: "Icono", controller: iconoController),
             ],
           ),
           FilledButton.icon(

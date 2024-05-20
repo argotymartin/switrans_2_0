@@ -12,6 +12,9 @@ class FilterPocketBase extends PaqueteRequest {
     if (request.paqueteVisible != null) {
       conditions.add('visible = ${request.paqueteVisible!}');
     }
+    if (request.paqueteActivo != null) {
+      conditions.add('activo = ${request.paqueteActivo!}');
+    }
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
     final String data = queryString.isNotEmpty ? '($queryString)' : '';
     return data;

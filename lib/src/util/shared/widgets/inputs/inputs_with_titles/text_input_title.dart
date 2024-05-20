@@ -8,6 +8,8 @@ class TextInputTitle extends StatefulWidget {
   final int minLength;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
+  final bool isFormatTextNumber;
+
 
   const TextInputTitle({
     super.key,
@@ -16,6 +18,7 @@ class TextInputTitle extends StatefulWidget {
     this.initialValue = "",
     this.title = "",
     this.minLength = 3,
+    this.isFormatTextNumber = false,
   });
 
   @override
@@ -39,6 +42,7 @@ class _TextInputTitleState extends State<TextInputTitle> {
             minLength: widget.minLength,
             onChanged: widget.onChanged,
             title: widget.title,
+            isFormatTextNumber: widget.isFormatTextNumber,
           ),
         ),
       ],

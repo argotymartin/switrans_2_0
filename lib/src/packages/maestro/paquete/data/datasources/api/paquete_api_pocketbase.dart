@@ -21,12 +21,21 @@ class PaqueteApiPocketBase {
     final int maxPaqueteCodigo = await getMaxPaqueteCodigo();
     request.paqueteCodigo = maxPaqueteCodigo;
     const String url = '$kPocketBaseUrl/api/collections/paquete/records';
-    final Response<String> response = await _dio.post('$url/', data: request.toJsonCreate());
+    final Response<String> response = await _dio.post('$url/', data: request.toJson());
     return response;
   }
 
   Future<Response<dynamic>> updatePaqueteApi(PaqueteRequest request) async {
-    final String url = '$kPocketBaseUrl/api/collections/paquete/records/${request.paqueteId}?';
+    final PaqueteRequest paqueteRequest = PaqueteRequest(
+      paqueteCodigo: request.paqueteCodigo,
+    );
+    final Response<dynamic> paqueteUpdate = await getPaquetesApi(paqueteRequest);
+    final Map<String, dynamic> responseData = jsonDecode(paqueteUpdate.data);
+    final String paqueteId = responseData['items'][0]['id'];
+
+
+    final String url = '$kPocketBaseUrl/api/collections/paquete/records/${paqueteId}?';
+
     final Response<dynamic> response = await _dio.patch(
       url,
       data: request.toJson(),

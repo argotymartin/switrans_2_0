@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/paquete_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
@@ -45,6 +46,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
     bool isVisible = true;
+    bool isActivo = true;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -65,6 +67,7 @@ class _BuildFieldsForm extends StatelessWidget {
           paqueteNombre: nombreController.text,
           paqueteCodigo: int.tryParse(codigoController.text),
           paqueteVisible: isVisible,
+          paqueteActivo: isActivo,
         );
         context.read<PaqueteBloc>().add(GetPaqueteEvent(request));
       }
@@ -85,6 +88,14 @@ class _BuildFieldsForm extends StatelessWidget {
                   Text("Visible", style: AppTheme.titleStyle),
                   const SizedBox(height: 8),
                   SwitchBoxInput(value: isVisible, onChanged: (bool newValue) => isVisible = newValue),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Activo", style: AppTheme.titleStyle),
+                  const SizedBox(height: 8),
+                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
                 ],
               ),
             ],
@@ -142,20 +153,21 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
     void onPressedSave() {
       for (final Map<String, dynamic> map in listUpdate) {
-        final PaqueteRequest request = PaqueteRequest.fromMap(map);
+        final PaqueteRequest request = PaqueteRequestModel.fromMap(map);
         context.read<PaqueteBloc>().add(UpdatePaqueteEvent(request));
       }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(Paquete paquete) {
       return <String, DataItemGrid>{
-        'id': DataItemGrid(type: Tipo.item, value: paquete.paqueteId, edit: false),
-        'codigo': DataItemGrid(type: Tipo.text, value: paquete.paqueteCodigo, edit: false),
+        //'id': DataItemGrid(type: Tipo.item, value: paquete.paqueteId, edit: false),
+        'codigo': DataItemGrid(type: Tipo.item, value: paquete.paqueteCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: paquete.paqueteNombre, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: paquete.paquetePath, edit: false),
         'icono': DataItemGrid(type: Tipo.text, value: paquete.paqueteIcono, edit: true),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
         'visible': DataItemGrid(type: Tipo.boolean, value: paquete.paqueteVisible, edit: true),
+        'activo': DataItemGrid(type: Tipo.boolean, value: paquete.paqueteActivo, edit: true),
       };
     }
 

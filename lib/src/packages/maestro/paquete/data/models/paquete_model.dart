@@ -7,6 +7,7 @@ class PaqueteModel extends Paquete {
     required super.paqueteNombre,
     required super.paquetePath,
     required super.paqueteVisible,
+    required super.paqueteActivo,
     required super.paqueteIcono,
     required super.fechaCreacion,
   });
@@ -17,6 +18,7 @@ class PaqueteModel extends Paquete {
         paqueteNombre: json["nombre"],
         paquetePath: json["path"],
         paqueteVisible: json["visible"],
+        paqueteActivo: json["activo"],
         paqueteIcono: json["icono"],
         fechaCreacion: json["created"].toString(),
       );
