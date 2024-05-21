@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/segmented_input.dart';
 
-class SwitchBoxInputTitle extends StatelessWidget {
-  final ValueChanged<bool> onChanged;
+class SegmentedInputTitle extends StatelessWidget {
+  final ValueChanged<bool?> onChanged;
   final String title;
 
-  const SwitchBoxInputTitle({
+  const SegmentedInputTitle({
     required this.onChanged,
     required this.title,
     super.key,
@@ -19,7 +19,7 @@ class SwitchBoxInputTitle extends StatelessWidget {
       children: <Widget>[
         Text(title, style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        SwitchBoxInput(onChanged: onChanged),
+        SegmentedInput(onChanged: onChanged),
       ],
     );
   }

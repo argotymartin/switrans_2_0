@@ -66,7 +66,7 @@ class _TextInputState extends State<TextInput> {
         return "El campo debe ser minimo de ${widget.minLength} caracteres";
       }
 
-      if (widget.typeInput == TypeInput.lettersAndNumbers) {
+      if (widget.typeInput == TypeInput.lettersAndNumbers && value.isNotEmpty) {
         if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
           isError = true;
           return "El campo solo permite letras y numeros (ABC123)";

@@ -54,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController typeController = TextEditingController();
-    const bool esInverso = false;
+    bool esInverso = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -63,9 +63,14 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nameController, typeInput: TypeInput.lettersAndNumbers, minLength: 3),
+              TextInputTitle(
+                title: "Nombre",
+                controller: nameController,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
+              ),
               FieldTipoDocumento(typeController),
-              const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa"),
+              SwitchBoxInputTitle(title: "Es Naturaleza Inversa", onChanged: (bool value) => esInverso = value),
             ],
           ),
           FilledButton.icon(
