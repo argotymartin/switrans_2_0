@@ -9,6 +9,8 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/sear
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
@@ -28,6 +30,7 @@ class MaestrosRoutes {
     routes.add(routerServicioEmpresarial());
     routes.add(routerUnidadNegocio());
     routes.add(routerModulo());
+    routes.add(routerPaquete());
     return routes;
   }
 
@@ -160,6 +163,29 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const ModuloSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerPaquete() {
+    const String modulePath = "paquete";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return MenuLayout(child: child);
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            return const PaqueteCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const PaqueteSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

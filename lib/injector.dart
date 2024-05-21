@@ -20,6 +20,10 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/mo
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/data/datasources/api/paquete_api_pocketbase.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/data/repositories/paquete_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
@@ -74,4 +78,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<ModuloApiPocketBase>(ModuloApiPocketBase(injector()));
   injector.registerSingleton<AbstractModuloRepository>(ModuloRepositoryImpl(injector()));
   injector.registerSingleton<ModuloBloc>(ModuloBloc(injector()));
+
+  injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
+  injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
+  injector.registerSingleton<PaqueteBloc>(PaqueteBloc(injector()));
 }
