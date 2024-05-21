@@ -8,17 +8,18 @@ class TextInputTitle extends StatefulWidget {
   final int minLength;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
-  final bool isFormatTextNumber;
-
+  final TypeInput typeInput;
+  final bool isFormValid;
 
   const TextInputTitle({
-    super.key,
-    this.controller,
+    required this.title,
+    required this.controller,
+    required this.typeInput,
     this.onChanged,
     this.initialValue = "",
-    this.title = "",
-    this.minLength = 3,
-    this.isFormatTextNumber = false,
+    this.minLength = 0,
+    this.isFormValid = true,
+    super.key,
   });
 
   @override
@@ -26,24 +27,21 @@ class TextInputTitle extends StatefulWidget {
 }
 
 class _TextInputTitleState extends State<TextInputTitle> {
-  double higth = 38;
+  String validator = "";
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        widget.title.isNotEmpty ? Text(widget.title, style: AppTheme.titleStyle) : const SizedBox(),
-        widget.title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
-        SizedBox(
-          height: higth,
-          child: TextInput(
-            controller: widget.controller,
-            initialValue: widget.initialValue,
-            minLength: widget.minLength,
-            onChanged: widget.onChanged,
-            title: widget.title,
-            isFormatTextNumber: widget.isFormatTextNumber,
-          ),
+        Text(widget.title, style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        TextInput(
+          typeInput: widget.typeInput,
+          controller: widget.controller,
+          initialValue: widget.initialValue,
+          minLength: widget.minLength,
+          onChanged: widget.onChanged,
+          hintText: widget.title,
         ),
       ],
     );

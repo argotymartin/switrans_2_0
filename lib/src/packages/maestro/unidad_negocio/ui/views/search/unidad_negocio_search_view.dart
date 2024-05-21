@@ -8,6 +8,7 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/field_unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class UnidadNegocioSearchView extends StatelessWidget {
@@ -78,7 +79,7 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildRowsForm(
             children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               FieldUnidadNegocioEmpresa(empresaController),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

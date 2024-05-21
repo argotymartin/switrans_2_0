@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquet
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PaqueteSearchView extends StatelessWidget {
@@ -54,8 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio =
-          nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible;
 
       if (isCampoVacio) {
         isValid = false;
@@ -80,7 +80,7 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

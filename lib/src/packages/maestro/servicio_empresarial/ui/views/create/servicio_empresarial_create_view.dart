@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ServicioEmpresarialCreateView extends StatelessWidget {
@@ -55,7 +56,7 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nameController),
+              TextInputTitle(title: "Nombre", controller: nameController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
             ],
           ),
           FilledButton.icon(
