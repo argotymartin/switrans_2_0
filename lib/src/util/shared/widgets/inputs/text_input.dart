@@ -44,6 +44,7 @@ class _TextInputState extends State<TextInput> {
       child: InkWell(
         onFocusChange: (bool value) => setState(() => isFocusOut = value),
         child: TextFormField(
+          autofocus: true,
           controller: widget.controller,
           initialValue: widget.initialValue.isNotEmpty ? widget.initialValue : null,
           onChanged: widget.onChanged,
