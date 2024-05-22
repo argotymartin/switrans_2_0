@@ -36,7 +36,6 @@ class CustomPlutoGridTable extends StatelessWidget {
         },
         onRowChecked: onRowChecked,
         mode: PlutoGridMode.select,
-
         //onRowDoubleTap: onRowDoubleTap,
         configuration: PlutoGridConfiguration(
           enableMoveHorizontalInEditing: true,

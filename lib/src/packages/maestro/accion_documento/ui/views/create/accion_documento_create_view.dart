@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AccionDocumentoCreateView extends StatelessWidget {
@@ -53,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController typeController = TextEditingController();
-    const bool esInverso = false;
+    bool esInverso = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -62,9 +63,14 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nameController),
+              TextInputTitle(
+                title: "Nombre",
+                controller: nameController,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
+              ),
               FieldTipoDocumento(typeController),
-              const SwitchBoxInputTitle(value: esInverso, title: "Es Naturaleza Inversa"),
+              SwitchBoxInputTitle(title: "Es Naturaleza Inversa", onChanged: (bool value) => esInverso = value),
             ],
           ),
           FilledButton.icon(
