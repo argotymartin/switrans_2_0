@@ -3,8 +3,8 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request
 class FilterPocketBase extends PaginaRequest {
   String toPocketBaseFilter(PaginaRequest request) {
     final List<String> conditions = <String>[];
-    if (request.paginaNombre != null && request.paginaNombre!.isNotEmpty) {
-      conditions.add('pagina_texto ~ "${request.paginaNombre!}"');
+    if (request.paginaTexto != null && request.paginaTexto!.isNotEmpty) {
+      conditions.add('pagina_texto ~ "${request.paginaTexto!}"');
     }
     if (request.paginaCodigo != null) {
       conditions.add('pagina_codigo = ${request.paginaCodigo!}');

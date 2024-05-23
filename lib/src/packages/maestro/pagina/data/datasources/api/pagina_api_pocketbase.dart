@@ -33,7 +33,6 @@ class PaginaApiPocketBase {
     final Map<String, dynamic> responseData = jsonDecode(paqueteUpdate.data);
     final String paqueteId = responseData['items'][0]['id'];
 
-
     final String url = '$kPocketBaseUrl/api/collections/paquete/records/${paqueteId}?';
 
     final Response<dynamic> response = await _dio.patch(

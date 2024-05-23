@@ -62,7 +62,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
       if (isValid) {
         final PaginaRequest request = PaginaRequest(
-          paginaNombre: nombreController.text,
+          paginaTexto: nombreController.text,
           paginaCodigo: int.tryParse(codigoController.text),
           paginaVisible: isVisible,
           paginaActivo: isActivo,
@@ -78,8 +78,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               SegmentedInputTitle(title: "Visible", onChanged: (bool? newValue) => isVisible = newValue),
               SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
             ],
@@ -145,7 +145,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
       return <String, DataItemGrid>{
         'codigo': DataItemGrid(type: Tipo.item, value: pagina.paginaCodigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaNombre, edit: true),
+        'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaTexto, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: pagina.paginaPath, edit: false),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
         'visible': DataItemGrid(type: Tipo.boolean, value: pagina.paginaVisible, edit: true),

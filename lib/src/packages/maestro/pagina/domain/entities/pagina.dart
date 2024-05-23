@@ -1,16 +1,16 @@
 class Pagina {
-  String paginaId;
+  String id;
   int paginaCodigo;
-  String paginaNombre;
+  String paginaTexto;
   String paginaPath;
   bool paginaVisible;
   bool paginaActivo;
   String fechaCreacion;
 
   Pagina({
-    required this.paginaId,
+    required this.id,
     required this.paginaCodigo,
-    required this.paginaNombre,
+    required this.paginaTexto,
     required this.paginaPath,
     required this.paginaVisible,
     required this.paginaActivo,

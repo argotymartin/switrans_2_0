@@ -22,7 +22,7 @@ class PaginaCreateView extends StatelessWidget {
         }
 
         if (state is PaginaSuccessState) {
-          final PaginaRequest request = PaginaRequest(paginaNombre: state.pagina!.paginaNombre);
+          final PaginaRequest request = PaginaRequest(paginaTexto: state.pagina!.paginaTexto);
           context.read<PaginaBloc>().add(GetPaginaEvent(request));
           context.go('/maestros/pagina/buscar');
         }
@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 final PaginaRequest request = PaginaRequest(
-                  paginaNombre: nombreController.text,
+                  paginaTexto: nombreController.text,
                   paginaPath: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
                   paginaVisible: isVisible,
                 );
