@@ -9,6 +9,8 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/sear
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
@@ -31,6 +33,7 @@ class MaestrosRoutes {
     routes.add(routerUnidadNegocio());
     routes.add(routerModulo());
     routes.add(routerPaquete());
+    routes.add(routerPagina());
     return routes;
   }
 
@@ -186,6 +189,29 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const PaqueteSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerPagina() {
+    const String modulePath = "pagina";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return MenuLayout(child: child);
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            return const PaginaCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const PaginaSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
