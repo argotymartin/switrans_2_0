@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BuildRowsForm extends StatelessWidget {
+class BuildFormFields extends StatelessWidget {
   final List<Widget> children;
 
-  const BuildRowsForm({
+  const BuildFormFields({
     required this.children,
     super.key,
   });
@@ -13,7 +13,7 @@ class BuildRowsForm extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final List<Widget> childrenList = <Widget>[];
 
-    if (size.width < 600) {
+    if (size.width < 720) {
       childrenList.addAll(
         children.map(
           (Widget child) => Padding(

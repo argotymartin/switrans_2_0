@@ -15,9 +15,9 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    if (size.width <= 300) {
+    if (size.width <= 480) {
       context.read<MenuBloc>().add(const BlockedMenuEvent(true));
-    } else if (size.width <= 720) {
+    } else if (size.width <= 960) {
       context.read<MenuBloc>().add(const MinimizedMenuEvent(true));
     } else {
       context.read<MenuBloc>().add(const ExpandedMenuEvent(true));
