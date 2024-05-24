@@ -15,82 +15,164 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    if (size.width <= 300) {
+      context.read<MenuBloc>().add(const BlockedMenuEvent(true));
+    } else if (size.width <= 720) {
+      context.read<MenuBloc>().add(const MinimizedMenuEvent(true));
+    } else {
+      context.read<MenuBloc>().add(const ExpandedMenuEvent(true));
+    }
+
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
-        return state.isOpenMenu
-            ? Column(
-                children: <Widget>[
-                  Container(
-                    width: state.isMinimize ? 80 : kWidthSidebar,
-                    height: size.height * 0.92,
-                    decoration: buildBoxDecoration(context),
-                    child: Theme(
-                      data: ThemeData(
-                        scrollbarTheme: ScrollbarThemeData(
-                          thickness: WidgetStateProperty.all(8.0),
-                        ),
-                      ),
-                      child: ListView(
-                        physics: const ClampingScrollPhysics(),
-                        children: <Widget>[
-                          LogoSidebar(isMenuIcon: state.isMinimize),
-                          ProfileSidebar(isMenuIcon: state.isMinimize),
-                          state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
-                          state.isMinimize ? const SizedBox() : const SearchModulo(),
-                          state.isMinimize ? const SizedBox() : const SizedBox(height: 16),
-                          state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Paquetes'),
-                          BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
-                            builder: (BuildContext context, MenuSidebarState stateModulo) {
-                              final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
-                              for (final PaqueteMenu paquete in stateModulo.paquetes) {
-                                paquetesSidebar.add(
-                                  PaquetesSidebar(
-                                    paquete: paquete,
-                                    isMimimize: state.isMinimize,
-                                  ),
-                                );
-                              }
-                              return Column(children: paquetesSidebar);
-                            },
-                          ),
-                          state.isMinimize ? const SizedBox() : const SizedBox(height: 50),
-                          state.isMinimize ? const SizedBox() : const TextSeparatorSidebar(text: 'Exit'),
-                          Padding(
-                            padding: state.isMinimize ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
-                            child: OutlinedButton.icon(
-                              label: state.isMinimize ? const SizedBox() : const Text("Salir", style: TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                context.read<AuthBloc>().onLogoutAuthEvent();
-                                context.go(AppRouter.login);
-                              },
-                              icon: const Icon(
-                                Icons.logout_outlined,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  FooterSidebar(isMinimize: state.isMinimize),
-                ],
-              )
-            : const SizedBox();
+        if (state.isOpenMenu) {
+          return const SidebarExpanded();
+        } else if (state.isMinimize) {
+          return const SidebarMimimized();
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }
+}
 
-  BoxDecoration buildBoxDecoration(BuildContext context) {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.centerRight,
-        end: Alignment.centerLeft,
-        colors: <Color>[
-          Theme.of(context).colorScheme.primary,
-          Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
-        ],
-      ),
+class SidebarExpanded extends StatelessWidget {
+  const SidebarExpanded({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Column(
+      children: <Widget>[
+        Container(
+          width: kWidthSidebar,
+          height: size.height * 0.92,
+          decoration: buildBoxDecoration(context),
+          child: Theme(
+            data: ThemeData(
+              scrollbarTheme: ScrollbarThemeData(
+                thickness: WidgetStateProperty.all(8.0),
+              ),
+            ),
+            child: ListView(
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const LogoSidebar(isMenuIcon: false),
+                const ProfileSidebar(isMenuIcon: false),
+                const SizedBox(height: 16),
+                const SearchModulo(),
+                const SizedBox(height: 16),
+                const TextSeparatorSidebar(text: 'Paquetes'),
+                BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
+                  builder: (BuildContext context, MenuSidebarState stateModulo) {
+                    final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
+                    for (final PaqueteMenu paquete in stateModulo.paquetes) {
+                      paquetesSidebar.add(
+                        PaquetesSidebar(
+                          paquete: paquete,
+                        ),
+                      );
+                    }
+                    return Column(children: paquetesSidebar);
+                  },
+                ),
+                const SizedBox(height: 50),
+                const TextSeparatorSidebar(text: 'Exit'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OutlinedButton.icon(
+                    label: const Text("Salir", style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      context.read<AuthBloc>().onLogoutAuthEvent();
+                      context.go(AppRouter.login);
+                    },
+                    icon: const Icon(
+                      Icons.logout_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const FooterSidebar(isMinimize: false),
+      ],
     );
   }
+}
+
+class SidebarMimimized extends StatelessWidget {
+  const SidebarMimimized({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Column(
+      children: <Widget>[
+        Container(
+          width: 80,
+          height: size.height * 0.92,
+          decoration: buildBoxDecoration(context),
+          child: Theme(
+            data: ThemeData(
+              scrollbarTheme: ScrollbarThemeData(
+                thickness: WidgetStateProperty.all(8.0),
+              ),
+            ),
+            child: ListView(
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const LogoSidebar(isMenuIcon: true),
+                const ProfileSidebar(isMenuIcon: true),
+                BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
+                  builder: (BuildContext context, MenuSidebarState stateModulo) {
+                    final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
+                    for (final PaqueteMenu paquete in stateModulo.paquetes) {
+                      paquetesSidebar.add(
+                        PaquetesSidebar(
+                          paquete: paquete,
+                          isMimimize: true,
+                        ),
+                      );
+                    }
+                    return Column(children: paquetesSidebar);
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: OutlinedButton.icon(
+                    label: const SizedBox(),
+                    onPressed: () {
+                      context.read<AuthBloc>().onLogoutAuthEvent();
+                      context.go(AppRouter.login);
+                    },
+                    icon: const Icon(
+                      Icons.logout_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const FooterSidebar(isMinimize: true),
+      ],
+    );
+  }
+}
+
+BoxDecoration buildBoxDecoration(BuildContext context) {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.centerRight,
+      end: Alignment.centerLeft,
+      colors: <Color>[
+        Theme.of(context).colorScheme.primary,
+        Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
+      ],
+    ),
+  );
 }

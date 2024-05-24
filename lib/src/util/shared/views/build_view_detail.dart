@@ -16,6 +16,7 @@ class BuildViewDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> breadcrumbTrails = path.split("/");
     final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
+    final Size size = MediaQuery.of(context).size;
     late ModuloMenu moduloSelected;
     for (final PaqueteMenu paquete in menuBloc.state.paquetes) {
       for (final ModuloMenu modulo in paquete.modulos) {
@@ -33,7 +34,14 @@ class BuildViewDetail extends StatelessWidget {
           children: <Widget>[
             Icon(IconData(int.parse(moduloSelected.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
             const SizedBox(width: 4),
-            Text(moduloSelected.texto, style: Theme.of(context).textTheme.headlineLarge),
+            SizedBox(
+              width: size.width * 0.4,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(moduloSelected.texto, style: Theme.of(context).textTheme.headlineLarge),
+              ),
+            ),
           ],
         ),
         Text(moduloSelected.detalles, style: TextStyle(color: Colors.grey.shade600)),
