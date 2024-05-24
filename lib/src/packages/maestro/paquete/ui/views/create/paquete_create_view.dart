@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/reques
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PaqueteCreateView extends StatelessWidget {
@@ -26,19 +27,19 @@ class PaqueteCreateView extends StatelessWidget {
           context.go('/maestros/paquete/buscar');
         }
       },
-        child:ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
-                title: "Registrar Nuevo",
-                icon: Icons.storage_outlined,
-                child: _BuildFieldsForm(),
-              ),
-            ],
+      child: ListView(
+        padding: const EdgeInsets.only(right: 32, top: 8),
+        physics: const ClampingScrollPhysics(),
+        children: <Widget>[
+          BuildViewDetail(path: fullPath),
+          const WhiteCard(
+            title: "Registrar Nuevo",
+            icon: Icons.storage_outlined,
+            child: _BuildFieldsForm(),
           ),
-      );
+        ],
+      ),
+    );
   }
 }
 
@@ -58,8 +59,8 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, isFormatTextNumber: true),
-              TextInputTitle(title: "Icono", controller: iconoController),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              TextInputTitle(title: "Icono", controller: iconoController, typeInput: TypeInput.lettersAndNumbers),
             ],
           ),
           FilledButton.icon(

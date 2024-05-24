@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TipoImpuestoSearchView extends StatelessWidget {
@@ -72,7 +73,7 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
             ],
           ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/paquete_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PaqueteSearchView extends StatelessWidget {
@@ -43,19 +44,16 @@ class _BuildFieldsForm extends StatelessWidget {
   const _BuildFieldsForm();
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    bool isVisible = true;
-    bool isActivo = true;
-
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     final PaqueteBloc paqueteBloc = context.read<PaqueteBloc>();
+    bool? isVisible;
+    bool? isActivo;
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio =
-          nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible == null && isActivo == null;
 
       if (isCampoVacio) {
         isValid = false;
@@ -80,24 +78,10 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Visible", style: AppTheme.titleStyle),
-                  const SizedBox(height: 8),
-                  SwitchBoxInput(value: isVisible, onChanged: (bool newValue) => isVisible = newValue),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Activo", style: AppTheme.titleStyle),
-                  const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
-                ],
-              ),
+              SegmentedInputTitle(title: "Visible", onChanged: (bool? newValue) => isVisible = newValue),
+              SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
             ],
           ),
           BlocBuilder<PaqueteBloc, PaqueteState>(
@@ -160,7 +144,6 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
     Map<String, DataItemGrid> buildPlutoRowData(Paquete paquete) {
       return <String, DataItemGrid>{
-        //'id': DataItemGrid(type: Tipo.item, value: paquete.paqueteId, edit: false),
         'codigo': DataItemGrid(type: Tipo.item, value: paquete.paqueteCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: paquete.paqueteNombre, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: paquete.paquetePath, edit: false),

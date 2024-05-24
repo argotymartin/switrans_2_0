@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PlutoGridDataBuilder extends StatefulWidget {
@@ -53,7 +55,8 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldText(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) =>
+                  isEdit ? _BuildFieldTextEdit(renderContext: renderContext, title: tilte) : _BuildFieldText(renderContext: renderContext),
             ),
           );
         }
@@ -177,6 +180,65 @@ class _BuildFieldText extends StatelessWidget {
     return Text(
       renderContext.cell.value.toString().toUpperCase(),
       style: const TextStyle(color: Colors.black),
+    );
+  }
+}
+
+class _BuildFieldTextEdit extends StatefulWidget {
+  final PlutoColumnRendererContext renderContext;
+  final String title;
+  const _BuildFieldTextEdit({
+    required this.renderContext,
+    required this.title,
+  });
+
+  @override
+  State<_BuildFieldTextEdit> createState() => _BuildFieldTextEditState();
+}
+
+class _BuildFieldTextEditState extends State<_BuildFieldTextEdit> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.renderContext.cell.value.toString());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onDoubleTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TextInputTitle(title: widget.title, controller: controller, typeInput: TypeInput.lettersAndNumbers),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+            title: const Text("Editar Campo"),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () {
+                  context.pop();
+                  setState(() {
+                    widget.renderContext.cell.value = controller.text;
+                  });
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Text(
+        controller.text,
+        style: const TextStyle(color: Colors.black),
+      ),
     );
   }
 }

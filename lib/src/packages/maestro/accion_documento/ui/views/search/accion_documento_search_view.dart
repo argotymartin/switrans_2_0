@@ -6,6 +6,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AccionDocumentoSearchView extends StatelessWidget {
@@ -77,7 +78,7 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildRowsForm(
             children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, minLength: 0),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               FieldTipoDocumento(typeController),
             ],
           ),

@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.da
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ModuloCreateView extends StatelessWidget {
@@ -63,12 +64,9 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildRowsForm(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController),
-              TextInputTitle(title: "Icono", controller: iconoController),
-              TextInputTitle(
-                title: "Detalle Modulo",
-                controller: detalleController,
-              ),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 3),
+              TextInputTitle(title: "Icono", controller: iconoController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              TextInputTitle(title: "Detalle Modulo", controller: detalleController, typeInput: TypeInput.lettersAndNumbers, minLength: 20),
             ],
           ),
           BuildRowsForm(
