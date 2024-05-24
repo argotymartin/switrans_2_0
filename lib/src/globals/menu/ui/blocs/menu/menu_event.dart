@@ -8,13 +8,16 @@ sealed class MenuEvent extends Equatable {
 }
 
 class BlockedMenuEvent extends MenuEvent {
-  const BlockedMenuEvent();
+  final bool isBlocked;
+  const BlockedMenuEvent(this.isBlocked);
 }
 
 class ExpandedMenuEvent extends MenuEvent {
-  const ExpandedMenuEvent();
+  final bool isExpanded;
+  const ExpandedMenuEvent(this.isExpanded);
 }
 
 class MinimizedMenuEvent extends MenuEvent {
-  const MinimizedMenuEvent();
+  final bool isMinimized;
+  const MinimizedMenuEvent(this.isMinimized);
 }

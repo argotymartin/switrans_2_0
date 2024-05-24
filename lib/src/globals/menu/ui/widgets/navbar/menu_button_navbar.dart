@@ -12,21 +12,17 @@ class MenuButtonNavar extends StatelessWidget {
     final OverlayPortalController tooltipController = OverlayPortalController();
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
+        final Size size = MediaQuery.of(context).size;
         final bool isOpenMenu = state.isOpenMenu;
         final bool isMinimize = state.isMinimize;
-        double positionedLeft = 0;
+        final bool isBlocked = state.isBlocked;
+        double positionedLeft = 16;
 
         if (isOpenMenu) {
-          positionedLeft = 16 + kWidthSidebar;
+          positionedLeft = positionedLeft + kWidthSidebar;
         }
         if (isMinimize) {
-          positionedLeft = 16 + 80;
-        }
-        if (isMinimize && !isOpenMenu) {
-          positionedLeft = 16;
-        }
-        if (!isMinimize && !isOpenMenu) {
-          positionedLeft = 16;
+          positionedLeft = positionedLeft + 80;
         }
         return MouseRegion(
           onHover: (PointerHoverEvent event) => tooltipController.toggle(),
@@ -51,7 +47,9 @@ class MenuButtonNavar extends StatelessWidget {
                           icon: Icons.menu_outlined,
                           onPressed: () {
                             tooltipController.hide();
-                            context.read<MenuBloc>().add(const ExpandedMenuEvent());
+                            if (size.width > 480) {
+                              context.read<MenuBloc>().add(ExpandedMenuEvent(!isOpenMenu));
+                            }
                           },
                           isSelected: !state.isOpenMenu,
                         ),
@@ -59,7 +57,7 @@ class MenuButtonNavar extends StatelessWidget {
                           icon: Icons.menu_open_outlined,
                           onPressed: () {
                             tooltipController.hide();
-                            context.read<MenuBloc>().add(const MinimizedMenuEvent());
+                            context.read<MenuBloc>().add(MinimizedMenuEvent(!isMinimize));
                           },
                           isSelected: state.isMinimize,
                         ),
@@ -67,7 +65,7 @@ class MenuButtonNavar extends StatelessWidget {
                           icon: Icons.lock_outlined,
                           onPressed: () {
                             tooltipController.hide();
-                            context.read<MenuBloc>().add(const BlockedMenuEvent());
+                            context.read<MenuBloc>().add(BlockedMenuEvent(!isBlocked));
                           },
                           isSelected: state.isBlocked,
                         ),

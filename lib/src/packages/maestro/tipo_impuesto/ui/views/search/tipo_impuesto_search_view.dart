@@ -71,7 +71,7 @@ class _BuildFieldsForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildRowsForm(
+          BuildFormFields(
             children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
