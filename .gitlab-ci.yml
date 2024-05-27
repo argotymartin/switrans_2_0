@@ -6,4 +6,4 @@ stages:
 lints:
   stage: lints
   script:
-    - /home/evargas/Documentos/flutter/bin/flutter analyze
+    - docker container run -v $(pwd):/app flutter-docker:latest flutter pub get flutter analyze
