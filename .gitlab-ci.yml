@@ -6,4 +6,4 @@ stages:
 lints:
   stage: lints
   script:
-    - docker container run -v $(pwd):/app flutter-docker:latest flutter pub get flutter analyze
+    - docker container run -v $(pwd):/app flutter-image:3.22.0 flutter pub get flutter analyze
