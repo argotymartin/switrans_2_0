@@ -1,4 +1,4 @@
-image: cirrusci/flutter:latest
+image: erneyvargasdev/flutter-image:3.22.0
 
 stages:
   - lints
@@ -6,4 +6,5 @@ stages:
 lints:
   stage: lints
   script:
+    - cd /home/erneyvargas/docker/switrans_2_0
     - docker container run -v $(pwd):/app erneyvargasdev/flutter-image:3.22.0 flutter pub get flutter analyze
