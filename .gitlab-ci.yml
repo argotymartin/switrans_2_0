@@ -1,5 +1,8 @@
 image: erneyvargasdev/flutter-image:3.22.0
 
+variables:
+  GIT_DEPTH: "0"
+
 stages:
   - lints
 
