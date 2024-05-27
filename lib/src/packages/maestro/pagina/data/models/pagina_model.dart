@@ -8,6 +8,7 @@ class PaginaModel extends Pagina {
     required super.paginaPath,
     required super.paginaVisible,
     required super.paginaActivo,
+    required super.modulo,
     required super.fechaCreacion,
   });
 
@@ -18,6 +19,7 @@ class PaginaModel extends Pagina {
         paginaPath: json["pagina_path"],
         paginaVisible: json["pagina_visible"],
         paginaActivo: json["pagina_activo"],
+        modulo: json["modulo"],
         fechaCreacion: json["created"].toString(),
       );
 }

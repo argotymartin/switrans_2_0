@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina_modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/repositories/abstract_pagina_repository.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
@@ -11,7 +12,7 @@ part 'pagina_state.dart';
 
 class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
   final AbstractPaginaRepository _repository;
-  List<Pagina> paginas = <Pagina>[];
+  List<PaginaModulo> modulos = <PaginaModulo>[];
 
   PaginaBloc(this._repository) : super(const PaginaInitialState()) {
     on<SetPaginaEvent>(_onSetPagina);
@@ -54,4 +55,12 @@ class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
     emit(const PaginaLoadingState());
     emit(PaginaErrorFormState(error: event.exception));
   }
+
+  Future<void> onGetModulos() async {
+    if (modulos.isEmpty) {
+      final DataState<List<PaginaModulo>> resp = await _repository.getModulosService();
+      modulos = resp.data!;
+    }
+  }
+
 }

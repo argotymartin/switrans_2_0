@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/filter_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_modulo_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina_modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
@@ -11,6 +13,9 @@ class PaginaApiPocketBase {
   PaginaApiPocketBase(this._dio);
 
   Future<Response<dynamic>> getPaginasApi(PaginaRequest request) async {
+    final String moduloId = request.moduloId == null ? '' : await getModuloId(request.moduloId!);
+    moduloId.isEmpty ? request.moduloId : request.moduloId = moduloId;
+
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Map<String, String> queryParameters = <String, String>{"filter": FilterPocketBase().toPocketBaseFilter(request)};
     final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
@@ -20,6 +25,8 @@ class PaginaApiPocketBase {
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
     final int maxPaginaCodigo = await getMaxPaginaCodigo();
     request.paginaCodigo = maxPaginaCodigo;
+    final String moduloId = request.moduloId == null ? '' : await getModuloId(request.moduloId!);
+    moduloId.isEmpty ? request.moduloId : request.moduloId = moduloId;
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Response<String> response = await _dio.post('$url/', data: request.toJson());
     return response;
@@ -43,6 +50,13 @@ class PaginaApiPocketBase {
     return response;
   }
 
+  Future<Response<dynamic>> getModulosApi() async {
+    const String url = '$kPocketBaseUrl/api/collections/modulo/records';
+    final Response<dynamic> response = await _dio.get(url);
+    return response;
+  }
+
+
   Future<int> getMaxPaginaCodigo() async {
     int maxPaginaCodigo = 0;
     final Response<dynamic> httpResponse = await getPaginasApi(PaginaRequest());
@@ -57,4 +71,40 @@ class PaginaApiPocketBase {
     }
     return maxPaginaCodigo;
   }
+
+  Future<String> getModuloId(String modulo) async {
+    List<PaginaModulo> modulos = <PaginaModulo>[];
+    final Response<dynamic> httpResponse = await getModulosApi();
+    if (httpResponse.data != null) {
+      final dynamic resp = httpResponse.data['items'];
+      modulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
+    }
+    for (final PaginaModulo package in modulos) {
+      if (package.codigo.toString() == modulo || package.nombre == modulo) {
+        return package.moduloId;
+      }
+    }
+    return '';
+  }
+
+  Future<List<Pagina>> getModuloNombre(List<Pagina> response) async {
+    final List<Pagina> data = <Pagina>[];
+    List<PaginaModulo> modulos = <PaginaModulo>[];
+    final Response<dynamic> httpResponse = await getModulosApi();
+    if (httpResponse.data != null) {
+      final dynamic resp = httpResponse.data['items'];
+      modulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
+    }
+    for (final Pagina pagina in response) {
+      for (final PaginaModulo modulo in modulos) {
+        if (modulo.codigo == pagina.modulo) {
+          pagina.modulo = modulo.nombre;
+          data.add(pagina);
+        }
+      }
+    }
+    return data;
+  }
+
+
 }

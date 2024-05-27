@@ -34,7 +34,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   @override
   void initState() {
     super.initState();
-    final List<EntryAutocomplete> filteredEntries = widget.entries.take(10).toList();
+    final List<EntryAutocomplete> filteredEntries = widget.entries.take(15).toList();
     dropdownMenuEntries =
         filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
     entrySelected2 = widget.entrySelected;

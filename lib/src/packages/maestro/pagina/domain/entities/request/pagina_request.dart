@@ -1,14 +1,19 @@
 class PaginaRequest {
+  final String? paginaId;
   late int? paginaCodigo;
   final String? paginaTexto;
   late String? paginaPath;
   final bool? paginaVisible;
+  late String? moduloId;
   final bool? paginaActivo;
+
   PaginaRequest({
+    this.paginaId,
     this.paginaCodigo,
     this.paginaTexto,
     this.paginaPath,
     this.paginaVisible,
+    this.moduloId,
     this.paginaActivo,
   });
 
@@ -21,5 +26,5 @@ class PaginaRequest {
       'pagina_activo': paginaActivo,
     };
   }
-
 }
+

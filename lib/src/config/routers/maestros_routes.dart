@@ -22,6 +22,8 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
 
+import '../../packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+
 class MaestrosRoutes {
   static const String packagePath = "/maestros";
 
@@ -197,10 +199,20 @@ class MaestrosRoutes {
 
   static ShellRoute routerPagina() {
     const String modulePath = "pagina";
+
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return MenuLayout(child: child);
+        return FutureBuilder<void>(
+          future: context.read<PaginaBloc>().onGetModulos(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MenuLayout(child: child);
+            }
+            return const MenuLayout(child: SplashView());
+          },
+        );
       },
+
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",

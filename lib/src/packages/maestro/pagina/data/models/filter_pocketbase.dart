@@ -15,6 +15,11 @@ class FilterPocketBase extends PaginaRequest {
     if (request.paginaActivo != null) {
       conditions.add('pagina_activo = ${request.paginaActivo!}');
     }
+
+    if (request.moduloId != null && request.moduloId!.isNotEmpty) {
+      conditions.add('modulo = "${request.moduloId!}"');
+    }
+
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
     final String data = queryString.isNotEmpty ? '($queryString)' : '';
     return data;

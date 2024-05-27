@@ -5,6 +5,7 @@ class Pagina {
   String paginaPath;
   bool paginaVisible;
   bool paginaActivo;
+  String modulo;
   String fechaCreacion;
 
   Pagina({
@@ -14,6 +15,7 @@ class Pagina {
     required this.paginaPath,
     required this.paginaVisible,
     required this.paginaActivo,
+    required this.modulo,
     required this.fechaCreacion,
   });
 }

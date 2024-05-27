@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_requ
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/field_modulo.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -44,16 +45,18 @@ class _BuildFieldsForm extends StatelessWidget {
   const _BuildFieldsForm();
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController nombreController = TextEditingController();
     final TextEditingController codigoController = TextEditingController();
-    final PaginaBloc paginaBloc = context.read<PaginaBloc>();
+    final TextEditingController moduloController = TextEditingController();
     bool? isVisible;
     bool? isActivo;
 
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final PaginaBloc paginaBloc = context.read<PaginaBloc>();
+
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible == null && isActivo == null;
+      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && moduloController.text.isEmpty && isVisible == null && isActivo == null;
 
       if (isCampoVacio) {
         isValid = false;
@@ -64,6 +67,7 @@ class _BuildFieldsForm extends StatelessWidget {
         final PaginaRequest request = PaginaRequest(
           paginaTexto: nombreController.text,
           paginaCodigo: int.tryParse(codigoController.text),
+          moduloId: moduloController.text,
           paginaVisible: isVisible,
           paginaActivo: isActivo,
         );
@@ -80,6 +84,7 @@ class _BuildFieldsForm extends StatelessWidget {
             children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
+              FieldModulo(moduloController),
               SegmentedInputTitle(title: "Visible", onChanged: (bool? newValue) => isVisible = newValue),
               SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
             ],
@@ -147,6 +152,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
         'codigo': DataItemGrid(type: Tipo.item, value: pagina.paginaCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaTexto, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: pagina.paginaPath, edit: false),
+        'modulo': DataItemGrid(type: Tipo.text, value: pagina.modulo, edit: false),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
         'visible': DataItemGrid(type: Tipo.boolean, value: pagina.paginaVisible, edit: true),
         'activo': DataItemGrid(type: Tipo.boolean, value: pagina.paginaActivo, edit: true),
