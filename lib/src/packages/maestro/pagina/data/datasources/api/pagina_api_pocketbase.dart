@@ -79,9 +79,9 @@ class PaginaApiPocketBase {
       final dynamic resp = httpResponse.data['items'];
       modulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
     }
-    for (final PaginaModulo package in modulos) {
-      if (package.codigo.toString() == modulo || package.nombre == modulo) {
-        return package.moduloId;
+    for (final PaginaModulo paginaModulo in modulos) {
+      if (paginaModulo.codigo.toString() == modulo || paginaModulo.nombre == modulo) {
+        return paginaModulo.moduloId;
       }
     }
     return '';
