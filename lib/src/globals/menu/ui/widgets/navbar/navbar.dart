@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class Navbar extends StatelessWidget {
@@ -6,43 +7,54 @@ class Navbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
         Container(
           width: double.infinity,
           height: 66,
           decoration: buidBoxDecoration(context),
-          child: Row(
-            children: <Widget>[
-              const SizedBox(width: 10),
-              const Spacer(),
-              IconNavbar(
-                icon: Icons.settings_outlined,
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              ),
-              const SizedBox(width: 16),
-              IconNavbar(
-                icon: Icons.check_box_outline_blank_rounded,
-                onPressed: () {},
-              ),
-              const SizedBox(width: 16),
-              IconNavbar(
-                icon: Icons.group_work_outlined,
-                title: "!",
-                onPressed: () {},
-              ),
-              const SizedBox(width: 16),
-              IconNavbar(
-                icon: Icons.notifications_outlined,
-                title: "11",
-                onPressed: () {},
-              ),
-              const SizedBox(width: 16),
-              const AvatarNavbar(size: 32),
-              const SizedBox(width: 48),
-            ],
+          child: BlocBuilder<MenuBloc, MenuState>(
+            builder: (BuildContext context, MenuState state) {
+              return Row(
+                children: <Widget>[
+                  const SizedBox(width: 10),
+                  const Spacer(),
+                  IconNavbar(
+                    icon: Icons.settings_outlined,
+                    onPressed: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                  ),
+                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
+                  state.isOpenMenu && size.width > 720
+                      ? IconNavbar(
+                          icon: Icons.check_box_outline_blank_rounded,
+                          onPressed: () {},
+                        )
+                      : const SizedBox(),
+                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
+                  state.isOpenMenu && size.width > 720
+                      ? IconNavbar(
+                          icon: Icons.group_work_outlined,
+                          title: "!",
+                          onPressed: () {},
+                        )
+                      : const SizedBox(),
+                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
+                  state.isOpenMenu && size.width > 720
+                      ? IconNavbar(
+                          icon: Icons.notifications_outlined,
+                          title: "11",
+                          onPressed: () {},
+                        )
+                      : const SizedBox(),
+                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
+                  const AvatarNavbar(size: 32),
+                  const SizedBox(width: 48),
+                ],
+              );
+            },
           ),
         ),
         Container(
