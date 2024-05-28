@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/field_modulo.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -22,7 +23,7 @@ class PaginaCreateView extends StatelessWidget {
         }
 
         if (state is PaginaSuccessState) {
-          final PaginaRequest request = PaginaRequest(paginaTexto: state.pagina!.paginaTexto);
+          final PaginaRequest request = PaginaRequest(nombre: state.pagina!.paginaTexto);
           context.read<PaginaBloc>().add(GetPaginaEvent(request));
           context.go('/maestros/pagina/buscar');
         }
@@ -49,6 +50,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
+    TextEditingController moduloController = TextEditingController();
     const bool isVisible = true;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
@@ -56,9 +58,10 @@ class _BuildFieldsForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildRowsForm(
+          BuildFormFields(
             children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              FieldModulo(moduloController),
             ],
           ),
           FilledButton.icon(
@@ -66,9 +69,11 @@ class _BuildFieldsForm extends StatelessWidget {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 final PaginaRequest request = PaginaRequest(
-                  paginaTexto: nombreController.text,
-                  paginaPath: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
-                  paginaVisible: isVisible,
+                  nombre: nombreController.text.toUpperCase(),
+                  path: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
+                  //modulo: moduloController.text,
+                  isVisible: isVisible,
+
                 );
                 context.read<PaginaBloc>().add(SetPaginaEvent(request));
               }

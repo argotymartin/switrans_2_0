@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/filter_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_modulo_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
@@ -13,28 +12,25 @@ class PaginaApiPocketBase {
   PaginaApiPocketBase(this._dio);
 
   Future<Response<dynamic>> getPaginasApi(PaginaRequest request) async {
-    final String moduloId = request.moduloId == null ? '' : await getModuloId(request.moduloId!);
-    moduloId.isEmpty ? request.moduloId : request.moduloId = moduloId;
-
+    final String filter = await toPocketBaseFilter(request);
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
-    final Map<String, String> queryParameters = <String, String>{"filter": FilterPocketBase().toPocketBaseFilter(request)};
+    final Map<String, String> queryParameters = <String, String>{"filter": filter};
     final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
-    final int maxPaginaCodigo = await getMaxPaginaCodigo();
-    request.paginaCodigo = maxPaginaCodigo;
-    final String moduloId = request.moduloId == null ? '' : await getModuloId(request.moduloId!);
-    moduloId.isEmpty ? request.moduloId : request.moduloId = moduloId;
+    request.codigo = await getMaxPaginaCodigo();
+    final Map<String, dynamic> jsonRequest = request.toJson();
+    jsonRequest['modulo'] = getModuloId(request.modulo!);
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
-    final Response<String> response = await _dio.post('$url/', data: request.toJson());
+    final Response<String> response = await _dio.post('$url/', data: jsonRequest);
     return response;
   }
 
   Future<Response<dynamic>> updatePaginaApi(PaginaRequest request) async {
     final PaginaRequest paginaRequest = PaginaRequest(
-      paginaCodigo: request.paginaCodigo,
+      codigo: request.codigo,
     );
     final Response<dynamic> paqueteUpdate = await getPaginasApi(paginaRequest);
     final Map<String, dynamic> responseData = jsonDecode(paqueteUpdate.data);
@@ -72,19 +68,19 @@ class PaginaApiPocketBase {
     return maxPaginaCodigo;
   }
 
-  Future<String> getModuloId(String modulo) async {
-    List<PaginaModulo> modulos = <PaginaModulo>[];
-    final Response<dynamic> httpResponse = await getModulosApi();
+  Future<String> getModuloId(int modulo) async {
+    const String url = '$kPocketBaseUrl/api/collections/modulo/records';
+    final Map<String, String> queryParameters = <String, String>{"filter": "(modulo_codigo=$modulo)"};
+    final Response<dynamic> httpResponse = await _dio.get(url, queryParameters: queryParameters);
+
     if (httpResponse.data != null) {
-      final dynamic resp = httpResponse.data['items'];
-      modulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
+      final String id = httpResponse.data['items'][0]["id"];
+      return id;
+    } else {
+      return '';
     }
-    for (final PaginaModulo paginaModulo in modulos) {
-      if (paginaModulo.codigo.toString() == modulo || paginaModulo.nombre == modulo) {
-        return paginaModulo.moduloId;
-      }
-    }
-    return '';
+
+
   }
 
   Future<List<Pagina>> getModuloNombre(List<Pagina> response) async {
@@ -106,5 +102,33 @@ class PaginaApiPocketBase {
     return data;
   }
 
+  Future<String> toPocketBaseFilter(PaginaRequest request) async{
+    final List<String> conditions = <String>[];
+    if (request.nombre != null && request.nombre!.isNotEmpty) {
+      conditions.add('pagina_texto ~ "${request.nombre!}"');
+    }
+    if (request.codigo != null) {
+      conditions.add('pagina_codigo = ${request.codigo!}');
+    }
+    if (request.isVisible != null) {
+      conditions.add('pagina_visible = ${request.isVisible!}');
+    }
+    if (request.isActivo != null) {
+      conditions.add('pagina_activo = ${request.isActivo!}');
+    }
+
+    if (request.modulo != null) {
+      final String idModulo = await getModuloId(request.modulo!);
+      conditions.add('modulo = "${idModulo}"');
+    }
+
+    final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
+    final String data = queryString.isNotEmpty ? '($queryString)' : '';
+    return data;
+  }
+
+  String formatToYYYYMMDD(String fecha) {
+    return fecha.replaceAll(RegExp(r'/'), '-');
+  }
 
 }

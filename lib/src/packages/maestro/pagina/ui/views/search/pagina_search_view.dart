@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/pagina_request_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
@@ -65,11 +65,11 @@ class _BuildFieldsForm extends StatelessWidget {
 
       if (isValid) {
         final PaginaRequest request = PaginaRequest(
-          paginaTexto: nombreController.text,
-          paginaCodigo: int.tryParse(codigoController.text),
-          moduloId: moduloController.text,
-          paginaVisible: isVisible,
-          paginaActivo: isActivo,
+          nombre: nombreController.text,
+          codigo: int.tryParse(codigoController.text),
+          modulo: int.tryParse(moduloController.text),
+          isVisible: isVisible,
+          isActivo: isActivo,
         );
         context.read<PaginaBloc>().add(GetPaginaEvent(request));
       }
@@ -80,7 +80,7 @@ class _BuildFieldsForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildRowsForm(
+          BuildFormFields(
             children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
@@ -142,7 +142,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
     void onPressedSave() {
       for (final Map<String, dynamic> map in listUpdate) {
-        final PaginaRequest request = PaginaRequestModel.fromMapTable(map);
+        final PaginaRequest request = PaginaRequestModel.fromTable(map);
         context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
       }
     }
