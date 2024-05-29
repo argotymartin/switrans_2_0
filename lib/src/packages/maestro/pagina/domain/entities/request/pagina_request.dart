@@ -2,7 +2,7 @@ class PaginaRequest {
   int? codigo;
   final String? nombre;
   final String? path;
-  int ? modulo;
+  late String? modulo;
   final bool? isVisible;
   final bool? isActivo;
 
@@ -17,12 +17,12 @@ class PaginaRequest {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'codigo': codigo,
-      'nombre': nombre,
-      'path': path,
+      'pagina_codigo': codigo,
+      'pagina_texto': nombre,
+      'pagina_path': path,
       'modulo': modulo,
-      'isActivo': isActivo,
-      'isVisible': isVisible,
+      'pagina_activo': isActivo,
+      'pagina_visible': isVisible,
     };
   }
 }

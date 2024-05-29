@@ -67,7 +67,7 @@ class _BuildFieldsForm extends StatelessWidget {
         final PaginaRequest request = PaginaRequest(
           nombre: nombreController.text,
           codigo: int.tryParse(codigoController.text),
-          modulo: int.tryParse(moduloController.text),
+          modulo: moduloController.text,
           isVisible: isVisible,
           isActivo: isActivo,
         );

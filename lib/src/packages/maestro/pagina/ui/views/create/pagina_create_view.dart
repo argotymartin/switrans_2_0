@@ -21,7 +21,6 @@ class PaginaCreateView extends StatelessWidget {
         if (state is PaginaExceptionState) {
           ErrorDialog.showDioException(context, state.exception!);
         }
-
         if (state is PaginaSuccessState) {
           final PaginaRequest request = PaginaRequest(nombre: state.pagina!.paginaTexto);
           context.read<PaginaBloc>().add(GetPaginaEvent(request));
@@ -50,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController nombreController = TextEditingController();
-    TextEditingController moduloController = TextEditingController();
+    final TextEditingController moduloController = TextEditingController();
     const bool isVisible = true;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
@@ -60,18 +59,19 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              TextInputTitle(title: "Nombre---", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
               FieldModulo(moduloController),
             ],
           ),
           FilledButton.icon(
             onPressed: () async {
+              print("Modulo: ${moduloController.text}");
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 final PaginaRequest request = PaginaRequest(
                   nombre: nombreController.text.toUpperCase(),
                   path: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
-                  //modulo: moduloController.text,
+                  modulo: moduloController.text,
                   isVisible: isVisible,
 
                 );

@@ -20,9 +20,12 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
-    request.codigo = await getMaxPaginaCodigo();
+    final maxPaginaCodigo = await getMaxPaginaCodigo();
+    final String moduloId = await getModuloId(request.modulo!);
+    request.codigo = maxPaginaCodigo;
+    moduloId.isEmpty ? request.modulo : request.modulo = moduloId;
+
     final Map<String, dynamic> jsonRequest = request.toJson();
-    jsonRequest['modulo'] = getModuloId(request.modulo!);
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Response<String> response = await _dio.post('$url/', data: jsonRequest);
     return response;
@@ -68,17 +71,19 @@ class PaginaApiPocketBase {
     return maxPaginaCodigo;
   }
 
-  Future<String> getModuloId(int modulo) async {
-    const String url = '$kPocketBaseUrl/api/collections/modulo/records';
-    final Map<String, String> queryParameters = <String, String>{"filter": "(modulo_codigo=$modulo)"};
-    final Response<dynamic> httpResponse = await _dio.get(url, queryParameters: queryParameters);
-
+  Future<String> getModuloId(String modulo) async {
+    List<PaginaModulo> modulos = <PaginaModulo>[];
+    final Response<dynamic> httpResponse = await getModulosApi();
     if (httpResponse.data != null) {
-      final String id = httpResponse.data['items'][0]["id"];
-      return id;
-    } else {
-      return '';
+      final dynamic resp = httpResponse.data['items'];
+      modulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
     }
+    for (final PaginaModulo paginaModulo in modulos) {
+      if (paginaModulo.codigo.toString() == modulo || paginaModulo.nombre == modulo) {
+        return paginaModulo.moduloId;
+      }
+    }
+    return '';
 
 
   }
