@@ -149,7 +149,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
     Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
       return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: pagina.paginaCodigo, edit: false),
+        'id': DataItemGrid(type: Tipo.item, value: pagina.id, edit: false),
+        'codigo': DataItemGrid(type: Tipo.text, value: pagina.paginaCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaTexto, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: pagina.paginaPath, edit: false),
         'modulo': DataItemGrid(type: Tipo.text, value: pagina.modulo, edit: false),

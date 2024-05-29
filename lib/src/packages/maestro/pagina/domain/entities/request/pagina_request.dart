@@ -1,4 +1,5 @@
 class PaginaRequest {
+  final String? id;
   int? codigo;
   final String? nombre;
   final String? path;
@@ -7,6 +8,7 @@ class PaginaRequest {
   final bool? isActivo;
 
   PaginaRequest({
+    this.id,
     this.codigo,
     this.nombre,
     this.path,
@@ -17,6 +19,7 @@ class PaginaRequest {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'id': id,
       'pagina_codigo': codigo,
       'pagina_texto': nombre,
       'pagina_path': path,

@@ -2,6 +2,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request
 
 class PaginaRequestModel extends PaginaRequest {
   PaginaRequestModel({
+    required super.id,
     required super.codigo,
     required super.nombre,
     required super.path,
@@ -12,6 +13,7 @@ class PaginaRequestModel extends PaginaRequest {
   });
 
   factory PaginaRequestModel.fromTable(Map<String, dynamic> map) => PaginaRequestModel(
+        id: map['id'],
         codigo: map['codigo'],
         nombre: map['nombre'],
         path: map['path'],
