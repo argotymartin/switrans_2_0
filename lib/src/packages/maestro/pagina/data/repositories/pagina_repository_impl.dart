@@ -9,8 +9,6 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/domain/repositories/abs
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
-
-
 class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRepository {
   final PaginaApiPocketBase _api;
   PaginaRepositoryImpl(this._api);
@@ -44,7 +42,8 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosApi());
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data['items'];
-      final List<PaginaModulo> response = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
+      final List<PaginaModulo> response =
+          List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
       return DataSuccess<List<PaginaModulo>>(response);
     }
     return DataFailed<List<PaginaModulo>>(httpResponse.error!);
@@ -59,5 +58,4 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
     }
     return DataFailed<Pagina>(httpResponse.error!);
   }
-
 }

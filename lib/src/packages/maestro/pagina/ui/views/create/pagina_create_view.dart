@@ -59,21 +59,19 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre---", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
               FieldModulo(moduloController),
             ],
           ),
           FilledButton.icon(
             onPressed: () async {
-              print("Modulo: ${moduloController.text}");
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 final PaginaRequest request = PaginaRequest(
-                  nombre: nombreController.text.toUpperCase(),
+                  nombre: CustomFunctions.capitalize(nombreController.text),
                   path: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
                   modulo: moduloController.text,
                   isVisible: isVisible,
-
                 );
                 context.read<PaginaBloc>().add(SetPaginaEvent(request));
               }

@@ -9,6 +9,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/sear
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
@@ -21,8 +22,6 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
 import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
-
-import '../../packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";

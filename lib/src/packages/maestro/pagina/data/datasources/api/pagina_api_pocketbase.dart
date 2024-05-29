@@ -20,11 +20,10 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
-    final maxPaginaCodigo = await getMaxPaginaCodigo();
+    final int maxPaginaCodigo = await getMaxPaginaCodigo();
     final String moduloId = await getModuloId(request.modulo!);
     request.codigo = maxPaginaCodigo;
     moduloId.isEmpty ? request.modulo : request.modulo = moduloId;
-
     final Map<String, dynamic> jsonRequest = request.toJson();
     const String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Response<String> response = await _dio.post('$url/', data: jsonRequest);
@@ -35,12 +34,10 @@ class PaginaApiPocketBase {
     final PaginaRequest paginaRequest = PaginaRequest(
       codigo: request.codigo,
     );
-    final Response<dynamic> paqueteUpdate = await getPaginasApi(paginaRequest);
-    final Map<String, dynamic> responseData = jsonDecode(paqueteUpdate.data);
-    final String paqueteId = responseData['items'][0]['id'];
-
-    final String url = '$kPocketBaseUrl/api/collections/paquete/records/${paqueteId}?';
-
+    final Response<dynamic> paginaUpdate = await getPaginasApi(paginaRequest);
+    final Map<String, dynamic> responseData = jsonDecode(paginaUpdate.data);
+    final String paginaId = responseData['items'][0]['id'];
+    final String url = '$kPocketBaseUrl/api/collections/pagina/records/${paginaId}?';
     final Response<dynamic> response = await _dio.patch(
       url,
       data: request.toJson(),
@@ -54,7 +51,6 @@ class PaginaApiPocketBase {
     final Response<dynamic> response = await _dio.get(url);
     return response;
   }
-
 
   Future<int> getMaxPaginaCodigo() async {
     int maxPaginaCodigo = 0;
@@ -84,8 +80,6 @@ class PaginaApiPocketBase {
       }
     }
     return '';
-
-
   }
 
   Future<List<Pagina>> getModuloNombre(List<Pagina> response) async {
@@ -107,7 +101,7 @@ class PaginaApiPocketBase {
     return data;
   }
 
-  Future<String> toPocketBaseFilter(PaginaRequest request) async{
+  Future<String> toPocketBaseFilter(PaginaRequest request) async {
     final List<String> conditions = <String>[];
     if (request.nombre != null && request.nombre!.isNotEmpty) {
       conditions.add('pagina_texto ~ "${request.nombre!}"');
@@ -135,5 +129,4 @@ class PaginaApiPocketBase {
   String formatToYYYYMMDD(String fecha) {
     return fecha.replaceAll(RegExp(r'/'), '-');
   }
-
 }

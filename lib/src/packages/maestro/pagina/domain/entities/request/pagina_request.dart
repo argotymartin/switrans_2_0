@@ -21,9 +21,8 @@ class PaginaRequest {
       'pagina_texto': nombre,
       'pagina_path': path,
       'modulo': modulo,
-      'pagina_activo': isActivo,
       'pagina_visible': isVisible,
+      'pagina_activo': isActivo,
     };
   }
 }
-

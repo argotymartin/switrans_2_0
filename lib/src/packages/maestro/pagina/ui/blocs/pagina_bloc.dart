@@ -62,5 +62,4 @@ class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
       modulos = resp.data!;
     }
   }
-
 }
