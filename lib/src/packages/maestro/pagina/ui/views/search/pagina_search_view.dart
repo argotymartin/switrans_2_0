@@ -168,7 +168,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {
-            return const Text("No se encontraron resultados");
+            return const Text("No se encontraron resultados...");
           }
           return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
         }

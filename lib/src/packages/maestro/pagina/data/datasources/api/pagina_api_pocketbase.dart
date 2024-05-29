@@ -20,6 +20,7 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
+
     final int maxPaginaCodigo = await getMaxPaginaCodigo();
     final String moduloId = await getModuloId(request.modulo!);
     request.codigo = maxPaginaCodigo;
@@ -92,7 +93,7 @@ class PaginaApiPocketBase {
     }
     for (final Pagina pagina in response) {
       for (final PaginaModulo modulo in modulos) {
-        if (modulo.codigo == pagina.modulo) {
+        if (modulo.moduloId == pagina.modulo) {
           pagina.modulo = modulo.nombre;
           data.add(pagina);
         }

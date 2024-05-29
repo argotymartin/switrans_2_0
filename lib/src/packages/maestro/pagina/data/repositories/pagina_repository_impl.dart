@@ -42,8 +42,7 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosApi());
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data['items'];
-      final List<PaginaModulo> response =
-          List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
+      final List<PaginaModulo> response = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
       return DataSuccess<List<PaginaModulo>>(response);
     }
     return DataFailed<List<PaginaModulo>>(httpResponse.error!);
