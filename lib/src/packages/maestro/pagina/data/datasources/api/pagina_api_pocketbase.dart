@@ -30,13 +30,13 @@ class PaginaApiPocketBase {
     return response;
   }
 
-  Future<Response<dynamic>> updatePaginaApi(PaginaRequest request) async {
-    final String url = '$kPocketBaseUrl/api/collections/pagina/records/${request.id}?';
-    final String moduloId = await getModuloId(request.modulo!);
-    moduloId.isEmpty ? request.modulo : request.modulo = moduloId;
+  Future<Response<dynamic>> updatePaginaApi(PaginaRequest paginaRequest) async {
+    final String url = '$kPocketBaseUrl/api/collections/pagina/records/${paginaRequest.id}?';
+    final String moduloId = await getModuloId(paginaRequest.modulo!);
+    moduloId.isEmpty ? paginaRequest.modulo : paginaRequest.modulo = moduloId;
     final Response<dynamic> response = await _dio.patch(
       url,
-      data: request.toJson(),
+      data: paginaRequest.toJson(),
       options: Options(headers: <String, String>{'Authorization': kTokenPocketBase}),
     );
     return response;
@@ -78,7 +78,7 @@ class PaginaApiPocketBase {
     return '';
   }
 
-  Future<List<Pagina>> getModuloNombre(List<Pagina> response) async {
+  Future<List<Pagina>> getModuloNombre(List<Pagina> paginaResponse) async {
     final List<Pagina> data = <Pagina>[];
     List<PaginaModulo> paginaModulos = <PaginaModulo>[];
     final Response<dynamic> httpResponse = await getModulosApi();
@@ -86,7 +86,7 @@ class PaginaApiPocketBase {
       final dynamic resp = httpResponse.data['items'];
       paginaModulos = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
     }
-    for (final Pagina pagina in response) {
+    for (final Pagina pagina in paginaResponse) {
       for (final PaginaModulo paginaModulo in paginaModulos) {
         if (paginaModulo.moduloId == pagina.modulo) {
           pagina.modulo = paginaModulo.nombre;
@@ -116,7 +116,6 @@ class PaginaApiPocketBase {
       final String idModulo = await getModuloId(paginaRequest.modulo!);
       conditions.add('modulo = "${idModulo}"');
     }
-
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
     final String data = queryString.isNotEmpty ? '($queryString)' : '';
     return data;

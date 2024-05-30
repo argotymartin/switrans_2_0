@@ -17,7 +17,6 @@ class PaginaSearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
         if (state is PaginaExceptionState) {
