@@ -31,7 +31,7 @@ class PaginaSearchView extends StatelessWidget {
             children: <Widget>[
               BuildViewDetail(path: fullPath),
               const WhiteCard(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BluildDataTable(),
+              const _BuildDataTable(),
             ],
           ),
         ],
@@ -122,14 +122,13 @@ class _BuildFieldsForm extends StatelessWidget {
   }
 }
 
-class _BluildDataTable extends StatefulWidget {
-  const _BluildDataTable();
-
+class _BuildDataTable extends StatefulWidget {
+  const _BuildDataTable();
   @override
-  State<_BluildDataTable> createState() => _BluildDataTableState();
+  State<_BuildDataTable> createState() => _BuildDataTableState();
 }
 
-class _BluildDataTableState extends State<_BluildDataTable> {
+class _BuildDataTableState extends State<_BuildDataTable> {
   List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
 
   @override
@@ -140,10 +139,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     void onPressedSave() {
-      for (final Map<String, dynamic> map in listUpdate) {
-        final PaginaRequest request = PaginaRequestModel.fromTable(map);
-        context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
-      }
+        for (final Map<String, dynamic> map in listUpdate) {
+          final PaginaRequest request = PaginaRequestModel.fromTable(map);
+          context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
+        }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
@@ -170,7 +169,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           if (plutoRes.isEmpty) {
             return const Text("No se encontraron resultados...");
           }
-          return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
+          return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave );
         }
         return const SizedBox();
       },
