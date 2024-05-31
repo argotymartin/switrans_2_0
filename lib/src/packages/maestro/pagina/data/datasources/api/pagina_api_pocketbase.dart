@@ -112,7 +112,7 @@ class PaginaApiPocketBase {
       conditions.add('pagina_activo = ${paginaRequest.isActivo!}');
     }
 
-    if (paginaRequest.modulo != null) {
+    if (paginaRequest.modulo != null && paginaRequest.modulo!.isNotEmpty) {
       final String idModulo = await getModuloId(paginaRequest.modulo!);
       conditions.add('modulo = "${idModulo}"');
     }
