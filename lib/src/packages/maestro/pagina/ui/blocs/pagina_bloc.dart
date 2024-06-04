@@ -19,6 +19,12 @@ class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
     on<UpdatePaginaEvent>(_onUpdatePagina);
     on<GetPaginaEvent>(_onGetPagina);
     on<ErrorFormPaginaEvent>(_onErrorFormPagina);
+    on<InitialPaginaEvent>(_onInitialPaginaEvent);
+  }
+
+  Future<void> _onInitialPaginaEvent(InitialPaginaEvent event, Emitter<PaginaState> emit) async {
+    emit(const PaginaLoadingState());
+    emit(const PaginaInitialState());
   }
 
   Future<void> _onSetPagina(SetPaginaEvent event, Emitter<PaginaState> emit) async {

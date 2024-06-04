@@ -29,3 +29,7 @@ class ErrorFormPaginaEvent extends PaginaEvent {
   final String exception;
   const ErrorFormPaginaEvent(this.exception);
 }
+
+class InitialPaginaEvent extends PaginaEvent {
+  const InitialPaginaEvent();
+}

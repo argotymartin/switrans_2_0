@@ -205,6 +205,7 @@ class MaestrosRoutes {
           future: context.read<PaginaBloc>().onGetModulos(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              context.read<PaginaBloc>().add(const InitialPaginaEvent());
               return MenuLayout(child: child);
             }
             return const MenuLayout(child: SplashView());
