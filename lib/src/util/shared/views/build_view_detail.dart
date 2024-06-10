@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class BuildViewDetail extends StatelessWidget {
-  final String path;
   const BuildViewDetail({
     super.key,
-    this.path = "",
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<String> breadcrumbTrails = path.split("/");
+    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final List<String> breadcrumbTrails = fullPath.split("/");
     final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
     final Size size = MediaQuery.of(context).size;
     late ModuloMenu moduloSelected;

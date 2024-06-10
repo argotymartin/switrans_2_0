@@ -21,7 +21,7 @@ class DocumentoBloc extends Bloc<DocumentoEvent, DocumentoState> {
     on<ErrorDocumentoEvent>((ErrorDocumentoEvent event, Emitter<DocumentoState> emit) => emit(DocumentoErrorState(error: event.exception)));
   }
 
-  Future<List<Documento>> getDocumentos(FacturaRequest request) async {
+  Future<List<Documento>> getDocumentos(FormFacturaRequest request) async {
     add(const GetDocumentoEvent());
     final DataState<List<Documento>> resp = await _repository.getDocumentosService(request);
     if (resp.data != null) {

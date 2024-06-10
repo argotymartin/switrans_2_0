@@ -8,8 +8,8 @@ import 'package:switrans_2_0/src/globals/menu/data/datasources/api/pocketbase_ap
 import 'package:switrans_2_0/src/globals/menu/data/repositories/menu_sidebar_repository_impl.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_menu_sidebar_repository.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/factura_api.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/factura_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/backend/factura_api.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/backend/factura_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasources/db/accion_documento_db.dart';

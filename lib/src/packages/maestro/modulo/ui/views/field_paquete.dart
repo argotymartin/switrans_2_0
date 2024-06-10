@@ -26,6 +26,7 @@ class FieldPaquete extends StatelessWidget {
         Text("Paquete", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
+          controller: paqueteController,
           entries: entryMenus,
           label: "Paquete",
           onPressed: onPressed,

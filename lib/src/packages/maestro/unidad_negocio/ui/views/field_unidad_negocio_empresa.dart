@@ -26,6 +26,7 @@ class FieldUnidadNegocioEmpresa extends StatelessWidget {
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
+          controller: empresaController,
           entries: entryMenus,
           label: "Empresa",
           onPressed: onPressed,

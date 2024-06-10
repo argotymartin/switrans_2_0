@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/tipo_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
@@ -29,11 +30,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     on<SuccesFormFacturaEvent>(_onSuccesChanged);
 
     scrollController.addListener(() {
-      //debugPrint(scrollController.offset.toString());
-    });
-
-    scrollController.addListener(() {
-      // if (scrollController.offset >= 800) animationController.reset();
+      debugPrint(scrollController.offset.toString());
     });
   }
 
@@ -41,6 +38,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     emit(const FormFacturaLoadingState());
     final DataState<List<Cliente>> dataStateClientes = await _repository.getClientes();
     final DataState<List<Empresa>> dataStateEmpresas = await _repository.getEmpresasService();
+    final DataState<List<TipoDocumento>> dataStateTipoDocumentos = await _repository.getTipoDocumento();
     if (dataStateClientes.error != null) {
       emit(FormFacturaErrorState(exception: dataStateClientes.error));
     }
@@ -52,6 +50,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       FormFacturaDataState(
         clientes: dataStateClientes.data!,
         empresas: dataStateEmpresas.data!,
+        tiposDocumentos: dataStateTipoDocumentos.data!,
       ),
     );
   }
@@ -142,7 +141,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     add(ErrorFormFacturaEvent(error));
 
     if (isValid && error.isEmpty) {
-      final FacturaRequest request = FacturaRequest(
+      final FormFacturaRequest request = FormFacturaRequest(
         empresa: empresa,
         cliente: clienteCodigo,
         remesas: remesas,
@@ -153,11 +152,11 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
       if (resp.isNotEmpty) {
         add(const SuccesFormFacturaEvent());
-        await moveScroll(450);
+        //await moveScroll(450);
       }
       if (tipoFactura == 10) {
         add(const SuccesFormFacturaEvent());
-        await moveScroll(450);
+        //await moveScroll(450);
       }
     }
   }

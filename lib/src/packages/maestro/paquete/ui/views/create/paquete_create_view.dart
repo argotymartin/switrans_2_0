@@ -13,8 +13,6 @@ class PaqueteCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<PaqueteBloc, PaqueteState>(
       listener: (BuildContext context, PaqueteState state) {
         if (state is PaqueteExceptionState) {
@@ -30,9 +28,9 @@ class PaqueteCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(
             title: "Registrar Nuevo",
             icon: Icons.storage_outlined,
             child: _BuildFieldsForm(),

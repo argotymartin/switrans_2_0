@@ -1,10 +1,10 @@
-class FacturaRequest {
+class FormFacturaRequest {
   final int empresa;
   final int cliente;
   final String? remesas;
   final String? inicio;
   final String? fin;
-  FacturaRequest({
+  FormFacturaRequest({
     required this.empresa,
     required this.cliente,
     this.remesas,

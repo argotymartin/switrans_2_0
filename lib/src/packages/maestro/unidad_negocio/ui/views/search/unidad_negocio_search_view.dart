@@ -16,8 +16,6 @@ class UnidadNegocioSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
       listener: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioFailedState) {
@@ -27,10 +25,10 @@ class UnidadNegocioSearchView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-          const _BluildDataTable(),
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
+          _BluildDataTable(),
         ],
       ),
     );

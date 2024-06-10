@@ -14,8 +14,6 @@ class UnidadNegocioCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
       listener: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioFailedState) {
@@ -31,9 +29,9 @@ class UnidadNegocioCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(
             title: "Registrar Nuevo",
             icon: Icons.add_circle_outline_outlined,
             child: _BuildFieldsForm(),

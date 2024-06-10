@@ -1,24 +1,52 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/tipo_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/create/widgets/text_area_documento.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/text_area_documento.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/forms/build_flex_form_fields.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/web_date_picker.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
-class FacturaCreateView extends StatefulWidget {
+class FacturaCreateView extends StatelessWidget {
   const FacturaCreateView({super.key});
 
   @override
-  State<FacturaCreateView> createState() => _FacturaCreateViewState();
+  Widget build(BuildContext context) {
+    return BlocConsumer<FormFacturaBloc, FormFacturaState>(
+      listener: (BuildContext context, FormFacturaState state) {
+        if (state is FormFacturaErrorState) {
+          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!.message!);
+        }
+      },
+      builder: (BuildContext context, FormFacturaState state) {
+        if (state is FormFacturaDataState) {
+          return const FacturaCreateFields();
+        }
+        if (state is FormFacturaSuccesState) {
+          return const FacturaCreateFields();
+        }
+        return const LoadingView();
+      },
+    );
+  }
 }
 
-class _FacturaCreateViewState extends State<FacturaCreateView> {
+class FacturaCreateFields extends StatefulWidget {
+  const FacturaCreateFields({super.key});
+
+  @override
+  State<FacturaCreateFields> createState() => _FacturaCreateFieldsState();
+}
+
+class _FacturaCreateFieldsState extends State<FacturaCreateFields> {
   late ScrollController _controller;
   double pixels = 0.0;
   @override
@@ -34,50 +62,38 @@ class _FacturaCreateViewState extends State<FacturaCreateView> {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     const Duration duration = Duration(milliseconds: 1000);
-    return BlocListener<DocumentoBloc, DocumentoState>(
-      listener: (BuildContext context, DocumentoState state) {
-        if (state is DocumentoErrorState) {
-          ErrorDialog.showDioException(context, state.error);
-        }
-      },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            controller: context.read<FormFacturaBloc>().scrollController,
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const SizedBox(height: 16),
-              const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
-              const SizedBox(height: 16),
-              AnimatedScale(
-                duration: duration,
-                scale: pixels >= 100 ? 1.0 : 0.5,
-                child: AnimatedOpacity(
-                  opacity: pixels >= 100 ? 1.0 : 0.0,
-                  duration: duration,
-                  child: const _BuildDocumentos(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              AnimatedScale(
-                duration: duration,
-                scale: pixels >= 100 ? 1.0 : 0.5,
-                child: AnimatedOpacity(
-                  opacity: pixels >= 100 ? 1.0 : 0.0,
-                  duration: duration,
-                  child: const _BuildItemFactura(),
-                ),
-              ),
-              const SizedBox(height: 32),
-            ],
+    return ListView(
+      controller: context.read<FormFacturaBloc>().scrollController,
+      padding: const EdgeInsets.only(right: 32, top: 8),
+      physics: const ClampingScrollPhysics(),
+      children: <Widget>[
+        const BuildViewDetail(),
+        const SizedBox(height: 16),
+        const CustomExpansionPanel(title: "Filtros", child: _BuildFiltros()),
+        const SizedBox(height: 16),
+        AnimatedScale(
+          duration: duration,
+          //curve: Curves.bounceInOut,
+          scale: pixels >= 100 ? 1.0 : 0.5,
+          child: AnimatedOpacity(
+            opacity: pixels >= 100 ? 1.0 : 0.0,
+            duration: duration,
+            child: const _BuildDocumentos(),
           ),
-          //const Positioned(left: 0, right: 0, bottom: 0, child: ModalItemDocumento()),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        AnimatedScale(
+          duration: duration,
+          scale: pixels >= 100 ? 1.0 : 0.5,
+          child: AnimatedOpacity(
+            opacity: pixels >= 100 ? 1.0 : 0.0,
+            duration: duration,
+            child: const _BuildItemFactura(),
+          ),
+        ),
+        const SizedBox(height: 32),
+      ],
     );
   }
 }
@@ -89,7 +105,6 @@ class _BuildFiltros extends StatelessWidget {
   Widget build(BuildContext context) {
     final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     final ItemDocumentoBloc itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
-    final List<Empresa> empresas = formFacturaBloc.state.empresas;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
@@ -97,74 +112,17 @@ class _BuildFiltros extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(child: _FieldCliente(formFacturaBloc: formFacturaBloc)),
-                    const SizedBox(width: 24),
-                    const _FieldTipoFactura(),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 24),
-              Expanded(child: _FieldEmpresa(empresas: empresas)),
+          BuildFlexFormFields(
+            children: <FlexWidgetForm>[
+              FlexWidgetForm(flex: 1, widget: const _FieldTipoDocumento()),
+              FlexWidgetForm(flex: 2, widget: const _FieldCliente()),
+              FlexWidgetForm(flex: 3, widget: const _FieldEmpresa()),
+              FlexWidgetForm(flex: 3, widget: const _FieldDocumentos()),
+              FlexWidgetForm(flex: 3, widget: const _FieldFechas()),
             ],
           ),
           const SizedBox(height: 24),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(child: _FieldRemesas(formFacturaBloc: formFacturaBloc)),
-              const SizedBox(width: 24),
-              Expanded(child: _FieldFechas(formFacturaBloc: formFacturaBloc)),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: <Widget>[
-              FilledButton.icon(
-                onPressed: () {
-                  final bool isValid = formKey.currentState!.validate();
-                  itemDocumentoBloc.add(const ResetDocumentoEvent());
-                  formFacturaBloc.onPressedSearch(isValid: isValid);
-                },
-                icon: const Icon(Icons.search_rounded),
-                label: const Text("Buscar", style: TextStyle(color: Colors.white)),
-              ),
-              const SizedBox(width: 8),
-              BlocBuilder<DocumentoBloc, DocumentoState>(
-                builder: (BuildContext context, DocumentoState state) {
-                  if (state is DocumentoLoadingState) {
-                    return const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 3.0),
-                    );
-                  }
-                  if (state is DocumentoSuccesState) {
-                    final String remesas = context.read<FormFacturaBloc>().remesasController.text;
-                    final List<String> items = remesas.split(",");
-                    return Column(
-                      children: <Widget>[
-                        Text(
-                          remesas.isEmpty ? "Encontrados" : "Consultadas/Encontrados",
-                          style: TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                        Text(
-                          remesas.isEmpty ? "${state.documentos.length}" : "${items.length}/${state.documentos.length}",
-                          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-            ],
-          ),
+          BuildButtonForm(formKey: formKey, itemDocumentoBloc: itemDocumentoBloc, formFacturaBloc: formFacturaBloc),
           const SizedBox(height: 8),
           BlocBuilder<FormFacturaBloc, FormFacturaState>(
             builder: (BuildContext context, FormFacturaState state) {
@@ -177,25 +135,57 @@ class _BuildFiltros extends StatelessWidget {
   }
 }
 
-class _FieldCliente extends StatelessWidget {
-  const _FieldCliente({
-    required this.formFacturaBloc,
-  });
+class _FieldTipoDocumento extends StatelessWidget {
+  const _FieldTipoDocumento();
 
-  final FormFacturaBloc formFacturaBloc;
+  @override
+  Widget build(BuildContext context) {
+    final List<TipoDocumento> tiposDocumentos = context.read<FormFacturaBloc>().state.tiposDocumentos;
+    final TextEditingController controller = TextEditingController();
+    void onPressed(EntryAutocomplete entry) {
+      //context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.codigo));
+    }
+
+    final List<EntryAutocomplete> entries = tiposDocumentos.map((TipoDocumento tipoDocumento) {
+      return EntryAutocomplete(
+        title: tipoDocumento.nombre,
+        codigo: tipoDocumento.codigo,
+      );
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Tipo Documento", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        AutocompleteInput(
+          controller: controller,
+          label: "Tipo",
+          entryCodigoSelected: 1,
+          entries: entries,
+          onPressed: onPressed,
+          minChractersSearch: 0,
+        ),
+      ],
+    );
+  }
+}
+
+class _FieldCliente extends StatelessWidget {
+  const _FieldCliente();
 
   @override
   Widget build(BuildContext context) {
     final FormFacturaBloc facturaFilterBloc = BlocProvider.of<FormFacturaBloc>(context);
     final List<Cliente> clientes = facturaFilterBloc.state.clientes;
-    final Cliente? cliente = clientes.firstWhereOrNull((Cliente element) => element.codigo == formFacturaBloc.clienteCodigo);
+    final Cliente? cliente = clientes.firstWhereOrNull((Cliente element) => element.codigo == facturaFilterBloc.clienteCodigo);
     final TextEditingController controller = TextEditingController();
     if (cliente != null) {
       controller.text = cliente.nombre;
     }
 
     void setValueCliente(EntryAutocomplete entry) {
-      formFacturaBloc.clienteCodigo = entry.codigo;
+      facturaFilterBloc.clienteCodigo = entry.codigo;
       controller.text = entry.title;
     }
 
@@ -229,39 +219,13 @@ class _FieldCliente extends StatelessWidget {
   }
 }
 
-class _FieldTipoFactura extends StatelessWidget {
-  const _FieldTipoFactura();
-
-  @override
-  Widget build(BuildContext context) {
-    void onPressed(MenuEntry entry) {
-      context.read<FormFacturaBloc>().add(TipoFacturaFormFacturaEvent(entry.value));
-    }
-
-    const List<MenuEntry> entryMenus = <MenuEntry>[
-      MenuEntry(label: "Tipo 10", value: 10),
-      MenuEntry(label: "Tipo 12", value: 12),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Tipo", style: AppTheme.titleStyle),
-        const SizedBox(height: 8),
-        CustomMenuItemButton(entries: entryMenus, indexSelectedDefault: 0, onPressed: onPressed),
-      ],
-    );
-  }
-}
-
 class _FieldEmpresa extends StatelessWidget {
-  const _FieldEmpresa({
-    required this.empresas,
-  });
-
-  final List<Empresa> empresas;
+  const _FieldEmpresa();
 
   @override
   Widget build(BuildContext context) {
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final List<Empresa> empresas = formFacturaBloc.state.empresas;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -271,12 +235,7 @@ class _FieldEmpresa extends StatelessWidget {
           spacing: 16,
           children: List<Widget>.generate(
             empresas.length,
-            (int index) => SizedBox(
-              width: 180,
-              child: BuildCardEmpresa(
-                empresa: empresas[index],
-              ),
-            ),
+            (int index) => SizedBox(width: 180, child: BuildCardEmpresa(empresa: empresas[index])),
           ),
         ),
       ],
@@ -284,19 +243,16 @@ class _FieldEmpresa extends StatelessWidget {
   }
 }
 
-class _FieldRemesas extends StatelessWidget {
-  const _FieldRemesas({
-    required this.formFacturaBloc,
-  });
-
-  final FormFacturaBloc formFacturaBloc;
+class _FieldDocumentos extends StatelessWidget {
+  const _FieldDocumentos();
 
   @override
   Widget build(BuildContext context) {
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Remesas", style: AppTheme.titleStyle),
+        Text("Documentos", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         TextAreaDocumentos(controller: formFacturaBloc.remesasController),
       ],
@@ -305,43 +261,100 @@ class _FieldRemesas extends StatelessWidget {
 }
 
 class _FieldFechas extends StatelessWidget {
-  const _FieldFechas({
-    required this.formFacturaBloc,
-  });
-
-  final FormFacturaBloc formFacturaBloc;
+  const _FieldFechas();
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     return Wrap(
+      spacing: 16,
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("Inicio", style: AppTheme.titleStyle),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: size.width * 0.15,
-              height: 56,
-              child: DatetimeInput(controller: formFacturaBloc.fechaInicioController),
-            ),
-          ],
+        Container(
+          constraints: const BoxConstraints(maxWidth: 220),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Inicio", style: AppTheme.titleStyle),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: WebDatePicker(controller: formFacturaBloc.fechaInicioController),
+              ),
+            ],
+          ),
         ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          constraints: const BoxConstraints(maxWidth: 220),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Fin", style: AppTheme.titleStyle),
               const SizedBox(height: 8),
               SizedBox(
-                width: size.width * 0.15,
-                height: 56,
-                child: DatetimeInput(controller: formFacturaBloc.fechaFinController),
+                //width: size.width * 0.15,
+                child: WebDatePicker(controller: formFacturaBloc.fechaFinController),
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class BuildButtonForm extends StatelessWidget {
+  const BuildButtonForm({
+    required this.formKey,
+    required this.itemDocumentoBloc,
+    required this.formFacturaBloc,
+    super.key,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final ItemDocumentoBloc itemDocumentoBloc;
+  final FormFacturaBloc formFacturaBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        FilledButton.icon(
+          onPressed: () {
+            final bool isValid = formKey.currentState!.validate();
+            itemDocumentoBloc.add(const ResetDocumentoEvent());
+            formFacturaBloc.onPressedSearch(isValid: isValid);
+          },
+          icon: const Icon(Icons.search_rounded),
+          label: const Text("Buscar", style: TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(width: 8),
+        BlocBuilder<DocumentoBloc, DocumentoState>(
+          builder: (BuildContext context, DocumentoState state) {
+            if (state is DocumentoLoadingState) {
+              return const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 3.0),
+              );
+            }
+            if (state is DocumentoSuccesState) {
+              final String remesas = context.read<FormFacturaBloc>().remesasController.text;
+              final List<String> items = remesas.split(",");
+              return Column(
+                children: <Widget>[
+                  Text(
+                    remesas.isEmpty ? "Encontrados" : "Consultadas/Encontrados",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  Text(
+                    remesas.isEmpty ? "${state.documentos.length}" : "${items.length}/${state.documentos.length}",
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              );
+            }
+            return const SizedBox();
+          },
         ),
       ],
     );
@@ -486,10 +499,6 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
       );
     }).toList();
 
-    final EntryAutocomplete? entrySelected2 =
-        entriesCentroCosto.firstWhereOrNull((EntryAutocomplete entry) => entry.codigo == formFacturaBloc.centroCosto);
-    final String entrySelected = entrySelected2 != null ? entrySelected2.title : "";
-
     void setValueFactura(EntryAutocomplete value) {
       if (value.codigo > 0) {
         context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
@@ -530,7 +539,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
                 child: AutocompleteInput(
                   entries: entriesCentroCosto,
                   label: "Centro Costo",
-                  entrySelected: entrySelected,
+                  entryCodigoSelected: formFacturaBloc.centroCosto,
                   controller: controllerCentroCosto,
                   onPressed: setValueFactura,
                 ),

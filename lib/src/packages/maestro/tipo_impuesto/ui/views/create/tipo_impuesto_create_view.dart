@@ -12,8 +12,6 @@ class TipoImpuestoCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (BuildContext context, TipoImpuestoState state) {
         if (state is TipoImpuestoExceptionState) {
@@ -33,9 +31,9 @@ class TipoImpuestoCreateView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
             ],
           ),
         ],

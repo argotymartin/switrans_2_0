@@ -24,7 +24,7 @@ class WebDatePickerTitle extends StatelessWidget {
         title.isNotEmpty ? Text(title, style: AppTheme.titleStyle) : const SizedBox(),
         title.isNotEmpty ? const SizedBox(height: 8) : const SizedBox(),
         WebDatePicker(
-          controller: controller,
+          //controller: controller,
           onChange: (DateTime? value) {},
         ),
       ],

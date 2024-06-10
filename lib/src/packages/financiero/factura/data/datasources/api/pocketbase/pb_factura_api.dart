@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/util/constans/constants.dart';
 
-class ClientePocketbaseAPI {
+class PBClienteAPI {
   final Dio _dio;
 
-  ClientePocketbaseAPI(this._dio);
+  PBClienteAPI(this._dio);
 
   Future<Response<dynamic>> getClienteAll() async {
     const String url = '$kPocketBaseUrl/api/collections/cliente/records';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/create/widgets/card_details_factura2.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/card_details_factura2.dart';
 
 class ModalItemDocumento extends StatefulWidget {
   const ModalItemDocumento({super.key});
@@ -34,11 +34,11 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
             child: Transform.translate(
               offset: Offset(tralateAnimation.value, 0),
               child: InkWell(
-                onTap: () => formulario.moveBottomAllScroll(),
+                onTap: () async => formulario.moveBottomAllScroll(),
                 child: const Row(
                   children: <Widget>[
                     Expanded(child: SizedBox()),
-                    SizedBox(width: 720, child: CardDetailsFactura2()),
+                    Flexible(child: SizedBox(child: CardDetailsFactura2())),
                   ],
                 ),
               ),

@@ -113,7 +113,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
         onEnter: (_) => setState(() => _isEnterDateField = true),
         onExit: (_) => setState(() => _isEnterDateField = false),
         child: SizedBox(
-          width: 200,
+          //width: 200,
           height: 36,
           child: TextFormField(
             focusNode: _focusNode,
@@ -142,6 +142,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
   Widget _buildPrefixIcon() {
     if (_controller.text.isNotEmpty && _isEnterDateField) {
       return IconButton(
+        iconSize: 20,
         icon: Icon(
           Icons.close,
           color: Theme.of(context).colorScheme.error,
@@ -151,10 +152,11 @@ class _WebDatePickerState extends State<WebDatePicker> {
           _selectedDate = null;
           _focusNode.hasFocus;
         },
-        splashRadius: 16,
+        splashRadius: 4,
       );
     } else {
       return IconButton(
+        iconSize: 20,
         icon: Icon(
           Icons.calendar_month_outlined,
           color: Theme.of(context).colorScheme.primary,
@@ -164,7 +166,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
             Overlay.of(context).insert(_overlayEntry);
           }
         },
-        splashRadius: 16,
+        splashRadius: 4,
       );
     }
   }
