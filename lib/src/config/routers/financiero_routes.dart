@@ -9,7 +9,7 @@ import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class FinancieroRoutes {
-  static const String packagePath = "finaciero";
+  static const String packagePath = "/finaciero";
 
   static List<ShellRoute> getRoutesFinaciero() {
     final List<ShellRoute> routes = <ShellRoute>[];
@@ -30,7 +30,7 @@ class FinancieroRoutes {
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
-          path: "/$packagePath/$modulePath/registrar",
+          path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
             return BlocConsumer<FormFacturaBloc, FormFacturaState>(
