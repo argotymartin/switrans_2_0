@@ -30,6 +30,7 @@ class AutocompleteInput extends StatefulWidget {
 class _Autocomplete2InputState extends State<AutocompleteInput> {
   List<DropdownMenuEntry<EntryAutocomplete>> dropdownMenuEntries = <DropdownMenuEntry<EntryAutocomplete>>[];
   EntryAutocomplete entryAutocompleteSelected = EntryAutocomplete(title: "");
+  late List<EntryAutocomplete> filteredEntries;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         widget.controller.text = entryAutocompleteSelected.title;
       }
     }
-    final List<EntryAutocomplete> filteredEntries = widget.entries.take(10).toList();
+    filteredEntries = widget.entries.take(8).toList();
     dropdownMenuEntries =
         filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
     widget.controller.addListener(_onTextChanged);
@@ -48,11 +49,26 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
 
   void _onTextChanged() {
     final String searchText = widget.controller.text.toLowerCase();
+
     if (mounted) {
       setState(() {
-        final List<EntryAutocomplete> filteredEntries =
-            widget.entries.where((EntryAutocomplete entry) => entry.title.toLowerCase().contains(searchText)).toList();
-        if (searchText.length >= widget.minChractersSearch) {
+        bool isMinCharacter = true;
+        filteredEntries = widget.entries.where((EntryAutocomplete entry) {
+          if (searchText.isNotEmpty && searchText.substring(0, 1) == ';') {
+            final String searchNew = searchText.split(";")[1];
+            isMinCharacter = false;
+            return entry.subTitle.toLowerCase().contains(searchNew);
+          }
+
+          final RegExp regex = RegExp(r'^[0-9]+$'); // Expresión regular para verificar números
+          if (regex.hasMatch(searchText)) {
+            isMinCharacter = false;
+            return entry.codigo.toString().contains(searchText);
+          } else {
+            return entry.title.toLowerCase().contains(searchText);
+          }
+        }).toList();
+        if (searchText.length >= widget.minChractersSearch && isMinCharacter) {
           dropdownMenuEntries =
               filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
         }
@@ -88,8 +104,8 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         //initialSelection: entryAutocompleteSelected,
         controller: widget.controller,
         requestFocusOnTap: true,
-        enableFilter: widget.enabled,
-        enableSearch: widget.enabled,
+        menuHeight: 300,
+        enableSearch: false,
         enabled: widget.enabled,
         expandedInsets: EdgeInsets.zero,
         trailingIcon: const Icon(Icons.keyboard_arrow_down),
@@ -99,6 +115,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
             : const Icon(Icons.search),
         hintText: "Buscar ${widget.label} ...",
         textStyle: const TextStyle(fontSize: 12),
+
         inputDecorationTheme: const InputDecorationTheme(
           constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
           isDense: true,

@@ -10,7 +10,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/te
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_flex_form_fields.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/web_date_picker.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/web_date_picker2.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -22,12 +22,14 @@ class FacturaCreateView extends StatelessWidget {
     return BlocConsumer<FormFacturaBloc, FormFacturaState>(
       listener: (BuildContext context, FormFacturaState state) {
         if (state is FormFacturaErrorState) {
-          ErrorDialog.showDioException(context, state.exception!);
-          CustomToast.showError(context, state.exception!.message!);
+          CustomToast.showError(context, state.exception!.response!.data!);
         }
       },
       builder: (BuildContext context, FormFacturaState state) {
         if (state is FormFacturaDataState) {
+          return const FacturaCreateFields();
+        }
+        if (state is FormFacturaRequestState) {
           return const FacturaCreateFields();
         }
         if (state is FormFacturaSuccesState) {
@@ -74,7 +76,7 @@ class _FacturaCreateFieldsState extends State<FacturaCreateFields> {
         const SizedBox(height: 16),
         AnimatedScale(
           duration: duration,
-          //curve: Curves.bounceInOut,
+          curve: Curves.easeInOut,
           scale: pixels >= 100 ? 1.0 : 0.5,
           child: AnimatedOpacity(
             opacity: pixels >= 100 ? 1.0 : 0.0,
@@ -232,7 +234,9 @@ class _FieldEmpresa extends StatelessWidget {
         Text("Empresa", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         Wrap(
+          runSpacing: 8,
           spacing: 16,
+          clipBehavior: Clip.antiAlias,
           children: List<Widget>.generate(
             empresas.length,
             (int index) => SizedBox(width: 180, child: BuildCardEmpresa(empresa: empresas[index])),
@@ -266,37 +270,12 @@ class _FieldFechas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
-    return Wrap(
-      spacing: 16,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          constraints: const BoxConstraints(maxWidth: 220),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Inicio", style: AppTheme.titleStyle),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: WebDatePicker(controller: formFacturaBloc.fechaInicioController),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          constraints: const BoxConstraints(maxWidth: 220),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Fin", style: AppTheme.titleStyle),
-              const SizedBox(height: 8),
-              SizedBox(
-                //width: size.width * 0.15,
-                child: WebDatePicker(controller: formFacturaBloc.fechaFinController),
-              ),
-            ],
-          ),
-        ),
+        Text(" Fecha Inicio - Fecha Fin", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        WebDatePicker2(controller: formFacturaBloc.fechacontroller),
       ],
     );
   }

@@ -43,6 +43,7 @@ class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
         final Matrix4 hoveredTransform = Matrix4.identity()..scale(1.05);
         final Matrix4 transform = isHovered ? hoveredTransform : Matrix4.identity();
         return Material(
+          color: Colors.transparent,
           child: MouseRegion(
             onEnter: (PointerEnterEvent event) => setState(() => isHovered = true),
             onExit: (PointerExitEvent event) => setState(() => isHovered = false),

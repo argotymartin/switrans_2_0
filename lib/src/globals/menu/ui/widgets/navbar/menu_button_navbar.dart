@@ -114,7 +114,7 @@ class _BuildButtonState extends State<_BuildButton> {
           color: widget.isSelected
               ? Colors.black87
               : isHover
-                  ? Theme.of(context).colorScheme.primary
+                  ? Theme.of(context).canvasColor
                   : Colors.transparent,
           borderRadius: BorderRadius.circular(4.0),
           border: Border.all(color: Colors.grey.shade400),

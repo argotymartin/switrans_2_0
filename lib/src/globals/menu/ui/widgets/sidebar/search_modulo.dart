@@ -11,7 +11,7 @@ class SearchModulo extends StatelessWidget {
     final TextEditingController controller = TextEditingController();
     return Container(
       padding: const EdgeInsets.all(8),
-      color: colorScheme.onPrimaryContainer.withOpacity(0.1),
+      color: colorScheme.primary.withOpacity(0.2),
       child: Align(
         child: TextField(
           cursorColor: Colors.white,
@@ -26,26 +26,26 @@ class SearchModulo extends StatelessWidget {
             menusidebar.add(SearchMenuSidebarEvent(value));
           },
           decoration: InputDecoration(
-            fillColor: colorScheme.onPrimaryContainer,
+            fillColor: Colors.transparent.withOpacity(0.2),
             filled: true,
-            hintStyle: TextStyle(color: colorScheme.outlineVariant, fontSize: 14, fontWeight: FontWeight.w300),
+            hintStyle: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             constraints: const BoxConstraints(maxHeight: 38, minHeight: 32),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorScheme.primary,
+                color: Theme.of(context).canvasColor,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorScheme.primary,
+                color: Theme.of(context).canvasColor,
                 width: 2,
               ),
             ),
             hintText: "Buscar por modulo..",
-            suffixIcon: Icon(
+            suffixIcon: const Icon(
               Icons.filter_alt_off,
-              color: colorScheme.outlineVariant,
+              color: Colors.white,
             ),
           ),
         ),

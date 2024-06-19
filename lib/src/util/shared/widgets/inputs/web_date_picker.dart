@@ -3,15 +3,15 @@ import 'package:intl/intl.dart';
 
 class WebDatePicker extends StatefulWidget {
   const WebDatePicker({
-    super.key,
+    required this.controller,
     this.initialDate,
     this.onChange,
-    this.controller,
+    super.key,
   });
 
   final DateTime? initialDate;
   final ValueChanged<DateTime?>? onChange;
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   @override
   State<StatefulWidget> createState() => _WebDatePickerState();
@@ -21,7 +21,6 @@ class _WebDatePickerState extends State<WebDatePicker> {
   late OverlayEntry _overlayEntry;
   final FocusNode _focusNode = FocusNode();
   final LayerLink _layerLink = LayerLink();
-  late TextEditingController _controller;
   late DateTime? _selectedDate;
   late DateTime _firstDate;
   late DateTime _lastDate;
@@ -32,7 +31,6 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
   @override
   void initState() {
-    _controller = widget.controller!;
     super.initState();
     _selectedDate = widget.initialDate;
     _firstDate = DateTime(2000);
@@ -40,7 +38,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     currentYear = _currentDate.parseToString('yyyy');
 
     if (_selectedDate != null) {
-      _controller.text = _selectedDate?.parseToString(dateformat) ?? '';
+      widget.controller.text = _selectedDate?.parseToString(dateformat) ?? '';
     }
 
     _focusNode.addListener(() async {
@@ -56,24 +54,29 @@ class _WebDatePickerState extends State<WebDatePicker> {
     }
   }
 
-  void onChangeCalendarDatePicker(DateTime? selectedDate) {
+  Future<void> onChangeCalendarDatePicker(DateTime? selectedDate) async {
+    await Future<dynamic>.delayed(const Duration(milliseconds: 220));
     setState(() {
       final String selectedYear = selectedDate.parseToString('yyyy');
       if (selectedYear == currentYear) {
-        _overlayEntry.remove();
         _selectedDate = selectedDate;
-        setState(() {});
       } else {
         _selectedDate = selectedDate;
         currentYear = selectedYear;
-        setState(() {});
+      }
+
+      if (widget.onChange != null) {
+        widget.onChange!.call(selectedDate);
+      }
+      widget.controller.text = _selectedDate.parseToString(dateformat);
+      _focusNode.unfocus();
+      _selectedDate = null;
+      _focusNode.hasFocus;
+
+      if (_overlayEntry.mounted) {
+        _overlayEntry.remove();
       }
     });
-    if (widget.onChange != null) {
-      widget.onChange!.call(selectedDate);
-    }
-    _controller.text = _selectedDate.parseToString(dateformat);
-    _focusNode.unfocus();
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -113,17 +116,17 @@ class _WebDatePickerState extends State<WebDatePicker> {
         onEnter: (_) => setState(() => _isEnterDateField = true),
         onExit: (_) => setState(() => _isEnterDateField = false),
         child: SizedBox(
-          //width: 200,
           height: 36,
           child: TextFormField(
             focusNode: _focusNode,
-            controller: _controller,
+            controller: widget.controller,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(horizontal: 10),
               border: const OutlineInputBorder(),
               suffixIcon: _buildPrefixIcon(),
             ),
             onChanged: (String dateString) {
+              setState(() {});
               final DateTime date = dateString.parseToDateTime(dateformat);
               if (date.isBefore(_firstDate)) {
                 _selectedDate = _firstDate;
@@ -140,7 +143,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
   }
 
   Widget _buildPrefixIcon() {
-    if (_controller.text.isNotEmpty && _isEnterDateField) {
+    if (widget.controller.text.isNotEmpty && _isEnterDateField) {
       return IconButton(
         iconSize: 20,
         icon: Icon(
@@ -148,7 +151,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
           color: Theme.of(context).colorScheme.error,
         ),
         onPressed: () {
-          _controller.clear();
+          widget.controller.clear();
           _selectedDate = null;
           _focusNode.hasFocus;
         },
@@ -162,8 +165,12 @@ class _WebDatePickerState extends State<WebDatePicker> {
           color: Theme.of(context).colorScheme.primary,
         ),
         onPressed: () {
+          widget.controller.clear();
+          _selectedDate = null;
+          _focusNode.hasFocus;
           if (!_overlayEntry.mounted) {
-            Overlay.of(context).insert(_overlayEntry);
+            _handleFocusChange();
+            //Overlay.of(context).insert(_overlayEntry);
           }
         },
         splashRadius: 4,

@@ -19,8 +19,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
   final TextEditingController remesasController = TextEditingController();
-  final TextEditingController fechaInicioController = TextEditingController();
-  final TextEditingController fechaFinController = TextEditingController();
+  final TextEditingController fechacontroller = TextEditingController();
 
   FormFacturaBloc(this._repository, this._documentoBloc) : super(const FormFacturaInitialState()) {
     on<GetFormFacturaEvent>(_onGetDataFactura);
@@ -106,7 +105,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
       scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
   Future<void> moveBottomAllScroll() async {
-    //animationController.reset();
+    animationController.reset();
     await scrollController.animateTo(
       scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 1000),
@@ -115,11 +114,12 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   }
 
   Future<void> onPressedSearch({required bool isValid}) async {
+    final List<String> fechas = fechacontroller.text.split(" - ");
     final int empresa = state.empresa;
     final int tipoFactura = state.tipoFactura;
     final String remesas = remesasController.text;
-    final String inicio = fechaInicioController.text;
-    final String fin = fechaFinController.text;
+    final String inicio = fechas[0].trim();
+    final String fin = fechas[1].trim();
 
     String error = "";
     if (empresa <= 0) {
@@ -152,6 +152,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
       if (resp.isNotEmpty) {
         add(const SuccesFormFacturaEvent());
+
         //await moveScroll(450);
       }
       if (tipoFactura == 10) {
