@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
-class TextAreaDocumentos extends StatelessWidget {
+class FieldFacturaDocumentos extends StatelessWidget {
+  const FieldFacturaDocumentos({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Documentos", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        _TextAreaDocumentos(controller: formFacturaBloc.remesasController),
+      ],
+    );
+  }
+}
+
+class _TextAreaDocumentos extends StatelessWidget {
   final TextEditingController controller;
-  const TextAreaDocumentos({
+  const _TextAreaDocumentos({
     required this.controller,
-    super.key,
   });
 
   @override

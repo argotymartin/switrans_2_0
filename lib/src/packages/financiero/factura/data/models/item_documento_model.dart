@@ -18,9 +18,9 @@ class ItemDocumentoModel extends ItemDocumento {
         documentoImpreso: documento.impreso,
         descripcion: documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacion,
         documento: documento.remesa,
-        valor: 0,
+        valor: documento.flete,
         tipo: "TR",
-        total: 0,
+        total: documento.total,
       );
 
   factory ItemDocumentoModel.init() => ItemDocumentoModel(

@@ -11,12 +11,12 @@ part 'form_factura_event.dart';
 part 'form_factura_state.dart';
 
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
-  int _clienteCodigo = 0;
+  int _clienteCodigo = 1717;
   int _centroCostoCodigo = 0;
   final AbstractFacturaRepository _repository;
   final DocumentoBloc _documentoBloc;
 
-  late AnimationController animationController;
+  //late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
   final TextEditingController remesasController = TextEditingController();
   final TextEditingController fechacontroller = TextEditingController();
@@ -28,9 +28,9 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     on<ErrorFormFacturaEvent>(_onEventChanged);
     on<SuccesFormFacturaEvent>(_onSuccesChanged);
 
-    scrollController.addListener(() {
-      debugPrint(scrollController.offset.toString());
-    });
+    // scrollController.addListener(() {
+    //   debugPrint(scrollController.offset.toString());
+    // });
   }
 
   Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
@@ -101,17 +101,17 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  Future<void> moveScroll(double offset) =>
-      scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
+  // Future<void> moveScroll(double offset) =>
+  //     scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
-  Future<void> moveBottomAllScroll() async {
-    animationController.reset();
-    await scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 1000),
-      curve: Curves.easeIn,
-    );
-  }
+  // Future<void> moveBottomAllScroll() async {
+  //   animationController.reset();
+  //   await scrollController.animateTo(
+  //     scrollController.position.maxScrollExtent,
+  //     duration: const Duration(milliseconds: 1000),
+  //     curve: Curves.easeIn,
+  //   );
+  // }
 
   Future<void> onPressedSearch({required bool isValid}) async {
     final List<String> fechas = fechacontroller.text.split(" - ");

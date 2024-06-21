@@ -47,7 +47,12 @@ class TableDocumentos extends StatelessWidget {
             ),
             configuration: PlutoGridConfiguration(
               style: PlutoGridStyleConfig(
-                checkedColor: Theme.of(context).colorScheme.primaryContainer,
+                gridBackgroundColor: Theme.of(context).colorScheme.primaryFixedDim,
+                borderColor: Theme.of(context).colorScheme.primaryFixedDim,
+                gridBorderColor: Theme.of(context).colorScheme.primaryFixedDim,
+                columnTextStyle:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16, fontWeight: FontWeight.bold),
+                checkedColor: Theme.of(context).colorScheme.surface,
                 activatedColor: Theme.of(context).colorScheme.onPrimary,
                 activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 columnHeight: titleHeight,

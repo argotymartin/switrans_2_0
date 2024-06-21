@@ -1,22 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
-class BuildCardEmpresa extends StatefulWidget {
+class FieldFacturaEmpresa extends StatelessWidget {
+  const FieldFacturaEmpresa({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
+    final List<Empresa> empresas = formFacturaBloc.state.empresas;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Empresa", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        Wrap(
+          runSpacing: 8,
+          spacing: 16,
+          clipBehavior: Clip.antiAlias,
+          children: List<Widget>.generate(
+            empresas.length,
+            (int index) => SizedBox(width: 180, child: _BuildCardEmpresa(empresa: empresas[index])),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BuildCardEmpresa extends StatefulWidget {
   final Empresa empresa;
 
-  const BuildCardEmpresa({
+  const _BuildCardEmpresa({
     required this.empresa,
     super.key,
   });
 
   @override
-  State<BuildCardEmpresa> createState() => _BuildCardEmpresaState();
+  State<_BuildCardEmpresa> createState() => _BuildCardEmpresaState();
 }
 
-class _BuildCardEmpresaState extends State<BuildCardEmpresa> {
+class _BuildCardEmpresaState extends State<_BuildCardEmpresa> {
   bool isHovered = false;
   @override
   Widget build(BuildContext context) {

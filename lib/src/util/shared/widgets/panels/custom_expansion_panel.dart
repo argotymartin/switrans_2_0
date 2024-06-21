@@ -5,9 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomExpansionPanel extends StatefulWidget {
   final String title;
   final Widget child;
+  final IconData iconOn;
+  final IconData iconOff;
   const CustomExpansionPanel({
     required this.title,
     required this.child,
+    required this.iconOn,
+    required this.iconOff,
     super.key,
   });
 
@@ -35,14 +39,15 @@ class _CustomExpansionPanelState extends State<CustomExpansionPanel> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: <Widget>[
-                      isExpanded ? const Icon(Icons.filter_alt_off_outlined) : const Icon(Icons.filter_alt_rounded),
+                      isExpanded ? Icon(widget.iconOn) : Icon(widget.iconOff),
+                      const SizedBox(width: 8),
                       SizedBox(
                         height: 24,
                         child: FittedBox(
                           child: Text(
                             widget.title,
                             style: GoogleFonts.roboto(
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

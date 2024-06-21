@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/radio_buttons.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
-import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TableItemsDocumento extends StatelessWidget {
@@ -25,9 +23,7 @@ class TableItemsDocumento extends StatelessWidget {
             _CellTitle(title: "Documento"),
             _CellTitle(title: "Descripcion"),
             _CellTitle(title: "Valor"),
-            _CellTitle(title: "IVA %"),
-            _CellTitle(title: "IVA Valor"),
-            _CellTitle(title: "Cantidad"),
+            _CellTitle(title: "Impuestos"),
             _CellTitle(title: "Total"),
             _CellTitle(title: "Accion"),
           ],
@@ -42,9 +38,7 @@ class TableItemsDocumento extends StatelessWidget {
                 _CellContent(child: _BuildFiledDocumento(item: itemDocumento)),
                 _CellContent(child: _BuildFieldDescription(item: itemDocumento)),
                 _CellContent(child: _BuildValor(item: itemDocumento)),
-                _CellContent(child: _BuildPorcentajeIva(itemDocumento.porcentajeIva)),
-                _CellContent(child: _BuildValorIva(valorIva: itemDocumento.valorIva)),
-                _CellContent(child: _BuildCantidad(item: itemDocumento)),
+                _CellContent(child: _BuildImpuestos(item: itemDocumento)),
                 _CellContent(child: _BuildTotal(total: itemDocumento.total)),
                 _CellContent(child: _BuildFiledAccion(index: index)),
               ],
@@ -54,13 +48,12 @@ class TableItemsDocumento extends StatelessWidget {
 
         const Map<int, FractionColumnWidth> columnWidth = <int, FractionColumnWidth>{
           0: FractionColumnWidth(0.04),
-          1: FractionColumnWidth(0.18),
-          2: FractionColumnWidth(0.3),
+          1: FractionColumnWidth(0.06),
+          2: FractionColumnWidth(0.35),
           3: FractionColumnWidth(0.1),
-          4: FractionColumnWidth(0.05),
+          4: FractionColumnWidth(0.25),
           5: FractionColumnWidth(0.08),
-          6: FractionColumnWidth(0.06),
-          7: FractionColumnWidth(0.1),
+          6: FractionColumnWidth(0.08),
         };
         return Table(
           border: TableBorder.all(color: Colors.grey.shade200),
@@ -97,72 +90,25 @@ class _BuildFieldItem extends StatelessWidget {
   }
 }
 
-class _BuildFiledDocumento extends StatefulWidget {
+class _BuildFiledDocumento extends StatelessWidget {
   final ItemDocumento item;
 
   const _BuildFiledDocumento({required this.item});
 
   @override
-  State<_BuildFiledDocumento> createState() => _BuildFiledDocumentoState();
-}
-
-class _BuildFiledDocumentoState extends State<_BuildFiledDocumento> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    _controller = TextEditingController();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final List<Documento> documentosAll = context.read<DocumentoBloc>().state.documentos;
-
-    final List<EntryAutocomplete> entriesDocumentos = documentosAll.map((Documento documento) {
-      return EntryAutocomplete(
-        title: '${documento.remesa}',
-        subTitle: '(${documento.impreso})',
-        codigo: documento.remesa,
-        details: Row(children: <Widget>[const Icon(Icons.monetization_on_outlined), Text(documento.cencosNombre)]),
-      );
-    }).toList();
-    entriesDocumentos.add(
-      EntryAutocomplete(
-        title: '0',
-        subTitle: '( Sin documento )',
+    return Chip(
+      clipBehavior: Clip.antiAlias,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.zero,
+      shape: const StadiumBorder(),
+      side: BorderSide.none,
+      elevation: 4,
+      label: Text(
+        item.documento.toString(),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
       ),
-    );
-    void setValueFactura(EntryAutocomplete value) {
-      if (value.codigo != 0) {
-        setState(() {
-          final Documento documento = documentosAll.firstWhere((Documento element) => element.remesa == value.codigo);
-          widget.item.documento = documento.remesa;
-          widget.item.documentoImpreso = documento.impreso;
-          widget.item.descripcion = documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacionFactura;
-          context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
-        });
-      } else {
-        setState(() {
-          widget.item.tipo = "SA";
-          context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: widget.item));
-        });
-      }
-    }
-
-    return Column(
-      children: <Widget>[
-        AutocompleteInput(
-          entryCodigoSelected: widget.item.documento,
-          enabled: widget.item.tipo != "TR",
-          controller: _controller,
-          isShowCodigo: false,
-          label: "",
-          entries: entriesDocumentos,
-          onPressed: setValueFactura,
-        ),
-        RadioButtons(tipo: widget.item.tipo),
-      ],
     );
   }
 }
@@ -201,71 +147,60 @@ class _BuildValor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onChaneged(String value) {
-      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      final String textValue = cadenaSinSigno == "" ? "0" : cadenaSinSigno;
-      final double intValue = double.parse(textValue);
-      final double newValorIva = intValue * item.porcentajeIva / 100;
-
-      item.valor = intValue;
-      item.valorIva = newValorIva;
-      item.total = (item.valor + item.valorIva) * item.cantidad;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
-    }
-
-    return CurrencyInput(
-      color: Colors.blue.shade800,
-      onChanged: onChaneged,
-      initialValue: item.valor.toInt().toString(),
-    );
+    final int valor = item.valor.toInt();
+    return CurrencyLabel(color: Colors.green.shade900, text: '${valor}');
   }
 }
 
-class _BuildPorcentajeIva extends StatelessWidget {
-  final int valor;
-  const _BuildPorcentajeIva(this.valor);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      "$valor%",
-      style: TextStyle(color: Colors.green.shade900, fontWeight: FontWeight.w400, fontSize: 16),
-    );
-  }
-}
-
-class _BuildValorIva extends StatelessWidget {
-  final double valorIva;
-  const _BuildValorIva({required this.valorIva});
-
-  @override
-  Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: '${valorIva.toInt()}');
-  }
-}
-
-class _BuildCantidad extends StatelessWidget {
+class _BuildImpuestos extends StatelessWidget {
   final ItemDocumento item;
-  const _BuildCantidad({
+  const _BuildImpuestos({
     required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
-    void onChanged(String value) {
-      final String cadenaSinSigno = value.replaceAll(RegExp(r'[\$,]'), '');
-      final String textValue = cadenaSinSigno == "" ? "1" : cadenaSinSigno;
-      final int intValue = int.parse(textValue);
-      item.cantidad = intValue;
-      item.total = (item.valor + item.valorIva) * item.cantidad;
-      context.read<ItemDocumentoBloc>().add(ChangedItemDocumentoEvent(itemDocumento: item));
-    }
-
-    return NumberInput(
-      colorText: Colors.blue.shade700,
-      onChanged: onChanged,
-      initialValue: item.cantidad.toString(),
-      title: "",
+    return Table(
+      border: TableBorder.all(color: Colors.grey.shade200),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: <TableRow>[
+        TableRow(
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
+          children: const <Widget>[
+            _CellTitleImpuesto(title: "Nombre"),
+            _CellTitleImpuesto(title: "Porcentaje"),
+            _CellTitleImpuesto(title: "Valor"),
+          ],
+        ),
+        TableRow(
+          children: <Widget>[
+            const _CellContent(child: Text("Iva", style: TextStyle(fontWeight: FontWeight.bold))),
+            const _CellContent(child: Text("19 %")),
+            _CellContent(child: Text(r"$190000", style: TextStyle(color: Colors.green[900]))),
+          ],
+        ),
+        const TableRow(
+          children: <Widget>[
+            _CellContent(child: Text("Reteiva", style: TextStyle(fontWeight: FontWeight.bold))),
+            _CellContent(child: Text("1 %")),
+            _CellContent(child: Text(r"$1900")),
+          ],
+        ),
+        const TableRow(
+          children: <Widget>[
+            _CellContent(child: Text("Ica", style: TextStyle(fontWeight: FontWeight.bold))),
+            _CellContent(child: Text("7 %")),
+            _CellContent(child: Text(r"$2000")),
+          ],
+        ),
+        const TableRow(
+          children: <Widget>[
+            _CellContent(child: Text("Reteica", style: TextStyle(fontWeight: FontWeight.bold))),
+            _CellContent(child: Text("2 %")),
+            _CellContent(child: Text(r"$300")),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -316,6 +251,26 @@ class _CellTitle extends StatelessWidget {
     return TableCell(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        child: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
+        ),
+      ),
+    );
+  }
+}
+
+class _CellTitleImpuesto extends StatelessWidget {
+  final String title;
+  const _CellTitleImpuesto({
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCell(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Text(
           title,
           style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
