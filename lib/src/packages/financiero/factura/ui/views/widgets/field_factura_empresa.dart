@@ -36,7 +36,6 @@ class _BuildCardEmpresa extends StatefulWidget {
 
   const _BuildCardEmpresa({
     required this.empresa,
-    super.key,
   });
 
   @override

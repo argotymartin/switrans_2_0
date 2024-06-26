@@ -27,8 +27,8 @@ class DocumentosTableDataBuilder {
         title: 'Alerts',
         field: 'alerts',
         type: PlutoColumnType.text(),
-        minWidth: 48,
-        width: 88,
+        minWidth: 88,
+        width: 100,
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
@@ -222,15 +222,21 @@ class DocumentosTableDataBuilder {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         isDigitalizado
-            ? const Icon(
-                Icons.image,
-                color: Colors.green,
+            ? const Tooltip(
+                message: 'Cuenta con documentos',
+                child: Icon(
+                  Icons.image,
+                  color: Colors.blueGrey,
+                ),
               )
             : const SizedBox(),
         anulacionTrafico
-            ? Icon(
-                Icons.error_outline,
-                color: Theme.of(context).colorScheme.error,
+            ? Tooltip(
+                message: 'Esta anulado por trafico',
+                child: Icon(
+                  Icons.error_outline,
+                  color: Theme.of(context).colorScheme.error,
+                ),
               )
             : const SizedBox(),
       ],

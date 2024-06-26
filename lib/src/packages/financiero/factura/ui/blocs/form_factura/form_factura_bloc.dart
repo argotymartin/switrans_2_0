@@ -115,11 +115,15 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
   Future<void> onPressedSearch({required bool isValid}) async {
     final List<String> fechas = fechacontroller.text.split(" - ");
+    String inicio = "";
+    String fin = "";
     final int empresa = state.empresa;
     final int tipoFactura = state.tipoFactura;
     final String remesas = remesasController.text;
-    final String inicio = fechas[0].trim();
-    final String fin = fechas[1].trim();
+    if (fechas.length > 1) {
+      inicio = fechas[0].trim();
+      fin = fechas[1].trim();
+    }
 
     String error = "";
     if (empresa <= 0) {

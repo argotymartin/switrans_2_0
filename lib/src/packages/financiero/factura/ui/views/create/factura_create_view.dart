@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/pdf_view.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/button_search_factura_form.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_cliente.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
@@ -238,6 +240,8 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (BuildContext context, ItemDocumentoState state) {
         if (state is ItemDocumentoSuccesState) {
+          final Size size = MediaQuery.of(context).size;
+
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -285,6 +289,21 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               const _BuildButtonRegistrar(),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      content: SizedBox(width: size.width * 0.7, child: const PdfView()),
+                      actions: <Widget>[
+                        FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+                      ],
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.picture_as_pdf),
+              ),
             ],
           );
         }
