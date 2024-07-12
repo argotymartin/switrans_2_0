@@ -17,7 +17,7 @@ class BuildViewDetail extends StatelessWidget {
     final List<String> breadcrumbTrails = fullPath.split("/");
     final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
     final Size size = MediaQuery.of(context).size;
-    late ModuloMenu moduloSelected;
+    ModuloMenu? moduloSelected;
     for (final PaqueteMenu paquete in menuBloc.state.paquetes) {
       for (final ModuloMenu modulo in paquete.modulos) {
         if (modulo.path.contains(breadcrumbTrails[2])) {
@@ -32,7 +32,7 @@ class BuildViewDetail extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: <Widget>[
-            Icon(IconData(int.parse(moduloSelected.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
+            Icon(IconData(int.parse(moduloSelected!.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
             const SizedBox(width: 4),
             SizedBox(
               width: size.width * 0.4,

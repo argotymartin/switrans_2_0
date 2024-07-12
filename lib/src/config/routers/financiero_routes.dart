@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/pdf_view.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/search/factura_search_view.dart';
 
 class FinancieroRoutes {
   static const String packagePath = "financiero";
@@ -38,8 +38,8 @@ class FinancieroRoutes {
         ),
         GoRoute(
           path: "/$packagePath/$modulePath/buscar",
-          //builder: (_, __) => const FacturaSearchView(),
-          builder: (_, __) => const PdfView(),
+          builder: (_, __) => const FacturaSearchView(),
+          //builder: (_, __) => const PdfView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

@@ -119,7 +119,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     String fin = "";
     final int empresa = state.empresa;
     final int tipoFactura = state.tipoFactura;
-    final String remesas = remesasController.text;
+    final List<String> parts = remesasController.text.split(',').map((String e) => e.trim()).toList();
+    final String remesas = parts.join(', ');
     if (fechas.length > 1) {
       inicio = fechas[0].trim();
       fin = fechas[1].trim();
