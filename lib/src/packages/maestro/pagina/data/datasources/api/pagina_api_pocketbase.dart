@@ -31,6 +31,8 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> updatePaginaApi(PaginaRequest paginaRequest) async {
+    final String id = await getPaginaId(paginaRequest.codigo!);
+    paginaRequest.id = id;
     final String url = '$kPocketBaseUrl/api/collections/pagina/records/${paginaRequest.id}?';
     final String moduloId = await getModuloId(paginaRequest.modulo!);
     moduloId.isEmpty ? paginaRequest.modulo : paginaRequest.modulo = moduloId;
@@ -73,6 +75,21 @@ class PaginaApiPocketBase {
     for (final PaginaModulo paginaModulo in paginaModulos) {
       if (paginaModulo.codigo.toString() == modulo || paginaModulo.nombre == modulo) {
         return paginaModulo.moduloId;
+      }
+    }
+    return '';
+  }
+
+  Future<String> getPaginaId(int paginaCodigo) async {
+    final Response<dynamic> httpResponse = await getPaginasApi(PaginaRequest());
+    final dynamic responseData = jsonDecode(httpResponse.data);
+    if (httpResponse.data != null && responseData.containsKey('items')) {
+      final dynamic resp = responseData['items'];
+      final List<Pagina> response = List<Pagina>.from(resp.map((dynamic x) => PaginaModel.fromJson(x)));
+      for (final Pagina paginaResponse in response) {
+        if (paginaResponse.paginaCodigo == paginaCodigo) {
+          return paginaResponse.id;
+        }
       }
     }
     return '';

@@ -1,5 +1,5 @@
 class PaginaRequest {
-  final String? id;
+  String? id;
   int? codigo;
   final String? nombre;
   final String? path;
