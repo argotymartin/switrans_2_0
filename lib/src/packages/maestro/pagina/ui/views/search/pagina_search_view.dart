@@ -105,6 +105,11 @@ class _BuildFieldsForm extends StatelessWidget {
                 isConsulted = true;
                 cantdiad = state.paginas.length;
               }
+              if (state is PaginaSuccessState) {
+                final PaginaRequest request = PaginaRequest(codigo: state.pagina!.paginaCodigo);
+                paginaBloc.add(GetPaginaEvent(request));
+                context.go('/maestros/pagina/buscar');
+              }
               return BuildButtonForm(
                 onPressed: onPressed,
                 icon: Icons.search,
