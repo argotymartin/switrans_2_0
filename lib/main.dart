@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nested/nested.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
@@ -75,9 +74,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   Future<void> _init() async {
     final AuthBloc authBloc = context.read<AuthBloc>();
     final MenuSidebarBloc paqueteMenuBloc = context.read<MenuSidebarBloc>();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String stringValue = prefs.getString('token') ?? '';
-    isTokenValid = await authBloc.onValidateToken(stringValue);
+    isTokenValid = await authBloc.onValidateToken();
     if (isTokenValid) {
       paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
     }
