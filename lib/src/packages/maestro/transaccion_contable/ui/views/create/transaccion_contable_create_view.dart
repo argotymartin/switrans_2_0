@@ -18,8 +18,6 @@ class TransaccionContableCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<TransaccionContableBloc, TransaccionContableState>(
       listener: (BuildContext context, TransaccionContableState state) {
         if (state is TransaccionContableFailedState) {
@@ -35,9 +33,9 @@ class TransaccionContableCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(
             title: "Registrar Nuevo",
             icon: Icons.add_circle_outline_outlined,
             child: _BuildFieldsForm(),
@@ -65,8 +63,16 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nameController, typeInput: TypeInput.lettersAndNumbers,),
-              TextInputTitle(title: "Sigla", controller: siglaController, typeInput: TypeInput.lettersAndNumbers,),
+              TextInputTitle(
+                title: "Nombre",
+                controller: nameController,
+                typeInput: TypeInput.lettersAndNumbers,
+              ),
+              TextInputTitle(
+                title: "Sigla",
+                controller: siglaController,
+                typeInput: TypeInput.lettersAndNumbers,
+              ),
               NumberInputTitle(title: "Secuencia", controller: secuenciaController),
               FieldTransaccionContableImpuesto(impuestoController),
             ],

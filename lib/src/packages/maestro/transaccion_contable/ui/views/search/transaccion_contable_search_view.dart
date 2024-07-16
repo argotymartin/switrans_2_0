@@ -24,8 +24,6 @@ class TransaccionContableSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<TransaccionContableBloc, TransaccionContableState>(
       listener: (BuildContext context, TransaccionContableState state) {
         if (state is TransaccionContableFailedState) {
@@ -35,10 +33,10 @@ class TransaccionContableSearchView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-          const _BluildDataTable(),
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
+          _BluildDataTable(),
         ],
       ),
     );
@@ -87,13 +85,20 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildFormFields(
             children: <Widget>[
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers,),
+              TextInputTitle(
+                title: "Nombre",
+                controller: nombreController,
+                typeInput: TypeInput.lettersAndNumbers,
+              ),
               FieldTransaccionContableImpuesto(impuestoController),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                Text("Activo", style: AppTheme.titleStyle),
-                const SizedBox(height: 8),
-                SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
-              ],),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Activo", style: AppTheme.titleStyle),
+                  const SizedBox(height: 8),
+                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
+                ],
+              ),
             ],
           ),
           BlocBuilder<TransaccionContableBloc, TransaccionContableState>(
