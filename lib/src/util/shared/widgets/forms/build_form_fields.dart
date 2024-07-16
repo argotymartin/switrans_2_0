@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 
 class BuildFormFields extends StatelessWidget {
   final List<Widget> children;
+  final int spaces;
 
   const BuildFormFields({
     required this.children,
+    this.spaces = 1,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final List<Widget> childrenList = <Widget>[];
+    final List<Widget> columnChildren = <Widget>[];
 
     if (size.width < 720) {
-      childrenList.addAll(
+      columnChildren.addAll(
         children.map(
           (Widget child) => Padding(
             padding: const EdgeInsets.all(16),
@@ -24,12 +26,10 @@ class BuildFormFields extends StatelessWidget {
       );
     } else {
       final int columnsCount;
-      if (size.width < 1200) {
+      if (size.width < spaces * 1200) {
         columnsCount = 2;
-      } else if (size.width < 1600) {
+      } else if (size.width < spaces * 1600) {
         columnsCount = 3;
-      } else if (size.width < 2000) {
-        columnsCount = 4;
       } else {
         columnsCount = 4;
       }
@@ -44,7 +44,7 @@ class BuildFormFields extends StatelessWidget {
             }
           }
         }
-        childrenList.add(
+        columnChildren.add(
           Padding(
             padding: const EdgeInsets.all(24),
             child: Row(children: rowChildren),
@@ -53,6 +53,6 @@ class BuildFormFields extends StatelessWidget {
       }
     }
 
-    return Column(children: childrenList);
+    return Column(children: columnChildren);
   }
 }

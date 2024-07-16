@@ -1,3 +1,5 @@
+import 'package:switrans_2_0/src/packages/financiero/factura/data/models/adicion_model.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/models/descuento_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
 class DocumentoModel extends Documento {
@@ -45,7 +47,7 @@ class DocumentoModel extends Documento {
         total: json['total'],
         flete: json['flete'],
         anulacionTrafico: json['anulacionTrafico'],
-        adiciones: List<Adicion>.from(json["adiciones"].map((dynamic x) => Adicion.fromJson(x))),
-        descuentos: List<Descuento>.from(json["descuentos"].map((dynamic x) => Descuento.fromJson(x))),
+        adiciones: List<Adicion>.from(json["adiciones"].map((dynamic x) => AdicionModel.fromJson(x))),
+        descuentos: List<Descuento>.from(json["descuentos"].map((dynamic x) => DescuentoModel.fromJson(x))),
       );
 }

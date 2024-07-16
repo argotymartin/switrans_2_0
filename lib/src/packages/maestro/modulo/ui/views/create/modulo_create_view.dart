@@ -12,7 +12,6 @@ class ModuloCreateView extends StatelessWidget {
   const ModuloCreateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (BuildContext context, ModuloState state) {
         if (state is ModuloExceptionState) {
@@ -28,9 +27,9 @@ class ModuloCreateView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(
                 title: "Registrar Nuevo",
                 icon: Icons.storage_outlined,
                 child: _BuildFieldsForm(),

@@ -12,8 +12,6 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (BuildContext context, ServicioEmpresarialState state) {
         if (state is ServicioEmpresarialExceptionState) {
@@ -29,9 +27,9 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(
             title: "Registrar Nuevo",
             icon: Icons.add_circle_outline_outlined,
             child: _BuildFieldsForm(),

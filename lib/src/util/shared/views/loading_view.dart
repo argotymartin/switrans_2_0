@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoadingView extends StatelessWidget {
-  const LoadingView({super.key});
+  final String text;
+  const LoadingView({super.key, this.text = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,8 @@ class LoadingView extends StatelessWidget {
             Image.asset("assets/animations/loading.gif"),
             const SizedBox(height: 4),
             const Text("Por favor espere..."),
+            const SizedBox(height: 4),
+            Text(text),
           ],
         ),
       ),

@@ -13,12 +13,12 @@ class ModalItemDocumento extends StatefulWidget {
 class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTickerProviderStateMixin {
   late Animation<double> tralateAnimation;
   late FormFacturaBloc formulario;
+  late AnimationController animationController;
   @override
   void initState() {
     formulario = context.read<FormFacturaBloc>();
-    formulario.animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
-    tralateAnimation =
-        Tween<double>(begin: 50, end: -20).animate(CurvedAnimation(parent: formulario.animationController, curve: Curves.bounceOut));
+    animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    tralateAnimation = Tween<double>(begin: 50, end: -20).animate(CurvedAnimation(parent: animationController, curve: Curves.bounceOut));
     super.initState();
   }
 
@@ -34,11 +34,11 @@ class _ModalItemDocumentoState extends State<ModalItemDocumento> with SingleTick
           height: 64,
           width: size.width,
           child: AnimatedBuilder(
-            animation: formulario.animationController,
+            animation: animationController,
             builder: (BuildContext context, Widget? child) => Transform.translate(
               offset: Offset(0, tralateAnimation.value),
               child: InkWell(
-                onTap: () async => formulario.moveBottomAllScroll(),
+                onTap: () {},
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,

@@ -13,8 +13,6 @@ class AccionDocumentoCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (BuildContext context, AccionDocumentoState state) {
         if (state is AccionDocumentoExceptionState) {
@@ -32,9 +30,9 @@ class AccionDocumentoCreateView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(
                 title: "Registrar Nuevo",
                 icon: Icons.price_change_outlined,
                 child: _BuildFieldsForm(),

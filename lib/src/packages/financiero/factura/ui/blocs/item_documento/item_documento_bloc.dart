@@ -2,14 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/item_documento_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
 part 'item_documento_event.dart';
 part 'item_documento_state.dart';
 
 class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
-  final FormFacturaBloc _formBloc;
-  ItemDocumentoBloc(this._formBloc) : super(const ItemDocumentoInitialState()) {
+  ItemDocumentoBloc() : super(const ItemDocumentoInitialState()) {
     on<AddItemTransporteFacturaEvent>((AddItemTransporteFacturaEvent event, Emitter<ItemDocumentoState> emit) {
       final List<ItemDocumento> itemDocumentos = <ItemDocumento>[...state.itemDocumentos];
       final ItemDocumento prefactura = ItemDocumentoModel.toDocumetnoTR(event.documento);
@@ -19,7 +17,7 @@ class ItemDocumentoBloc extends Bloc<ItemDocumentoEvent, ItemDocumentoState> {
 
       emit(const ItemDocumentoLoadingState());
       emit(ItemDocumentoSuccesState(itemDocumentos: itemDocumentos));
-      _formBloc.animationController.forward();
+      //_formBloc.animationController.forward();
     });
 
     on<AddItemServicioAdicionalFacturaEvent>((AddItemServicioAdicionalFacturaEvent event, Emitter<ItemDocumentoState> emit) async {

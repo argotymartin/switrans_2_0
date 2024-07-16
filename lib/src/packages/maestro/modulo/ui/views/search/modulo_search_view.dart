@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
@@ -16,8 +15,6 @@ class ModuloSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (BuildContext context, ModuloState state) {
         if (state is ModuloExceptionState) {
@@ -29,10 +26,10 @@ class ModuloSearchView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BluildDataTable(),
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
+              _BluildDataTable(),
             ],
           ),
         ],

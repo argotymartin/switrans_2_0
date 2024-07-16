@@ -14,6 +14,9 @@ class DocumentosTableDataBuilder {
       PlutoColumn(
         title: 'Item',
         field: 'item',
+        enableEditingMode: false,
+        enableContextMenu: false,
+        enableDropToResize: false,
         type: PlutoColumnType.text(),
         enableRowChecked: true,
         minWidth: 88,
@@ -24,8 +27,8 @@ class DocumentosTableDataBuilder {
         title: 'Alerts',
         field: 'alerts',
         type: PlutoColumnType.text(),
-        minWidth: 48,
-        width: 48,
+        minWidth: 88,
+        width: 100,
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
@@ -46,7 +49,7 @@ class DocumentosTableDataBuilder {
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledRemesa(renderContext, context),
       ),
       PlutoColumn(
-        title: 'Obs',
+        title: 'Observación',
         field: 'obs',
         minWidth: 300,
         width: 300,
@@ -74,6 +77,16 @@ class DocumentosTableDataBuilder {
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
         footerRenderer: buildRenderSumFooter,
+      ),
+      PlutoColumn(
+        title: 'Impuestos',
+        field: 'impuestos',
+        enableEditingMode: false,
+        enableContextMenu: false,
+        enableDropToResize: false,
+        minWidth: 160,
+        type: PlutoColumnType.text(),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFiledImpuestos(rendererContext, context),
       ),
       PlutoColumn(
         title: 'Adiciones',
@@ -136,6 +149,13 @@ class DocumentosTableDataBuilder {
         'destino': remesa.destino,
       };
 
+      final Map<String, double> mapImpuestos = <String, double>{
+        'iva': 190000,
+        'reteiva': 7000,
+        'retefuente': 30000,
+        'reteica': 200,
+      };
+
       final Map<String, dynamic> infoAlertsMap = <String, dynamic>{
         'anulacionTrafico': remesa.anulacionTrafico,
         'isDigitalizado': true,
@@ -154,6 +174,7 @@ class DocumentosTableDataBuilder {
         'obs': jsonEncode(obsMap),
         'flete': remesa.flete,
         'tarifaBase': remesa.flete,
+        'impuestos': jsonEncode(mapImpuestos),
         'adiciones': totalAdiciones,
         'descuentos': totalDescuentos,
         'rcp': remesa.rcp,
@@ -201,18 +222,66 @@ class DocumentosTableDataBuilder {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         isDigitalizado
-            ? const Icon(
-                Icons.image,
-                color: Colors.green,
+            ? const Tooltip(
+                message: 'Cuenta con documentos',
+                child: Icon(
+                  Icons.image,
+                  color: Colors.blueGrey,
+                ),
               )
             : const SizedBox(),
         anulacionTrafico
-            ? Icon(
-                Icons.error_outline,
-                color: Theme.of(context).colorScheme.error,
+            ? Tooltip(
+                message: 'Esta anulado por trafico',
+                child: Icon(
+                  Icons.error_outline,
+                  color: Theme.of(context).colorScheme.error,
+                ),
               )
             : const SizedBox(),
       ],
+    );
+  }
+
+  static Widget buildFiledImpuestos(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final String cellValue = rendererContext.cell.value.toString();
+    final Map<String, dynamic> remesaMap = jsonDecode(cellValue);
+    final double iva = remesaMap['iva'];
+    final double reteiva = remesaMap['reteiva'];
+    final double retefuente = remesaMap['retefuente'];
+    final double reteica = remesaMap['reteica'];
+    final double total = iva + reteiva + reteica + retefuente;
+
+    return SelectionArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 8),
+          _DetailRemesa(
+            title: 'Iva',
+            subtitle: "$iva",
+          ),
+          const SizedBox(height: 4),
+          _DetailRemesa(title: 'Reteiva', subtitle: "$reteiva"),
+          const SizedBox(height: 4),
+          _DetailRemesa(title: 'Retefuente', subtitle: "$retefuente"),
+          const SizedBox(height: 4),
+          _DetailRemesa(title: 'Reteica', subtitle: "$reteica"),
+          const SizedBox(height: 4),
+          Row(
+            children: <Widget>[
+              const Text("Total: ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 180),
+                child: FittedBox(
+                  child: Text("$total", style: TextStyle(color: Theme.of(context).canvasColor, fontSize: 12, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -345,18 +414,18 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext) {
 class _DetailRemesa extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final IconData? icon;
   const _DetailRemesa({
     required this.subtitle,
     required this.title,
-    required this.icon,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Icon(icon, size: 16),
+        icon != null ? Icon(icon, size: 16) : const SizedBox(),
         Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         Container(
           constraints: const BoxConstraints(maxWidth: 180),

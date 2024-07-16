@@ -15,7 +15,7 @@ class FooterSidebar extends StatelessWidget {
       height: size.height * 0.08,
       padding: isMinimize ? null : const EdgeInsets.symmetric(horizontal: 54),
       width: isMinimize ? 80 : 270,
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).canvasColor,
       child: isMinimize
           ? Icon(Icons.double_arrow_outlined, color: Colors.white.withOpacity(0.3))
           : Row(

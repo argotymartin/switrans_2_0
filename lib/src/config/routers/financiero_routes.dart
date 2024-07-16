@@ -5,11 +5,10 @@ import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/search/factura_search_view.dart';
 
 class FinancieroRoutes {
-  static const String packagePath = "/finaciero";
+  static const String packagePath = "financiero";
 
   static List<ShellRoute> getRoutesFinaciero() {
     final List<ShellRoute> routes = <ShellRoute>[];
@@ -33,27 +32,14 @@ class FinancieroRoutes {
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
-            return BlocConsumer<FormFacturaBloc, FormFacturaState>(
-              listener: (BuildContext context, FormFacturaState state) {
-                if (state is FormFacturaErrorState) {
-                  ErrorDialog.showDioException(context, state.exception!);
-                }
-              },
-              builder: (BuildContext context, FormFacturaState stateFactura) {
-                return (stateFactura is FormFacturaLoadingState) ? const LoadingView() : const FacturaCreateView();
-              },
-            );
+            return const FacturaCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "/$packagePath/$modulePath/buscar",
           builder: (_, __) => const FacturaSearchView(),
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-        GoRoute(
-          path: "/$packagePath/$modulePath/editar",
-          builder: (_, __) => const FacturaEditView(),
+          //builder: (_, __) => const PdfView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

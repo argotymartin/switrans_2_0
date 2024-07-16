@@ -29,6 +29,7 @@ class FieldTipoDocumento extends StatelessWidget {
         Text("Tipo Documento", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
+          controller: typeController,
           entries: entryMenus,
           label: "Tipo Documento",
           onPressed: onPressed,

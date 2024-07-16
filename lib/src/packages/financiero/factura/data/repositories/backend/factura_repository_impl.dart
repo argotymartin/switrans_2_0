@@ -1,7 +1,9 @@
-import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/factura_api.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/backend/factura_api.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/cliente_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/documento_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/empresa_model.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/models/tipo_documento_model.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/tipo_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
@@ -37,7 +39,7 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   }
 
   @override
-  Future<DataState<List<Documento>>> getDocumentosService(FacturaRequest request) async {
+  Future<DataState<List<Documento>>> getDocumentosService(FormFacturaRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDocumentosApi(request));
     if (httpResponse.data != null) {
       final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
@@ -46,5 +48,15 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
       return DataSuccess<List<Documento>>(response);
     }
     return DataFailed<List<Documento>>(httpResponse.error!);
+  }
+
+  @override
+  Future<DataState<List<TipoDocumento>>> getTipoDocumento() async {
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getTipoDocumentoApi());
+    if (httpResponse.data != null) {
+      final List<TipoDocumento> response = List<TipoDocumento>.from(httpResponse.data.map((dynamic x) => TipoDocumentoModel.fromJson(x)));
+      return DataSuccess<List<TipoDocumento>>(response);
+    }
+    return DataFailed<List<TipoDocumento>>(httpResponse.error!);
   }
 }

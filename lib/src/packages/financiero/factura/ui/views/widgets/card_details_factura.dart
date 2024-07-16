@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/pdf_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class CardDetailsFactura extends StatelessWidget {
@@ -13,16 +15,15 @@ class CardDetailsFactura extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+    final Size size = MediaQuery.of(context).size;
+
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (BuildContext context, ItemDocumentoState state) {
         final List<Documento> documentos = facturaBloc.state.documentos;
         final Iterable<ItemDocumento> itemDocumento = state.itemDocumentos.where((ItemDocumento element) => element.tipo.isNotEmpty);
 
         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
-        final double totalImpuestos = itemDocumento.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
         final double totalPrefacturas = itemDocumento.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
-        final Iterable<ItemDocumento> itemDocumentoWhitDocumentos = itemDocumento.where((ItemDocumento element) => element.documento > 0);
-        final double valorFaltante = itemDocumentoWhitDocumentos.isNotEmpty ? (totalDocumentos - totalPrefacturas) : 0;
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
@@ -39,10 +40,9 @@ class CardDetailsFactura extends StatelessWidget {
                 BoxShadow(color: Theme.of(context).colorScheme.primary, offset: const Offset(-8, 0)),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Wrap(
               children: <Widget>[
-                Row(
+                Column(
                   children: <Widget>[
                     _BuildItemCard(
                       title: "Cantidad Items:",
@@ -56,33 +56,65 @@ class CardDetailsFactura extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
+                Column(
                   children: <Widget>[
                     _BuildItemCard(
-                      title: "Valor Total Documentos:",
+                      title: "Valor Total Neto:",
                       icon: Icons.paid_outlined,
                       content: CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
                     ),
                     _BuildItemCard(
-                      title: "Valor Facturado:",
+                      title: "Valor Iva:",
                       icon: Icons.price_check_outlined,
                       content: CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
                     ),
                   ],
                 ),
-                Row(
+                Column(
                   children: <Widget>[
                     _BuildItemCard(
-                      title: "Valor Faltante:",
-                      icon: Icons.money_off_outlined,
-                      content: CurrencyLabel(color: Colors.red, text: '${valorFaltante.toInt()}'),
+                      title: "Valor Total Reteiva:",
+                      icon: Icons.paid_outlined,
+                      content: CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
                     ),
                     _BuildItemCard(
-                      title: "Valor Impuesto:",
-                      icon: Icons.currency_exchange_outlined,
-                      content: CurrencyLabel(color: Colors.black87, text: '${totalImpuestos.toInt()}'),
+                      title: "Valor Total Reteica:",
+                      icon: Icons.price_check_outlined,
+                      content: CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
                     ),
                   ],
+                ),
+                Column(
+                  children: <Widget>[
+                    _BuildItemCard(
+                      title: "Valor Total Retefuente:",
+                      icon: Icons.paid_outlined,
+                      content: CurrencyLabel(color: Colors.green, text: '${totalDocumentos.toInt()}'),
+                    ),
+                    _BuildItemCard(
+                      title: "Valor Total:",
+                      icon: Icons.price_check_outlined,
+                      content: CurrencyLabel(color: Colors.blue, text: '${totalPrefacturas.toInt()}'),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        content: SizedBox(width: size.width * 0.7, child: const PdfView()),
+                        actions: <Widget>[
+                          FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+                        ],
+                      ),
+                    );
+                  },
+                  icon: Image.asset(
+                    "assets/file-pdf-color-red-icon.png",
+                    width: 48,
+                  ),
                 ),
               ],
             ),
