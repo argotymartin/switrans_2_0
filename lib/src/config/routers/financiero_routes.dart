@@ -29,7 +29,7 @@ class FinancieroRoutes {
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
-          path: "/$packagePath/$modulePath/registrar",
+          path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
             context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
             return const FacturaCreateView();
