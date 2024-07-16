@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/modulo_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/modulo_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/modulo_paquete_model.dart';
@@ -16,7 +17,8 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
   Future<DataState<List<Modulo>>> getModulosService(ModuloRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosApi(request));
     if (httpResponse.data != null) {
-      final dynamic items = httpResponse.data['items'];
+      final dynamic dataJson = jsonDecode(httpResponse.data);
+      final dynamic items = dataJson['items'];
       final List<Modulo> response = List<Modulo>.from(items.map((dynamic x) => ModuloModel.fromJson(x)));
       final List<Modulo> data = await _api.getPaqueteNombre(response);
       return DataSuccess<List<Modulo>>(data);
