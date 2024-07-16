@@ -16,7 +16,7 @@ class WhiteCard extends StatefulWidget {
   });
 
   @override
-  _WhiteCardState createState() => _WhiteCardState();
+  State<WhiteCard> createState() => _WhiteCardState();
 }
 
 class _WhiteCardState extends State<WhiteCard> {
@@ -69,10 +69,10 @@ class _WhiteCardState extends State<WhiteCard> {
   }
 
   BoxDecoration buildBoxDecoration() => BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(5),
-    boxShadow: <BoxShadow>[
-      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
-    ],
-  );
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+        ],
+      );
 }

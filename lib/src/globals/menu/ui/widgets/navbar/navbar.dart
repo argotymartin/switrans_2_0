@@ -26,30 +26,30 @@ class Navbar extends StatelessWidget {
                       Scaffold.of(context).openEndDrawer();
                     },
                   ),
-                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
-                  state.isOpenMenu && size.width > 720
+                  const SizedBox(width: 16),
+                  size.width > 560
                       ? IconNavbar(
                           icon: Icons.check_box_outline_blank_rounded,
                           onPressed: () {},
                         )
                       : const SizedBox(),
-                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
-                  state.isOpenMenu && size.width > 720
+                  size.width > 560 ? const SizedBox(width: 16) : const SizedBox(),
+                  size.width > 520
                       ? IconNavbar(
                           icon: Icons.group_work_outlined,
                           title: "!",
                           onPressed: () {},
                         )
                       : const SizedBox(),
-                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
-                  state.isOpenMenu && size.width > 720
+                  size.width > 520 ? const SizedBox(width: 16) : const SizedBox(),
+                  size.width > 480
                       ? IconNavbar(
                           icon: Icons.notifications_outlined,
                           title: "11",
                           onPressed: () {},
                         )
                       : const SizedBox(),
-                  state.isOpenMenu && size.width > 720 ? const SizedBox(width: 16) : const SizedBox(),
+                  size.width > 480 ? const SizedBox(width: 16) : const SizedBox(),
                   const AvatarNavbar(size: 32),
                   const SizedBox(width: 48),
                 ],

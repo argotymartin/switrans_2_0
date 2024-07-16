@@ -17,7 +17,8 @@ class FieldTransaccionContableImpuesto extends StatelessWidget {
     }
 
     final List<TransaccionContableTipoImpuesto> impuestos = context.read<TransaccionContableBloc>().listImpuestos;
-    final List<EntryAutocomplete> entryMenus = impuestos.map((TransaccionContableTipoImpuesto e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+    final List<EntryAutocomplete> entryMenus =
+        impuestos.map((TransaccionContableTipoImpuesto e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,6 +26,7 @@ class FieldTransaccionContableImpuesto extends StatelessWidget {
         Text("Impuesto", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
+          controller: impuestoController,
           entries: entryMenus,
           label: "Impuesto",
           onPressed: onPressed,
