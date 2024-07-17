@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
-// ignore: depend_on_referenced_packages
-//import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nested/nested.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
@@ -22,8 +22,11 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad
 import 'package:switrans_2_0/src/util/simple_bloc_observer.dart';
 
 Future<void> main() async {
-  //usePathUrlStrategy();
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
   WidgetsFlutterBinding.ensureInitialized();
+  await Preferences.init();
   await initializeDependencies();
   Bloc.observer = SimpleBlocObserver();
   runApp(const BlocsProviders());
@@ -107,7 +110,7 @@ class _BuildMaterialApp extends StatelessWidget {
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
-      theme: AppTheme(color: theme.color).getTheme(context),
+      theme: AppTheme(theme.color!).getTheme(context),
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
