@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/en
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ServicioEmpresarialCreateView extends StatelessWidget {
@@ -15,7 +16,7 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
     return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (BuildContext context, ServicioEmpresarialState state) {
         if (state is ServicioEmpresarialExceptionState) {
-          ErrorDialog.showDioException(context, state.exception);
+          CustomToast.showError(context, state.exception);
         }
 
         if (state is ServicioEmpresarialSuccesState) {

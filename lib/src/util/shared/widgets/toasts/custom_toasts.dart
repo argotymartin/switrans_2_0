@@ -1,25 +1,22 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:switrans_2_0/src/util/strategy/errors/error_backend_dio.dart';
-import 'package:switrans_2_0/src/util/strategy/errors/error_pocketbase_dio.dart';
 import 'package:toastification/toastification.dart';
 
 class CustomToast {
-  static dynamic _getErrorType(Map<dynamic, dynamic> errorData) {
-    if (errorData.containsKey('status') && errorData.containsKey('error')) {
-      return errorData.toString();
-    } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
-      return ErrorPocketbaseDio;
-    } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
-      return ErrorBackendDio;
+  static void showError(BuildContext context, DioException exception) {
+    ErrorResponse? error;
+    if (exception.response!.data != null) {
+      error = CustomToast._getErrorType(exception.response!);
     }
-  }
-
-  static void showError(BuildContext context, Map<dynamic, dynamic> errorData) {
-    final AudioPlayer player = AudioPlayer();
-    player.setAsset('assets/sounds/error-126627.mp3');
-    player.play();
+    if (kIsWeb) {
+      final AudioPlayer player = AudioPlayer();
+      player.setAsset('assets/sounds/error-126627.mp3');
+      player.play();
+    }
     toastification.show(
       context: context,
       dismissDirection: DismissDirection.endToStart,
@@ -30,13 +27,22 @@ class CustomToast {
         'Ocurrio un Error!',
         style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
       ),
-      description: RichText(
-        text: TextSpan(text: errorData.toString(), style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+      description: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("${error!.code}", style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 24)),
+          RichText(
+            text: TextSpan(text: error.title, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+          ),
+          RichText(
+            text: TextSpan(text: error.details, style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w300)),
+          ),
+        ],
       ),
-      icon: const Icon(Icons.error, size: 48, color: Colors.red),
+      icon: Icon(Icons.error, size: 48, color: Colors.red.shade400),
       alignment: Alignment.topRight,
       direction: TextDirection.ltr,
-      animationDuration: const Duration(milliseconds: 1000),
+      animationDuration: const Duration(milliseconds: 400),
       animationBuilder: (BuildContext context, Animation<double> animation, Alignment alignment, Widget child) {
         const Offset begin = Offset(1.0, 0.0);
         const Offset end = Offset.zero;
@@ -64,11 +70,40 @@ class CustomToast {
       pauseOnHover: true,
       dragToClose: true,
       applyBlurEffect: true,
-      callbacks: ToastificationCallbacks(
-        onAutoCompleteCompleted: (ToastificationItem value) {
-          context.go("/");
-        },
-      ),
     );
   }
+
+  static ErrorResponse _getErrorType(Response<dynamic> response) {
+    final Map<String, dynamic> errorData;
+    if (response.data is String) {
+      errorData = jsonDecode(response.data);
+    } else {
+      errorData = response.data;
+    }
+    if (errorData.containsKey('status') && errorData.containsKey('error')) {
+      return ErrorResponse(code: errorData["status"], title: errorData["error"], details: errorData["path"]);
+      // Valdaciones de Pocketbase
+    } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
+      if (errorData["data"].isNotEmpty) {
+        return ErrorResponse(code: errorData["code"], title: errorData["message"], details: errorData["data"].toString());
+      } else {
+        return ErrorResponse(code: errorData["code"], title: errorData["message"], details: response.realUri.path);
+      }
+    } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
+      return ErrorResponse(code: errorData["code"], title: errorData["message"], details: response.realUri.path);
+    } else {
+      return ErrorResponse(code: 400, title: "Error no controlado", details: "");
+    }
+  }
+}
+
+class ErrorResponse {
+  final int code;
+  final String title;
+  final String details;
+  ErrorResponse({
+    required this.code,
+    required this.title,
+    required this.details,
+  });
 }

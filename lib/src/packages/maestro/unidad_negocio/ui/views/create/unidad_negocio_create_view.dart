@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/field_unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class UnidadNegocioCreateView extends StatelessWidget {
@@ -17,7 +18,7 @@ class UnidadNegocioCreateView extends StatelessWidget {
     return BlocListener<UnidadNegocioBloc, UnidadNegocioState>(
       listener: (BuildContext context, UnidadNegocioState state) {
         if (state is UnidadNegocioFailedState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
 
         if (state is UnidadNegocioSuccessState) {

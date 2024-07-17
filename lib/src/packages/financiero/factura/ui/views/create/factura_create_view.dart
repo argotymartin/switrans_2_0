@@ -23,7 +23,7 @@ class FacturaCreateView extends StatelessWidget {
     return BlocConsumer<FormFacturaBloc, FormFacturaState>(
       listener: (BuildContext context, FormFacturaState state) {
         if (state is FormFacturaErrorState) {
-          CustomToast.showError(context, state.exception!.response!.data!);
+          CustomToast.showError(context, state.exception!);
         }
       },
       builder: (BuildContext context, FormFacturaState state) {

@@ -40,18 +40,17 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final DataState<List<TipoDocumento>> dataStateTipoDocumentos = await _repository.getTipoDocumento();
     if (dataStateClientes.error != null) {
       emit(FormFacturaErrorState(exception: dataStateClientes.error));
-    }
-    if (dataStateEmpresas.error != null) {
+    } else if (dataStateEmpresas.error != null) {
       emit(FormFacturaErrorState(exception: dataStateEmpresas.error!));
+    } else {
+      emit(
+        FormFacturaDataState(
+          clientes: dataStateClientes.data!,
+          empresas: dataStateEmpresas.data!,
+          tiposDocumentos: dataStateTipoDocumentos.data!,
+        ),
+      );
     }
-
-    emit(
-      FormFacturaDataState(
-        clientes: dataStateClientes.data!,
-        empresas: dataStateEmpresas.data!,
-        tiposDocumentos: dataStateTipoDocumentos.data!,
-      ),
-    );
   }
 
   void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {

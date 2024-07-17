@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
@@ -16,7 +16,7 @@ class AuthLayout extends StatelessWidget {
         listener: (BuildContext context, AuthState state) async {
           if (state is AuthErrorState) {
             context.pop();
-            ErrorDialog.showDioException(context, state.error!);
+            CustomToast.showError(context, state.error!);
           }
           if (state is AuthSuccesState) {
             context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
@@ -25,11 +25,12 @@ class AuthLayout extends StatelessWidget {
           if (state is AuthLoadInProgressState) {
             await showDialog(
               context: context,
+              barrierColor: Colors.black.withOpacity(0.6),
               builder: (_) => AlertDialog(
-                backgroundColor: Colors.white.withOpacity(0.4),
-                content: const SizedBox(
-                  height: 260,
-                  child: LoadingView(),
+                shape: Border.all(color: Colors.transparent, width: 0),
+                backgroundColor: Colors.transparent,
+                content: const LoadingView(
+                  colorText: Colors.white,
                 ),
               ),
             );

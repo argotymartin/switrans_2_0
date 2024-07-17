@@ -9,7 +9,6 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/field_transaccion_contable_impuesto.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
@@ -18,6 +17,7 @@ import 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dar
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
 class TransaccionContableSearchView extends StatelessWidget {
   const TransaccionContableSearchView({super.key});
@@ -27,7 +27,7 @@ class TransaccionContableSearchView extends StatelessWidget {
     return BlocListener<TransaccionContableBloc, TransaccionContableState>(
       listener: (BuildContext context, TransaccionContableState state) {
         if (state is TransaccionContableFailedState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
       },
       child: ListView(
