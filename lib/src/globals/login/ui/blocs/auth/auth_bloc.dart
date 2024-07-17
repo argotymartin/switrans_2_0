@@ -45,14 +45,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String token = prefs.getString('token') ?? '';
-
-    bool isValid = false;
+    bool isValid = true;
     final UsuarioRequest params = UsuarioRequest(token: token);
     final DataState<Auth> dataState = await _repository.validateToken(params);
     if (dataState is DataSuccess && dataState.data != null) {
-      add(ValidateAuthEvent(dataState.data!));
       await prefs.setString('token', dataState.data!.token);
       isValid = true;
+      //add(ValidateAuthEvent(dataState.data!));
     } else {
       isValid = false;
     }

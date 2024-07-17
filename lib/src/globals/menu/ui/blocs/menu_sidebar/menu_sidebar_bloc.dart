@@ -19,8 +19,12 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     on<ActiveteMenuSidebarEvent>((ActiveteMenuSidebarEvent event, Emitter<MenuSidebarState> emit) async {
       emit(const MenuSidebarLoadingState());
       final DataState<List<PaqueteMenu>> dataState = await _moduloRepository.getModulos();
-      paquetes2 = dataState.data!;
-      emit(MenuSidebarSuccesState(paquetes: paquetes2));
+      if (dataState.data != null && dataState is DataSuccess) {
+        paquetes2 = dataState.data!;
+        emit(MenuSidebarSuccesState(paquetes: paquetes2));
+      } else {
+        emit(MenuSidebarErrorState(error: dataState.error!));
+      }
     });
 
     on<SelectedMenuSidebarEvent>((SelectedMenuSidebarEvent event, Emitter<MenuSidebarState> emit) {

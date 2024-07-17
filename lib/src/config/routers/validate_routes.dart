@@ -11,6 +11,7 @@ class ValidateRoutes {
   static FutureOr<String?> onValidateAuth(BuildContext context, GoRouterState state) async {
     final MenuSidebarBloc moduloBloc = context.read<MenuSidebarBloc>();
     final AuthBloc authBloc = context.read<AuthBloc>();
+
     final bool isTokenValid = await authBloc.onValidateToken();
     if (isTokenValid) {
       final int lengthModulos = moduloBloc.state.paquetes.length;

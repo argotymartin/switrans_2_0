@@ -12,6 +12,7 @@ class AppRouter {
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
     initialLocation: login,
+    //redirect: ValidateRoutes.onValidateAuth,
     routes: <RouteBase>[
       GoRoute(
         path: login,

@@ -81,7 +81,7 @@ class CustomToast {
       errorData = response.data;
     }
     if (errorData.containsKey('status') && errorData.containsKey('error')) {
-      return ErrorResponse(code: errorData["code"], title: errorData["message"], details: errorData["data"] + " " + response.realUri.path);
+      return ErrorResponse(code: errorData["status"], title: errorData["error"], details: errorData["path"]);
       // Valdaciones de Pocketbase
     } else if (errorData.containsKey('code') && errorData.containsKey('message')) {
       if (errorData["data"].isNotEmpty) {
