@@ -8,7 +8,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart'
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/search/factura_search_view.dart';
 
 class FinancieroRoutes {
-  static const String packagePath = "financiero";
+  static const String packagePath = "/financiero";
 
   static List<ShellRoute> getRoutesFinaciero() {
     final List<ShellRoute> routes = <ShellRoute>[];

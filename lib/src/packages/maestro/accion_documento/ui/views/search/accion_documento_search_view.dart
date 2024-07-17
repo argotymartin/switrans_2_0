@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/acci
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class AccionDocumentoSearchView extends StatelessWidget {
@@ -17,7 +18,7 @@ class AccionDocumentoSearchView extends StatelessWidget {
     return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (BuildContext context, AccionDocumentoState state) {
         if (state is AccionDocumentoExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
       },
       child: Stack(

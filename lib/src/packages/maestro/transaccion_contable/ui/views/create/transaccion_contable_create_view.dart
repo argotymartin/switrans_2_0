@@ -7,11 +7,11 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/field_transaccion_contable_impuesto.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
 class TransaccionContableCreateView extends StatelessWidget {
   const TransaccionContableCreateView({super.key});
@@ -21,7 +21,7 @@ class TransaccionContableCreateView extends StatelessWidget {
     return BlocListener<TransaccionContableBloc, TransaccionContableState>(
       listener: (BuildContext context, TransaccionContableState state) {
         if (state is TransaccionContableFailedState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
 
         if (state is TransaccionContableSuccessState) {

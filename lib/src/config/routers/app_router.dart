@@ -6,13 +6,12 @@ import 'package:switrans_2_0/src/globals/login/ui/layouts/views/token_expired_vi
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class AppRouter {
-  static String initialRoute = "/";
   static const String login = "/sign-in";
   static const String tokenExpired = "/token-expired";
 
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
-    initialLocation: initialRoute,
+    initialLocation: login,
     routes: <RouteBase>[
       GoRoute(
         path: login,

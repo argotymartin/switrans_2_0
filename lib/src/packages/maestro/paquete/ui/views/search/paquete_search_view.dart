@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class PaqueteSearchView extends StatelessWidget {
@@ -17,7 +18,7 @@ class PaqueteSearchView extends StatelessWidget {
     return BlocListener<PaqueteBloc, PaqueteState>(
       listener: (BuildContext context, PaqueteState state) {
         if (state is PaqueteExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
       },
       child: Stack(

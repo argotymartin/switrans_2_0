@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TipoImpuestoCreateView extends StatelessWidget {
@@ -15,7 +16,7 @@ class TipoImpuestoCreateView extends StatelessWidget {
     return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (BuildContext context, TipoImpuestoState state) {
         if (state is TipoImpuestoExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
 
         if (state is TipoImpuestoSuccesState) {
@@ -23,7 +24,7 @@ class TipoImpuestoCreateView extends StatelessWidget {
             nombre: state.tipoImpuesto!.nombre,
           );
           context.read<TipoImpuestoBloc>().add(GetImpuestoEvent(request));
-          context.go('/tipo_impuesto/buscar');
+          context.go('/maestros/tipo_impuesto/buscar');
         }
       },
       child: Stack(
