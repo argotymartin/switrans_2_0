@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
-// ignore: depend_on_referenced_packages
-//import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nested/nested.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
@@ -19,12 +18,16 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.da
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/simple_bloc_observer.dart';
 
 Future<void> main() async {
-  //usePathUrlStrategy();
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
   WidgetsFlutterBinding.ensureInitialized();
+  await Preferences.init();
   await initializeDependencies();
   Bloc.observer = SimpleBlocObserver();
   runApp(const BlocsProviders());
@@ -50,6 +53,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<UnidadNegocioBloc>(create: (_) => injector<UnidadNegocioBloc>()),
         BlocProvider<ModuloBloc>(create: (_) => injector<ModuloBloc>()),
         BlocProvider<PaqueteBloc>(create: (_) => injector<PaqueteBloc>()),
+        BlocProvider<TransaccionContableBloc>(create: (_) => injector<TransaccionContableBloc>()),
         BlocProvider<PaginaBloc>(create: (_) => injector<PaginaBloc>()),
       ],
       child: const MyMaterialApp(),
@@ -77,9 +81,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   Future<void> _init() async {
     final AuthBloc authBloc = context.read<AuthBloc>();
     final MenuSidebarBloc paqueteMenuBloc = context.read<MenuSidebarBloc>();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String stringValue = prefs.getString('token') ?? '';
-    isTokenValid = await authBloc.onValidateToken(stringValue);
+    isTokenValid = await authBloc.onValidateToken();
     if (isTokenValid) {
       paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
     }
@@ -110,7 +112,7 @@ class _BuildMaterialApp extends StatelessWidget {
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
-      theme: AppTheme(color: theme.color).getTheme(context),
+      theme: AppTheme(theme.color!).getTheme(context),
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

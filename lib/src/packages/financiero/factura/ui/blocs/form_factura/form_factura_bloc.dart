@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/tipo_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
@@ -10,16 +11,15 @@ part 'form_factura_event.dart';
 part 'form_factura_state.dart';
 
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
-  int _clienteCodigo = 0;
+  int _clienteCodigo = 1717;
   int _centroCostoCodigo = 0;
   final AbstractFacturaRepository _repository;
   final DocumentoBloc _documentoBloc;
 
-  late AnimationController animationController;
+  //late AnimationController animationController;
   final ScrollController scrollController = ScrollController();
   final TextEditingController remesasController = TextEditingController();
-  final TextEditingController fechaInicioController = TextEditingController();
-  final TextEditingController fechaFinController = TextEditingController();
+  final TextEditingController fechacontroller = TextEditingController();
 
   FormFacturaBloc(this._repository, this._documentoBloc) : super(const FormFacturaInitialState()) {
     on<GetFormFacturaEvent>(_onGetDataFactura);
@@ -28,32 +28,29 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     on<ErrorFormFacturaEvent>(_onEventChanged);
     on<SuccesFormFacturaEvent>(_onSuccesChanged);
 
-    scrollController.addListener(() {
-      //debugPrint(scrollController.offset.toString());
-    });
-
-    scrollController.addListener(() {
-      // if (scrollController.offset >= 800) animationController.reset();
-    });
+    // scrollController.addListener(() {
+    //   debugPrint(scrollController.offset.toString());
+    // });
   }
 
   Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(const FormFacturaLoadingState());
     final DataState<List<Cliente>> dataStateClientes = await _repository.getClientes();
     final DataState<List<Empresa>> dataStateEmpresas = await _repository.getEmpresasService();
+    final DataState<List<TipoDocumento>> dataStateTipoDocumentos = await _repository.getTipoDocumento();
     if (dataStateClientes.error != null) {
       emit(FormFacturaErrorState(exception: dataStateClientes.error));
-    }
-    if (dataStateEmpresas.error != null) {
+    } else if (dataStateEmpresas.error != null) {
       emit(FormFacturaErrorState(exception: dataStateEmpresas.error!));
+    } else {
+      emit(
+        FormFacturaDataState(
+          clientes: dataStateClientes.data!,
+          empresas: dataStateEmpresas.data!,
+          tiposDocumentos: dataStateTipoDocumentos.data!,
+        ),
+      );
     }
-
-    emit(
-      FormFacturaDataState(
-        clientes: dataStateClientes.data!,
-        empresas: dataStateEmpresas.data!,
-      ),
-    );
   }
 
   void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
@@ -103,24 +100,30 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     );
   }
 
-  Future<void> moveScroll(double offset) =>
-      scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
+  // Future<void> moveScroll(double offset) =>
+  //     scrollController.animateTo(offset, duration: const Duration(milliseconds: 1000), curve: Curves.easeIn);
 
-  Future<void> moveBottomAllScroll() async {
-    //animationController.reset();
-    await scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 1000),
-      curve: Curves.easeIn,
-    );
-  }
+  // Future<void> moveBottomAllScroll() async {
+  //   animationController.reset();
+  //   await scrollController.animateTo(
+  //     scrollController.position.maxScrollExtent,
+  //     duration: const Duration(milliseconds: 1000),
+  //     curve: Curves.easeIn,
+  //   );
+  // }
 
   Future<void> onPressedSearch({required bool isValid}) async {
+    final List<String> fechas = fechacontroller.text.split(" - ");
+    String inicio = "";
+    String fin = "";
     final int empresa = state.empresa;
     final int tipoFactura = state.tipoFactura;
-    final String remesas = remesasController.text;
-    final String inicio = fechaInicioController.text;
-    final String fin = fechaFinController.text;
+    final List<String> parts = remesasController.text.split(',').map((String e) => e.trim()).toList();
+    final String remesas = parts.join(', ');
+    if (fechas.length > 1) {
+      inicio = fechas[0].trim();
+      fin = fechas[1].trim();
+    }
 
     String error = "";
     if (empresa <= 0) {
@@ -142,7 +145,7 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     add(ErrorFormFacturaEvent(error));
 
     if (isValid && error.isEmpty) {
-      final FacturaRequest request = FacturaRequest(
+      final FormFacturaRequest request = FormFacturaRequest(
         empresa: empresa,
         cliente: clienteCodigo,
         remesas: remesas,
@@ -153,11 +156,12 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
 
       if (resp.isNotEmpty) {
         add(const SuccesFormFacturaEvent());
-        await moveScroll(450);
+
+        //await moveScroll(450);
       }
       if (tipoFactura == 10) {
         add(const SuccesFormFacturaEvent());
-        await moveScroll(450);
+        //await moveScroll(450);
       }
     }
   }

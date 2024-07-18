@@ -82,6 +82,11 @@ class SidebarExpanded extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton.icon(
+                    style: ButtonStyle(
+                      side: WidgetStatePropertyAll<BorderSide>(
+                        BorderSide(color: Theme.of(context).canvasColor, width: 2),
+                      ),
+                    ),
                     label: const Text("Salir", style: TextStyle(color: Colors.white)),
                     onPressed: () {
                       context.read<AuthBloc>().onLogoutAuthEvent();
@@ -170,8 +175,8 @@ BoxDecoration buildBoxDecoration(BuildContext context) {
       begin: Alignment.centerRight,
       end: Alignment.centerLeft,
       colors: <Color>[
-        Theme.of(context).colorScheme.primary,
-        Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
+        Theme.of(context).canvasColor.withOpacity(0.8),
+        Color.alphaBlend(Colors.black.withOpacity(0.3), Theme.of(context).canvasColor),
       ],
     ),
   );

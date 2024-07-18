@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,51 +28,18 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>switrans_2_0</title>
   <link rel="manifest" href="manifest.json">
-  <style>
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
-        margin: 0; /* Elimina el margen predeterminado del cuerpo */
-    }
-
-    dotlottie-player {
-        width: 200px;
-        height: 200px;
-    }
-</style>
-  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
 </head>
+
 <body>
-  <dotlottie-player src="https://lottie.host/9fe65c7a-1e1d-4419-949f-38b1f921edd9/ftmV6M3dO5.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-
-  <script>
-
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
+  <dotlottie-player src="https://lottie.host/9fe65c7a-1e1d-4419-949f-38b1f921edd9/ftmV6M3dO5.json"
+    background="transparent" speed="1" style="width: 300px; height: 300px; margin: 0 auto;" 
+    loop
+    autoplay></dotlottie-player>
+  <script src="flutter_bootstrap.js" async></script>
 </body>
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </html>

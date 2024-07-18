@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LoadingView extends StatelessWidget {
-  const LoadingView({super.key});
+  final String text;
+  final Color colorText;
+  const LoadingView({super.key, this.text = "", this.colorText = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,12 @@ class LoadingView extends StatelessWidget {
           children: <Widget>[
             Image.asset("assets/animations/loading.gif"),
             const SizedBox(height: 4),
-            const Text("Por favor espere..."),
+            Text(
+              "Por favor espere...",
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+            const SizedBox(height: 4),
+            Text(text),
           ],
         ),
       ),

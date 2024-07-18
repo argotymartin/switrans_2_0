@@ -49,6 +49,7 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
         backgroundColor: const WidgetStatePropertyAll<Color>(Colors.white),
         side: WidgetStatePropertyAll<BorderSide>(BorderSide(color: Theme.of(context).primaryColor)),
       ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       children: <Widget>[
         SubmenuButton(
           leadingIcon: Icon(Icons.list_outlined, color: Theme.of(context).primaryColor),
@@ -59,7 +60,8 @@ class _MyMenuBarState extends State<CustomMenuItemButton> {
             transitionBuilder: (Widget child, Animation<double> animation) {
               return ScaleTransition(scale: animation, child: child);
             },
-            child: SizedBox(
+            child: Container(
+              padding: const EdgeInsets.only(right: 48, left: 8),
               child: Text(
                 key: GlobalKey(),
                 _lastSelection,

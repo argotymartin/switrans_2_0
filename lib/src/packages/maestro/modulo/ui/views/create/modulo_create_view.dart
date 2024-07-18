@@ -6,17 +6,17 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.da
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ModuloCreateView extends StatelessWidget {
   const ModuloCreateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<ModuloBloc, ModuloState>(
       listener: (BuildContext context, ModuloState state) {
         if (state is ModuloExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+          CustomToast.showError(context, state.exception!);
         }
 
         if (state is ModuloSuccessState) {
@@ -28,9 +28,9 @@ class ModuloCreateView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(
                 title: "Registrar Nuevo",
                 icon: Icons.storage_outlined,
                 child: _BuildFieldsForm(),

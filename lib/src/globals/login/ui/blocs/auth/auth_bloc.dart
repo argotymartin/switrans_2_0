@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/auth.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/request/usuario.request.dart';
 import 'package:switrans_2_0/src/globals/login/domain/repositories/abstract_auth_repository.dart';
@@ -22,13 +22,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onActivateUser(LoginAuthEvent event, Emitter<AuthState> emit) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', "");
     emit(const AuthLoadInProgressState());
     final DataState<Auth> dataState = await _repository.signin(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
       emit(AuthSuccesState(auth: dataState.data!, isSignedIn: true));
-      await prefs.setString('token', dataState.data!.token);
+      Preferences.token = dataState.data!.token;
     }
     if (dataState.error != null) {
       emit(AuthErrorState(error: dataState.error));
@@ -36,20 +34,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> onLogoutAuthEvent() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', "");
+    Preferences.token = "";
     add(const LogoutAuthEvent());
   }
 
-  Future<bool> onValidateToken(String token) async {
-    bool isValid = false;
-    final UsuarioRequest params = UsuarioRequest(token: token);
+  Future<bool> onValidateToken() async {
+    bool isValid = true;
+    final UsuarioRequest params = UsuarioRequest(token: Preferences.token);
     final DataState<Auth> dataState = await _repository.validateToken(params);
     if (dataState is DataSuccess && dataState.data != null) {
-      add(ValidateAuthEvent(dataState.data!));
+      Preferences.token = dataState.data!.token;
       isValid = true;
-    }
-    if (dataState.error != null) {
+      //add(ValidateAuthEvent(dataState.data!));
+    } else {
       isValid = false;
     }
 
