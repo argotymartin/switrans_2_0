@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:popover/popover.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/modulos_sidebar.dart';
 
@@ -28,40 +27,58 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
   @override
   Widget build(BuildContext context) {
     bool isEntered = widget.paquete.isSelected;
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color? colorSelected = context.read<ThemeCubit>().state.color;
     final List<ModulosSidebar> modulos = widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo)).toList();
-    return Column(
-      children: <Widget>[
-        InkWell(
-          onTap: () {
-            setState(
-              () {
-                isEntered = !isEntered;
-                context.read<MenuSidebarBloc>().onPaqueteSelected(isSelected: isEntered, paqueteMenu: widget.paquete);
-                if (widget.isMimimize) {
-                  showPopoverImpl(context, modulos, widget.paquete);
-                }
-              },
-            );
-          },
-          child: MouseRegion(
-            onHover: (_) => setState(() => isHovered = true),
-            onExit: (_) => setState(() => isHovered = false),
-            child: Material(
-              color: isHovered || widget.paquete.isSelected ? colorScheme.onPrimaryContainer.withOpacity(0.1) : Colors.transparent,
-              child: BuildOptionPaqueteMenu(
-                isMinimized: widget.isMimimize,
-                paquete: widget.paquete,
-                isHovered: isHovered,
+    final ThemeState state = context.watch<ThemeCubit>().state;
+    Color color;
+    Color colorText;
+    if (state.themeMode == 1) {
+      color = isHovered || widget.paquete.isSelected ? colorSelected!.withOpacity(0.6) : Colors.transparent;
+      colorText = Theme.of(context).colorScheme.onPrimary;
+    } else if (state.themeMode == 2) {
+      color = isHovered || widget.paquete.isSelected ? Colors.black.withOpacity(0.2) : Colors.transparent;
+      colorText = Theme.of(context).colorScheme.primaryContainer;
+    } else {
+      color = isHovered || widget.paquete.isSelected ? colorSelected!.withOpacity(0.05) : Colors.transparent;
+      colorText = Colors.black;
+    }
+    return Material(
+      color: color,
+      child: Column(
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              setState(
+                () {
+                  isEntered = !isEntered;
+                  context.read<MenuSidebarBloc>().onPaqueteSelected(isSelected: isEntered, paqueteMenu: widget.paquete);
+                  if (widget.isMimimize) {
+                    showPopoverImpl(context, modulos, widget.paquete);
+                  }
+                },
+              );
+            },
+            child: MouseRegion(
+              onHover: (_) => setState(() => isHovered = true),
+              onExit: (_) => setState(() => isHovered = false),
+              child: Material(
+                color: color,
+                child: BuildOptionPaqueteMenu(
+                  isMinimized: widget.isMimimize,
+                  paquete: widget.paquete,
+                  isHovered: isHovered,
+                  color: color,
+                  colorText: colorText,
+                ),
               ),
             ),
           ),
-        ),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: widget.paquete.isSelected & !widget.isMimimize ? Column(children: modulos) : const SizedBox(),
-        ),
-      ],
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: widget.paquete.isSelected & !widget.isMimimize ? Column(children: modulos) : const SizedBox(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -70,30 +87,32 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   final PaqueteMenu paquete;
   final bool isMinimized;
   final bool isHovered;
+  final Color color;
+  final Color colorText;
 
   const BuildOptionPaqueteMenu({
     required this.paquete,
     required this.isMinimized,
     required this.isHovered,
+    required this.color,
+    required this.colorText,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     return SizedBox(
       height: 46,
       child: Row(
         children: <Widget>[
-          paquete.isSelected ? Container(width: 4, height: 48, color: colorScheme.primaryContainer) : const SizedBox(width: 4),
+          paquete.isSelected ? Container(width: 4, height: 48, color: color) : const SizedBox(width: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               children: <Widget>[
                 Icon(
                   IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),
-                  color: isHovered || paquete.isSelected ? colorScheme.onTertiary : colorScheme.onTertiary.withOpacity(0.6),
+                  color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.6),
                   size: 20,
                 ),
                 isMinimized ? const SizedBox(width: 4) : const SizedBox(width: 10),
@@ -115,7 +134,7 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             fontWeight: isHovered || paquete.isSelected ? FontWeight.w400 : FontWeight.w300,
-                            color: isHovered || paquete.isSelected ? Colors.white : Colors.white.withOpacity(0.8),
+                            color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.8),
                           ),
                         ),
                       ),
@@ -124,9 +143,7 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
                     : Icon(
                         paquete.isSelected ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
                         size: 16,
-                        color: isHovered || paquete.isSelected
-                            ? Theme.of(context).colorScheme.onTertiary
-                            : Theme.of(context).colorScheme.onTertiary.withOpacity(0.6),
+                        color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.6),
                       ),
               ],
             ),

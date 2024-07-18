@@ -24,7 +24,7 @@ class BreadcrumbTrail extends StatelessWidget {
         result.add(Text("Switrans", style: TextStyle(color: Colors.blue.shade500)));
         primeraIteracion = false;
       } else {
-        result.add(Text("${element[0].toUpperCase()}${element.substring(1)}", style: TextStyle(color: Colors.grey.shade500)));
+        result.add(Text("${element[0].toUpperCase()}${element.substring(1)}"));
       }
 
       result.add(const SizedBox(width: 2));
@@ -35,7 +35,7 @@ class BreadcrumbTrail extends StatelessWidget {
       children: <Widget>[
         menuState.isOpenMenu && size.width > 480 ? Row(children: result) : const SizedBox(),
         const Spacer(),
-        menuState.isOpenMenu && size.width > 900 ? Text(formattedDate, style: TextStyle(color: Colors.grey.shade600)) : const SizedBox(),
+        menuState.isOpenMenu && size.width > 900 ? Text(formattedDate) : const SizedBox(),
       ],
     );
   }

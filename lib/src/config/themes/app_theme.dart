@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   final Color color;
-  AppTheme(this.color);
+  final int themeModeCode;
+  AppTheme(this.color, this.themeModeCode);
 
   ThemeData getTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -14,6 +15,7 @@ class AppTheme {
         titleMedium: const TextStyle(fontSize: 12),
         titleLarge: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black54)),
       ),
+      brightness: themeModeCode == 2 ? Brightness.dark : Brightness.light,
       canvasColor: color,
       primaryTextTheme: theme.textTheme,
       colorSchemeSeed: color,
@@ -36,5 +38,5 @@ class AppTheme {
     );
   }
 
-  static final TextStyle titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black87);
+  static final TextStyle titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400);
 }

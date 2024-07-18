@@ -49,7 +49,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
   injector.registerSingleton<MenuBloc>(MenuBloc());
-  injector.registerSingleton<ThemeCubit>(ThemeCubit(color: Color(Preferences.color), isDarkMode: Preferences.isDarkMode));
+  injector.registerSingleton<ThemeCubit>(ThemeCubit(color: Color(Preferences.color), themeMode: Preferences.themeMode));
 
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
   injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));
