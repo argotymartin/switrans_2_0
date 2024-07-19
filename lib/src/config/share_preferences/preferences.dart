@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static late SharedPreferences _prefs;
   static String _token = "";
-  static bool _isDarkMode = true;
+  static int _themeMode = 1;
   static int _colorValue = 4282339765;
 
   static Future<void> init() async {
@@ -19,13 +19,13 @@ class Preferences {
     _prefs.setString("token", value);
   }
 
-  static bool get isDarkMode {
-    return _prefs.getBool("isDarkMode") ?? _isDarkMode;
+  static int get themeMode {
+    return _prefs.getInt("themeMode") ?? _themeMode;
   }
 
-  static set isDarkMode(bool value) {
-    _isDarkMode = value;
-    _prefs.setBool("isDarkMode", value);
+  static set themeMode(int value) {
+    _themeMode = value;
+    _prefs.setInt("themeMode", value);
   }
 
   static int get color {

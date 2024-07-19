@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
 class WhiteCard extends StatefulWidget {
   final String? title;
@@ -27,52 +28,60 @@ class _WhiteCardState extends State<WhiteCard> {
     return Container(
       width: widget.width,
       margin: const EdgeInsets.symmetric(vertical: 16),
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      decoration: buildBoxDecoration(),
+      decoration: BoxDecoration(
+        color: AppTheme.colorThemePrimary,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: Theme.of(context).colorScheme.surface),
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (widget.title != null) ...<Widget>[
-            Row(
-              children: <Widget>[
-                Icon(widget.icon),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.title!,
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+            Material(
+              child: InkWell(
+                onTap: () {
+                  setState(() => _isExpanded = !_isExpanded);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.colorThemeSecundary,
+                    border: BorderDirectional(bottom: BorderSide(color: Theme.of(context).colorScheme.surfaceContainerHighest)),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(widget.icon),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.title!,
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                    ],
                   ),
                 ),
-                IconButton(
-                  icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = !_isExpanded;
-                    });
-                  },
-                ),
-              ],
+              ),
             ),
-            const Divider(),
           ],
-          if (_isExpanded) widget.child,
+          if (_isExpanded)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              child: widget.child,
+            ),
         ],
       ),
     );
   }
-
-  BoxDecoration buildBoxDecoration() => BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
-        ],
-      );
 }

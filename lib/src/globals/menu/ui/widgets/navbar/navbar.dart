@@ -67,12 +67,9 @@ class Navbar extends StatelessWidget {
   }
 
   BoxDecoration buidBoxDecoration(BuildContext context) => BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainerLowest,
         boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-            blurRadius: 22,
-          ),
+          BoxShadow(color: Theme.of(context).colorScheme.shadow.withOpacity(0.2), blurRadius: 22, offset: const Offset(22, 0)),
         ],
       );
 }

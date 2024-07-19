@@ -65,13 +65,12 @@ class _FacturaCreateFieldsState extends State<FacturaCreateFields> {
 
   @override
   Widget build(BuildContext context) {
-    //const Duration duration = Duration(milliseconds: 1000);
     return ListView(
       controller: context.read<FormFacturaBloc>().scrollController,
       padding: const EdgeInsets.only(right: 32, top: 8),
       physics: const ClampingScrollPhysics(),
       children: const <Widget>[
-        //BuildViewDetail(),
+        BuildViewDetail(),
         SizedBox(height: 16),
         CustomExpansionPanel(
           title: "Filtros",

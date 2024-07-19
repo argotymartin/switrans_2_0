@@ -52,7 +52,7 @@ class _TextInputState extends State<TextInput> {
           decoration: buildInputDecoration(context),
           keyboardType: TextInputType.text,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w400, fontSize: 12),
         ),
       ),
     );
@@ -80,6 +80,8 @@ class _TextInputState extends State<TextInput> {
   InputDecoration buildInputDecoration(BuildContext context) {
     return InputDecoration(
       errorMaxLines: 1,
+      fillColor: Theme.of(context).colorScheme.surface,
+      filled: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),
       border: InputBorder.none,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/datatables/documentos_table_data_builder.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/blocs/item_documento/item_documento_bloc.dart';
@@ -47,11 +48,12 @@ class TableDocumentos extends StatelessWidget {
             ),
             configuration: PlutoGridConfiguration(
               style: PlutoGridStyleConfig(
-                gridBackgroundColor: Theme.of(context).colorScheme.primaryFixedDim,
+                gridBackgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                rowColor: AppTheme.colorThemeSecundary,
+                oddRowColor: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderColor: Theme.of(context).colorScheme.primaryFixedDim,
                 gridBorderColor: Theme.of(context).colorScheme.primaryFixedDim,
-                columnTextStyle:
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16, fontWeight: FontWeight.bold),
+                columnTextStyle: TextStyle(color: Theme.of(context).colorScheme.inverseSurface, fontSize: 16, fontWeight: FontWeight.bold),
                 checkedColor: Theme.of(context).colorScheme.surface,
                 activatedColor: Theme.of(context).colorScheme.onPrimary,
                 activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
 class CustomPlutoGridTable extends StatelessWidget {
   final List<PlutoColumn> columns;
@@ -36,22 +37,44 @@ class CustomPlutoGridTable extends StatelessWidget {
         },
         onRowChecked: onRowChecked,
         mode: PlutoGridMode.select,
-        //onRowDoubleTap: onRowDoubleTap,
-        configuration: PlutoGridConfiguration(
+        configuration: PlutoGridConfiguration.dark(
           enableMoveHorizontalInEditing: true,
           enableMoveDownAfterSelecting: true,
-          style: PlutoGridStyleConfig(
-            checkedColor: Theme.of(context).colorScheme.inversePrimary,
-            activatedColor: Theme.of(context).colorScheme.onPrimary,
-            activatedBorderColor: Theme.of(context).colorScheme.primary,
-            columnHeight: titleHeight,
-            columnFilterHeight: columnFilterHeight,
-            enableRowColorAnimation: true,
-            rowHeight: rowHeight,
-            gridBorderRadius: BorderRadius.circular(8),
-            evenRowColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-            gridBorderColor: Theme.of(context).colorScheme.primary,
-          ),
+          style: Brightness.dark == Theme.of(context).brightness
+              ? PlutoGridStyleConfig.dark(
+                  rowColor: AppTheme.colorThemeSecundary,
+                  oddRowColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                  checkedColor: Theme.of(context).colorScheme.inversePrimary,
+                  activatedColor: Theme.of(context).colorScheme.onPrimary,
+                  gridBackgroundColor: AppTheme.colorThemePrimary,
+                  activatedBorderColor: Theme.of(context).colorScheme.primary,
+                  columnHeight: titleHeight,
+                  iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                  menuBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  columnFilterHeight: columnFilterHeight,
+                  enableRowColorAnimation: true,
+                  rowHeight: rowHeight,
+                  gridBorderRadius: BorderRadius.circular(8),
+                  evenRowColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  gridBorderColor: Theme.of(context).colorScheme.primary,
+                )
+              : PlutoGridStyleConfig(
+                  rowColor: AppTheme.colorThemePrimary,
+                  oddRowColor: AppTheme.colorThemePrimary.withOpacity(0.8),
+                  checkedColor: Theme.of(context).colorScheme.inversePrimary,
+                  activatedColor: Theme.of(context).colorScheme.onPrimary,
+                  gridBackgroundColor: AppTheme.colorThemePrimary,
+                  activatedBorderColor: Theme.of(context).colorScheme.primary,
+                  columnHeight: titleHeight,
+                  iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                  menuBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  columnFilterHeight: columnFilterHeight,
+                  enableRowColorAnimation: true,
+                  rowHeight: rowHeight,
+                  gridBorderRadius: BorderRadius.circular(8),
+                  evenRowColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  gridBorderColor: Theme.of(context).colorScheme.primary,
+                ),
           columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
           scrollbar: const PlutoGridScrollbarConfig(
             longPressDuration: Duration.zero,

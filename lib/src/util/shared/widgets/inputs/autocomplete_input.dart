@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 class AutocompleteInput extends StatefulWidget {
@@ -78,10 +81,10 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
 
   DropdownMenuEntry<EntryAutocomplete> buildItemMenuEntry(EntryAutocomplete entry) {
     return DropdownMenuEntry<EntryAutocomplete>(
-      style: const ButtonStyle(
-        padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8)),
-        side: WidgetStatePropertyAll<BorderSide>(BorderSide(color: Colors.grey, width: 0.3)),
-        backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+      style: ButtonStyle(
+        padding: const WidgetStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8)),
+        side: const WidgetStatePropertyAll<BorderSide>(BorderSide(color: Colors.grey, width: 0.3)),
+        backgroundColor: WidgetStatePropertyAll<Color>(AppTheme.colorThemeSecundary),
       ),
       value: entry,
       label: entry.title,
@@ -100,38 +103,40 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DropdownMenu<EntryAutocomplete>(
-        //initialSelection: entryAutocompleteSelected,
-        controller: widget.controller,
-        requestFocusOnTap: true,
-        menuHeight: 300,
-        enableSearch: false,
-        enabled: widget.enabled,
-        expandedInsets: EdgeInsets.zero,
-        trailingIcon: const Icon(Icons.keyboard_arrow_down),
-        selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up),
-        leadingIcon: entryAutocompleteSelected.title.isNotEmpty
-            ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo)
-            : const Icon(Icons.search),
-        hintText: "Buscar ${widget.label} ...",
-        textStyle: const TextStyle(fontSize: 12),
-
-        inputDecorationTheme: const InputDecorationTheme(
-          constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
-          isDense: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-        ),
-        onSelected: (EntryAutocomplete? entry) {
-          setState(() => entryAutocompleteSelected = entry!);
-          widget.onPressed?.call(entry!);
-          widget.controller.text = entry!.title;
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (BuildContext context, ThemeState state) {
+          return DropdownMenu<EntryAutocomplete>(
+            controller: widget.controller,
+            requestFocusOnTap: true,
+            menuHeight: 300,
+            enableSearch: false,
+            enabled: widget.enabled,
+            expandedInsets: EdgeInsets.zero,
+            trailingIcon: const Icon(Icons.keyboard_arrow_down),
+            selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up),
+            leadingIcon: entryAutocompleteSelected.title.isNotEmpty
+                ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo)
+                : const Icon(Icons.search),
+            hintText: "Buscar ${widget.label} ...",
+            textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
+            inputDecorationTheme: const InputDecorationTheme(
+              constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
+              isDense: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+            ),
+            onSelected: (EntryAutocomplete? entry) {
+              setState(() => entryAutocompleteSelected = entry!);
+              widget.onPressed?.call(entry!);
+              widget.controller.text = entry!.title;
+            },
+            dropdownMenuEntries: dropdownMenuEntries,
+          );
         },
-        dropdownMenuEntries: dropdownMenuEntries,
       ),
     );
   }

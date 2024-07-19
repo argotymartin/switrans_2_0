@@ -37,7 +37,7 @@ class MenuButtonNavar extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surfaceContainerLowest,
                       borderRadius: BorderRadius.circular(4.0),
                       border: Border.all(color: Colors.grey.shade400),
                     ),

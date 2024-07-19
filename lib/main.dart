@@ -112,7 +112,7 @@ class _BuildMaterialApp extends StatelessWidget {
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
-      theme: AppTheme(theme.color!).getTheme(context),
+      theme: AppTheme(theme.color!, theme.themeMode!).getTheme(context),
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -32,19 +32,19 @@ class BuildViewDetail extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: <Widget>[
-            Icon(IconData(int.parse(moduloSelected!.icono), fontFamily: 'MaterialIcons'), color: Colors.grey.shade600),
+            Icon(IconData(int.parse(moduloSelected!.icono), fontFamily: 'MaterialIcons'), color: Theme.of(context).colorScheme.primary),
             const SizedBox(width: 4),
             SizedBox(
               width: size.width * 0.4,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
-                child: Text(moduloSelected.texto, style: Theme.of(context).textTheme.headlineLarge),
+                child: Text(moduloSelected.texto, style: const TextStyle(fontSize: 28)),
               ),
             ),
           ],
         ),
-        Text(moduloSelected.detalles, style: TextStyle(color: Colors.grey.shade600)),
+        Text(moduloSelected.detalles, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer)),
       ],
     );
   }

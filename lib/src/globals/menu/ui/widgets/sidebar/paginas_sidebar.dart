@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class PaginasSidebar extends StatefulWidget {
@@ -23,6 +22,21 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeState state = context.watch<ThemeCubit>().state;
+    final Color? colorSelected = context.watch<ThemeCubit>().state.color;
+
+    Color color;
+    Color colorText;
+    if (state.themeMode == 1) {
+      color = isHovered || widget.pagina.isSelected ? colorSelected!.withOpacity(0.5) : colorSelected!.withOpacity(0.4);
+      colorText = Theme.of(context).colorScheme.onPrimary;
+    } else if (state.themeMode == 2) {
+      color = isHovered || widget.pagina.isSelected ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.4);
+      colorText = Theme.of(context).colorScheme.primaryContainer;
+    } else {
+      color = isHovered || widget.pagina.isSelected ? colorSelected!.withOpacity(0.3) : colorSelected!.withOpacity(0.25);
+      colorText = Colors.black;
+    }
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
@@ -33,14 +47,12 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
           context.go(path);
         }),
         child: Material(
-          color: isHovered || widget.pagina.isSelected
-              ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.5)
-              : Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.4),
+          color: color,
           child: Stack(
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(left: 42.5),
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: colorText,
                 width: isHovered || widget.pagina.isSelected ? 2 : 1,
                 height: 40,
               ),
@@ -52,7 +64,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
                       width: 20,
                       height: isHovered || widget.pagina.isSelected ? 2 : 1,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: colorText,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -61,8 +73,8 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
                       widget.pagina.texto,
                       style: GoogleFonts.roboto(
                         fontSize: 13,
-                        fontWeight: isHovered || widget.pagina.isSelected ? FontWeight.w400 : FontWeight.w200,
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        fontWeight: isHovered || widget.pagina.isSelected ? FontWeight.w400 : FontWeight.w300,
+                        color: colorText,
                       ),
                     ),
                     const Spacer(),

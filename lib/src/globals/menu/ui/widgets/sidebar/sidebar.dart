@@ -43,6 +43,17 @@ class SidebarExpanded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final int? themeMode = context.read<ThemeCubit>().state.themeMode;
+
+    Color color;
+    if (themeMode == 1) {
+      color = Colors.white;
+    } else if (themeMode == 2) {
+      color = Colors.white;
+    } else {
+      color = Theme.of(context).colorScheme.onPrimaryContainer;
+    }
+
     return Column(
       children: <Widget>[
         Container(
@@ -87,14 +98,14 @@ class SidebarExpanded extends StatelessWidget {
                         BorderSide(color: Theme.of(context).canvasColor, width: 2),
                       ),
                     ),
-                    label: const Text("Salir", style: TextStyle(color: Colors.white)),
+                    label: Text("Salir", style: TextStyle(color: color)),
                     onPressed: () {
                       context.read<AuthBloc>().onLogoutAuthEvent();
                       context.go(AppRouter.login);
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.logout_outlined,
-                      color: Colors.white,
+                      color: color,
                     ),
                   ),
                 ),
@@ -114,6 +125,17 @@ class SidebarMimimized extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final int? themeMode = context.read<ThemeCubit>().state.themeMode;
+
+    Color color;
+    if (themeMode == 1) {
+      color = Colors.white;
+    } else if (themeMode == 2) {
+      color = Colors.white;
+    } else {
+      color = Colors.black;
+    }
+
     return Column(
       children: <Widget>[
         Container(
@@ -153,9 +175,9 @@ class SidebarMimimized extends StatelessWidget {
                       context.read<AuthBloc>().onLogoutAuthEvent();
                       context.go(AppRouter.login);
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.logout_outlined,
-                      color: Colors.white,
+                      color: color,
                     ),
                   ),
                 ),
@@ -170,14 +192,28 @@ class SidebarMimimized extends StatelessWidget {
 }
 
 BoxDecoration buildBoxDecoration(BuildContext context) {
+  final int? themeMode = context.read<ThemeCubit>().state.themeMode;
+  List<Color> colors = <Color>[];
+  if (themeMode == 1) {
+    colors = <Color>[
+      Theme.of(context).canvasColor.withOpacity(0.8),
+      Color.alphaBlend(Colors.black.withOpacity(0.3), Theme.of(context).canvasColor),
+    ];
+  } else if (themeMode == 2) {
+    colors = <Color>[
+      Theme.of(context).colorScheme.surfaceContainerHigh,
+      Theme.of(context).colorScheme.surfaceContainer,
+    ];
+  } else {
+    colors = <Color>[
+      Colors.white,
+      Colors.white,
+    ];
+  }
   return BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.centerRight,
-      end: Alignment.centerLeft,
-      colors: <Color>[
-        Theme.of(context).canvasColor.withOpacity(0.8),
-        Color.alphaBlend(Colors.black.withOpacity(0.3), Theme.of(context).canvasColor),
-      ],
-    ),
+    gradient: LinearGradient(begin: Alignment.centerRight, end: Alignment.centerLeft, colors: colors),
+    boxShadow: <BoxShadow>[
+      BoxShadow(color: Theme.of(context).colorScheme.shadow.withOpacity(0.2), blurRadius: 22, offset: const Offset(2, 0)),
+    ],
   );
 }
