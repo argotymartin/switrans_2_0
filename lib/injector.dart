@@ -20,6 +20,10 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/mo
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/data/datasources/api/pagina_api_pocketbase.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/data/repositories/pagina_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/domain/pagina_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/datasources/api/paquete_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/repositories/paquete_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
@@ -90,4 +94,9 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<TransaccionContableDB>(TransaccionContableDB());
   injector.registerSingleton<AbstractTransaccionContableRepository>(TransaccionContableRepositoryDBImpl(injector()));
   injector.registerSingleton<TransaccionContableBloc>(TransaccionContableBloc(injector()));
+
+  injector.registerSingleton<PaginaApiPocketBase>(PaginaApiPocketBase(injector()));
+  injector.registerSingleton<AbstractPaginaRepository>(PaginaRepositoryImpl(injector()));
+  injector.registerSingleton<PaginaBloc>(PaginaBloc(injector()));
+
 }
