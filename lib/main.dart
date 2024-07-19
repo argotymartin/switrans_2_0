@@ -14,6 +14,7 @@ import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
@@ -53,6 +54,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<ModuloBloc>(create: (_) => injector<ModuloBloc>()),
         BlocProvider<PaqueteBloc>(create: (_) => injector<PaqueteBloc>()),
         BlocProvider<TransaccionContableBloc>(create: (_) => injector<TransaccionContableBloc>()),
+        BlocProvider<PaginaBloc>(create: (_) => injector<PaginaBloc>()),
       ],
       child: const MyMaterialApp(),
     );
