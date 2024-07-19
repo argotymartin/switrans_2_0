@@ -11,3 +11,12 @@ lints:
   script:
     - cd /home/erneyvargas/docker/switrans_2_0
     - docker container run -v $(pwd):/app erneyvargasdev/flutter-image:3.22.0 flutter pub get flutter analyze
+
+deploy:
+  stage: deploy
+  script:
+    - ssh root@192.168.102.18 'cd /home/erneyvargas/docker/switrans_2_0 && git pull origin develop'
+    - ssh root@192.168.102.18 'cd /home/erneyvargas/docker/switrans_2_0 && flutter build web'
+    
+  only:
+    - develop
