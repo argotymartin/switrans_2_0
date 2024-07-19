@@ -5,6 +5,7 @@ variables:
 
 stages:
   - lints
+  - deploy
 
 lints:
   stage: lints
