@@ -24,7 +24,7 @@ class FieldModulo extends StatelessWidget {
         Text("Modulo", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput(
-          //controller: moduloController,
+          controller: moduloController,
           entries: entryMenus,
           label: "Modulo",
           onPressed: onPressed,

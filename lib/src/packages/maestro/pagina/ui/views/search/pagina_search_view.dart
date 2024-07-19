@@ -16,7 +16,6 @@ class PaginaSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     return BlocListener<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
         if (state is PaginaExceptionState) {
@@ -28,10 +27,10 @@ class PaginaSearchView extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.only(right: 32, top: 8),
             physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              BuildViewDetail(path: fullPath),
-              const WhiteCard(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
-              const _BuildDataTable(),
+            children: const <Widget>[
+              BuildViewDetail(),
+              WhiteCard(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
+              _BuildDataTable(),
             ],
           ),
         ],

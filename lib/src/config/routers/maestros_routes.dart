@@ -9,6 +9,9 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/sear
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
@@ -35,6 +38,7 @@ class MaestrosRoutes {
     routes.add(routerModulo());
     routes.add(routerPaquete());
     routes.add(routerTransaccionContable());
+    routes.add(routerPagina());
     return routes;
   }
 
@@ -261,5 +265,3 @@ class MaestrosRoutes {
     );
   }
 }
-
-

@@ -14,7 +14,6 @@ class PaginaCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
     return BlocListener<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
@@ -30,9 +29,9 @@ class PaginaCreateView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(right: 32, top: 8),
         physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          BuildViewDetail(path: fullPath),
-          const WhiteCard(
+        children: const <Widget>[
+          BuildViewDetail(),
+          WhiteCard(
             title: "Registrar Nuevo",
             icon: Icons.storage_outlined,
             child: _BuildFieldsForm(),
