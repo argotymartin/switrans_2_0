@@ -3,7 +3,6 @@ export 'package:switrans_2_0/src/util/shared/widgets/buttons/custom_outlined_but
 export 'package:switrans_2_0/src/util/shared/widgets/buttons/custom_size_button.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/buttons/link_text.dart';
 
-export 'package:switrans_2_0/src/util/shared/widgets/cards/custom_color_card.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
 
 export 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';

@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/data/datasources/api/auth_pocketbase_api.dart';
 import 'package:switrans_2_0/src/globals/login/data/repositories/auth_repository_impl.dart';
 import 'package:switrans_2_0/src/globals/login/domain/repositories/abstract_auth_repository.dart';
@@ -49,7 +47,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
   injector.registerSingleton<MenuBloc>(MenuBloc());
-  injector.registerSingleton<ThemeCubit>(ThemeCubit(color: Color(Preferences.color), themeMode: Preferences.themeMode));
+  injector.registerSingleton<ThemeCubit>(ThemeCubit());
 
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
   injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));

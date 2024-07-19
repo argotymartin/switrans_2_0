@@ -327,7 +327,7 @@ class DocumentosTableDataBuilder {
         children: <Widget>[
           RichText(
             text: TextSpan(
-              style: const TextStyle(fontSize: 10, color: Colors.black),
+              style: const TextStyle(fontSize: 10),
               children: <InlineSpan>[
                 const TextSpan(
                   text: 'Obs: ',
@@ -345,7 +345,7 @@ class DocumentosTableDataBuilder {
           const SizedBox(height: 4),
           RichText(
             text: TextSpan(
-              style: const TextStyle(fontSize: 10, color: Colors.black),
+              style: const TextStyle(fontSize: 10),
               children: <InlineSpan>[
                 const TextSpan(
                   text: 'Remision: ',
@@ -405,7 +405,7 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext) {
     alignment: Alignment.centerRight,
     titleSpanBuilder: (String text) {
       return <InlineSpan>[
-        TextSpan(text: '\$ $text', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 12)),
+        TextSpan(text: '\$ $text', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
       ];
     },
   );
@@ -426,10 +426,10 @@ class _DetailRemesa extends StatelessWidget {
     return Row(
       children: <Widget>[
         icon != null ? Icon(icon, size: 16) : const SizedBox(),
-        Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold)),
         Container(
           constraints: const BoxConstraints(maxWidth: 180),
-          child: FittedBox(child: Text(subtitle, style: const TextStyle(color: Colors.black, fontSize: 10))),
+          child: FittedBox(child: Text(subtitle, style: const TextStyle(fontSize: 10))),
         ),
       ],
     );

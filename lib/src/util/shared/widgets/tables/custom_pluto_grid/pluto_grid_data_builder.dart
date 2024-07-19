@@ -149,7 +149,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             } else {
               selectedMap.remove(event.rowIdx);
             }
-            //print(selectedMap);
             setState(() => listValues = selectedMap.values.toList());
             widget.onRowChecked!.call(listValues);
           },
@@ -177,10 +176,7 @@ class _BuildFieldText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      renderContext.cell.value.toString().toUpperCase(),
-      style: const TextStyle(color: Colors.black),
-    );
+    return Text(renderContext.cell.value.toString().toUpperCase());
   }
 }
 
@@ -220,7 +216,10 @@ class _BuildFieldTextEditState extends State<_BuildFieldTextEdit> {
                 ],
               ),
             ),
-            title: const Text("Editar Campo"),
+            title: Text(
+              "Editar Campo",
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
+            ),
             actions: <Widget>[
               FilledButton(
                 onPressed: () {
@@ -237,7 +236,6 @@ class _BuildFieldTextEditState extends State<_BuildFieldTextEdit> {
       },
       child: Text(
         controller.text,
-        style: const TextStyle(color: Colors.black),
       ),
     );
   }
@@ -254,18 +252,17 @@ class _BuildFieldDate extends StatelessWidget {
     final List<String> dateValue = renderContext.cell.value.toString().split(" ");
     final String fecha = dateValue[0];
     final String hora = dateValue[1].split(".")[0];
+    final Color color = Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6);
     return Row(
       children: <Widget>[
-        const Icon(Icons.calendar_month, color: Colors.black54),
+        Icon(Icons.calendar_month, color: color),
         Text(
           fecha,
-          style: const TextStyle(color: Colors.black),
         ),
         const SizedBox(width: 4),
-        const Icon(Icons.timelapse_rounded, color: Colors.black54),
+        Icon(Icons.timelapse_rounded, color: color),
         Text(
           hora,
-          style: const TextStyle(color: Colors.black),
         ),
       ],
     );
@@ -299,7 +296,7 @@ class _BuildFieldItem extends StatelessWidget {
       scale: 0.8,
       child: Chip(
         clipBehavior: Clip.antiAlias,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).canvasColor,
         labelPadding: const EdgeInsets.symmetric(horizontal: 16),
         padding: EdgeInsets.zero,
         shape: const StadiumBorder(),

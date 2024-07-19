@@ -6,18 +6,20 @@ class AppTheme {
   final int themeModeCode;
   AppTheme(this.color, this.themeModeCode);
 
+  static late Color colorThemePrimary;
+  static late Color colorThemeSecundary;
+
   ThemeData getTheme(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return ThemeData(
+    final ThemeData theme = ThemeData(
       useMaterial3: true,
-      textTheme: GoogleFonts.robotoTextTheme(theme.textTheme).copyWith(
+      textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme).copyWith(
         bodyMedium: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 12)),
         titleMedium: const TextStyle(fontSize: 12),
         titleLarge: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black54)),
       ),
       brightness: themeModeCode == 2 ? Brightness.dark : Brightness.light,
       canvasColor: color,
-      primaryTextTheme: theme.textTheme,
+      primaryTextTheme: Theme.of(context).textTheme,
       colorSchemeSeed: color,
       iconTheme: IconThemeData(color: color),
       inputDecorationTheme: const InputDecorationTheme(
@@ -36,6 +38,17 @@ class AppTheme {
         interactive: true,
       ),
     );
+    if (themeModeCode == 1) {
+      colorThemePrimary = theme.colorScheme.surfaceContainerLowest;
+      colorThemeSecundary = theme.colorScheme.surfaceContainerLowest;
+    } else if (themeModeCode == 2) {
+      colorThemePrimary = Colors.black38;
+      colorThemeSecundary = theme.colorScheme.surfaceContainerHighest;
+    } else {
+      colorThemePrimary = theme.colorScheme.surfaceContainerLowest;
+      colorThemeSecundary = theme.colorScheme.surfaceContainerLowest;
+    }
+    return theme;
   }
 
   static final TextStyle titleStyle = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400);

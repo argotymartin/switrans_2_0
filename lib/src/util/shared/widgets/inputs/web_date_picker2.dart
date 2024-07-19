@@ -38,7 +38,7 @@ class _WebDatePicker2State extends State<WebDatePicker2> {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle dayTextStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
+    const TextStyle dayTextStyle = TextStyle(fontWeight: FontWeight.w700);
     final TextStyle weekendTextStyle = TextStyle(color: Colors.grey[500], fontWeight: FontWeight.w600);
     final TextStyle anniversaryTextStyle = TextStyle(
       color: Colors.red[400],
@@ -52,13 +52,12 @@ class _WebDatePicker2State extends State<WebDatePicker2> {
       closeDialogOnCancelTapped: true,
       firstDayOfWeek: 1,
       controlsTextStyle: const TextStyle(
-        color: Colors.black,
         fontSize: 15,
         fontWeight: FontWeight.bold,
       ),
       centerAlignModePicker: true,
       customModePickerIcon: const SizedBox(),
-      selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
+      //selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
       dayTextStylePredicate: ({required DateTime date}) {
         TextStyle? textStyle;
         if (date.weekday == DateTime.saturday || date.weekday == DateTime.sunday) {
@@ -151,6 +150,7 @@ class _WebDatePicker2State extends State<WebDatePicker2> {
     return Container(
       constraints: const BoxConstraints(maxWidth: 280),
       child: TextFormField(
+        style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
         controller: widget.controller,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -168,7 +168,7 @@ class _WebDatePicker2State extends State<WebDatePicker2> {
             dialogSize: const Size(400, 350),
             borderRadius: BorderRadius.circular(15),
             value: dialogCalendarPickerValue,
-            dialogBackgroundColor: Colors.white,
+            dialogBackgroundColor: Theme.of(context).colorScheme.surface,
           );
           if (values != null) {
             setState(() {
