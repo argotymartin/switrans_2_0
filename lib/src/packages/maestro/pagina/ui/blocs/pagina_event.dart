@@ -1,6 +1,6 @@
 part of 'pagina_bloc.dart';
 
-sealed class PaginaEvent extends Equatable {
+abstract class PaginaEvent extends Equatable {
   const PaginaEvent();
   @override
   List<Object> get props => <Object>[];

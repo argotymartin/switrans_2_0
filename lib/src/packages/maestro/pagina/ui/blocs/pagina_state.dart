@@ -1,6 +1,6 @@
 part of 'pagina_bloc.dart';
 
-sealed class PaginaState extends Equatable {
+abstract class PaginaState extends Equatable {
   final Pagina? pagina;
   final List<Pagina> paginas;
   final DioException? exception;

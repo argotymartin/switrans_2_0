@@ -6,7 +6,6 @@ class DataItemGrid {
   final bool edit;
   final List<String>? dataList;
 
-
   DataItemGrid({
     required this.type,
     required this.value,
