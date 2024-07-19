@@ -16,8 +16,8 @@ lints:
 deploy:
   stage: deploy
   script:
-    - ssh root@192.168.102.18 'cd /home/erneyvargas/docker/switrans_2_0 && git pull origin develop'
-    - ssh root@192.168.102.18 'cd /home/erneyvargas/docker/switrans_2_0 && flutter build web'
+    - cd /home/erneyvargas/docker/switrans_2_0 && git pull origin develop
+    - cd /home/erneyvargas/docker/switrans_2_0 && flutter build web
     
   only:
     - develop
