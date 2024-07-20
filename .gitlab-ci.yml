@@ -18,7 +18,7 @@ deploy:
   script:
     - cd /home/erneyvargas/docker/switrans_2_0
     - "credeciales=\"$GIT_USER:$GIT_USER_CLAVE@\""
-    - "ruta=$(git remote get-url origin | sed \"s/:\\/\\//:\\/\\/$credeciales/g\")"
+    - "ruta=$(git config --get remote.origin.url | sed \"s/:\\/\\//:\\/\\/$credeciales/g\")"
     - "echo $ruta"
     - "git checkout develop"
     - "git pull $ruta develop"
