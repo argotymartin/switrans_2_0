@@ -16,7 +16,8 @@ lints:
 deploy:
   stage: deploy
   script:
-    - cd /home/erneyvargas/docker/switrans_2_0 && git pull origin develop
+    - cd /home/erneyvargas/docker/switrans_2_0
+    - git pull http://$GIT_USER:$GIT_USER_CLAVE@git.mct.com.co develop
     - cd /home/erneyvargas/docker/switrans_2_0 && flutter build web
     
   only:
