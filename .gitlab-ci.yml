@@ -24,7 +24,7 @@ deploy:
     - "git pull $ruta develop"
     - "git status"
     - "git log --oneline --decorate --graph --all -n 15"
-    - "docker container run -v $(pwd):/app erneyvargasdev/flutter-image:3.22.0 flutter build web --web-renderer html --no-tree-shake-icons"
+    - "docker container run -v $(pwd):/app erneyvargasdev/flutter-image:3.22.0 flutter pub get flutter build web --web-renderer html --no-tree-shake-icons"
     
 
     
