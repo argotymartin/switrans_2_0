@@ -17,7 +17,11 @@ deploy:
   stage: deploy
   script:
     - cd /home/erneyvargas/docker/switrans_2_0
-    - git pull http://$GIT_USER:$GIT_USER_CLAVE@git.mct.com.co develop
+    - "credeciales=\"$GIT_USER:$GIT_USER_CLAVE@\""
+    - "ruta=$(git remote get-url origin | sed \"s/:\\/\\//:\\/\\/$credeciales/g\")"
+    - "echo $ruta"
+    - "git checkout develop"
+    - "git pull $ruta develop"
     - cd /home/erneyvargas/docker/switrans_2_0 && flutter build web
     
   only:
