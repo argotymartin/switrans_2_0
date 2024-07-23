@@ -8,6 +8,8 @@ abstract class FormFacturaState extends Equatable {
   final List<Empresa> empresas;
   final List<TipoDocumento> tiposDocumentos;
   final DioException? exception;
+  final List<Documento> documentos;
+
   const FormFacturaState({
     this.empresa = 1,
     this.tipoFactura = 10,
@@ -15,6 +17,7 @@ abstract class FormFacturaState extends Equatable {
     this.clientes = const <Cliente>[],
     this.empresas = const <Empresa>[],
     this.tiposDocumentos = const <TipoDocumento>[],
+    this.documentos = const <Documento>[],
     this.exception,
   });
 }
@@ -41,20 +44,27 @@ class FormFacturaLoadingState extends FormFacturaState {
 }
 
 class FormFacturaRequestState extends FormFacturaState {
-  const FormFacturaRequestState({super.empresa, super.error, super.clientes, super.empresas, super.tipoFactura});
+  const FormFacturaRequestState({super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
   @override
-  List<Object> get props => <Object>[empresa, error, clientes, empresas, tipoFactura];
+  List<Object> get props => <Object>[empresa, clientes, empresas, tiposDocumentos];
 }
 
 class FormFacturaSuccesState extends FormFacturaState {
-  const FormFacturaSuccesState({super.empresa, super.error, super.clientes, super.empresas, super.tipoFactura});
+  const FormFacturaSuccesState({super.empresa, super.clientes, super.empresas, super.tipoFactura});
+
+  @override
+  List<Object> get props => <Object>[empresa, clientes, empresas, tipoFactura];
+}
+
+class FormDocumentosSuccesState extends FormFacturaState {
+  const FormDocumentosSuccesState({super.documentos, super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
 
   @override
   List<Object> get props => <Object>[empresa, error, clientes, empresas, tipoFactura];
 }
 
 class FormFacturaErrorState extends FormFacturaState {
-  const FormFacturaErrorState({super.exception});
+  const FormFacturaErrorState({super.exception, super.documentos, super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
 
   @override
   List<DioException?> get props => <DioException?>[exception];

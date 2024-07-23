@@ -25,27 +25,32 @@ class BuildViewDetail extends StatelessWidget {
         }
       }
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        BreadcrumbTrail(elements: breadcrumbTrails),
-        const SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            Icon(IconData(int.parse(moduloSelected!.icono), fontFamily: 'MaterialIcons'), color: Theme.of(context).colorScheme.primary),
-            const SizedBox(width: 4),
-            SizedBox(
-              width: size.width * 0.4,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(moduloSelected.texto, style: const TextStyle(fontSize: 28)),
+    return moduloSelected != null
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              BreadcrumbTrail(elements: breadcrumbTrails),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Icon(
+                    IconData(int.parse(moduloSelected.icono), fontFamily: 'MaterialIcons'),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 4),
+                  SizedBox(
+                    width: size.width * 0.4,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(moduloSelected.texto, style: const TextStyle(fontSize: 28)),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        Text(moduloSelected.detalles, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer)),
-      ],
-    );
+              Text(moduloSelected.detalles, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer)),
+            ],
+          )
+        : const SizedBox();
   }
 }

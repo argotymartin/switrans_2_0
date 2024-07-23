@@ -90,7 +90,7 @@ class CustomToast {
         return ErrorResponse(code: errorData["code"], title: errorData["message"], details: response.realUri.path);
       }
     } else if (errorData.containsKey('success') && errorData.containsKey('data') && errorData.containsKey('error')) {
-      return ErrorResponse(code: errorData["code"], title: errorData["message"], details: response.realUri.path);
+      return ErrorResponse(code: 500, title: errorData["error"]["errorClient"], details: response.realUri.path);
     } else {
       return ErrorResponse(code: 400, title: "Error no controlado", details: "");
     }

@@ -17,7 +17,7 @@ class CardDetailsFactura2 extends StatelessWidget {
       fontWeight: FontWeight.w300,
       fontSize: 24,
     );
-    final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+    final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (BuildContext context, ItemDocumentoState state) {
         final List<Documento> documentos = facturaBloc.state.documentos;

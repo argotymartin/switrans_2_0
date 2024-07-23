@@ -380,10 +380,9 @@ class DocumentosTableDataBuilder {
         CustomSizeButton(
           onPressed: () {
             rendererContext.stateManager.removeRows(<PlutoRow>[rendererContext.row]);
-            final List<Documento> documentosAll = context.read<DocumentoBloc>().state.documentos;
+
+            final List<Documento> documentosAll = context.read<FormFacturaBloc>().state.documentos;
             final Documento documento = documentosAll[rendererContext.rowIdx];
-            final List<Documento> documentos = List<Documento>.from(documentosAll)..remove(documento);
-            context.read<DocumentoBloc>().add(ChangedDocumentoEvent(documentos));
             context.read<ItemDocumentoBloc>().add(RemoveItemDocumentoEvent(documento: documento));
           },
           width: 32,

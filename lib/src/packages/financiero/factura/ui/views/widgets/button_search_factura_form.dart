@@ -28,16 +28,16 @@ class ButtonSearchFacturaForm extends StatelessWidget {
           label: const Text("Buscar", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(width: 8),
-        BlocBuilder<DocumentoBloc, DocumentoState>(
-          builder: (BuildContext context, DocumentoState state) {
-            if (state is DocumentoLoadingState) {
+        BlocBuilder<FormFacturaBloc, FormFacturaState>(
+          builder: (BuildContext context, FormFacturaState state) {
+            if (state is FormFacturaLoadingState) {
               return const SizedBox(
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(strokeWidth: 3.0),
               );
             }
-            if (state is DocumentoSuccesState) {
+            if (state is FormFacturaLoadingState) {
               final String remesas = context.read<FormFacturaBloc>().remesasController.text;
               final List<String> items = remesas.split(",");
               return Column(
