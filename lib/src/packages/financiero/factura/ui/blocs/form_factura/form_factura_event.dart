@@ -26,6 +26,11 @@ class ErrorFormFacturaEvent extends FormFacturaEvent {
   const ErrorFormFacturaEvent(this.error);
 }
 
+class DocumentosFormFacturaEvent extends FormFacturaEvent {
+  final FormFacturaRequest request;
+  const DocumentosFormFacturaEvent(this.request);
+}
+
 class SuccesFormFacturaEvent extends FormFacturaEvent {
   const SuccesFormFacturaEvent();
 }

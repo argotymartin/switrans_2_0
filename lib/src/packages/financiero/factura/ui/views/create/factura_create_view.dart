@@ -27,16 +27,10 @@ class FacturaCreateView extends StatelessWidget {
         }
       },
       builder: (BuildContext context, FormFacturaState state) {
-        if (state is FormFacturaDataState) {
-          return const FacturaCreateFields();
+        if (state is FormFacturaLoadingState) {
+          return const LoadingView();
         }
-        if (state is FormFacturaRequestState) {
-          return const FacturaCreateFields();
-        }
-        if (state is FormFacturaSuccesState) {
-          return const FacturaCreateFields();
-        }
-        return const LoadingView();
+        return const FacturaCreateFields();
       },
     );
   }
@@ -160,9 +154,9 @@ class _BuildDocumentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DocumentoBloc, DocumentoState>(
-      builder: (BuildContext context, DocumentoState state) {
-        if (state is DocumentoSuccesState) {
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
+        if (state is FormDocumentosSuccesState) {
           if (state.documentos.isNotEmpty) {
             return TableDocumentos(documentos: state.documentos);
           }
@@ -213,81 +207,89 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
-    final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
-    final TextEditingController controllerCentroCosto = TextEditingController();
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
+        if (state is FormFacturaRequestState) {
+          final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+          final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
+          final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
+          final TextEditingController controllerCentroCosto = TextEditingController();
 
-    final List<MapEntry<int, String>> centrosCosto = context.read<DocumentoBloc>().getCentosCosto();
-    final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
-      return EntryAutocomplete(
-        codigo: centro.key,
-        title: centro.value,
-        subTitle: '(${centro.key})',
-      );
-    }).toList();
+          final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
+          final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
+            return EntryAutocomplete(
+              codigo: centro.key,
+              title: centro.value,
+              subTitle: '(${centro.key})',
+            );
+          }).toList();
 
-    void setValueFactura(EntryAutocomplete value) {
-      if (value.codigo > 0) {
-        context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-        formFacturaBloc.centroCosto = value.codigo;
-      }
-    }
+          void setValueFactura(EntryAutocomplete value) {
+            if (value.codigo > 0) {
+              context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+              formFacturaBloc.centroCosto = value.codigo;
+            }
+          }
 
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (BuildContext context, ItemDocumentoState state) {
-        if (state is ItemDocumentoSuccesState) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+            builder: (BuildContext context, ItemDocumentoState state) {
+              if (state is ItemDocumentoSuccesState) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        const Icon(Icons.work_outline_outlined),
-                        const SizedBox(width: 8),
-                        Text(empresaSelect.nombre),
-                      ],
+                    SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.work_outline_outlined),
+                              const SizedBox(width: 8),
+                              Text(empresaSelect.nombre),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.contact_emergency_outlined),
+                              const SizedBox(width: 8),
+                              Text(clienteSelect.nombre),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        const Icon(Icons.contact_emergency_outlined),
-                        const SizedBox(width: 8),
-                        Text(clienteSelect.nombre),
-                      ],
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 400,
+                      child: AutocompleteInput(
+                        entries: entriesCentroCosto,
+                        label: "Centro Costo",
+                        controller: controllerCentroCosto,
+                        onPressed: setValueFactura,
+                      ),
                     ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 160,
+                      child: CustomOutlinedButton(
+                        icon: Icons.delete_forever_outlined,
+                        colorText: Colors.white,
+                        onPressed: () {},
+                        color: Theme.of(context).colorScheme.error,
+                        text: "Cancelar",
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const _BuildButtonRegistrar(),
                   ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              SizedBox(
-                width: 400,
-                child: AutocompleteInput(
-                  entries: entriesCentroCosto,
-                  label: "Centro Costo",
-                  controller: controllerCentroCosto,
-                  onPressed: setValueFactura,
-                ),
-              ),
-              const SizedBox(width: 16),
-              SizedBox(
-                width: 160,
-                child: CustomOutlinedButton(
-                  icon: Icons.delete_forever_outlined,
-                  colorText: Colors.white,
-                  onPressed: () {},
-                  color: Theme.of(context).colorScheme.error,
-                  text: "Cancelar",
-                ),
-              ),
-              const SizedBox(width: 16),
-              const _BuildButtonRegistrar(),
-            ],
+                );
+              }
+              return const SizedBox();
+            },
           );
+        } else {
+          return const SizedBox();
         }
-        return const SizedBox();
       },
     );
   }
@@ -302,7 +304,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (BuildContext context, ItemDocumentoState state) {
-        final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+        final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
         final List<Documento> documentos = facturaBloc.state.documentos;
         final Iterable<ItemDocumento> itemDocumentos = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);

@@ -14,7 +14,8 @@ class CardDetailsFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DocumentoBloc facturaBloc = context.read<DocumentoBloc>();
+    final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
+
     final Size size = MediaQuery.of(context).size;
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(

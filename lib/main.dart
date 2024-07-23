@@ -47,7 +47,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<TipoImpuestoBloc>(create: (_) => injector<TipoImpuestoBloc>()),
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
         BlocProvider<MenuSidebarBloc>(create: (_) => injector<MenuSidebarBloc>()),
-        BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
+        //BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
         BlocProvider<AccionDocumentoBloc>(create: (_) => injector<AccionDocumentoBloc>()),
         BlocProvider<ServicioEmpresarialBloc>(create: (_) => injector<ServicioEmpresarialBloc>()),
         BlocProvider<UnidadNegocioBloc>(create: (_) => injector<UnidadNegocioBloc>()),
