@@ -3,10 +3,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
-class CustomEndDrawer extends StatelessWidget {
-  const CustomEndDrawer({
-    super.key,
-  });
+class ColorOption {
+  final String name;
+  final Color color;
+  ColorOption(this.name, this.color);
+}
+
+class CustomEndDrawer extends StatefulWidget {
+  const CustomEndDrawer({super.key});
+  @override
+  CustomEndDrawerState createState() => CustomEndDrawerState();
+
+}
+
+class CustomEndDrawerState extends State<CustomEndDrawer> {
+  final List<ColorOption> colorOptions = <ColorOption>[
+    ColorOption("Morado Claro", const Color(0xFF886AB5)),
+    ColorOption("Rosa", const Color(0xFFB56A9F)),
+    ColorOption("Verde Claro", const Color(0xFF9FCB3D)),
+    ColorOption("Azul Medio", const Color(0xFF4679CC)),
+    ColorOption("Azul Brillante", const Color(0xFF2198F3)),
+    ColorOption("Turquesa", const Color(0xFF6AB5B4)),
+    ColorOption("Rosa Oscuro", const Color(0xFFDD5293)),
+    ColorOption("Gris", const Color(0xFF868E96)),
+    ColorOption("Azul Claro", const Color(0xFF7C91DF)),
+    ColorOption("Naranja", const Color(0xFFE59C6C)),
+    ColorOption("Verde Oscuro", const Color(0xFF778C85)),
+    ColorOption("Verde Oliva", const Color(0xFFA2B077)),
+    ColorOption("Morado Oscuro", const Color(0xFF7976B3)),
+    ColorOption("Verde Lima", const Color(0xFF55CE5F)),
+    ColorOption("Amarillo", const Color(0xFFFBE231)),
+    ColorOption("Azul Gris", const Color(0xFF627CA0)),
+  ];
+
+  Color? selectedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +47,9 @@ class CustomEndDrawer extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: <Widget>[
           const DrawerHeader(
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white))),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.white)),
+            ),
             child: Column(
               children: <Widget>[
                 CircleAvatar(
@@ -30,22 +62,30 @@ class CustomEndDrawer extends StatelessWidget {
               ],
             ),
           ),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Theme Colors"),
+              const Text("Theme Colors"),
               Wrap(
-                children: <Widget>[
-                  _BuildCircleColor(color: Colors.indigo),
-                  _BuildCircleColor(color: Colors.teal),
-                  _BuildCircleColor(color: Colors.blue),
-                  _BuildCircleColor(color: Colors.deepOrange),
-                  _BuildCircleColor(color: Colors.orange),
-                  _BuildCircleColor(color: Colors.cyan),
-                  _BuildCircleColor(color: Colors.purple),
-                  _BuildCircleColor(color: Colors.deepPurple),
-                  _BuildCircleColor(color: Colors.limeAccent),
-                ],
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: List<Widget>.generate(colorOptions.length, (int index) {
+                  final ColorOption option = colorOptions[index];
+                  return Tooltip(
+                    message: option.name,
+                    child: _BuildCircleColor(
+                      color: option.color,
+                      isSelected: selectedColor == option.color,
+                      onTap: () {
+                        setState(() {
+                          selectedColor = option.color;
+                          context.read<ThemeCubit>().onChangeColorTheme(option.color);
+                        });
+                        context.pop();
+                      },
+                    ),
+                  );
+                }),
               ),
             ],
           ),
@@ -102,6 +142,7 @@ class ContainerTheme extends StatelessWidget {
   final Color secundaryColor;
   final Color backgroundColor;
   final int themeValueCode;
+
   const ContainerTheme({
     required this.colorPrimary,
     required this.secundaryColor,
@@ -169,34 +210,72 @@ class ContainerTheme extends StatelessWidget {
   }
 }
 
-class _BuildCircleColor extends StatelessWidget {
+class _BuildCircleColor extends StatefulWidget {
   final Color color;
-  const _BuildCircleColor({required this.color});
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _BuildCircleColor({
+    required this.color,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  _BuildCircleColorState createState() => _BuildCircleColorState();
+}
+
+class _BuildCircleColorState extends State<_BuildCircleColor> {
+  bool isHovering = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(100),
-      onTap: () {
-        context.read<ThemeCubit>().onChangeColorTheme(color);
-        context.pop();
+      onTap: widget.onTap,
+      onHover: (bool hovering) {
+        setState(() {
+          isHovering = hovering;
+        });
       },
-      child: Container(
-        margin: const EdgeInsets.all(4),
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              colors: <Color>[
-                color.withOpacity(0.2),
-                color,
-              ],
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.all(2),
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: widget.isSelected || isHovering ? Colors.black : Colors.transparent,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: widget.isSelected || isHovering
+              ? <BoxShadow>[
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
+          ]
+              : null,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            colors: <Color>[
+              widget.color.withOpacity(0.2),
+              widget.color,
+            ],
           ),
         ),
+        child: widget.isSelected || isHovering
+            ? const Center(
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+            size: 16,
+          ),
+        )
+            : null,
       ),
     );
   }

@@ -27,11 +27,14 @@ class TokenExpired extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(
-                        'assets/token_expired.png',
-                        width: imageWidth,
-                        height: imageHeight,
-                        fit: BoxFit.cover,
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'assets/token_expired.png',
+                          width: imageWidth,
+                          height: imageHeight,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       SizedBox(height: height * 0.03),
                       Text(
@@ -43,7 +46,8 @@ class TokenExpired extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: height * 0.02),
-                        Text("Por favor, refresca la página para iniciar sesión nuevamente.",
+                      Text(
+                        "Por favor, refresca la página para iniciar sesión nuevamente.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: height * 0.02,
