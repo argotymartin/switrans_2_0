@@ -49,7 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       isValid = false;
     }
-
     return isValid;
   }
 }

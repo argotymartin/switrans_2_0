@@ -25,8 +25,9 @@ deploy:
     - "git status"
     - "git log --oneline -n 15"
     - docker container run -v $(pwd):/app erneyvargasdev/flutter-image:3.22.0 /bin/bash -c "flutter pub get && flutter build web --web-renderer html --no-tree-shake-icons"
-    - cp -r build/web /home/erneyvargas/docker/node_centos/project_nodejs/switrans02
-    - sh /home/erneyvargas/docker/node_centos/reload_node.sh
+    - cp -r build/web /home/erneyvargas/docker/node_centos/project_nodejs/switrans02}
+    - cd /home/erneyvargas/docker/node_centos
+    - sh reload_node.sh
     
 
     
