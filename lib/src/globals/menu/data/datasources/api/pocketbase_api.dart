@@ -25,11 +25,15 @@ class PocketbaseAPI {
       for (final dynamic modulo in modulos) {
         final Response<dynamic> responsePaginas = await getPagesByModulo(modulo["id"]);
         final List<dynamic> paginas = responsePaginas.data['items'];
+        paginas.sort((dynamic a, dynamic b) {
+          return a["pagina_texto"].compareTo(b["pagina_texto"]);
+        });
         modulo["paginas"] = paginas;
       }
+      modulos.sort((dynamic a, dynamic b) => a["modulo_nombre"].compareTo(b["modulo_nombre"]));
       paquete["modulos"] = modulos;
     }
-
+    paquetes.sort((dynamic a, dynamic b) => a["nombre"].compareTo(b["nombre"]));
     return response;
   }
 
