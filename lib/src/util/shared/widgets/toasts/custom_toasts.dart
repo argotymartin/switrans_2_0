@@ -73,6 +73,69 @@ class CustomToast {
     );
   }
 
+  static void showErrorLogin(BuildContext context, DioException exception) {
+    ErrorResponse? error;
+    if (exception.response!.data != null) {
+      error = CustomToast._getErrorType(exception.response!);
+    }
+    if (kIsWeb) {
+      final AudioPlayer player = AudioPlayer();
+      player.setAsset('assets/sounds/error-126627.mp3');
+      player.play();
+    }
+    toastification.show(
+      context: context,
+      dismissDirection: DismissDirection.endToStart,
+      type: ToastificationType.error,
+      autoCloseDuration: const Duration(milliseconds: 7000),
+      title: const Text(
+        'Ocurrio un Error!',
+        style: TextStyle(color: Color(0xffBA1A1A), fontSize: 24),
+      ),
+      description: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("${error!.code}", style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 24, color: Colors.red)),
+          RichText(
+            text: TextSpan(
+              text: error.title,
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: error.details,
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+            ),
+          ),
+        ],
+      ),
+      icon: const Icon(Icons.error, size: 48, color: Colors.red),
+      alignment: Alignment.topRight,
+      direction: TextDirection.ltr,
+      animationDuration: const Duration(milliseconds: 400),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: const <BoxShadow>[
+        BoxShadow(
+          color: Color(0x07000000),
+          blurRadius: 16,
+          offset: Offset(0, 16),
+        ),
+      ],
+      borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+      showProgressBar: true,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+      applyBlurEffect: false,
+      backgroundColor: Colors.white,
+      foregroundColor: Theme.of(context).colorScheme.errorContainer,
+    );
+  }
+
   static ErrorResponse _getErrorType(Response<dynamic> response) {
     final Map<String, dynamic> errorData;
     if (response.data is String) {

@@ -76,7 +76,6 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final List<Empresa> empresas = state.empresas;
     final List<Cliente> clientes = state.clientes;
     final List<TipoDocumento> tiposDocumentos = state.tiposDocumentos;
-    print(tiposDocumentos);
     emit(const FormFacturaLoadingState());
     final DataState<List<Documento>> resp = await _repository.getDocumentosService(event.request);
     if (resp.data != null) {
