@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +16,8 @@ class AuthLayout extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
           if (state is AuthErrorState) {
+            CustomToast.showErrorLogin(context, state.error!);
             context.pop();
-            CustomToast.showError(context, state.error!);
           }
           if (state is AuthSuccesState) {
             context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
@@ -36,9 +37,8 @@ class AuthLayout extends StatelessWidget {
             );
           }
         },
-        child: ListView(
-          physics: const ClampingScrollPhysics(),
-          children: const <Widget>[
+        child: const Column(
+          children: <Widget>[
             _DesktopBody(child: AuthView()),
             LinksBar(),
           ],
@@ -65,26 +65,28 @@ class _DesktopBody extends StatelessWidget {
           const CustomBackground(),
           Positioned(
             top: 40,
-            child: BuildTitle(size: size),
+            child: FadeInDown(child: BuildTitle(size: size)),
           ),
           Positioned(
             top: 200,
             left: size.width < 780 ? (size.width - width) / 2 : 80,
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 460),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: const Color(0xff183650).withOpacity(0.5),
-              ),
-              width: width,
-              height: size.height * 0.2,
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 20),
-                  const CustomTitle(),
-                  const SizedBox(height: 20),
-                  Expanded(child: child),
-                ],
+            child: FadeInUp(
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 460),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: const Color(0xff183650).withOpacity(0.5),
+                ),
+                width: width,
+                height: size.height * 0.2,
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    const CustomTitle(),
+                    const SizedBox(height: 20),
+                    Expanded(child: child),
+                  ],
+                ),
               ),
             ),
           ),

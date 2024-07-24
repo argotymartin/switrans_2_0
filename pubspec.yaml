@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animate_do: ^3.3.4
   awesome_dialog: ^3.2.0
   bloc: ^8.1.4
   calendar_date_picker2: ^1.0.3
@@ -57,7 +58,6 @@ dependencies:
   stream_disposable: ^2.0.0
   syncfusion_flutter_pdf: ^26.1.41
   toastification: ^2.0.0
-
 
 dev_dependencies:
   flutter_lints: ^3.0.2
