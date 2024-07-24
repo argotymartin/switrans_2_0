@@ -9,13 +9,6 @@ class ColorOption {
   ColorOption(this.name, this.color);
 }
 
-class CustomEndDrawer extends StatefulWidget {
-  const CustomEndDrawer({super.key});
-  @override
-  CustomEndDrawerState createState() => CustomEndDrawerState();
-
-}
-
 class CustomEndDrawerState extends State<CustomEndDrawer> {
   final List<ColorOption> colorOptions = <ColorOption>[
     ColorOption("Morado Claro", const Color(0xFF886AB5)),
@@ -279,4 +272,10 @@ class _BuildCircleColorState extends State<_BuildCircleColor> {
       ),
     );
   }
+}
+
+class CustomEndDrawer extends StatefulWidget {
+  const CustomEndDrawer({super.key});
+  @override
+  CustomEndDrawerState createState() => CustomEndDrawerState();
 }
