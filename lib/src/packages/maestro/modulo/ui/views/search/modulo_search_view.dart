@@ -93,34 +93,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
             ],
           ),
-          BlocBuilder<ModuloBloc, ModuloState>(
-            builder: (BuildContext context, ModuloState state) {
-              int cantdiad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is ModuloLoadingState) {
-                isInProgress = true;
-              }
-              if (state is ModuloErrorFormState) {
-                error = state.error;
-              }
-              if (state is ModuloConsultedState) {
-                isInProgress = false;
-                isConsulted = true;
-                cantdiad = state.modulos.length;
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantdiad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

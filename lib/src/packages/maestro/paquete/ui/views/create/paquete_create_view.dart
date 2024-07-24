@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
@@ -63,10 +62,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputTitle(title: "Icono", controller: iconoController, typeInput: TypeInput.lettersAndNumbers),
             ],
           ),
-          FilledButton.icon(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll<Color?>(context.read<ThemeCubit>().state.color),
-            ),
+          FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -79,8 +75,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<PaqueteBloc>().add(SetPaqueteEvent(request));
               }
             },
-            icon: const Icon(Icons.save, color: Colors.white),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),

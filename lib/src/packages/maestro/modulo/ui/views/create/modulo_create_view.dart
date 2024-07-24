@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputTitle(title: "Detalle Modulo", controller: detalleController, typeInput: TypeInput.lettersAndNumbers, minLength: 20),
             ],
           ),
-          FilledButton.icon(
+          FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -82,8 +82,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<ModuloBloc>().add(SetModuloEvent(request));
               }
             },
-            icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),

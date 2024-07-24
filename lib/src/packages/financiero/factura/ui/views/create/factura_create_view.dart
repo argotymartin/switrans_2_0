@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/button_search_factura_form.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_cliente.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_empresa.dart';
@@ -86,27 +85,6 @@ class _FacturaCreateFieldsState extends State<FacturaCreateFields> {
           iconOff: Icons.content_paste_off,
           child: _BuildItemFactura(),
         ),
-        // AnimatedScale(
-        //   duration: duration,
-        //   curve: Curves.easeInOut,
-        //   scale: pixels >= 100 ? 1.0 : 0.5,
-        //   child: AnimatedOpacity(
-        //     opacity: pixels >= 100 ? 1.0 : 0.0,
-        //     duration: duration,
-        //     child: const _BuildDocumentos(),
-        //   ),
-        // ),
-        // const SizedBox(height: 16),
-        // AnimatedScale(
-        //   duration: duration,
-        //   scale: pixels >= 100 ? 1.0 : 0.5,
-        //   child: AnimatedOpacity(
-        //     opacity: pixels >= 100 ? 1.0 : 0.0,
-        //     duration: duration,
-        //     child: const _BuildItemFactura(),
-        //   ),
-        // ),
-        // const SizedBox(height: 32),
       ],
     );
   }
@@ -121,6 +99,7 @@ class _BuildFiltros extends StatelessWidget {
     final ItemDocumentoBloc itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Form(
       key: formKey,
       child: Column(
@@ -136,7 +115,15 @@ class _BuildFiltros extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          ButtonSearchFacturaForm(formKey: formKey, itemDocumentoBloc: itemDocumentoBloc, formFacturaBloc: formFacturaBloc),
+          FormButton(
+            label: "Buscar",
+            icon: Icons.search,
+            onPressed: () {
+              final bool isValid = formKey.currentState!.validate();
+              itemDocumentoBloc.add(const ResetDocumentoEvent());
+              formFacturaBloc.onPressedSearch(isValid: isValid);
+            },
+          ),
           const SizedBox(height: 8),
           BlocBuilder<FormFacturaBloc, FormFacturaState>(
             builder: (BuildContext context, FormFacturaState state) {
@@ -310,54 +297,28 @@ class _BuildButtonRegistrar extends StatelessWidget {
         final Iterable<ItemDocumento> itemDocumentos = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);
         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
         final double totalImpuestos = itemDocumentos.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
-        final double totalPrefacturas = itemDocumentos.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
-        final double valorFaltante = totalDocumentos - totalPrefacturas;
 
-        final bool isTransporte = state.itemDocumentos.any((ItemDocumento element) => element.tipo == "TR");
-        final bool isDocumento = !state.itemDocumentos.any((ItemDocumento element) => element.documento <= 0);
-        final bool isCantidad = !state.itemDocumentos.any((ItemDocumento element) => element.cantidad <= 0);
-        final bool isValor = !state.itemDocumentos.any((ItemDocumento element) => element.valor <= 0);
-        final bool isDescripcion = state.itemDocumentos.any((ItemDocumento element) => element.descripcion.isNotEmpty);
-        final bool isCentroCosto = formFacturaBloc.centroCosto > 0;
-        final bool isFaltante = valorFaltante.toInt() == 0;
+        return FormButton(
+          label: "Registrar",
+          icon: Icons.add_card_rounded,
+          onPressed: () {
+            final int centroCosto = formFacturaBloc.centroCosto;
+            final int clienteCodigo = formFacturaBloc.clienteCodigo;
+            final int empresaCodigo = formFacturaBloc.state.empresa;
+            final int usuario = authBloc.state.auth!.usuario.codigo;
+            final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
+              centroCosto: centroCosto,
+              cliente: clienteCodigo,
+              empresa: empresaCodigo,
+              usuario: usuario,
+              valorImpuesto: totalImpuestos.toInt(),
+              valorNeto: totalDocumentos.toInt(),
+              documentos: documentos,
+              items: itemDocumentos.toList(),
+            );
 
-        /*debugPrint("isTransporte: $isTransporte");
-        debugPrint("isDocumento: $isDocumento");
-        debugPrint("isCantidad: $isCantidad");
-        debugPrint("isValor: $isValor");
-        debugPrint("isDescripcion: $isDescripcion");
-        debugPrint("isCentroCosto: $isCentroCosto");
-        debugPrint("isCentroCosto: ${formFacturaBloc.centroCosto}");
-        debugPrint("isFaltante: $isFaltante");
-        debugPrint("valorFaltante: ${valorFaltante.toInt()}");
-        debugPrint("***********************");*/
-
-        return SizedBox(
-          width: 240,
-          child: FilledButton.icon(
-            onPressed: isDocumento && isTransporte && isCentroCosto && isCantidad && isValor && isDescripcion && isFaltante
-                ? () {
-                    final int centroCosto = formFacturaBloc.centroCosto;
-                    final int clienteCodigo = formFacturaBloc.clienteCodigo;
-                    final int empresaCodigo = formFacturaBloc.state.empresa;
-                    final int usuario = authBloc.state.auth!.usuario.codigo;
-                    final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
-                      centroCosto: centroCosto,
-                      cliente: clienteCodigo,
-                      empresa: empresaCodigo,
-                      usuario: usuario,
-                      valorImpuesto: totalImpuestos.toInt(),
-                      valorNeto: totalDocumentos.toInt(),
-                      documentos: documentos,
-                      items: itemDocumentos.toList(),
-                    );
-
-                    debugPrint("${prefacturaRequest.toJson()}");
-                  }
-                : null,
-            icon: const Icon(Icons.add_card_rounded),
-            label: const Text("Registrar Pre-Factura"),
-          ),
+            debugPrint("${prefacturaRequest.toJson()}");
+          },
         );
       },
     );

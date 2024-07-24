@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
@@ -81,35 +80,7 @@ class _BuildFieldsForm extends StatelessWidget {
               FieldTipoDocumento(typeController),
             ],
           ),
-          BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
-            builder: (BuildContext context, AccionDocumentoState state) {
-              int cantidad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is AccionDocumentoLoadingState) {
-                isInProgress = true;
-              } else if (state is AccionDocumentoErrorFormState) {
-                error = state.error!;
-              } else if (state is AccionDocumentoConsultedState) {
-                isConsulted = true;
-                cantidad = state.accionDocumentos.length;
-              } else if (state is AccionDocumentoSuccesState) {
-                final AccionDocumentoRequest request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
-                context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
-                context.go('/maestros/accion_documentos/buscar');
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantidad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

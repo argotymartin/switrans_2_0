@@ -82,34 +82,7 @@ class _BuildFieldsForm extends StatelessWidget {
               SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
             ],
           ),
-          BlocBuilder<PaqueteBloc, PaqueteState>(
-            builder: (BuildContext context, PaqueteState state) {
-              int cantdiad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is PaqueteLoadingState) {
-                isInProgress = true;
-              }
-              if (state is PaqueteErrorFormState) {
-                error = state.error;
-              }
-              if (state is PaqueteConsultedState) {
-                isInProgress = false;
-                isConsulted = true;
-                cantdiad = state.paquetes.length;
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantdiad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );
