@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/models/request/transaccion_contable_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/request/transaccion_contable_request.dart';
@@ -8,16 +7,9 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/field_transaccion_contable_impuesto.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/data_grid_item.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/pluto_grid_data_builder.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TransaccionContableSearchView extends StatelessWidget {
   const TransaccionContableSearchView({super.key});
@@ -101,35 +93,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
             ],
           ),
-          BlocBuilder<TransaccionContableBloc, TransaccionContableState>(
-            builder: (BuildContext context, TransaccionContableState state) {
-              int cantidad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is TransaccionContableLoadingState) {
-                isInProgress = true;
-              } else if (state is TransaccionContableErrorFormState) {
-                error = state.errorForm!;
-              } else if (state is TransaccionContableConsultedState) {
-                isConsulted = true;
-                cantidad = state.transaccionesContables.length;
-              } else if (state is TransaccionContableSuccessState) {
-                final TransaccionContableRequest request = TransaccionContableRequest(codigo: state.transaccionContable!.codigo);
-                transaccionContableBloc.add(GetTransaccionContableEvent(request));
-                context.go('/maestros/transaccion_contable/buscar');
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantidad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

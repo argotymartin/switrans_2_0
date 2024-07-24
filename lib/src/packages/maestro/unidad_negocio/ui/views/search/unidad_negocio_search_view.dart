@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/request/unidad_negocio_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
@@ -90,35 +89,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
             ],
           ),
-          BlocBuilder<UnidadNegocioBloc, UnidadNegocioState>(
-            builder: (BuildContext context, UnidadNegocioState state) {
-              int cantidad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is UnidadNegocioLoadingState) {
-                isInProgress = true;
-              } else if (state is UnidadNegocioErrorFormState) {
-                error = state.errorForm!;
-              } else if (state is UnidadNegocioConsultedState) {
-                isConsulted = true;
-                cantidad = state.unidadNegocioList.length;
-              } else if (state is UnidadNegocioSuccessState) {
-                final UnidadNegocioRequest request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
-                unidadNegocioBloc.add(GetUnidadNegocioEvent(request));
-                context.go('/maestros/unidad_negocio/buscar');
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantidad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

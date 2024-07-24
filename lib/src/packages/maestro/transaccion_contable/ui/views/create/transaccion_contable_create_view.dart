@@ -6,12 +6,9 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/field_transaccion_contable_impuesto.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TransaccionContableCreateView extends StatelessWidget {
   const TransaccionContableCreateView({super.key});
@@ -77,7 +74,7 @@ class _BuildFieldsForm extends StatelessWidget {
               FieldTransaccionContableImpuesto(impuestoController),
             ],
           ),
-          FilledButton.icon(
+          FormButton(
             onPressed: () {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -92,8 +89,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<TransaccionContableBloc>().add(SetTransaccionContableEvent(request));
               }
             },
-            icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),

@@ -58,7 +58,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputTitle(title: "Nombre", controller: nameController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
             ],
           ),
-          FilledButton.icon(
+          FormButton(
             onPressed: () {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -69,8 +69,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<ServicioEmpresarialBloc>().add(SetServicioEmpresarialEvent(request));
               }
             },
-            icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),

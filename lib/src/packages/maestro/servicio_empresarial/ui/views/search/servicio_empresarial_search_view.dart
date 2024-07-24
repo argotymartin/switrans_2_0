@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
@@ -77,35 +76,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
             ],
           ),
-          BlocBuilder<ServicioEmpresarialBloc, ServicioEmpresarialState>(
-            builder: (BuildContext context, ServicioEmpresarialState state) {
-              int cantidad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is ServicioEmpresarialLoadingState) {
-                isInProgress = true;
-              } else if (state is ServicioEmpresarialErrorFormState) {
-                error = state.errorForm;
-              } else if (state is ServicioEmpresarialConsultedState) {
-                isConsulted = true;
-                cantidad = state.serviciosEmpresariales.length;
-              } else if (state is ServicioEmpresarialSuccesState) {
-                final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(codigo: state.servicioEmpresarial!.codigo);
-                accionDocumentoBloc.add(GetServicioEmpresarialEvent(request));
-                context.go('/maestros/servicio_empresarial/buscar');
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantidad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

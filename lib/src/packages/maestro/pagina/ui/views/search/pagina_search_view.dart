@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
@@ -54,7 +53,11 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && moduloController.text.isEmpty && isVisible == null && isActivo == null;
+      final bool isCampoVacio = nombreController.text.isEmpty &&
+          codigoController.text.isEmpty &&
+          moduloController.text.isEmpty &&
+          isVisible == null &&
+          isActivo == null;
 
       if (isCampoVacio) {
         isValid = false;
@@ -87,39 +90,7 @@ class _BuildFieldsForm extends StatelessWidget {
               SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
             ],
           ),
-          BlocBuilder<PaginaBloc, PaginaState>(
-            builder: (BuildContext context, PaginaState state) {
-              int cantdiad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is PaginaLoadingState) {
-                isInProgress = true;
-              }
-              if (state is PaginaErrorFormState) {
-                error = state.error;
-              }
-              if (state is PaginaConsultedState) {
-                isInProgress = false;
-                isConsulted = true;
-                cantdiad = state.paginas.length;
-              }
-              if (state is PaginaSuccessState) {
-                final PaginaRequest request = PaginaRequest(codigo: state.pagina!.paginaCodigo);
-                paginaBloc.add(GetPaginaEvent(request));
-                context.go('/maestros/pagina/buscar');
-              }
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantdiad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );
@@ -143,10 +114,10 @@ class _BuildDataTableState extends State<_BuildDataTable> {
     }
 
     void onPressedSave() {
-        for (final Map<String, dynamic> map in listUpdate) {
-          final PaginaRequest request = PaginaRequestModel.fromTable(map);
-          context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
-        }
+      for (final Map<String, dynamic> map in listUpdate) {
+        final PaginaRequest request = PaginaRequestModel.fromTable(map);
+        context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
+      }
     }
 
     Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
@@ -172,7 +143,7 @@ class _BuildDataTableState extends State<_BuildDataTable> {
           if (plutoRes.isEmpty) {
             return const Text("No se encontraron resultados...");
           }
-          return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave );
+          return PlutoGridDataBuilder(plutoData: plutoRes, onRowChecked: onRowChecked, onPressedSave: onPressedSave);
         }
         return const SizedBox();
       },

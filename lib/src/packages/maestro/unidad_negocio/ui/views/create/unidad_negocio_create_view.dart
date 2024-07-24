@@ -63,7 +63,7 @@ class _BuildFieldsForm extends StatelessWidget {
               FieldUnidadNegocioEmpresa(empresaController),
             ],
           ),
-          FilledButton.icon(
+          FormButton(
             onPressed: () {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -76,8 +76,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<UnidadNegocioBloc>().add(SetUnidadNegocioEvent(request));
               }
             },
-            icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),

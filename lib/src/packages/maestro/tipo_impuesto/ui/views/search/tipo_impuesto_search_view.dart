@@ -75,36 +75,7 @@ class _BuildFieldsForm extends StatelessWidget {
               NumberInputTitle(title: "Codigo", controller: codigoController),
             ],
           ),
-          BlocBuilder<TipoImpuestoBloc, TipoImpuestoState>(
-            builder: (BuildContext context, TipoImpuestoState state) {
-              int cantdiad = 0;
-              bool isConsulted = false;
-              bool isInProgress = false;
-              String error = "";
-              if (state is TipoImpuestoLoadingState) {
-                isInProgress = true;
-              }
-
-              if (state is TipoImpuestoErrorFormState) {
-                error = state.error!;
-              }
-              if (state is TipoImpuestoConsultedState) {
-                isInProgress = false;
-                isConsulted = true;
-                cantdiad = state.tipoImpuestos.length;
-              }
-
-              return BuildButtonForm(
-                onPressed: onPressed,
-                icon: Icons.search,
-                label: "Buscar",
-                cantdiad: cantdiad,
-                isConsulted: isConsulted,
-                isInProgress: isInProgress,
-                error: error,
-              );
-            },
-          ),
+          FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
         ],
       ),
     );

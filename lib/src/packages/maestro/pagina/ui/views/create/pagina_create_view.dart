@@ -14,7 +14,6 @@ class PaginaCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocListener<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
         if (state is PaginaExceptionState) {
@@ -62,7 +61,7 @@ class _BuildFieldsForm extends StatelessWidget {
               FieldModulo(moduloController),
             ],
           ),
-          FilledButton.icon(
+          FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -75,8 +74,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 context.read<PaginaBloc>().add(SetPaginaEvent(request));
               }
             },
-            icon: const Icon(Icons.save),
-            label: const Text("Crear", style: TextStyle(color: Colors.white)),
+            icon: Icons.save,
+            label: "Crear",
           ),
         ],
       ),
