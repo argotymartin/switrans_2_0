@@ -12,7 +12,7 @@ class FormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton.icon(
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll<Color?>(context.read<ThemeCubit>().state.color),
+        backgroundColor: WidgetStatePropertyAll<Color?>(context.watch<ThemeCubit>().state.color),
       ),
       onPressed: onPressed,
       icon: Icon(icon, color: Colors.white),

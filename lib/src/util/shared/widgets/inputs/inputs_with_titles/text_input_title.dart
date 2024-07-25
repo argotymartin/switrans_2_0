@@ -13,8 +13,8 @@ class TextInputTitle extends StatefulWidget {
 
   const TextInputTitle({
     required this.title,
-    required this.controller,
     required this.typeInput,
+    this.controller,
     this.onChanged,
     this.initialValue = "",
     this.minLength = 0,

@@ -32,7 +32,7 @@ class UnidadNegocioCreateView extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         children: const <Widget>[
           BuildViewDetail(),
-          WhiteCard(
+          CardExpansionPanel(
             title: "Registrar Nuevo",
             icon: Icons.add_circle_outline_outlined,
             child: _BuildFieldsForm(),

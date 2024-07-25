@@ -24,7 +24,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
-import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";
@@ -52,7 +52,7 @@ class MaestrosRoutes {
             if (snapshot.connectionState == ConnectionState.done) {
               return MenuLayout(child: child);
             }
-            return const MenuLayout(child: SplashView());
+            return const MenuLayout(child: LoadingView());
           },
         );
       },
@@ -199,6 +199,7 @@ class MaestrosRoutes {
       ],
     );
   }
+
   static ShellRoute routerTransaccionContable() {
     const String modulePath = "transaccion_contable";
     return ShellRoute(
@@ -220,7 +221,6 @@ class MaestrosRoutes {
             return const TransaccionContableCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
-
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
@@ -247,7 +247,6 @@ class MaestrosRoutes {
           },
         );
       },
-
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",

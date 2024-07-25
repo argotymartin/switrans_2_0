@@ -34,10 +34,12 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   List<DropdownMenuEntry<EntryAutocomplete>> dropdownMenuEntries = <DropdownMenuEntry<EntryAutocomplete>>[];
   EntryAutocomplete entryAutocompleteSelected = EntryAutocomplete(title: "");
   late List<EntryAutocomplete> filteredEntries;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     if (widget.entryCodigoSelected != null) {
       if (widget.entries.isNotEmpty) {
         entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected);
@@ -50,28 +52,31 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
     widget.controller.addListener(_onTextChanged);
   }
 
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   void _onTextChanged() {
     final String searchText = widget.controller.text.toLowerCase();
 
     if (mounted) {
       setState(() {
-        bool isMinCharacter = true;
         filteredEntries = widget.entries.where((EntryAutocomplete entry) {
           if (searchText.isNotEmpty && searchText.substring(0, 1) == ';') {
             final String searchNew = searchText.split(";")[1];
-            isMinCharacter = false;
             return entry.subTitle.toLowerCase().contains(searchNew);
           }
 
-          final RegExp regex = RegExp(r'^[0-9]+$'); // Expresión regular para verificar números
+          final RegExp regex = RegExp(r'^[0-9]+$');
           if (regex.hasMatch(searchText)) {
-            isMinCharacter = false;
             return entry.codigo.toString().contains(searchText);
           } else {
             return entry.title.toLowerCase().contains(searchText);
           }
         }).toList();
-        if (searchText.length >= widget.minChractersSearch && isMinCharacter) {
+        if (searchText.length >= widget.minChractersSearch) {
           dropdownMenuEntries =
               filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
         }
@@ -105,36 +110,71 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
     return SafeArea(
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (BuildContext context, ThemeState state) {
-          return DropdownMenu<EntryAutocomplete>(
-            controller: widget.controller,
-            requestFocusOnTap: true,
-            menuHeight: 300,
-            enableSearch: false,
-            enabled: widget.enabled,
-            expandedInsets: EdgeInsets.zero,
-            trailingIcon: const Icon(Icons.keyboard_arrow_down),
-            selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up),
-            leadingIcon: entryAutocompleteSelected.title.isNotEmpty
-                ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo)
-                : const Icon(Icons.search),
-            hintText: "Buscar ${widget.label} ...",
-            textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
-            inputDecorationTheme: const InputDecorationTheme(
-              constraints: BoxConstraints(maxHeight: 38, minHeight: 38),
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+          return Stack(
+            children: <Widget>[
+              DropdownMenu<EntryAutocomplete>(
+                controller: widget.controller,
+                requestFocusOnTap: true,
+                menuHeight: 300,
+                enableSearch: false,
+                enabled: widget.enabled,
+                expandedInsets: EdgeInsets.zero,
+                focusNode: _focusNode,
+                trailingIcon: const SizedBox(),
+                selectedTrailingIcon: const SizedBox(),
+                leadingIcon: entryAutocompleteSelected.title.isNotEmpty
+                    ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo)
+                    : const Icon(Icons.search),
+                hintText: "Buscar ${widget.label} ...",
+                textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
+                inputDecorationTheme: InputDecorationTheme(
+                  fillColor: Theme.of(context).colorScheme.surface,
+                  filled: true,
+                  constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
+                  isDense: true,
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                ),
+                onSelected: (EntryAutocomplete? entry) {
+                  setState(() => entryAutocompleteSelected = entry!);
+                  widget.onPressed?.call(entry!);
+                  widget.controller.text = entry!.title;
+                },
+                dropdownMenuEntries: dropdownMenuEntries,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+              Positioned(
+                right: 6,
+                child: Container(
+                  color: Colors.transparent,
+                  width: 48,
+                  height: 38,
+                  child: entryAutocompleteSelected.title.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            setState(() {
+                              entryAutocompleteSelected = EntryAutocomplete(title: "");
+                              widget.onPressed?.call(entryAutocompleteSelected);
+                              widget.controller.text = "";
+                              filteredEntries = widget.entries.take(8).toList();
+                              dropdownMenuEntries = filteredEntries
+                                  .map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry))
+                                  .toList();
+                              _focusNode.requestFocus();
+                            });
+                          },
+                          icon: Icon(
+                            Icons.delete_forever_outlined,
+                            color: AppTheme.colorTextTheme.withOpacity(0.7),
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
               ),
-            ),
-            onSelected: (EntryAutocomplete? entry) {
-              setState(() => entryAutocompleteSelected = entry!);
-              widget.onPressed?.call(entry!);
-              widget.controller.text = entry!.title;
-            },
-            dropdownMenuEntries: dropdownMenuEntries,
+            ],
           );
         },
       ),

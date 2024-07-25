@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/cards/white_card.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/panels/card_expansion_panel.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({super.key});
@@ -11,7 +11,7 @@ class MenuView extends StatelessWidget {
       children: const <Widget>[
         Text('Menu Principal', style: TextStyle(fontSize: 18)),
         SizedBox(height: 10),
-        WhiteCard(
+        CardExpansionPanel(
           icon: Icons.menu,
           title: 'Menu',
           child: Column(

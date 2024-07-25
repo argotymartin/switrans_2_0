@@ -26,19 +26,14 @@ class AccionDocumentoCreateView extends StatelessWidget {
           context.go('/maestros/accion_documentos/buscar');
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              WhiteCard(
-                title: "Registrar Nuevo",
-                icon: Icons.price_change_outlined,
-                child: _BuildFieldsForm(),
-              ),
-            ],
+      child: ListView(
+        padding: const EdgeInsets.only(right: 32, top: 8),
+        children: const <Widget>[
+          BuildViewDetail(),
+          CardExpansionPanel(
+            title: "Registrar Nuevo",
+            icon: Icons.price_change_outlined,
+            child: _BuildFieldsForm(),
           ),
         ],
       ),
@@ -52,7 +47,6 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
-    final TextEditingController typeController = TextEditingController();
     bool esInverso = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
@@ -68,7 +62,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 3,
               ),
-              FieldTipoDocumento(typeController),
+              const FieldTipoDocumento(),
               SwitchBoxInputTitle(title: "Es Naturaleza Inversa", onChanged: (bool value) => esInverso = value),
             ],
           ),
@@ -80,7 +74,7 @@ class _BuildFieldsForm extends StatelessWidget {
                   nombre: nameController.text.toUpperCase(),
                   usuario: 1,
                   isNaturalezaInversa: esInverso,
-                  tipoDocumento: typeController.text,
+                  tipoDocumento: 1,
                 );
                 context.read<AccionDocumentoBloc>().add(SetAccionDocumentoEvent(request));
               }

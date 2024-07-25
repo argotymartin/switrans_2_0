@@ -28,7 +28,7 @@ class PaginaSearchView extends StatelessWidget {
             physics: const ClampingScrollPhysics(),
             children: const <Widget>[
               BuildViewDetail(),
-              WhiteCard(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
+              CardExpansionPanel(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
               _BuildDataTable(),
             ],
           ),

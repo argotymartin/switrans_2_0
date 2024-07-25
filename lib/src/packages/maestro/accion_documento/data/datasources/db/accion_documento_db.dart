@@ -10,9 +10,7 @@ class AccionDocumentoDB {
       final List<String> conditions = <String>[];
 
       if (request.tipoDocumento != null) {
-        if (request.tipoDocumento!.isNotEmpty) {
-          conditions.add("d.documento_codigo = ${request.tipoDocumento!}");
-        }
+        conditions.add("d.documento_codigo = ${request.tipoDocumento!}");
       }
       if (request.nombre != null) {
         if (request.nombre!.isNotEmpty) {
@@ -79,7 +77,7 @@ class AccionDocumentoDB {
         updateFields.add("accdoc_nombre = '${request.nombre}'");
       }
       if (request.tipoDocumento != null) {
-        updateFields.add("documento_codigo = ${int.parse(request.tipoDocumento!)}");
+        updateFields.add("documento_codigo = ${request.tipoDocumento!}");
       }
       if (request.isActivo != null) {
         updateFields.add("accdoc_es_activo = ${request.isActivo}");

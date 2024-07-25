@@ -8,6 +8,7 @@ class AppTheme {
 
   static late Color colorThemePrimary;
   static late Color colorThemeSecundary;
+  static late Color colorTextTheme;
 
   ThemeData getTheme(BuildContext context) {
     final ThemeData theme = ThemeData(
@@ -41,12 +42,15 @@ class AppTheme {
     if (themeModeCode == 1) {
       colorThemePrimary = theme.colorScheme.surfaceContainerLowest;
       colorThemeSecundary = theme.colorScheme.surfaceContainerLowest;
+      colorTextTheme = Colors.black;
     } else if (themeModeCode == 2) {
       colorThemePrimary = Colors.black38;
       colorThemeSecundary = theme.colorScheme.surfaceContainerHighest;
+      colorTextTheme = Colors.white;
     } else {
       colorThemePrimary = theme.colorScheme.surfaceContainerLowest;
       colorThemeSecundary = theme.colorScheme.surfaceContainerLowest;
+      colorTextTheme = Colors.black;
     }
     return theme;
   }

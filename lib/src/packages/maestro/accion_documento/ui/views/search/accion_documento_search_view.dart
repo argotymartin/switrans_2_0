@@ -20,17 +20,13 @@ class AccionDocumentoSearchView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              _BluildDataTable(),
-            ],
-          ),
+      child: ListView(
+        padding: const EdgeInsets.only(right: 32, top: 8),
+        //physics: const ClampingScrollPhysics(),
+        children: const <Widget>[
+          BuildViewDetail(),
+          CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
+          _BluildDataTable(),
         ],
       ),
     );
@@ -42,29 +38,18 @@ class _BuildFieldsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
-    final TextEditingController typeController = TextEditingController();
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final AccionDocumentoBloc accionDocumentoBloc = context.read<AccionDocumentoBloc>();
 
     void onPressed() {
       bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && typeController.text.isEmpty;
-
-      if (isCampoVacio) {
+      if (!accionDocumentoBloc.request.hasNonNullField()) {
         isValid = false;
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
       if (isValid) {
-        final AccionDocumentoRequest request = AccionDocumentoRequest(
-          nombre: nombreController.text,
-          codigo: int.tryParse(codigoController.text),
-          tipoDocumento: typeController.text,
-        );
-        context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
+        accionDocumentoBloc.add(GetAccionDocumentoEvent(accionDocumentoBloc.request));
       }
     }
 
@@ -75,9 +60,24 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
-              FieldTipoDocumento(typeController),
+              NumberInputTitle(
+                title: "Codigo",
+                onChanged: (String result) {
+                  if (result.isNotEmpty) {
+                    accionDocumentoBloc.request.codigo = int.parse(result);
+                  } else {
+                    accionDocumentoBloc.request.codigo = null;
+                  }
+                },
+              ),
+              TextInputTitle(
+                title: "Nombre",
+                typeInput: TypeInput.lettersAndNumbers,
+                onChanged: (String result) {
+                  accionDocumentoBloc.request.nombre = result;
+                },
+              ),
+              const FieldTipoDocumento(),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),

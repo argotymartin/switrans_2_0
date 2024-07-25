@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
 class NumberInput extends StatelessWidget {
   final Color colorText;
@@ -28,12 +29,14 @@ class NumberInput extends StatelessWidget {
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       ],
-      style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12),
+      style: TextStyle(color: AppTheme.colorTextTheme, fontWeight: FontWeight.w400, fontSize: 14),
     );
   }
 
   InputDecoration buildInputDecotation(BuildContext context) {
     return InputDecoration(
+      fillColor: Theme.of(context).colorScheme.surface,
+      filled: true,
       errorMaxLines: 1,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       constraints: const BoxConstraints(maxHeight: 24, minHeight: 12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
 enum TypeInput { lettersAndNumbers }
 
@@ -52,7 +53,7 @@ class _TextInputState extends State<TextInput> {
           decoration: buildInputDecoration(context),
           keyboardType: TextInputType.text,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w400, fontSize: 12),
+          style: TextStyle(color: AppTheme.colorTextTheme, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ),
     );

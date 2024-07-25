@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
-class WhiteCard extends StatefulWidget {
+class CardExpansionPanel extends StatefulWidget {
   final String? title;
   final double? width;
   final Widget child;
   final IconData icon;
 
-  const WhiteCard({
+  const CardExpansionPanel({
     required this.child,
     required this.icon,
     this.title,
@@ -17,10 +17,10 @@ class WhiteCard extends StatefulWidget {
   });
 
   @override
-  State<WhiteCard> createState() => _WhiteCardState();
+  State<CardExpansionPanel> createState() => _WhiteCardState();
 }
 
-class _WhiteCardState extends State<WhiteCard> {
+class _WhiteCardState extends State<CardExpansionPanel> {
   bool _isExpanded = true;
 
   @override
