@@ -101,7 +101,7 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
             pagina.isSelected = false;
           }
           if (pagina == paginaMenu) {
-            path = '${paquete.path}${modulo.path}${pagina.path}';
+            path = '${paquete.path}${modulo.path}${pagina.path}/';
           }
           return pagina;
         }).toList();

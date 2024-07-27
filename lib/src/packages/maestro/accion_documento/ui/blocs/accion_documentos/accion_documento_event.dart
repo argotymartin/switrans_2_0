@@ -7,14 +7,18 @@ sealed class AccionDocumentoEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitializationAccionDocumentoEvent extends AccionDocumentoEvent {
+  const InitializationAccionDocumentoEvent();
+}
+
 class SetAccionDocumentoEvent extends AccionDocumentoEvent {
   final AccionDocumentoRequest request;
   const SetAccionDocumentoEvent(this.request);
 }
 
 class UpdateAccionDocumentoEvent extends AccionDocumentoEvent {
-  final AccionDocumentoRequest request;
-  const UpdateAccionDocumentoEvent(this.request);
+  final List<AccionDocumentoRequest> requestList;
+  const UpdateAccionDocumentoEvent(this.requestList);
 }
 
 class GetAccionDocumentoEvent extends AccionDocumentoEvent {

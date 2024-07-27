@@ -7,7 +7,7 @@ import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 class AutocompleteInput extends StatefulWidget {
   final List<EntryAutocomplete> entries;
   final String label;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final Function(EntryAutocomplete result)? onPressed;
   final bool enabled;
   final bool isShowCodigo;
@@ -17,7 +17,7 @@ class AutocompleteInput extends StatefulWidget {
   const AutocompleteInput({
     required this.entries,
     required this.label,
-    required this.controller,
+    this.controller,
     this.onPressed,
     this.enabled = true,
     this.isShowCodigo = true,
@@ -35,21 +35,27 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   EntryAutocomplete entryAutocompleteSelected = EntryAutocomplete(title: "");
   late List<EntryAutocomplete> filteredEntries;
   late FocusNode _focusNode;
+  late TextEditingController? controller;
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    if (widget.controller == null) {
+      controller = TextEditingController();
+    } else {
+      controller = widget.controller;
+    }
     if (widget.entryCodigoSelected != null) {
       if (widget.entries.isNotEmpty) {
         entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected);
-        widget.controller.text = entryAutocompleteSelected.title;
+        controller!.text = entryAutocompleteSelected.title;
       }
     }
     filteredEntries = widget.entries.take(8).toList();
     dropdownMenuEntries =
         filteredEntries.map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry)).toList();
-    widget.controller.addListener(_onTextChanged);
+    controller!.addListener(_onTextChanged);
   }
 
   @override
@@ -59,7 +65,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   }
 
   void _onTextChanged() {
-    final String searchText = widget.controller.text.toLowerCase();
+    final String searchText = controller!.text.toLowerCase();
 
     if (mounted) {
       setState(() {
@@ -113,7 +119,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
           return Stack(
             children: <Widget>[
               DropdownMenu<EntryAutocomplete>(
-                controller: widget.controller,
+                controller: controller,
                 requestFocusOnTap: true,
                 menuHeight: 300,
                 enableSearch: false,
@@ -122,8 +128,8 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
                 focusNode: _focusNode,
                 trailingIcon: const SizedBox(),
                 selectedTrailingIcon: const SizedBox(),
-                leadingIcon: entryAutocompleteSelected.title.isNotEmpty
-                    ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo)
+                leadingIcon: entryAutocompleteSelected.codigo != null
+                    ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo!)
                     : const Icon(Icons.search),
                 hintText: "Buscar ${widget.label} ...",
                 textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
@@ -142,7 +148,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
                 onSelected: (EntryAutocomplete? entry) {
                   setState(() => entryAutocompleteSelected = entry!);
                   widget.onPressed?.call(entry!);
-                  widget.controller.text = entry!.title;
+                  controller!.text = entry!.title;
                 },
                 dropdownMenuEntries: dropdownMenuEntries,
               ),
@@ -158,7 +164,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
                             setState(() {
                               entryAutocompleteSelected = EntryAutocomplete(title: "");
                               widget.onPressed?.call(entryAutocompleteSelected);
-                              widget.controller.text = "";
+                              controller!.text = "";
                               filteredEntries = widget.entries.take(8).toList();
                               dropdownMenuEntries = filteredEntries
                                   .map<DropdownMenuEntry<EntryAutocomplete>>((EntryAutocomplete entry) => buildItemMenuEntry(entry))
@@ -198,7 +204,7 @@ class BuildCampoCodigo extends StatelessWidget {
       child: Row(
         children: <Widget>[
           const SizedBox(width: 8),
-          Icon(Icons.search, color: Theme.of(context).primaryColor),
+          const Icon(Icons.search),
           Chip(
             clipBehavior: Clip.antiAlias,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,

@@ -8,6 +8,7 @@ class NumberInput extends StatelessWidget {
   final String title;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
+  final bool autofocus;
 
   const NumberInput({
     required this.colorText,
@@ -15,12 +16,14 @@ class NumberInput extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.initialValue = '',
+    this.autofocus = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus,
       controller: controller,
       initialValue: initialValue.isNotEmpty ? initialValue : null,
       onChanged: onChanged,

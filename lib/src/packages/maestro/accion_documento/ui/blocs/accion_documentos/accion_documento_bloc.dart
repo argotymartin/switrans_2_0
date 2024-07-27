@@ -4,63 +4,80 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'accion_documento_event.dart';
 part 'accion_documento_state.dart';
 
 class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoState> {
-  final AbstractAccionDocumentoRepository _repository;
-  List<TipoDocumentoAccionDocumento> tipos = <TipoDocumentoAccionDocumento>[];
   AccionDocumentoRequest _request = AccionDocumentoRequest();
+  List<EntryAutocomplete> _entriesTiposDocumento = <EntryAutocomplete>[];
+
+  final AbstractAccionDocumentoRepository _repository;
   AccionDocumentoBloc(this._repository) : super(const AccionDocumentoInitialState()) {
-    on<SetAccionDocumentoEvent>((SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-      emit(const AccionDocumentoLoadingState());
-      final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
-      if (resp.data != null) {
-        emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
-      } else {
-        emit(AccionDocumentoExceptionState(exception: resp.error));
-      }
-    });
-
-    on<UpdateAccionDocumentoEvent>((UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-      emit(const AccionDocumentoLoadingState());
-      final DataState<AccionDocumento> resp = await _repository.updateAccionDocumentosService(event.request);
-      if (resp.data != null) {
-        emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
-      } else {
-        emit(AccionDocumentoExceptionState(exception: resp.error));
-      }
-    });
-
-    on<GetAccionDocumentoEvent>((GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-      emit(const AccionDocumentoLoadingState());
-      final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(event.request);
-      if (resp.data != null) {
-        emit(AccionDocumentoConsultedState(accionDocumentos: resp.data!));
-      } else {
-        emit(AccionDocumentoExceptionState(exception: resp.error));
-      }
-    });
-
-    on<ErrorFormAccionDocumentoEvent>((ErrorFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-      emit(const AccionDocumentoLoadingState());
-      emit(AccionDocumentoErrorFormState(error: event.error));
-    });
+    on<SetAccionDocumentoEvent>(_onSetAccionDocumento);
+    on<InitializationAccionDocumentoEvent>(_onInitializationAccionDocumento);
+    on<UpdateAccionDocumentoEvent>(_onUpdateAccionDocumento);
+    on<GetAccionDocumentoEvent>(_onGetAccionDocumento);
+    on<ErrorFormAccionDocumentoEvent>(_onErrorAccionDocumento);
   }
 
-  Future<void> onGetTipoDocumento() async {
-    if (tipos.isEmpty) {
-      final DataState<List<TipoDocumentoAccionDocumento>> resp = await _repository.getTipoDocumentosService();
-      tipos = resp.data!;
+  Future<void> _onSetAccionDocumento(SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
+    if (resp.data != null) {
+      emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
+    } else {
+      emit(AccionDocumentoExceptionState(exception: resp.error));
     }
   }
 
-  AccionDocumentoRequest get request {
-    return _request;
+  Future<void> _onInitializationAccionDocumento(InitializationAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final DataState<List<TipoDocumentoAccionDocumento>> resp = await _repository.getTipoDocumentosService();
+    if (resp.data != null) {
+      final List<TipoDocumentoAccionDocumento> acciones = resp.data!;
+      final List<EntryAutocomplete> entryMenus = acciones
+          .map(
+            (TipoDocumentoAccionDocumento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo),
+          )
+          .toList();
+      _entriesTiposDocumento = entryMenus;
+      emit(const AccionDocumentoInitialState());
+    } else {
+      emit(AccionDocumentoExceptionState(exception: resp.error));
+    }
   }
 
-  set request(AccionDocumentoRequest value) {
-    _request = value;
+  Future<void> _onUpdateAccionDocumento(UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final List<DataState<AccionDocumento>> acciones = await Future.wait(
+      event.requestList.map((AccionDocumentoRequest request) => _repository.updateAccionDocumentosService(request)),
+    );
+    final List<AccionDocumento> accionesDocumento = acciones.map((DataState<AccionDocumento> e) => e.data!).toList();
+    if (acciones.isNotEmpty) {
+      emit(AccionDocumentoConsultedState(accionDocumentos: accionesDocumento));
+    }
   }
+
+  Future<void> _onGetAccionDocumento(GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(request);
+    if (resp.data != null) {
+      emit(AccionDocumentoConsultedState(accionDocumentos: resp.data!));
+    } else {
+      emit(AccionDocumentoExceptionState(exception: resp.error));
+    }
+  }
+
+  Future<void> _onErrorAccionDocumento(ErrorFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    emit(AccionDocumentoErrorFormState(error: event.error));
+  }
+
+  AccionDocumentoRequest get request => _request;
+  set request(AccionDocumentoRequest value) => _request = value;
+
+  List<EntryAutocomplete> get entriesTiposDocumento => _entriesTiposDocumento;
+  set entriesTiposDocumento(List<EntryAutocomplete> value) => _entriesTiposDocumento = value;
 }

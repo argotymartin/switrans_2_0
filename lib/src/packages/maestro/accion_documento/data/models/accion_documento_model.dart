@@ -4,7 +4,8 @@ class AccionDocumentoModel extends AccionDocumento {
   AccionDocumentoModel({
     required super.codigo,
     required super.nombre,
-    required super.tipo,
+    required super.tipoNombre,
+    required super.tipoCodigo,
     required super.esActivo,
     required super.esInverso,
     required super.usuario,
@@ -18,7 +19,8 @@ class AccionDocumentoModel extends AccionDocumento {
         usuario: json['usuario_nombre'],
         fechaCreacion: json['accdoc_fecha_creacion'].toString(),
         fechaActualizacion: json['accdoc_fecha_modificacion'].toString(),
-        tipo: json['documento_nombre'],
+        tipoNombre: json['documento_nombre'],
+        tipoCodigo: json['documento_codigo'],
         esActivo: json['accdoc_es_activo'],
         esInverso: json['accdoc_es_naturaleza_inversa'],
       );

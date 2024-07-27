@@ -12,7 +12,6 @@ import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
@@ -48,7 +47,8 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
         BlocProvider<MenuSidebarBloc>(create: (_) => injector<MenuSidebarBloc>()),
         //BlocProvider<DocumentoBloc>(create: (_) => injector()..add((const GetFacturaEvent()))),
-        BlocProvider<AccionDocumentoBloc>(create: (_) => injector<AccionDocumentoBloc>()),
+        //BlocProvider<AccionDocumentoBloc>(create: (_) => injector<AccionDocumentoBloc>()),
+        //BlocProvider<AccionDocumentoBloc>(create: (_) => injector()..add(const InitializationAccionDocumentoEvent())),
         BlocProvider<ServicioEmpresarialBloc>(create: (_) => injector<ServicioEmpresarialBloc>()),
         BlocProvider<UnidadNegocioBloc>(create: (_) => injector<UnidadNegocioBloc>()),
         BlocProvider<ModuloBloc>(create: (_) => injector<ModuloBloc>()),

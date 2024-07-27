@@ -9,6 +9,7 @@ class NumberInputTitle extends StatefulWidget {
   final TextEditingController? controller;
   final Function(String result)? onChanged;
   final bool isValidator;
+  final bool autofocus;
 
   const NumberInputTitle({
     super.key,
@@ -18,6 +19,7 @@ class NumberInputTitle extends StatefulWidget {
     this.title = "",
     this.minLength = 1,
     this.isValidator = false,
+    this.autofocus = false,
   });
 
   @override
@@ -36,10 +38,12 @@ class _CustomTextInputState extends State<NumberInputTitle> {
         SizedBox(
           height: higth,
           child: NumberInput(
+            initialValue: widget.initialValue,
             colorText: Colors.black,
             title: widget.title,
             controller: widget.controller,
             onChanged: widget.onChanged,
+            autofocus: widget.autofocus,
           ),
         ),
       ],

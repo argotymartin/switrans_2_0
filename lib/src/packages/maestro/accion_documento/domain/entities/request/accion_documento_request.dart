@@ -26,4 +26,13 @@ class AccionDocumentoRequest {
   bool hasNonNullField() {
     return codigo != null || nombre != null || tipoDocumento != null || usuario != null || isNaturalezaInversa != null || isActivo != null;
   }
+
+  void clean() {
+    codigo = null;
+    nombre = null;
+    tipoDocumento = null;
+    usuario = null;
+    isNaturalezaInversa = null;
+    isActivo = null;
+  }
 }

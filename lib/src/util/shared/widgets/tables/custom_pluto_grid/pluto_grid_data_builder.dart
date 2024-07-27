@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_area_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -61,14 +63,20 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.select) {
-          final List<String> data = v.dataList!;
+          final AutocompleteSelect data = v.autocompleteSelect!;
           columns.add(
             PlutoColumn(
-              enableEditingMode: isEdit,
-              enableAutoEditing: isEdit,
+              // enableEditingMode: isEdit,
+              //enableAutoEditing: isEdit,
               title: tilte,
               field: key,
-              type: PlutoColumnType.select(<String>[...data]),
+              width: 300,
+              minWidth: 200,
+              type: PlutoColumnType.text(),
+              renderer: (PlutoColumnRendererContext rendererContext) => _BuildFieldAutoComplete(
+                renderContext: rendererContext,
+                autocompleteSelect: data,
+              ),
             ),
           );
         }
@@ -204,28 +212,26 @@ class _BuildFieldTextEditState extends State<_BuildFieldTextEdit> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () {
+      onTap: () {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
             content: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TextInputTitle(title: widget.title, controller: controller, typeInput: TypeInput.lettersAndNumbers),
-                  const SizedBox(height: 16),
-                ],
+              child: SizedBox(
+                child: TextAreaInput(
+                  hintText: widget.title,
+                  controller: controller,
+                  typeInput: TypeInput.lettersAndNumbers,
+                  autofocus: true,
+                ),
               ),
-            ),
-            title: Text(
-              "Editar Campo",
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
             ),
             actions: <Widget>[
               FilledButton(
                 onPressed: () {
                   context.pop();
                   setState(() {
-                    widget.renderContext.cell.value = controller.text;
+                    widget.renderContext.cell.value = controller.text.toUpperCase();
                   });
                 },
                 child: const Text("OK"),
@@ -280,6 +286,35 @@ class _BuildFieldCheckBox extends StatelessWidget {
     void onChangedValue(bool newValue) => renderContext.cell.value = newValue;
     return Center(
       child: SwitchBoxInput(onChanged: onChangedValue, value: renderContext.cell.value),
+    );
+  }
+}
+
+class _BuildFieldAutoComplete extends StatelessWidget {
+  final PlutoColumnRendererContext renderContext;
+  final AutocompleteSelect autocompleteSelect;
+  const _BuildFieldAutoComplete({
+    required this.renderContext,
+    required this.autocompleteSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    renderContext.cell.value = autocompleteSelect.entryCodigoSelected;
+    return SizedBox(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: AutocompleteInput(
+          //controller: typeController,
+          entryCodigoSelected: autocompleteSelect.entryCodigoSelected,
+          entries: autocompleteSelect.entryMenus,
+          label: "Tipo Documento",
+          onPressed: (EntryAutocomplete result) {
+            renderContext.cell.value = result.codigo;
+            //typeController.text = result.title;
+          },
+        ),
+      ),
     );
   }
 }

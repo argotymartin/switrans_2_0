@@ -11,15 +11,16 @@ class ErrorModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.error,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: <Widget>[
-          const Icon(Icons.error, color: Colors.white),
+          Icon(Icons.error, color: Theme.of(context).colorScheme.onTertiary),
           const SizedBox(width: 8),
-          Text(title, style: const TextStyle(color: Colors.white)),
+          Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
         ],
       ),
     );

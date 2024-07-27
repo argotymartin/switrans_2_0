@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
@@ -42,31 +43,45 @@ class MaestrosRoutes {
     return routes;
   }
 
+  //  context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
   static ShellRoute accionDocumentos() {
     const String modulePath = "accion_documentos";
+
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: LoadingView());
-          },
+        print(state.fullPath);
+        return BlocProvider<AccionDocumentoBloc>(
+          create: (_) => AccionDocumentoBloc(injector())..add(const InitializationAccionDocumentoEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            context.read<AccionDocumentoBloc>().request.clean();
             return const AccionDocumentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const AccionDocumentoSearchView(),
+          builder: (BuildContext context, GoRouterState state) {
+            context.read<AccionDocumentoBloc>().request.clean();
+
+            return const AccionDocumentoSearchView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          name: "boo",
+          path: '/maestros/accion_documentos/buscar/:userId',
+          builder: (BuildContext context, GoRouterState state) {
+            print(state.uri.data);
+            context.read<AccionDocumentoBloc>().request.clean();
+
+            return const AccionDocumentoSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
