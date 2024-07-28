@@ -148,6 +148,13 @@ class CustomToast {
         "error": serverException.message,
         "path": serverException.detail,
       };
+    } else if (response.data is Exception) {
+      final Exception data = response.data;
+      errorData = <String, dynamic>{
+        "status": 500,
+        "error": data.toString(),
+        "path": "",
+      };
     } else {
       errorData = response.data;
     }

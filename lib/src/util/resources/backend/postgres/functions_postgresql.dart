@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:postgres/postgres.dart';
 import 'package:switrans_2_0/src/util/resources/backend/postgres/connection_postregsql.dart';
 
@@ -13,6 +14,9 @@ class FunctionsPostgresql {
   }
 
   static Future<Response<dynamic>> executeQueryDB(String sql) async {
+    if (kIsWeb) {
+      throw Exception("Platafroma WEB no soportada para conexiones postgresql");
+    }
     final String path = sql.toLowerCase().split("tb_")[1].split(" ")[0].trim();
     final Connection conn = await ConnectionPostgresql.onConnect();
     final Result result = await conn.execute(sql);
