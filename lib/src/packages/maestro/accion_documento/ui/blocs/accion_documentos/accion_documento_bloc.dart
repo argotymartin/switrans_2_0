@@ -15,21 +15,12 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
 
   final AbstractAccionDocumentoRepository _repository;
   AccionDocumentoBloc(this._repository) : super(const AccionDocumentoInitialState()) {
-    on<SetAccionDocumentoEvent>(_onSetAccionDocumento);
     on<InitializationAccionDocumentoEvent>(_onInitializationAccionDocumento);
-    on<UpdateAccionDocumentoEvent>(_onUpdateAccionDocumento);
     on<GetAccionDocumentoEvent>(_onGetAccionDocumento);
+    on<SetAccionDocumentoEvent>(_onSetAccionDocumento);
+    on<UpdateAccionDocumentoEvent>(_onUpdateAccionDocumento);
     on<ErrorFormAccionDocumentoEvent>(_onErrorAccionDocumento);
-  }
-
-  Future<void> _onSetAccionDocumento(SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
-    final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
-    if (resp.data != null) {
-      emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
-    } else {
-      emit(AccionDocumentoExceptionState(exception: resp.error));
-    }
+    on<CleanFormAccionDocumentoEvent>(_onCleanFormAccionDocumento);
   }
 
   Future<void> _onInitializationAccionDocumento(InitializationAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
@@ -49,17 +40,6 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
     }
   }
 
-  Future<void> _onUpdateAccionDocumento(UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
-    final List<DataState<AccionDocumento>> acciones = await Future.wait(
-      event.requestList.map((AccionDocumentoRequest request) => _repository.updateAccionDocumentosService(request)),
-    );
-    final List<AccionDocumento> accionesDocumento = acciones.map((DataState<AccionDocumento> e) => e.data!).toList();
-    if (acciones.isNotEmpty) {
-      emit(AccionDocumentoConsultedState(accionDocumentos: accionesDocumento));
-    }
-  }
-
   Future<void> _onGetAccionDocumento(GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
     emit(const AccionDocumentoLoadingState());
     final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(request);
@@ -70,9 +50,43 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
     }
   }
 
+  Future<void> _onSetAccionDocumento(SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
+    if (resp.data != null) {
+      emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
+    } else {
+      emit(AccionDocumentoExceptionState(exception: resp.error));
+    }
+  }
+
+  Future<void> _onUpdateAccionDocumento(UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    emit(const AccionDocumentoLoadingState());
+    final List<DataState<AccionDocumento>> dataStateList = await Future.wait(
+      event.requestList.map((AccionDocumentoRequest request) => _repository.updateAccionDocumentosService(request)),
+    );
+    final List<AccionDocumento> accionesDocumentoList = dataStateList.map((DataState<AccionDocumento> e) => e.data!).toList();
+    if (accionesDocumentoList.isNotEmpty) {
+      emit(AccionDocumentoConsultedState(accionDocumentos: accionesDocumentoList));
+    }
+
+    final List<DioException> exceptionList = dataStateList.map((DataState<AccionDocumento> e) => e.error!).toList();
+    if (exceptionList.isNotEmpty) {
+      for (final DioException exception in exceptionList) {
+        emit(const AccionDocumentoLoadingState());
+        emit(AccionDocumentoExceptionState(exception: exception));
+      }
+    }
+  }
+
   Future<void> _onErrorAccionDocumento(ErrorFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
     emit(const AccionDocumentoLoadingState());
     emit(AccionDocumentoErrorFormState(error: event.error));
+  }
+
+  Future<void> _onCleanFormAccionDocumento(CleanFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
+    request.clean();
+    emit(const AccionDocumentoInitialState());
   }
 
   AccionDocumentoRequest get request => _request;

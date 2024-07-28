@@ -43,8 +43,7 @@ class AccionDocumentoDB {
       final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
-      debugPrint("Error en getAccionDocumentosDB: $e");
-      return Response<dynamic>(requestOptions: RequestOptions(), statusMessage: e.toString());
+      return FunctionsPostgresql.exception(e);
     }
   }
 
@@ -69,7 +68,7 @@ class AccionDocumentoDB {
       final Response<dynamic> resp = await getAccionDocumentosDB(request);
       return resp;
     } on Exception catch (e) {
-      return Response<dynamic>(requestOptions: RequestOptions(), statusCode: 502, statusMessage: e.toString(), data: e);
+      return FunctionsPostgresql.exception(e);
     }
   }
 
@@ -103,15 +102,18 @@ class AccionDocumentoDB {
       final Response<dynamic> resp = await getAccionDocumentosDB(request);
       return resp;
     } on Exception catch (e) {
-      debugPrint("Error en updateAccionDocumentosDB: $e");
-      return Response<dynamic>(requestOptions: RequestOptions(), statusMessage: e.toString());
+      return FunctionsPostgresql.exception(e);
     }
   }
 
   Future<Response<dynamic>> getTipoDocumentosDB() async {
-    const String sql =
-        """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
-    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
-    return response;
+    try {
+      const String sql =
+          """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
+      final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
+      return response;
+    } on Exception catch (e) {
+      return FunctionsPostgresql.exception(e);
+    }
   }
 }

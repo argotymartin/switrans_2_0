@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
@@ -49,7 +50,6 @@ class MaestrosRoutes {
 
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        print(state.fullPath);
         return BlocProvider<AccionDocumentoBloc>(
           create: (_) => AccionDocumentoBloc(injector())..add(const InitializationAccionDocumentoEvent()),
           child: MenuLayout(child: child),
@@ -59,7 +59,9 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            context.read<AccionDocumentoBloc>().request.clean();
+            if (Preferences.isResetForm) {
+              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
+            }
             return const AccionDocumentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -67,18 +69,9 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, GoRouterState state) {
-            context.read<AccionDocumentoBloc>().request.clean();
-
-            return const AccionDocumentoSearchView();
-          },
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-        GoRoute(
-          name: "boo",
-          path: '/maestros/accion_documentos/buscar/:userId',
-          builder: (BuildContext context, GoRouterState state) {
-            print(state.uri.data);
-            context.read<AccionDocumentoBloc>().request.clean();
+            if (Preferences.isResetForm) {
+              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
+            }
 
             return const AccionDocumentoSearchView();
           },

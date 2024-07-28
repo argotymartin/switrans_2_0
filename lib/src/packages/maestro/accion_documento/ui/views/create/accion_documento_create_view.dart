@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
@@ -22,7 +23,10 @@ class AccionDocumentoCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state is AccionDocumentoSuccesState) {
-          context.go('/maestros/accion_documentos/buscar/123');
+          context.read<AccionDocumentoBloc>().request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
+          context.read<AccionDocumentoBloc>().add(const GetAccionDocumentoEvent());
+          context.go('/maestros/accion_documentos/buscar');
+          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {

@@ -22,11 +22,14 @@ class UpdateAccionDocumentoEvent extends AccionDocumentoEvent {
 }
 
 class GetAccionDocumentoEvent extends AccionDocumentoEvent {
-  final AccionDocumentoRequest request;
-  const GetAccionDocumentoEvent(this.request);
+  const GetAccionDocumentoEvent();
 }
 
 class ErrorFormAccionDocumentoEvent extends AccionDocumentoEvent {
   final String error;
   const ErrorFormAccionDocumentoEvent(this.error);
+}
+
+class CleanFormAccionDocumentoEvent extends AccionDocumentoEvent {
+  const CleanFormAccionDocumentoEvent();
 }

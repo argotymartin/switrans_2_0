@@ -24,11 +24,6 @@ class AccionDocumentoSearchView extends StatelessWidget {
           return const LoadingView();
         }
 
-        if (state is AccionDocumentoSuccesState) {
-          context.read<AccionDocumentoBloc>().request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
-          context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(context.read<AccionDocumentoBloc>().request));
-        }
-
         return ListView(
           padding: const EdgeInsets.only(right: 32, top: 8),
           children: <Widget>[
@@ -55,7 +50,7 @@ class _BuildFieldsForm extends StatelessWidget {
     void onPressed() {
       final bool isFormValid = formKey.currentState!.validate();
       if (request.hasNonNullField() && isFormValid) {
-        accionDocumentoBloc.add(GetAccionDocumentoEvent(request));
+        accionDocumentoBloc.add(const GetAccionDocumentoEvent());
       } else {
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

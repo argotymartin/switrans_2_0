@@ -27,4 +27,13 @@ class FunctionsPostgresql {
     await conn.close();
     return response;
   }
+
+  static Future<Response<dynamic>> exception(Exception serverException) async {
+    return Response<dynamic>(
+      requestOptions: RequestOptions(),
+      statusCode: 502,
+      statusMessage: serverException.toString(),
+      data: serverException,
+    );
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/menu/data/models/paquete_menu_model.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/modulo_menu.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/pagina_menu.dart';
@@ -91,6 +92,7 @@ class MenuSidebarBloc extends Bloc<MenuSidebarEvent, MenuSidebarState> {
     required PaginaMenu paginaMenu,
     required bool isSelected,
   }) {
+    Preferences.isResetForm = true;
     String path = '';
     final List<PaqueteMenu> paquetes = state.paquetes.map((PaqueteMenu paquete) {
       paquete.modulos = paquete.modulos.map((ModuloMenu modulo) {
