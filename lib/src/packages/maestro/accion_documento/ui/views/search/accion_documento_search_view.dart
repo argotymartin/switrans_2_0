@@ -48,8 +48,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final AccionDocumentoRequest request = accionDocumentoBloc.request;
 
     void onPressed() {
-      final bool isFormValid = formKey.currentState!.validate();
-      if (request.hasNonNullField() && isFormValid) {
+      if (request.hasNonNullField()) {
         accionDocumentoBloc.add(const GetAccionDocumentoEvent());
       } else {
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));

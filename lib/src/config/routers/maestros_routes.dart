@@ -158,27 +158,30 @@ class MaestrosRoutes {
     const String modulePath = "modulo";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<ModuloBloc>().onGetPaquetes(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
+        return BlocProvider<ModuloBloc>(
+          create: (_) => ModuloBloc(injector())..add(const InitializationModuloEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
             return const ModuloCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const ModuloSearchView(),
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
+            return const ModuloSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/request/modulo_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -16,60 +17,46 @@ class ModuloSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ModuloBloc, ModuloState>(
+    return BlocConsumer<ModuloBloc, ModuloState>(
       listener: (BuildContext context, ModuloState state) {
-        if (state is ModuloExceptionState) {
+        if (state.status == ModuloStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              _BluildDataTable(),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, ModuloState state) {
+        if (state.status == ModuloStatus.loading) {
+          return const LoadingView();
+        }
+        return ListView(
+          padding: const EdgeInsets.only(right: 32, top: 8),
+          children: <Widget>[
+            const BuildViewDetail(),
+            CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+            const _BluildDataTable(),
+          ],
+        );
+      },
     );
   }
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final ModuloState state;
+  const _BuildFieldsForm(this.state);
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
-    final TextEditingController paqueteController = TextEditingController();
     bool isActivo = true;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final ModuloBloc moduloBloc = context.read<ModuloBloc>();
+    final ModuloRequest request = moduloBloc.request;
 
     void onPressed() {
-      bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio =
-          nombreController.text.isEmpty && codigoController.text.isEmpty && paqueteController.text.isEmpty && isActivo;
-
-      if (isCampoVacio) {
-        isValid = false;
+      if (request.hasNonNullField()) {
+        context.read<ModuloBloc>().add(const GetModuloEvent());
+      } else {
         moduloBloc.add(const ErrorFormModuloEvent("Por favor diligenciar por lo menos un campo del formulario"));
-      }
-
-      if (isValid) {
-        final ModuloRequest request = ModuloRequest(
-          moduloNombre: nombreController.text,
-          moduloCodigo: int.tryParse(codigoController.text),
-          paquete: paqueteController.text,
-          moduloActivo: isActivo,
-        );
-        context.read<ModuloBloc>().add(GetModuloEvent(request));
       }
     }
 
@@ -80,9 +67,23 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              FieldPaquete(paqueteController),
+              NumberInputTitle(
+                title: "Codigo",
+                autofocus: true,
+                initialValue: request.codigo != null ? "${request.codigo}" : "",
+                onChanged: (String result) {
+                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
+                },
+              ),
+              TextInputTitle(
+                title: "Nombre",
+                typeInput: TypeInput.lettersAndNumbers,
+                initialValue: request.nombre != null ? request.nombre! : "",
+                onChanged: (String result) {
+                  request.nombre = result.isNotEmpty ? result : null;
+                },
+              ),
+              FieldPaquete(request.paquete),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -94,6 +95,7 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
+          state.status == ModuloStatus.error ? ErrorModal(title: state.error!) : const SizedBox(),
         ],
       ),
     );
@@ -118,35 +120,38 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     }
 
     void onPressedSave() {
+      final List<ModuloRequest> requestList = <ModuloRequest>[];
       for (final Map<String, dynamic> map in listUpdate) {
-        final ModuloRequest request = ModuloRequest.fromMap(map);
-        context.read<ModuloBloc>().add(UpdateModuloEvent(request));
+        final ModuloRequest request = ModuloRequestModel.fromMap(map);
+        requestList.add(request);
       }
+      context.read<ModuloBloc>().add(UpdateModuloEvent(requestList));
     }
 
-    Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo, List<String> tiposList) {
+    Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo, AutocompleteSelect autocompleteSelect) {
       return <String, DataItemGrid>{
-        'id': DataItemGrid(type: Tipo.item, value: modulo.moduloId, edit: false),
-        'codigo': DataItemGrid(type: Tipo.text, value: modulo.moduloCodigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: modulo.moduloNombre, edit: true),
-        'detalles': DataItemGrid(type: Tipo.text, value: modulo.moduloDetalles, edit: false),
-        'path': DataItemGrid(type: Tipo.text, value: modulo.moduloPath, edit: false),
-        'icono': DataItemGrid(type: Tipo.text, value: modulo.moduloIcono, edit: false),
-        'paquete': DataItemGrid(type: Tipo.text, value: modulo.paquete, edit: false),
+        'codigo': DataItemGrid(type: Tipo.item, value: modulo.codigo, edit: false),
+        'nombre': DataItemGrid(type: Tipo.text, value: modulo.nombre, edit: true),
+        'detalles': DataItemGrid(type: Tipo.text, value: modulo.detalles, edit: true),
+        'path': DataItemGrid(type: Tipo.text, value: modulo.path, edit: false),
+        'icono': DataItemGrid(type: Tipo.text, value: modulo.icono, edit: false),
+        'paquete': DataItemGrid(type: Tipo.select, value: modulo.paquete, edit: false, autocompleteSelect: autocompleteSelect),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: modulo.fechaCreacion, edit: false),
-        'activo': DataItemGrid(type: Tipo.boolean, value: modulo.moduloActivo, edit: false),
-        'visible': DataItemGrid(type: Tipo.boolean, value: modulo.moduloVisible, edit: true),
+        'activo': DataItemGrid(type: Tipo.boolean, value: modulo.isActivo, edit: false),
+        'visible': DataItemGrid(type: Tipo.boolean, value: modulo.isVisible, edit: true),
       };
     }
 
     return BlocBuilder<ModuloBloc, ModuloState>(
       builder: (BuildContext context, ModuloState state) {
-        if (state is ModuloConsultedState) {
-          final List<String> tiposList =
-              context.read<ModuloBloc>().paquetes.map((ModuloPaquete e) => '${e.codigo}-${e.nombre.toUpperCase()}').toList();
+        if (state.status == ModuloStatus.consulted) {
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Modulo modulo in state.modulos) {
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo, tiposList);
+            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
+              entryMenus: state.entriesPaquete,
+              entryCodigoSelected: modulo.paquete,
+            );
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo, autocompleteSelect);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

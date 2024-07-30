@@ -1,25 +1,23 @@
 class Modulo {
-  String moduloId;
-  int moduloCodigo;
-  String moduloNombre;
-  String moduloDetalles;
-  String moduloPath;
-  bool moduloVisible;
-  String moduloIcono;
-  String paquete;
-  bool moduloActivo;
-  String fechaCreacion;
+  final int codigo;
+  final String nombre;
+  final String detalles;
+  final String path;
+  final bool isVisible;
+  final String icono;
+  final int paquete;
+  final bool isActivo;
+  final String fechaCreacion;
 
   Modulo({
-    required this.moduloId,
-    required this.moduloCodigo,
-    required this.moduloNombre,
-    required this.moduloDetalles,
-    required this.moduloPath,
-    required this.moduloVisible,
-    required this.moduloIcono,
+    required this.codigo,
+    required this.nombre,
+    required this.detalles,
+    required this.path,
+    required this.isVisible,
+    required this.icono,
     required this.paquete,
-    required this.moduloActivo,
+    required this.isActivo,
     required this.fechaCreacion,
   });
 }

@@ -33,7 +33,7 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
             (TipoDocumentoAccionDocumento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo),
           )
           .toList();
-      _entriesTiposDocumento = entryMenus;
+      entriesTiposDocumento = entryMenus;
       emit(const AccionDocumentoInitialState());
     } else {
       emit(AccionDocumentoExceptionState(exception: resp.error));
