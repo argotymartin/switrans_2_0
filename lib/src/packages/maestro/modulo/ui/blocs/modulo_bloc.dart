@@ -90,6 +90,7 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
   }
 
   Future<void> _onCleanFormModulo(CleanFormModuloEvent event, Emitter<ModuloState> emit) async {
+    request.clean();
     emit(state.copyWith(status: ModuloStatus.initial, modulos: <Modulo>[], error: ""));
   }
 

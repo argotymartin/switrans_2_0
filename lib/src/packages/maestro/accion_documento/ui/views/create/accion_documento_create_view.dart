@@ -19,10 +19,10 @@ class AccionDocumentoCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoExceptionState) {
+        if (state.status == AccionDocumentoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state is AccionDocumentoSuccesState) {
+        if (state.status == AccionDocumentoStatus.succes) {
           context.read<AccionDocumentoBloc>().request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
           context.read<AccionDocumentoBloc>().add(const GetAccionDocumentoEvent());
           context.go('/maestros/accion_documentos/buscar');
@@ -30,7 +30,7 @@ class AccionDocumentoCreateView extends StatelessWidget {
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoLoadingState) {
+        if (state.status == AccionDocumentoStatus.loading) {
           return const LoadingView();
         }
         return ListView(

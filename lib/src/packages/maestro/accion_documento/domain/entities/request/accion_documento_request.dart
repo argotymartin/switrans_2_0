@@ -15,14 +15,6 @@ class AccionDocumentoRequest {
     this.isActivo,
   });
 
-  factory AccionDocumentoRequest.fromMap(Map<String, dynamic> map) => AccionDocumentoRequest(
-        nombre: map['nombre'],
-        codigo: map['codigo'],
-        tipoDocumento: map['tipo_documento'],
-        isNaturalezaInversa: map['naturaleza_inversa'],
-        isActivo: map['activo'],
-      );
-
   bool hasNonNullField() {
     return codigo != null || nombre != null || tipoDocumento != null || usuario != null || isNaturalezaInversa != null || isActivo != null;
   }

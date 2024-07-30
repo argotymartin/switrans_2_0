@@ -11,10 +11,9 @@ part 'accion_documento_state.dart';
 
 class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoState> {
   AccionDocumentoRequest _request = AccionDocumentoRequest();
-  List<EntryAutocomplete> _entriesTiposDocumento = <EntryAutocomplete>[];
 
   final AbstractAccionDocumentoRepository _repository;
-  AccionDocumentoBloc(this._repository) : super(const AccionDocumentoInitialState()) {
+  AccionDocumentoBloc(this._repository) : super(const AccionDocumentoState().initial()) {
     on<InitializationAccionDocumentoEvent>(_onInitializationAccionDocumento);
     on<GetAccionDocumentoEvent>(_onGetAccionDocumento);
     on<SetAccionDocumentoEvent>(_onSetAccionDocumento);
@@ -24,74 +23,78 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
   }
 
   Future<void> _onInitializationAccionDocumento(InitializationAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
+    emit(state.copyWith(status: AccionDocumentoStatus.loading));
     final DataState<List<TipoDocumentoAccionDocumento>> resp = await _repository.getTipoDocumentosService();
     if (resp.data != null) {
-      final List<TipoDocumentoAccionDocumento> acciones = resp.data!;
-      final List<EntryAutocomplete> entryMenus = acciones
+      final List<EntryAutocomplete> entryMenus = resp.data!
           .map(
             (TipoDocumentoAccionDocumento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo),
           )
           .toList();
-      entriesTiposDocumento = entryMenus;
-      emit(const AccionDocumentoInitialState());
+      emit(state.copyWith(status: AccionDocumentoStatus.initial, entriesTiposDocumento: entryMenus));
     } else {
-      emit(AccionDocumentoExceptionState(exception: resp.error));
+      emit(state.copyWith(status: AccionDocumentoStatus.exception, exception: resp.error!));
     }
   }
 
   Future<void> _onGetAccionDocumento(GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
+    emit(state.copyWith(status: AccionDocumentoStatus.loading));
     final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(request);
     if (resp.data != null) {
-      emit(AccionDocumentoConsultedState(accionDocumentos: resp.data!));
+      emit(state.copyWith(status: AccionDocumentoStatus.consulted, accionDocumentos: resp.data));
     } else {
-      emit(AccionDocumentoExceptionState(exception: resp.error));
+      emit(state.copyWith(status: AccionDocumentoStatus.exception, exception: resp.error!));
     }
   }
 
   Future<void> _onSetAccionDocumento(SetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
+    emit(state.copyWith(status: AccionDocumentoStatus.loading));
     final DataState<AccionDocumento> resp = await _repository.setAccionDocumentosService(event.request);
     if (resp.data != null) {
-      emit(AccionDocumentoSuccesState(accionDocumento: resp.data));
+      emit(state.copyWith(status: AccionDocumentoStatus.succes, accionDocumento: resp.data));
     } else {
-      emit(AccionDocumentoExceptionState(exception: resp.error));
+      emit(state.copyWith(status: AccionDocumentoStatus.exception, exception: resp.error!));
     }
   }
 
   Future<void> _onUpdateAccionDocumento(UpdateAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
+    emit(state.copyWith(status: AccionDocumentoStatus.loading));
+
     final List<DataState<AccionDocumento>> dataStateList = await Future.wait(
       event.requestList.map((AccionDocumentoRequest request) => _repository.updateAccionDocumentosService(request)),
     );
-    final List<AccionDocumento> accionesDocumentoList = dataStateList.map((DataState<AccionDocumento> e) => e.data!).toList();
-    if (accionesDocumentoList.isNotEmpty) {
-      emit(AccionDocumentoConsultedState(accionDocumentos: accionesDocumentoList));
+
+    final List<AccionDocumento> accionDocumentos = <AccionDocumento>[];
+    final List<DioException> exceptions = <DioException>[];
+
+    for (final DataState<AccionDocumento> dataState in dataStateList) {
+      if (dataState.data != null) {
+        accionDocumentos.add(dataState.data!);
+      } else if (dataState.error != null) {
+        exceptions.add(dataState.error!);
+      }
     }
 
-    final List<DioException> exceptionList = dataStateList.map((DataState<AccionDocumento> e) => e.error!).toList();
-    if (exceptionList.isNotEmpty) {
-      for (final DioException exception in exceptionList) {
-        emit(const AccionDocumentoLoadingState());
-        emit(AccionDocumentoExceptionState(exception: exception));
+    if (accionDocumentos.isNotEmpty) {
+      emit(state.copyWith(status: AccionDocumentoStatus.consulted, accionDocumentos: accionDocumentos));
+    }
+
+    if (exceptions.isNotEmpty) {
+      for (final DioException exception in exceptions) {
+        emit(state.copyWith(status: AccionDocumentoStatus.exception, exception: exception));
       }
     }
   }
 
   Future<void> _onErrorAccionDocumento(ErrorFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
-    emit(const AccionDocumentoLoadingState());
-    emit(AccionDocumentoErrorFormState(error: event.error));
+    emit(state.copyWith(status: AccionDocumentoStatus.error, error: event.error));
   }
 
   Future<void> _onCleanFormAccionDocumento(CleanFormAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
     request.clean();
-    emit(const AccionDocumentoInitialState());
+    emit(state.copyWith(status: AccionDocumentoStatus.initial, accionDocumentos: <AccionDocumento>[], error: ""));
   }
 
   AccionDocumentoRequest get request => _request;
   set request(AccionDocumentoRequest value) => _request = value;
-
-  List<EntryAutocomplete> get entriesTiposDocumento => _entriesTiposDocumento;
-  set entriesTiposDocumento(List<EntryAutocomplete> value) => _entriesTiposDocumento = value;
 }

@@ -18,23 +18,19 @@ class FieldTipoDocumento extends StatelessWidget {
       accionDocumentoBloc.request.tipoDocumento = entry.codigo;
     }
 
-    return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
-      builder: (BuildContext context, AccionDocumentoState state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("Tipo Documento", style: AppTheme.titleStyle),
-            const SizedBox(height: 8),
-            AutocompleteInput(
-              controller: typeController,
-              entryCodigoSelected: entryCodigoSelected,
-              entries: accionDocumentoBloc.entriesTiposDocumento,
-              label: "Tipo Documento",
-              onPressed: onPressed,
-            ),
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Tipo Documento", style: AppTheme.titleStyle),
+        const SizedBox(height: 8),
+        AutocompleteInput(
+          controller: typeController,
+          entryCodigoSelected: entryCodigoSelected,
+          entries: accionDocumentoBloc.state.entriesTiposDocumento,
+          label: "Tipo Documento",
+          onPressed: onPressed,
+        ),
+      ],
     );
   }
 }

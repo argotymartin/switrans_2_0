@@ -121,7 +121,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     void onPressedSave() {
       final List<ModuloRequest> requestList = <ModuloRequest>[];
       for (final Map<String, dynamic> map in listUpdate) {
-        final ModuloRequest request = ModuloRequestModel.fromMap(map);
+        final ModuloRequest request = ModuloRequestModel.fromTable(map);
         requestList.add(request);
       }
       context.read<ModuloBloc>().add(UpdateModuloEvent(requestList));

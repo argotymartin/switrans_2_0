@@ -34,10 +34,10 @@ class MaestrosRoutes {
   static List<ShellRoute> getRoutesMaestros() {
     final List<ShellRoute> routes = <ShellRoute>[];
     routes.add(accionDocumentos());
+    routes.add(routerModulo());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());
     routes.add(routerUnidadNegocio());
-    routes.add(routerModulo());
     routes.add(routerPaquete());
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
@@ -74,6 +74,40 @@ class MaestrosRoutes {
             }
 
             return const AccionDocumentoSearchView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerModulo() {
+    const String modulePath = "modulo";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<ModuloBloc>(
+          create: (_) => ModuloBloc(injector())..add(const InitializationModuloEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
+            return const ModuloCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
+            return const ModuloSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
@@ -148,40 +182,6 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const UnidadNegocioSearchView(),
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-      ],
-    );
-  }
-
-  static ShellRoute routerModulo() {
-    const String modulePath = "modulo";
-    return ShellRoute(
-      builder: (BuildContext context, GoRouterState state, Widget child) {
-        return BlocProvider<ModuloBloc>(
-          create: (_) => ModuloBloc(injector())..add(const InitializationModuloEvent()),
-          child: MenuLayout(child: child),
-        );
-      },
-      routes: <RouteBase>[
-        GoRoute(
-          path: "$packagePath/$modulePath/registrar",
-          builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
-            }
-            return const ModuloCreateView();
-          },
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-        GoRoute(
-          path: "$packagePath/$modulePath/buscar",
-          builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
-            }
-            return const ModuloSearchView();
-          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

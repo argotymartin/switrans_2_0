@@ -66,7 +66,7 @@ class ModuloRequestModel extends ModuloRequest {
     return data;
   }
 
-  factory ModuloRequestModel.fromMap(Map<String, dynamic> map) => ModuloRequestModel(
+  factory ModuloRequestModel.fromTable(Map<String, dynamic> map) => ModuloRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
         detalle: map['detalles'],

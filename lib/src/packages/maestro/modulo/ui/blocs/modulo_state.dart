@@ -1,6 +1,6 @@
 part of 'modulo_bloc.dart';
 
-enum ModuloStatus { initial, loading, loaded, succes, error, consulted, exception }
+enum ModuloStatus { initial, loading, succes, error, consulted, exception }
 
 class ModuloState extends Equatable {
   final ModuloStatus? status;

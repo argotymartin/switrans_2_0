@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/request/accion_documento_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
@@ -15,12 +16,12 @@ class AccionDocumentoSearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoExceptionState) {
+        if (state.status == AccionDocumentoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoLoadingState) {
+        if (state.status == AccionDocumentoStatus.loading) {
           return const LoadingView();
         }
 
@@ -106,7 +107,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   void onPressedSave() {
     final List<AccionDocumentoRequest> requestList = <AccionDocumentoRequest>[];
     for (final Map<String, dynamic> map in listUpdate) {
-      final AccionDocumentoRequest request = AccionDocumentoRequest.fromMap(map);
+      final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromTable(map);
       requestList.add(request);
     }
     context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
@@ -116,7 +117,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   Widget build(BuildContext context) {
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoConsultedState) {
+        if (state.status == AccionDocumentoStatus.consulted) {
           Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, AutocompleteSelect autocompleteSelect) {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
@@ -132,11 +133,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
-          final AccionDocumentoBloc accionDocumentoBloc = context.read<AccionDocumentoBloc>();
 
           for (final AccionDocumento accionDocumento in state.accionDocumentos) {
             final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
-              entryMenus: accionDocumentoBloc.entriesTiposDocumento,
+              entryMenus: state.entriesTiposDocumento,
               entryCodigoSelected: accionDocumento.tipoCodigo,
             );
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, autocompleteSelect);
