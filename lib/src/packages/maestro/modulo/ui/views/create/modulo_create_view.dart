@@ -13,7 +13,7 @@ class ModuloCreateView extends StatelessWidget {
   const ModuloCreateView({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ModuloBloc, ModuloState>(
+    return BlocConsumer<ModuloBloc, ModuloState>(
       listener: (BuildContext context, ModuloState state) {
         if (state.status == ModuloStatus.exception) {
           CustomToast.showError(context, state.exception!);
@@ -25,22 +25,25 @@ class ModuloCreateView extends StatelessWidget {
           context.go('/maestros/modulo/buscar');
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(
-                title: "Registrar Nuevo",
-                icon: Icons.storage_outlined,
-                child: _BuildFieldsForm(),
-              ),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, ModuloState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: const <Widget>[
+                BuildViewDetail(),
+                CardExpansionPanel(
+                  title: "Registrar Nuevo",
+                  icon: Icons.storage_outlined,
+                  child: _BuildFieldsForm(),
+                ),
+              ],
+            ),
+            if (state.status == ModuloStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }

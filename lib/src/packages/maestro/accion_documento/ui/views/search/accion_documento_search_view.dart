@@ -21,16 +21,17 @@ class AccionDocumentoSearchView extends StatelessWidget {
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state.status == AccionDocumentoStatus.loading) {
-          return const LoadingView();
-        }
-
-        return ListView(
-          padding: const EdgeInsets.only(right: 32, top: 8),
+        return Stack(
           children: <Widget>[
-            const BuildViewDetail(),
-            CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
-            const _BluildDataTable(),
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+                const _BluildDataTable(),
+              ],
+            ),
+            if (state.status == AccionDocumentoStatus.loading) const LoadingModal(),
           ],
         );
       },
@@ -83,7 +84,7 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
-          state.error != null ? ErrorModal(title: state.error!) : const SizedBox(),
+          state.status == AccionDocumentoStatus.error ? ErrorModal(title: state.error!) : const SizedBox(),
         ],
       ),
     );

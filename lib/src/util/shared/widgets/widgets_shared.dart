@@ -17,6 +17,7 @@ export 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dar
 export 'package:switrans_2_0/src/util/shared/widgets/labels/breadcrumb_trail.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/labels/currency_label.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/modals/error_modal.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/modals/loading_modal.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/panels/card_expansion_panel.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/panels/custom_expansion_panel.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/tables/custom_pluto_grid/custom_pluto_grid_datasources.dart';

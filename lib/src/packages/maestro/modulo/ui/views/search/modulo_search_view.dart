@@ -6,7 +6,6 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
@@ -24,15 +23,17 @@ class ModuloSearchView extends StatelessWidget {
         }
       },
       builder: (BuildContext context, ModuloState state) {
-        if (state.status == ModuloStatus.loading) {
-          return const LoadingView();
-        }
-        return ListView(
-          padding: const EdgeInsets.only(right: 32, top: 8),
+        return Stack(
           children: <Widget>[
-            const BuildViewDetail(),
-            CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
-            const _BluildDataTable(),
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+                const _BluildDataTable(),
+              ],
+            ),
+            if (state.status == ModuloStatus.loading) const LoadingModal(),
           ],
         );
       },
