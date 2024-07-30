@@ -78,8 +78,8 @@ class _BuildFieldsForm extends StatelessWidget {
             children: <Widget>[
               TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
               NumberInputTitle(title: "Codigo", controller: codigoController),
-              SegmentedInputTitle(title: "Visible", onChanged: (bool? newValue) => isVisible = newValue),
-              SegmentedInputTitle(title: "Activo", onChanged: (bool? newValue) => isActivo = newValue),
+              SegmentedInputTitle(title: "Visible", optionSelected: isVisible, onChanged: (bool? newValue) => isVisible = newValue),
+              SegmentedInputTitle(title: "Activo", optionSelected: isActivo, onChanged: (bool? newValue) => isActivo = newValue),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),

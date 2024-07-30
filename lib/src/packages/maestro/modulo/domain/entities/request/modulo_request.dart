@@ -20,15 +20,24 @@ class ModuloRequest {
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || detalle != null || path != null || isVisible != null || icono != null || paquete != null;
+    return codigo != null ||
+        nombre != null ||
+        detalle != null ||
+        path != null ||
+        isVisible != null ||
+        icono != null ||
+        paquete != null ||
+        isActivo != null;
   }
 
   void clean() {
     codigo = null;
     nombre = null;
     detalle = null;
-    isVisible = null;
     path = null;
+    isVisible = null;
+    icono = null;
+    paquete = null;
     isActivo = null;
   }
 }

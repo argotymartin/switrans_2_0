@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/request/modulo_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
@@ -8,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.da
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -45,10 +45,7 @@ class _BuildFieldsForm extends StatelessWidget {
   const _BuildFieldsForm(this.state);
   @override
   Widget build(BuildContext context) {
-    bool isActivo = true;
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     final ModuloBloc moduloBloc = context.read<ModuloBloc>();
     final ModuloRequest request = moduloBloc.request;
 
@@ -84,13 +81,15 @@ class _BuildFieldsForm extends StatelessWidget {
                 },
               ),
               FieldPaquete(request.paquete),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Activo", style: AppTheme.titleStyle),
-                  const SizedBox(height: 8),
-                  SwitchBoxInput(value: isActivo, onChanged: (bool newValue) => isActivo = newValue),
-                ],
+              SegmentedInputTitle(
+                title: "Visible",
+                optionSelected: request.isVisible,
+                onChanged: (bool? newValue) => request.isVisible = newValue,
+              ),
+              SegmentedInputTitle(
+                title: "Activo",
+                optionSelected: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
           ),

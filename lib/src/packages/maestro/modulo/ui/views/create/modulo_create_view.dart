@@ -53,6 +53,7 @@ class _BuildFieldsForm extends StatelessWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final ModuloBloc moduloBloc = context.read<ModuloBloc>();
     final ModuloRequest request = moduloBloc.request;
+
     return Form(
       key: formKey,
       child: Column(
@@ -88,7 +89,7 @@ class _BuildFieldsForm extends StatelessWidget {
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                moduloBloc.request.path = "/${moduloBloc.request.nombre!.toUpperCase().replaceAll(' ', '-')}";
+                request.path = "/${moduloBloc.request.nombre!.toUpperCase().replaceAll(' ', '-')}";
                 context.read<ModuloBloc>().add(SetModuloEvent(moduloBloc.request));
               }
             },

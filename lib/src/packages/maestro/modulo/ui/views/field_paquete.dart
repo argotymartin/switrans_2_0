@@ -24,6 +24,7 @@ class FieldPaquete extends StatelessWidget {
         AutocompleteInput(
           entries: moduloBloc.state.entriesPaquete,
           label: "Paquete",
+          entryCodigoSelected: entryCodigoSelected,
           onPressed: onPressed,
         ),
       ],
