@@ -7,7 +7,6 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -30,18 +29,20 @@ class AccionDocumentoCreateView extends StatelessWidget {
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state.status == AccionDocumentoStatus.loading) {
-          return const LoadingView();
-        }
-        return ListView(
-          padding: const EdgeInsets.only(right: 32, top: 8),
-          children: const <Widget>[
-            BuildViewDetail(),
-            CardExpansionPanel(
-              title: "Registrar Nuevo",
-              icon: Icons.price_change_outlined,
-              child: _BuildFieldsForm(),
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              children: const <Widget>[
+                BuildViewDetail(),
+                CardExpansionPanel(
+                  title: "Registrar Nuevo",
+                  icon: Icons.price_change_outlined,
+                  child: _BuildFieldsForm(),
+                ),
+              ],
             ),
+            if (state.status == AccionDocumentoStatus.loading) const LoadingModal(),
           ],
         );
       },
