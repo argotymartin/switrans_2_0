@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 
-enum TypeInput { lettersAndNumbers }
-
-class TextInput extends StatefulWidget {
+class TextAreaInput extends StatefulWidget {
   final String initialValue;
   final String hintText;
   final int minLength;
@@ -12,7 +10,7 @@ class TextInput extends StatefulWidget {
   final TypeInput typeInput;
   final bool autofocus;
 
-  const TextInput({
+  const TextAreaInput({
     required this.typeInput,
     super.key,
     this.controller,
@@ -24,10 +22,10 @@ class TextInput extends StatefulWidget {
   });
 
   @override
-  State<TextInput> createState() => _TextInputState();
+  State<TextAreaInput> createState() => _TextInputState();
 }
 
-class _TextInputState extends State<TextInput> {
+class _TextInputState extends State<TextAreaInput> {
   late bool isError;
   late bool isFocusOut;
 
@@ -40,23 +38,20 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      height: isError ? 66 : 38,
-      curve: Curves.easeInOut,
-      child: InkWell(
-        onFocusChange: (bool value) => setState(() => isFocusOut = value),
-        child: TextFormField(
-          autofocus: widget.autofocus,
-          controller: widget.controller,
-          initialValue: widget.initialValue.isNotEmpty ? widget.initialValue : null,
-          onChanged: widget.onChanged,
-          validator: onValidator,
-          decoration: buildInputDecoration(context),
-          keyboardType: TextInputType.text,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          style: TextStyle(color: AppTheme.colorTextTheme, fontWeight: FontWeight.w400, fontSize: 14),
-        ),
+    return TextFormField(
+      autofocus: widget.autofocus,
+      controller: widget.controller,
+      autovalidateMode: AutovalidateMode.always,
+      validator: onValidator,
+      minLines: 4,
+      style: const TextStyle(fontSize: 12),
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        errorMaxLines: 2,
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(),
+        labelText: 'Editar campo',
       ),
     );
   }

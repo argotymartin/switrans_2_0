@@ -31,7 +31,7 @@ class PaqueteCreateView extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         children: const <Widget>[
           BuildViewDetail(),
-          WhiteCard(
+          CardExpansionPanel(
             title: "Registrar Nuevo",
             icon: Icons.storage_outlined,
             child: _BuildFieldsForm(),

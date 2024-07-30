@@ -28,7 +28,7 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
     Color color;
     Color colorText;
     if (state.themeMode == 1) {
-      color = isHovered || widget.pagina.isSelected ? colorSelected!.withOpacity(0.5) : colorSelected!.withOpacity(0.4);
+      color = isHovered || widget.pagina.isSelected ? colorSelected!.withOpacity(0.3) : colorSelected!.withOpacity(0.4);
       colorText = Theme.of(context).colorScheme.onPrimary;
     } else if (state.themeMode == 2) {
       color = isHovered || widget.pagina.isSelected ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.4);

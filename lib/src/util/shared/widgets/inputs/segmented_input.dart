@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class SegmentedInput extends StatefulWidget {
   final ValueChanged<bool?> onChanged;
+  final bool? optionSelected;
   const SegmentedInput({
     required this.onChanged,
+    required this.optionSelected,
     super.key,
   });
 
@@ -14,7 +16,19 @@ class SegmentedInput extends StatefulWidget {
 enum Options { todo, si, no }
 
 class _SegmentedInputState extends State<SegmentedInput> {
-  Options optionSelected = Options.todo;
+  late Options optionSelected;
+
+  @override
+  void initState() {
+    if (widget.optionSelected == null) {
+      optionSelected = Options.todo;
+    } else if (widget.optionSelected!) {
+      optionSelected = Options.si;
+    } else {
+      optionSelected = Options.no;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

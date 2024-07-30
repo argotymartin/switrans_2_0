@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class EntryAutocomplete {
   final String title;
-  final int codigo;
+  final int? codigo;
   final String subTitle;
   final Widget? details;
 
@@ -10,6 +10,6 @@ class EntryAutocomplete {
     required this.title,
     this.subTitle = '',
     this.details,
-    this.codigo = 0,
+    this.codigo,
   });
 }

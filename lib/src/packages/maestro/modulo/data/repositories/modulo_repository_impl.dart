@@ -19,9 +19,8 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
     if (httpResponse.data != null) {
       final dynamic dataJson = jsonDecode(httpResponse.data);
       final dynamic items = dataJson['items'];
-      final List<Modulo> response = List<Modulo>.from(items.map((dynamic x) => ModuloModel.fromJson(x)));
-      final List<Modulo> data = await _api.getPaqueteNombre(response);
-      return DataSuccess<List<Modulo>>(data);
+      final List<Modulo> response = List<Modulo>.from(items.map((dynamic x) => ModuloModel.fromJsonPB(x)));
+      return DataSuccess<List<Modulo>>(response);
     }
     return DataFailed<List<Modulo>>(httpResponse.error!);
   }
@@ -30,7 +29,8 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
   Future<DataState<Modulo>> setModuloService(ModuloRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setModuloApi(request));
     if (httpResponse.data != null) {
-      final Modulo response = ModuloModel.fromJson(httpResponse.data);
+      final dynamic dataJson = jsonDecode(httpResponse.data);
+      final Modulo response = ModuloModel.fromJsonPB(dataJson);
       return DataSuccess<Modulo>(response);
     }
     return DataFailed<Modulo>(httpResponse.error!);
@@ -40,7 +40,8 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
   Future<DataState<List<ModuloPaquete>>> getPaquetesService() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaquetesApi());
     if (httpResponse.data != null) {
-      final dynamic resp = httpResponse.data['items'];
+      final dynamic jsonData = jsonDecode(httpResponse.data);
+      final dynamic resp = jsonData['items'];
       final List<ModuloPaquete> response = List<ModuloPaquete>.from(resp.map((dynamic x) => ModuloPaqueteModel.fromJson(x)));
       return DataSuccess<List<ModuloPaquete>>(response);
     }
@@ -51,7 +52,7 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
   Future<DataState<Modulo>> updateModuloService(ModuloRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateModuloApi(request));
     if (httpResponse.data != null) {
-      final Modulo response = ModuloModel.fromJson(httpResponse.data);
+      final Modulo response = ModuloModel.fromJsonPB(httpResponse.data);
       return DataSuccess<Modulo>(response);
     }
     return DataFailed<Modulo>(httpResponse.error!);

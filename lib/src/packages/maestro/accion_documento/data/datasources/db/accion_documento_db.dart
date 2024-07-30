@@ -10,9 +10,7 @@ class AccionDocumentoDB {
       final List<String> conditions = <String>[];
 
       if (request.tipoDocumento != null) {
-        if (request.tipoDocumento!.isNotEmpty) {
-          conditions.add("d.documento_codigo = ${request.tipoDocumento!}");
-        }
+        conditions.add("d.documento_codigo = ${request.tipoDocumento!}");
       }
       if (request.nombre != null) {
         if (request.nombre!.isNotEmpty) {
@@ -30,6 +28,7 @@ class AccionDocumentoDB {
                 SELECT ad.accdoc_codigo,
                     ad.accdoc_nombre,
                     d.documento_nombre,
+                    d.documento_codigo,
                     u.usuario_nombre,
                     ad.accdoc_fecha_creacion,
                     ad.accdoc_fecha_modificacion,
@@ -44,15 +43,15 @@ class AccionDocumentoDB {
       final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
-      debugPrint("Error en getAccionDocumentosDB: $e");
-      rethrow;
+      return FunctionsPostgresql.exception(e);
     }
   }
 
   Future<Response<dynamic>> setAccionDocumentosDB(AccionDocumentoRequest request) async {
-    final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_accion_documentos', key: 'accdoc_codigo');
+    try {
+      final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_accion_documentos', key: 'accdoc_codigo');
 
-    final String sql = """
+      final String sql = """
         INSERT INTO public.tb_accion_documentos (
             accdoc_codigo, 
             accdoc_nombre, 
@@ -65,9 +64,12 @@ class AccionDocumentoDB {
             ${request.usuario}, 
             ${request.isNaturalezaInversa} );
         """;
-    await FunctionsPostgresql.executeQueryDB(sql);
-    final Response<dynamic> resp = await getAccionDocumentosDB(request);
-    return resp;
+      await FunctionsPostgresql.executeQueryDB(sql);
+      final Response<dynamic> resp = await getAccionDocumentosDB(request);
+      return resp;
+    } on Exception catch (e) {
+      return FunctionsPostgresql.exception(e);
+    }
   }
 
   Future<Response<dynamic>> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
@@ -79,7 +81,7 @@ class AccionDocumentoDB {
         updateFields.add("accdoc_nombre = '${request.nombre}'");
       }
       if (request.tipoDocumento != null) {
-        updateFields.add("documento_codigo = ${int.parse(request.tipoDocumento!)}");
+        updateFields.add("documento_codigo = ${request.tipoDocumento!}");
       }
       if (request.isActivo != null) {
         updateFields.add("accdoc_es_activo = ${request.isActivo}");
@@ -100,15 +102,18 @@ class AccionDocumentoDB {
       final Response<dynamic> resp = await getAccionDocumentosDB(request);
       return resp;
     } on Exception catch (e) {
-      debugPrint("Error en updateAccionDocumentosDB: $e");
-      rethrow;
+      return FunctionsPostgresql.exception(e);
     }
   }
 
   Future<Response<dynamic>> getTipoDocumentosDB() async {
-    const String sql =
-        """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
-    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
-    return response;
+    try {
+      const String sql =
+          """SELECT documento_codigo, documento_nombre FROM tb_documento WHERE documento_es_contabilizado = TRUE ORDER BY documento_nombre """;
+      final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
+      return response;
+    } on Exception catch (e) {
+      return FunctionsPostgresql.exception(e);
+    }
   }
 }

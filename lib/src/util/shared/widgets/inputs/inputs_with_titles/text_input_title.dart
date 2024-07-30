@@ -10,15 +10,17 @@ class TextInputTitle extends StatefulWidget {
   final Function(String result)? onChanged;
   final TypeInput typeInput;
   final bool isFormValid;
+  final bool autofocus;
 
   const TextInputTitle({
     required this.title,
-    required this.controller,
     required this.typeInput,
+    this.controller,
     this.onChanged,
     this.initialValue = "",
     this.minLength = 0,
     this.isFormValid = true,
+    this.autofocus = false,
     super.key,
   });
 
@@ -42,6 +44,7 @@ class _TextInputTitleState extends State<TextInputTitle> {
           minLength: widget.minLength,
           onChanged: widget.onChanged,
           hintText: widget.title,
+          autofocus: widget.autofocus,
         ),
       ],
     );

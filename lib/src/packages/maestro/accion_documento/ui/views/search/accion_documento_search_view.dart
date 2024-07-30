@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/request/accion_documento_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
@@ -14,57 +14,45 @@ class AccionDocumentoSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccionDocumentoBloc, AccionDocumentoState>(
+    return BlocConsumer<AccionDocumentoBloc, AccionDocumentoState>(
       listener: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoExceptionState) {
+        if (state.status == AccionDocumentoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              WhiteCard(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              _BluildDataTable(),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, AccionDocumentoState state) {
+        if (state.status == AccionDocumentoStatus.loading) {
+          return const LoadingView();
+        }
+
+        return ListView(
+          padding: const EdgeInsets.only(right: 32, top: 8),
+          children: <Widget>[
+            const BuildViewDetail(),
+            CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+            const _BluildDataTable(),
+          ],
+        );
+      },
     );
   }
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final AccionDocumentoState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
-    final TextEditingController typeController = TextEditingController();
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     final AccionDocumentoBloc accionDocumentoBloc = context.read<AccionDocumentoBloc>();
+    final AccionDocumentoRequest request = accionDocumentoBloc.request;
 
     void onPressed() {
-      bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && typeController.text.isEmpty;
-
-      if (isCampoVacio) {
-        isValid = false;
+      if (request.hasNonNullField()) {
+        accionDocumentoBloc.add(const GetAccionDocumentoEvent());
+      } else {
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
-      }
-      if (isValid) {
-        final AccionDocumentoRequest request = AccionDocumentoRequest(
-          nombre: nombreController.text,
-          codigo: int.tryParse(codigoController.text),
-          tipoDocumento: typeController.text,
-        );
-        context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
       }
     }
 
@@ -75,12 +63,27 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
-              FieldTipoDocumento(typeController),
+              NumberInputTitle(
+                title: "Codigo",
+                autofocus: true,
+                initialValue: request.codigo != null ? "${request.codigo}" : "",
+                onChanged: (String result) {
+                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
+                },
+              ),
+              TextInputTitle(
+                title: "Nombre",
+                typeInput: TypeInput.lettersAndNumbers,
+                initialValue: request.nombre != null ? request.nombre! : "",
+                onChanged: (String result) {
+                  request.nombre = result.isNotEmpty ? result : null;
+                },
+              ),
+              FieldTipoDocumento(entryCodigoSelected: request.tipoDocumento),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
+          state.error != null ? ErrorModal(title: state.error!) : const SizedBox(),
         ],
       ),
     );
@@ -102,38 +105,41 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   }
 
   void onPressedSave() {
+    final List<AccionDocumentoRequest> requestList = <AccionDocumentoRequest>[];
     for (final Map<String, dynamic> map in listUpdate) {
-      final AccionDocumentoRequest request = AccionDocumentoRequest.fromMap(map);
-      context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(request));
+      final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromTable(map);
+      requestList.add(request);
     }
+    context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, List<String> tiposList) {
-      return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
-        'tipo_documento': DataItemGrid(type: Tipo.select, value: accionDocumento.tipo, edit: true, dataList: tiposList),
-        'naturaleza_inversa': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esInverso, edit: true),
-        'activo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esActivo, edit: true),
-        'fecha_creacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
-        'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
-        'usuario': DataItemGrid(type: Tipo.text, value: accionDocumento.usuario, edit: false),
-      };
-    }
-
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (BuildContext context, AccionDocumentoState state) {
-        if (state is AccionDocumentoConsultedState) {
-          final List<String> tiposList = context
-              .read<AccionDocumentoBloc>()
-              .tipos
-              .map((TipoDocumentoAccionDocumento e) => '${e.codigo}-${e.nombre.toUpperCase()}')
-              .toList();
+        if (state.status == AccionDocumentoStatus.consulted) {
+          Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, AutocompleteSelect autocompleteSelect) {
+            return <String, DataItemGrid>{
+              'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
+              'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
+              'tipo_documento':
+                  DataItemGrid(type: Tipo.select, value: accionDocumento.tipoNombre, edit: true, autocompleteSelect: autocompleteSelect),
+              'naturaleza_inversa': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esInverso, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esActivo, edit: true),
+              'fecha_creacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
+              'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
+              'usuario': DataItemGrid(type: Tipo.text, value: accionDocumento.usuario, edit: false),
+            };
+          }
+
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
+
           for (final AccionDocumento accionDocumento in state.accionDocumentos) {
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, tiposList);
+            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
+              entryMenus: state.entriesTiposDocumento,
+              entryCodigoSelected: accionDocumento.tipoCodigo,
+            );
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, autocompleteSelect);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

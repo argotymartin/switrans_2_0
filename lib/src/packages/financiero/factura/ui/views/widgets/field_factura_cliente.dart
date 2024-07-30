@@ -21,7 +21,7 @@ class FieldFacturaCliente extends StatelessWidget {
     }
 
     void setValueCliente(EntryAutocomplete entry) {
-      facturaFilterBloc.clienteCodigo = entry.codigo;
+      facturaFilterBloc.clienteCodigo = entry.codigo!;
       controller.text = entry.title;
     }
 

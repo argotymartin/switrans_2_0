@@ -212,9 +212,9 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
           }).toList();
 
           void setValueFactura(EntryAutocomplete value) {
-            if (value.codigo > 0) {
+            if (value.codigo != null) {
               context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-              formFacturaBloc.centroCosto = value.codigo;
+              formFacturaBloc.centroCosto = value.codigo!;
             }
           }
 

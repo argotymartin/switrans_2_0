@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
@@ -24,7 +26,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
-import 'package:switrans_2_0/src/util/shared/views/splash_view.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";
@@ -32,41 +34,81 @@ class MaestrosRoutes {
   static List<ShellRoute> getRoutesMaestros() {
     final List<ShellRoute> routes = <ShellRoute>[];
     routes.add(accionDocumentos());
+    routes.add(routerModulo());
     routes.add(routerTipoImpuesto());
     routes.add(routerServicioEmpresarial());
     routes.add(routerUnidadNegocio());
-    routes.add(routerModulo());
     routes.add(routerPaquete());
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
     return routes;
   }
 
+  //  context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
   static ShellRoute accionDocumentos() {
     const String modulePath = "accion_documentos";
+
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
+        return BlocProvider<AccionDocumentoBloc>(
+          create: (_) => AccionDocumentoBloc(injector())..add(const InitializationAccionDocumentoEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
+            }
             return const AccionDocumentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const AccionDocumentoSearchView(),
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
+            }
+
+            return const AccionDocumentoSearchView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerModulo() {
+    const String modulePath = "modulo";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<ModuloBloc>(
+          create: (_) => ModuloBloc(injector())..add(const InitializationModuloEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
+            return const ModuloCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
+            }
+            return const ModuloSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
@@ -146,37 +188,6 @@ class MaestrosRoutes {
     );
   }
 
-  static ShellRoute routerModulo() {
-    const String modulePath = "modulo";
-    return ShellRoute(
-      builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<ModuloBloc>().onGetPaquetes(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
-        );
-      },
-      routes: <RouteBase>[
-        GoRoute(
-          path: "$packagePath/$modulePath/registrar",
-          builder: (BuildContext context, GoRouterState state) {
-            return const ModuloCreateView();
-          },
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-        GoRoute(
-          path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const ModuloSearchView(),
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-      ],
-    );
-  }
-
   static ShellRoute routerPaquete() {
     const String modulePath = "paquete";
     return ShellRoute(
@@ -199,6 +210,7 @@ class MaestrosRoutes {
       ],
     );
   }
+
   static ShellRoute routerTransaccionContable() {
     const String modulePath = "transaccion_contable";
     return ShellRoute(
@@ -220,7 +232,6 @@ class MaestrosRoutes {
             return const TransaccionContableCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
-
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
@@ -247,7 +258,6 @@ class MaestrosRoutes {
           },
         );
       },
-
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",

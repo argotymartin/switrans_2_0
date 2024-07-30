@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (dataState is DataSuccess && dataState.data != null) {
       Preferences.token = dataState.data!.token;
       isValid = true;
-      //add(ValidateAuthEvent(dataState.data!));
+      add(ValidateAuthEvent(dataState.data!));
     } else {
       isValid = false;
     }

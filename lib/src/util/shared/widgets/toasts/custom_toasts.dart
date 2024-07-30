@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:postgres/postgres.dart';
 import 'package:toastification/toastification.dart';
 
 class CustomToast {
@@ -140,6 +141,20 @@ class CustomToast {
     final Map<String, dynamic> errorData;
     if (response.data is String) {
       errorData = jsonDecode(response.data);
+    } else if (response.data is ServerException) {
+      final ServerException serverException = response.data;
+      errorData = <String, dynamic>{
+        "status": int.parse(serverException.code!),
+        "error": serverException.message,
+        "path": serverException.detail,
+      };
+    } else if (response.data is Exception) {
+      final Exception data = response.data;
+      errorData = <String, dynamic>{
+        "status": 500,
+        "error": data.toString(),
+        "path": "",
+      };
     } else {
       errorData = response.data;
     }

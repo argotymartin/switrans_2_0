@@ -34,7 +34,7 @@ class TipoImpuestoCreateView extends StatelessWidget {
             physics: const ClampingScrollPhysics(),
             children: const <Widget>[
               BuildViewDetail(),
-              WhiteCard(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
+              CardExpansionPanel(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
             ],
           ),
         ],

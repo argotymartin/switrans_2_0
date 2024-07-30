@@ -1,54 +1,41 @@
 part of 'accion_documento_bloc.dart';
 
-sealed class AccionDocumentoState extends Equatable {
+enum AccionDocumentoStatus { initial, loading, succes, error, consulted, exception }
+
+class AccionDocumentoState extends Equatable {
+  final AccionDocumentoStatus? status;
+  final List<EntryAutocomplete> entriesTiposDocumento;
   final AccionDocumento? accionDocumento;
   final List<AccionDocumento> accionDocumentos;
   final DioException? exception;
   final String? error;
+
   const AccionDocumentoState({
+    this.status,
     this.accionDocumento,
     this.exception,
     this.accionDocumentos = const <AccionDocumento>[],
     this.error,
+    this.entriesTiposDocumento = const <EntryAutocomplete>[],
   });
-}
+  AccionDocumentoState initial() => const AccionDocumentoState(status: AccionDocumentoStatus.initial);
 
-class AccionDocumentoInitialState extends AccionDocumentoState {
-  const AccionDocumentoInitialState();
-
+  AccionDocumentoState copyWith({
+    AccionDocumentoStatus? status,
+    List<EntryAutocomplete>? entriesTiposDocumento,
+    AccionDocumento? accionDocumento,
+    List<AccionDocumento>? accionDocumentos,
+    DioException? exception,
+    String? error,
+  }) =>
+      AccionDocumentoState(
+        status: status ?? this.status,
+        entriesTiposDocumento: entriesTiposDocumento ?? this.entriesTiposDocumento,
+        accionDocumento: accionDocumento ?? this.accionDocumento,
+        accionDocumentos: accionDocumentos ?? this.accionDocumentos,
+        exception: exception ?? this.exception,
+        error: error ?? this.error,
+      );
   @override
-  List<Object> get props => <Object>[];
-}
-
-class AccionDocumentoLoadingState extends AccionDocumentoState {
-  const AccionDocumentoLoadingState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class AccionDocumentoSuccesState extends AccionDocumentoState {
-  const AccionDocumentoSuccesState({super.accionDocumento});
-
-  @override
-  List<Object> get props => <Object>[accionDocumento!];
-}
-
-class AccionDocumentoConsultedState extends AccionDocumentoState {
-  const AccionDocumentoConsultedState({super.accionDocumentos});
-
-  @override
-  List<Object> get props => <Object>[accionDocumentos];
-}
-
-class AccionDocumentoExceptionState extends AccionDocumentoState {
-  const AccionDocumentoExceptionState({super.exception});
-  @override
-  List<Object> get props => <Object>[exception!];
-}
-
-class AccionDocumentoErrorFormState extends AccionDocumentoState {
-  const AccionDocumentoErrorFormState({super.error});
-  @override
-  List<Object> get props => <Object>[error!];
+  List<Object?> get props => <Object?>[status, entriesTiposDocumento, accionDocumento, exception, accionDocumentos, error];
 }
