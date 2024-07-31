@@ -36,6 +36,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
   late List<EntryAutocomplete> filteredEntries;
   late FocusNode _focusNode;
   late TextEditingController? controller;
+  bool isError = true;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
       controller = widget.controller;
     }
     if (widget.entryCodigoSelected != null) {
+      isError = false;
       if (widget.entries.isNotEmpty) {
         entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected);
         controller!.text = entryAutocompleteSelected.title;
@@ -72,7 +74,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         filteredEntries = widget.entries.where((EntryAutocomplete entry) {
           if (searchText.isNotEmpty && searchText.substring(0, 1) == ';') {
             final String searchNew = searchText.split(";")[1];
-            return entry.subTitle.toLowerCase().contains(searchNew);
+            return entry.subTitle!.toLowerCase().contains(searchNew);
           }
 
           final RegExp regex = RegExp(r'^[0-9]+$');
@@ -104,7 +106,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(entry.title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
-          if (entry.subTitle.isNotEmpty) Text(entry.subTitle, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+          if (entry.subTitle != null) Text(entry.subTitle!, style: const TextStyle(color: Colors.grey, fontSize: 10)),
           if (entry.details != null) SizedBox(height: 16, child: FittedBox(child: entry.details)),
         ],
       ),
@@ -118,39 +120,44 @@ class _Autocomplete2InputState extends State<AutocompleteInput> {
         builder: (BuildContext context, ThemeState state) {
           return Stack(
             children: <Widget>[
-              DropdownMenu<EntryAutocomplete>(
-                controller: controller,
-                requestFocusOnTap: true,
-                menuHeight: 300,
-                enableSearch: false,
-                enabled: widget.enabled,
-                expandedInsets: EdgeInsets.zero,
-                focusNode: _focusNode,
-                trailingIcon: const SizedBox(),
-                selectedTrailingIcon: const SizedBox(),
-                leadingIcon: entryAutocompleteSelected.codigo != null
-                    ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo!)
-                    : const Icon(Icons.search),
-                hintText: "Buscar ${widget.label} ...",
-                textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
-                inputDecorationTheme: InputDecorationTheme(
-                  fillColor: Theme.of(context).colorScheme.surface,
-                  filled: true,
-                  constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
-                  isDense: true,
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: isError ? 66 : 38,
+                child: DropdownMenu<EntryAutocomplete>(
+                  errorText: isError ? "El campo es obligartorio" : null,
+                  controller: controller,
+                  requestFocusOnTap: true,
+                  menuHeight: 400,
+                  enabled: widget.enabled,
+                  expandedInsets: EdgeInsets.zero,
+                  focusNode: _focusNode,
+                  trailingIcon: const SizedBox(),
+                  selectedTrailingIcon: const SizedBox(),
+                  leadingIcon: entryAutocompleteSelected.codigo != null
+                      ? BuildCampoCodigo(codigo: entryAutocompleteSelected.codigo!)
+                      : const Icon(Icons.search),
+                  hintText: "Buscar ${widget.label} ...",
+                  textStyle: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.inverseSurface),
+                  inputDecorationTheme: InputDecorationTheme(
+                    fillColor: Theme.of(context).colorScheme.surface,
+                    filled: true,
+                    //constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
+                    isDense: true,
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
                   ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
+                  onSelected: (EntryAutocomplete? entry) {
+                    isError = false;
+                    setState(() => entryAutocompleteSelected = entry!);
+                    widget.onPressed?.call(entry!);
+                    controller!.text = entry!.title;
+                  },
+                  dropdownMenuEntries: dropdownMenuEntries,
                 ),
-                onSelected: (EntryAutocomplete? entry) {
-                  setState(() => entryAutocompleteSelected = entry!);
-                  widget.onPressed?.call(entry!);
-                  controller!.text = entry!.title;
-                },
-                dropdownMenuEntries: dropdownMenuEntries,
               ),
               Positioned(
                 right: 6,

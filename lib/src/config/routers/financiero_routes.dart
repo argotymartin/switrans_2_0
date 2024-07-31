@@ -37,7 +37,7 @@ class FinancieroRoutes {
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
-          path: "/$packagePath/$modulePath/buscar",
+          path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const FacturaSearchView(),
           //builder: (_, __) => const PdfView(),
           redirect: ValidateRoutes.onValidateAuth,
