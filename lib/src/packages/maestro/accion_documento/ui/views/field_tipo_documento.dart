@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input2.dart';
 
 class FieldTipoDocumento extends StatelessWidget {
   final int? entryCodigoSelected;
@@ -12,7 +12,6 @@ class FieldTipoDocumento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AccionDocumentoBloc accionDocumentoBloc = context.watch<AccionDocumentoBloc>();
-    final TextEditingController typeController = TextEditingController();
 
     void onPressed(EntryAutocomplete entry) {
       accionDocumentoBloc.request.tipoDocumento = entry.codigo;
@@ -23,8 +22,7 @@ class FieldTipoDocumento extends StatelessWidget {
       children: <Widget>[
         Text("Tipo Documento", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        AutocompleteInput(
-          controller: typeController,
+        AutocompleteInput2(
           entryCodigoSelected: entryCodigoSelected,
           entries: accionDocumentoBloc.state.entriesTiposDocumento,
           label: "Tipo Documento",

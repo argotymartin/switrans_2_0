@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input2.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class FieldFacturaCliente extends StatelessWidget {
@@ -21,8 +22,8 @@ class FieldFacturaCliente extends StatelessWidget {
     }
 
     void setValueCliente(EntryAutocomplete entry) {
-      facturaFilterBloc.clienteCodigo = entry.codigo!;
-      controller.text = entry.title;
+      // facturaFilterBloc.clienteCodigo = entry.codigo!;
+      //controller.text = entry.title;
     }
 
     final List<EntryAutocomplete> entries = clientes.map((Cliente cliente) {
@@ -43,11 +44,11 @@ class FieldFacturaCliente extends StatelessWidget {
       children: <Widget>[
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        AutocompleteInput(
+        AutocompleteInput2(
           label: "Cliente",
           entries: entries,
           onPressed: setValueCliente,
-          controller: controller,
+          //controller: controller,
           minChractersSearch: 3,
         ),
       ],
