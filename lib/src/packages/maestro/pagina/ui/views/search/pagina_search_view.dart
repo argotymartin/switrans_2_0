@@ -15,64 +15,46 @@ class PaginaSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PaginaBloc, PaginaState>(
+    return BlocConsumer<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
-        if (state is PaginaExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+        if (state.status == PaginaStatus.exception) {
+          CustomToast.showError(context, state.exception!);
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm()),
-              _BuildDataTable(),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, PaginaState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(title: "Buscar Registros.", icon: Icons.search, child: _BuildFieldsForm(state)),
+                const _BuildDataTable(),
+              ],
+            ),
+            if (state.status == PaginaStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final PaginaState state;
+  const _BuildFieldsForm(this.state);
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
-    final TextEditingController moduloController = TextEditingController();
-    bool? isVisible;
-    bool? isActivo;
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final PaginaBloc paginaBloc = context.read<PaginaBloc>();
+    final PaginaRequest request = paginaBloc.request;
 
     void onPressed() {
-      bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty &&
-          codigoController.text.isEmpty &&
-          moduloController.text.isEmpty &&
-          isVisible == null &&
-          isActivo == null;
-
-      if (isCampoVacio) {
-        isValid = false;
+      if (request.hasNonNullField()) {
+        paginaBloc.add(const GetPaginaEvent());
+      } else {
         paginaBloc.add(const ErrorFormPaginaEvent("Por favor diligenciar por lo menos un campo del formulario"));
-      }
-
-      if (isValid) {
-        final PaginaRequest request = PaginaRequest(
-          nombre: nombreController.text,
-          codigo: int.tryParse(codigoController.text),
-          modulo: moduloController.text,
-          isVisible: isVisible,
-          isActivo: isActivo,
-        );
-        context.read<PaginaBloc>().add(GetPaginaEvent(request));
       }
     }
 
@@ -83,11 +65,33 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
-              FieldModulo(moduloController),
-              SegmentedInputTitle(title: "Visible", optionSelected: isVisible, onChanged: (bool? newValue) => isVisible = newValue),
-              SegmentedInputTitle(title: "Activo", optionSelected: isActivo, onChanged: (bool? newValue) => isActivo = newValue),
+              NumberInputTitle(
+                title: "Codigo",
+                autofocus: true,
+                initialValue: request.codigo != null ? "${request.codigo}" : "",
+                onChanged: (String result) {
+                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
+                },
+              ),
+              TextInputTitle(
+                title: "Nombre",
+                typeInput: TypeInput.lettersAndNumbers,
+                initialValue: request.nombre != null ? request.nombre! : "",
+                onChanged: (String result) {
+                  request.nombre = result.isNotEmpty ? result : null;
+                },
+              ),
+              FieldModulo(request.modulo),
+              SegmentedInputTitle(
+                title: "Visible",
+                optionSelected: request.isVisible,
+                onChanged: (bool? newValue) => request.isVisible = newValue,
+              ),
+              SegmentedInputTitle(
+                title: "Activo",
+                optionSelected: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
+              ),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
@@ -114,18 +118,20 @@ class _BuildDataTableState extends State<_BuildDataTable> {
     }
 
     void onPressedSave() {
+      final List<PaginaRequest> requestList = <PaginaRequest>[];
       for (final Map<String, dynamic> map in listUpdate) {
         final PaginaRequest request = PaginaRequestModel.fromTable(map);
-        context.read<PaginaBloc>().add(UpdatePaginaEvent(request));
+        requestList.add(request);
       }
+      context.read<PaginaBloc>().add(UpdatePaginaEvent(requestList));
     }
 
-    Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
+    Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina, AutocompleteSelect autocompleteSelect) {
       return <String, DataItemGrid>{
         'codigo': DataItemGrid(type: Tipo.item, value: pagina.paginaCodigo, edit: false),
         'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaTexto, edit: true),
         'path': DataItemGrid(type: Tipo.text, value: pagina.paginaPath, edit: false),
-        'modulo': DataItemGrid(type: Tipo.text, value: pagina.modulo, edit: false),
+        'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, autocompleteSelect: autocompleteSelect),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
         'visible': DataItemGrid(type: Tipo.boolean, value: pagina.paginaVisible, edit: true),
         'activo': DataItemGrid(type: Tipo.boolean, value: pagina.paginaActivo, edit: true),
@@ -134,10 +140,14 @@ class _BuildDataTableState extends State<_BuildDataTable> {
 
     return BlocBuilder<PaginaBloc, PaginaState>(
       builder: (BuildContext context, PaginaState state) {
-        if (state is PaginaConsultedState) {
+        if (state.status == PaginaStatus.consulted) {
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Pagina pagina in state.paginas) {
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(pagina);
+            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
+              entryMenus: state.entriesModulos,
+              entryCodigoSelected: pagina.modulo,
+            );
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(pagina, autocompleteSelect);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

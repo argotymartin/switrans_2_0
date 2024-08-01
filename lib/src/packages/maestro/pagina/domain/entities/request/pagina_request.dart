@@ -1,14 +1,12 @@
 class PaginaRequest {
-  String? id;
   int? codigo;
-  final String? nombre;
-  final String? path;
-  late String? modulo;
-  final bool? isVisible;
-  final bool? isActivo;
+  String? nombre;
+  String? path;
+  int? modulo;
+  bool? isVisible;
+  bool? isActivo;
 
   PaginaRequest({
-    this.id,
     this.codigo,
     this.nombre,
     this.path,
@@ -17,15 +15,16 @@ class PaginaRequest {
     this.isActivo,
   });
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'pagina_codigo': codigo,
-      'pagina_texto': nombre,
-      'pagina_path': path,
-      'modulo': modulo,
-      'pagina_visible': isVisible,
-      'pagina_activo': isActivo,
-    };
+  bool hasNonNullField() {
+    return codigo != null || nombre != null || path != null || modulo != null || isVisible != null || isActivo != null;
+  }
+
+  void clean() {
+    codigo = null;
+    nombre = null;
+    path = null;
+    modulo = null;
+    isVisible = null;
+    isActivo = null;
   }
 }

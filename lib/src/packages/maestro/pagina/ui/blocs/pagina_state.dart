@@ -1,62 +1,41 @@
 part of 'pagina_bloc.dart';
 
-abstract class PaginaState extends Equatable {
+enum PaginaStatus { initial, loading, succes, error, consulted, exception }
+
+class PaginaState extends Equatable {
+  final PaginaStatus? status;
   final Pagina? pagina;
   final List<Pagina> paginas;
+  final List<EntryAutocomplete> entriesModulos;
   final DioException? exception;
   final String error;
   const PaginaState({
+    this.status,
     this.pagina,
     this.exception,
     this.paginas = const <Pagina>[],
+    this.entriesModulos = const <EntryAutocomplete>[],
     this.error = "",
   });
-}
+  PaginaState initial() => const PaginaState(status: PaginaStatus.initial);
 
-class PaginaInitialState extends PaginaState {
-  const PaginaInitialState();
-  @override
-  List<Object?> get props => <Object?>[];
-}
+  PaginaState copyWith({
+    PaginaStatus? status,
+    Pagina? pagina,
+    List<Pagina>? paginas,
+    List<EntryAutocomplete>? entriesModulos,
+    DioException? exception,
+    String? error,
+  }) =>
+      PaginaState(
+        status: status ?? this.status,
+        pagina: pagina ?? this.pagina,
+        exception: exception ?? this.exception,
+        paginas: paginas ?? this.paginas,
+        entriesModulos: entriesModulos ?? this.entriesModulos,
+        error: error ?? this.error,
+      );
 
-class FormPaginaDataState extends PaginaState {
-  const FormPaginaDataState({super.paginas, super.error});
   @override
-  List<Object?> get props => <Object?>[paginas];
-}
-
-class PaginaLoadingState extends PaginaState {
-  const PaginaLoadingState();
-  @override
-  List<Object?> get props => <Object?>[];
-}
-
-class FormPaginaRequestState extends PaginaState {
-  const FormPaginaRequestState({super.pagina, super.error});
-  @override
-  List<Object?> get props => <Object?>[pagina, error];
-}
-
-class PaginaSuccessState extends PaginaState {
-  const PaginaSuccessState({super.pagina, super.error});
-  @override
-  List<Object?> get props => <Object?>[pagina, error];
-}
-
-class PaginaConsultedState extends PaginaState {
-  const PaginaConsultedState({super.paginas});
-  @override
-  List<Object?> get props => <Object?>[paginas];
-}
-
-class PaginaExceptionState extends PaginaState {
-  const PaginaExceptionState({super.exception});
-  @override
-  List<DioException?> get props => <DioException?>[exception];
-}
-
-class PaginaErrorFormState extends PaginaState {
-  const PaginaErrorFormState({super.error});
-  @override
-  List<Object?> get props => <Object?>[error];
+  List<Object?> get props => <Object?>[status, pagina, exception, paginas, entriesModulos, error];
 }

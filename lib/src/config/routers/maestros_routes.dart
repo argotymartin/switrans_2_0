@@ -247,28 +247,30 @@ class MaestrosRoutes {
 
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<PaginaBloc>().onGetModulos(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              context.read<PaginaBloc>().add(const InitialPaginaEvent());
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
+        return BlocProvider<PaginaBloc>(
+          create: (_) => PaginaBloc(injector())..add(const InitialPaginaEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<PaginaBloc>().add(const CleanFormPaginaEvent());
+            }
             return const PaginaCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const PaginaSearchView(),
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<PaginaBloc>().add(const CleanFormPaginaEvent());
+            }
+            return const PaginaSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
