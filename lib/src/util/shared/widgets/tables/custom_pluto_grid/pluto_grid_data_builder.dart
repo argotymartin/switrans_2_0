@@ -64,6 +64,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
         }
         if (tipo == Tipo.select) {
           final AutocompleteSelect data = v.autocompleteSelect!;
+
           columns.add(
             PlutoColumn(
               // enableEditingMode: isEdit,
@@ -300,18 +301,14 @@ class _BuildFieldAutoComplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    renderContext.cell.value = autocompleteSelect.entryCodigoSelected;
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.only(top: 8),
-        child: AutocompleteInput(
-          //controller: typeController,
-          entryCodigoSelected: autocompleteSelect.entryCodigoSelected,
+        child: AutocompleteInput2(
+          entryCodigoSelected: renderContext.cell.value,
           entries: autocompleteSelect.entryMenus,
-          label: "Tipo Documento",
           onPressed: (EntryAutocomplete result) {
             renderContext.cell.value = result.codigo;
-            //typeController.text = result.title;
           },
         ),
       ),

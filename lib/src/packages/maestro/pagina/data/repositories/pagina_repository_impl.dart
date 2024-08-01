@@ -20,8 +20,7 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
       final dynamic responseData = jsonDecode(httpResponse.data);
       final List<dynamic> items = responseData['items'];
       final List<Pagina> response = items.map((dynamic item) => PaginaModel.fromJson(item)).toList();
-      final List<Pagina> data = await _api.getModuloNombre(response);
-      return DataSuccess<List<Pagina>>(data);
+      return DataSuccess<List<Pagina>>(response);
     }
     return DataFailed<List<Pagina>>(httpResponse.error!);
   }
@@ -41,7 +40,8 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
   Future<DataState<List<PaginaModulo>>> getModulosService() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getModulosApi());
     if (httpResponse.data != null) {
-      final dynamic resp = httpResponse.data['items'];
+      final dynamic responseData = json.decode(httpResponse.data);
+      final dynamic resp = responseData['items'];
       final List<PaginaModulo> response = List<PaginaModulo>.from(resp.map((dynamic x) => PaginaModuloModel.fromJson(x)));
       return DataSuccess<List<PaginaModulo>>(response);
     }

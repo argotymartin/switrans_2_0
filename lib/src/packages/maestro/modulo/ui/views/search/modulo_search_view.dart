@@ -8,7 +8,6 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ModuloSearchView extends StatelessWidget {
@@ -52,7 +51,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        context.read<ModuloBloc>().add(const GetModuloEvent());
+        moduloBloc.add(const GetModuloEvent());
       } else {
         moduloBloc.add(const ErrorFormModuloEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

@@ -6,30 +6,29 @@ abstract class PaginaEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitialPaginaEvent extends PaginaEvent {
+  const InitialPaginaEvent();
+}
+
+class GetPaginaEvent extends PaginaEvent {
+  const GetPaginaEvent();
+}
+
 class SetPaginaEvent extends PaginaEvent {
   final PaginaRequest request;
   const SetPaginaEvent(this.request);
 }
 
 class UpdatePaginaEvent extends PaginaEvent {
-  final PaginaRequest request;
-  const UpdatePaginaEvent(this.request);
-}
-
-class GetPaginaEvent extends PaginaEvent {
-  final PaginaRequest request;
-  const GetPaginaEvent(this.request);
-}
-
-class ActivetePaginaEvent extends PaginaEvent {
-  const ActivetePaginaEvent();
+  final List<PaginaRequest> requestList;
+  const UpdatePaginaEvent(this.requestList);
 }
 
 class ErrorFormPaginaEvent extends PaginaEvent {
-  final String exception;
-  const ErrorFormPaginaEvent(this.exception);
+  final String error;
+  const ErrorFormPaginaEvent(this.error);
 }
 
-class InitialPaginaEvent extends PaginaEvent {
-  const InitialPaginaEvent();
+class CleanFormPaginaEvent extends PaginaEvent {
+  const CleanFormPaginaEvent();
 }

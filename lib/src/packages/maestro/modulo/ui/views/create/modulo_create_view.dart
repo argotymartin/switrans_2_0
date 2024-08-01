@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class ModuloCreateView extends StatelessWidget {
@@ -23,6 +23,7 @@ class ModuloCreateView extends StatelessWidget {
           context.read<ModuloBloc>().request = ModuloRequest(codigo: state.modulo!.codigo);
           context.read<ModuloBloc>().add(const GetModuloEvent());
           context.go('/maestros/modulo/buscar');
+          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, ModuloState state) {

@@ -45,11 +45,9 @@ class FieldFacturaCliente extends StatelessWidget {
         Text("Cliente", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         AutocompleteInput2(
-          label: "Cliente",
           entries: entries,
           onPressed: setValueCliente,
           //controller: controller,
-          minChractersSearch: 3,
         ),
       ],
     );

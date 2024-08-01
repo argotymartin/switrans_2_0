@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/field_modulo.dart';
-import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -14,29 +14,37 @@ class PaginaCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PaginaBloc, PaginaState>(
+    return BlocConsumer<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
-        if (state is PaginaExceptionState) {
-          ErrorDialog.showDioException(context, state.exception!);
+        if (state.status == PaginaStatus.exception) {
+          CustomToast.showError(context, state.exception!);
         }
-        if (state is PaginaSuccessState) {
-          final PaginaRequest request = PaginaRequest(nombre: state.pagina!.paginaTexto);
-          context.read<PaginaBloc>().add(GetPaginaEvent(request));
+        if (state.status == PaginaStatus.succes) {
+          context.read<PaginaBloc>().request = PaginaRequest(nombre: state.pagina!.paginaTexto);
+          context.read<PaginaBloc>().add(const GetPaginaEvent());
           context.go('/maestros/pagina/buscar');
+          Preferences.isResetForm = false;
         }
       },
-      child: ListView(
-        padding: const EdgeInsets.only(right: 32, top: 8),
-        physics: const ClampingScrollPhysics(),
-        children: const <Widget>[
-          BuildViewDetail(),
-          CardExpansionPanel(
-            title: "Registrar Nuevo",
-            icon: Icons.storage_outlined,
-            child: _BuildFieldsForm(),
-          ),
-        ],
-      ),
+      builder: (BuildContext context, PaginaState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: const <Widget>[
+                BuildViewDetail(),
+                CardExpansionPanel(
+                  title: "Registrar Nuevo",
+                  icon: Icons.storage_outlined,
+                  child: _BuildFieldsForm(),
+                ),
+              ],
+            ),
+            if (state.status == PaginaStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }
@@ -46,10 +54,9 @@ class _BuildFieldsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController moduloController = TextEditingController();
-    const bool isVisible = true;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final PaginaBloc paginaBloc = context.read<PaginaBloc>();
+    final PaginaRequest request = paginaBloc.request;
     return Form(
       key: formKey,
       child: Column(
@@ -57,20 +64,22 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
-              FieldModulo(moduloController),
+              TextInputTitle(
+                title: "Nombre",
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
+                initialValue: request.nombre != null ? request.nombre! : "",
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
+              ),
+              FieldModulo(request.codigo),
             ],
           ),
           FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final PaginaRequest request = PaginaRequest(
-                  nombre: CustomFunctions.capitalize(nombreController.text),
-                  path: CustomFunctions.formatPath(nombreController.text.toLowerCase()),
-                  modulo: moduloController.text,
-                  isVisible: isVisible,
-                );
+                request.path = "/${request.nombre!.toLowerCase().replaceAll(' ', '-')}";
+                request.isActivo = true;
                 context.read<PaginaBloc>().add(SetPaginaEvent(request));
               }
             },

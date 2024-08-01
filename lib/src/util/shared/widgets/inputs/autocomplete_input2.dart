@@ -7,22 +7,16 @@ import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 class AutocompleteInput2 extends StatefulWidget {
   final List<EntryAutocomplete> entries;
-  final String label;
   final TextEditingController? controller;
   final Function(EntryAutocomplete result)? onPressed;
-  final bool enabled;
-  final bool isShowCodigo;
-  final int minChractersSearch;
+  final bool isRequired;
   final int? entryCodigoSelected;
 
   const AutocompleteInput2({
     required this.entries,
-    required this.label,
     this.controller,
     this.onPressed,
-    this.enabled = true,
-    this.isShowCodigo = true,
-    this.minChractersSearch = 1,
+    this.isRequired = false,
     this.entryCodigoSelected,
     super.key,
   });
@@ -37,13 +31,11 @@ class _Autocomplete2InputState extends State<AutocompleteInput2> {
   late FocusNode _focusNode;
   late TextEditingController? controller;
   late bool isError;
-  late bool isClean;
 
   @override
   void initState() {
     super.initState();
     isError = false;
-    isClean = false;
     _focusNode = FocusNode();
     controller = widget.controller ?? TextEditingController();
 
@@ -72,7 +64,7 @@ class _Autocomplete2InputState extends State<AutocompleteInput2> {
             child: DropdownSearch<EntryAutocomplete>(
               selectedItem: entryAutocompleteSelected,
               asyncItems: (String? filter) => getData(filter!, widget.entries),
-              autoValidateMode: AutovalidateMode.onUserInteraction,
+              autoValidateMode: widget.isRequired ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
               validator: (EntryAutocomplete? i) {
                 if (i == null) {
                   Future<void>.microtask(() => setState(() {}));

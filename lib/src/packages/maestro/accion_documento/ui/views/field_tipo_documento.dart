@@ -25,7 +25,6 @@ class FieldTipoDocumento extends StatelessWidget {
         AutocompleteInput2(
           entryCodigoSelected: entryCodigoSelected,
           entries: accionDocumentoBloc.state.entriesTiposDocumento,
-          label: "Tipo Documento",
           onPressed: onPressed,
         ),
       ],

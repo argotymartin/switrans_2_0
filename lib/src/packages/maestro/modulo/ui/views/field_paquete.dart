@@ -23,7 +23,6 @@ class FieldPaquete extends StatelessWidget {
         const SizedBox(height: 8),
         AutocompleteInput2(
           entries: moduloBloc.state.entriesPaquete,
-          label: "Paquete",
           entryCodigoSelected: entryCodigoSelected,
           onPressed: onPressed,
         ),
