@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -65,26 +65,32 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 3,
-                initialValue: request.nombre != null ? request.nombre! : "",
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Icono",
+                value: request.icono,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 5,
-                initialValue: request.icono != null ? request.icono! : "",
                 onChanged: (String result) => request.icono = result.isNotEmpty ? result : null,
               ),
-              FieldPaquete(request.paquete),
-              TextInputTitle(
+              AutocompleteInputForm(
+                entries: moduloBloc.state.entriesPaquete,
+                title: "Paquete",
+                value: request.paquete,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.paquete = result.codigo,
+              ),
+              TextInputForm(
                 title: "Detalle Modulo",
+                value: request.detalle,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 20,
-                initialValue: request.detalle != null ? request.detalle! : "",
                 onChanged: (String result) => request.detalle = result.isNotEmpty ? result : null,
               ),
             ],

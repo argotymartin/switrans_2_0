@@ -4,9 +4,8 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/request/mod
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/field_paquete.dart';
+import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -64,31 +63,32 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(
+              NumberInputForm(
                 title: "Codigo",
+                value: request.codigo,
                 autofocus: true,
-                initialValue: request.codigo != null ? "${request.codigo}" : "",
-                onChanged: (String result) {
-                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
-                },
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre != null ? request.nombre! : "",
                 typeInput: TypeInput.lettersAndNumbers,
-                initialValue: request.nombre != null ? request.nombre! : "",
-                onChanged: (String result) {
-                  request.nombre = result.isNotEmpty ? result : null;
-                },
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
-              FieldPaquete(request.paquete),
-              SegmentedInputTitle(
+              AutocompleteInputForm(
+                entries: moduloBloc.state.entriesPaquete,
+                title: "Paquete",
+                value: request.paquete,
+                onChanged: (EntryAutocomplete result) => request.paquete = result.codigo,
+              ),
+              SegmentedInputForm(
                 title: "Visible",
-                optionSelected: request.isVisible,
+                value: request.isVisible,
                 onChanged: (bool? newValue) => request.isVisible = newValue,
               ),
-              SegmentedInputTitle(
+              SegmentedInputForm(
                 title: "Activo",
-                optionSelected: request.isActivo,
+                value: request.isActivo,
                 onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
@@ -113,44 +113,40 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(List<Map<String, dynamic>> event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      final List<ModuloRequest> requestList = <ModuloRequest>[];
-      for (final Map<String, dynamic> map in listUpdate) {
-        final ModuloRequest request = ModuloRequestModel.fromTable(map);
-        requestList.add(request);
-      }
-      context.read<ModuloBloc>().add(UpdateModuloEvent(requestList));
-    }
-
-    Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo, AutocompleteSelect autocompleteSelect) {
-      return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: modulo.codigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: modulo.nombre, edit: true),
-        'detalles': DataItemGrid(type: Tipo.text, value: modulo.detalles, edit: true),
-        'path': DataItemGrid(type: Tipo.text, value: modulo.path, edit: false),
-        'icono': DataItemGrid(type: Tipo.text, value: modulo.icono, edit: false),
-        'paquete': DataItemGrid(type: Tipo.select, value: modulo.paquete, edit: false, autocompleteSelect: autocompleteSelect),
-        'fecha_creacion': DataItemGrid(type: Tipo.date, value: modulo.fechaCreacion, edit: false),
-        'activo': DataItemGrid(type: Tipo.boolean, value: modulo.isActivo, edit: false),
-        'visible': DataItemGrid(type: Tipo.boolean, value: modulo.isVisible, edit: true),
-      };
-    }
-
     return BlocBuilder<ModuloBloc, ModuloState>(
       builder: (BuildContext context, ModuloState state) {
         if (state.status == ModuloStatus.consulted) {
+          void onRowChecked(List<Map<String, dynamic>> event) {
+            listUpdate.clear();
+            setState(() => listUpdate.addAll(event));
+          }
+
+          void onPressedSave() {
+            final List<ModuloRequest> requestList = <ModuloRequest>[];
+            for (final Map<String, dynamic> map in listUpdate) {
+              final ModuloRequest request = ModuloRequestModel.fromTable(map);
+              requestList.add(request);
+            }
+            context.read<ModuloBloc>().add(UpdateModuloEvent(requestList));
+          }
+
+          Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo) {
+            return <String, DataItemGrid>{
+              'codigo': DataItemGrid(type: Tipo.item, value: modulo.codigo, edit: false),
+              'nombre': DataItemGrid(type: Tipo.text, value: modulo.nombre, edit: true),
+              'detalles': DataItemGrid(type: Tipo.text, value: modulo.detalles, edit: true),
+              'path': DataItemGrid(type: Tipo.text, value: modulo.path, edit: false),
+              'icono': DataItemGrid(type: Tipo.text, value: modulo.icono, edit: false),
+              'paquete': DataItemGrid(type: Tipo.select, value: modulo.paquete, edit: false, entryMenus: state.entriesPaquete),
+              'fecha_creacion': DataItemGrid(type: Tipo.date, value: modulo.fechaCreacion, edit: false),
+              'activo': DataItemGrid(type: Tipo.boolean, value: modulo.isActivo, edit: false),
+              'visible': DataItemGrid(type: Tipo.boolean, value: modulo.isVisible, edit: true),
+            };
+          }
+
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Modulo modulo in state.modulos) {
-            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
-              entryMenus: state.entriesPaquete,
-              entryCodigoSelected: modulo.paquete,
-            );
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo, autocompleteSelect);
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(modulo);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

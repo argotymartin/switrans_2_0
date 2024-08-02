@@ -10,6 +10,11 @@ export 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dar
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input2.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/currency_input.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/autocomplete_input_form.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/number_input_form.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/segmented_input_form.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/switch_box_input_form.dart';
+export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/text_input_form.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/switch_box_input_title.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';

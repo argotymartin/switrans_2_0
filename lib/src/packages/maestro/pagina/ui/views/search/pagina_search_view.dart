@@ -4,9 +4,8 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pag
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/field_modulo.dart';
+import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -65,31 +64,32 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(
+              NumberInputForm(
                 title: "Codigo",
+                value: request.codigo,
                 autofocus: true,
-                initialValue: request.codigo != null ? "${request.codigo}" : "",
-                onChanged: (String result) {
-                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
-                },
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
-                initialValue: request.nombre != null ? request.nombre! : "",
-                onChanged: (String result) {
-                  request.nombre = result.isNotEmpty ? result : null;
-                },
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
-              FieldModulo(request.modulo),
-              SegmentedInputTitle(
+              AutocompleteInputForm(
+                title: "Modulos",
+                entries: paginaBloc.state.entriesModulos,
+                value: request.modulo,
+                onChanged: (EntryAutocomplete result) => request.modulo = result.codigo,
+              ),
+              SegmentedInputForm(
                 title: "Visible",
-                optionSelected: request.isVisible,
+                value: request.isVisible,
                 onChanged: (bool? newValue) => request.isVisible = newValue,
               ),
-              SegmentedInputTitle(
+              SegmentedInputForm(
                 title: "Activo",
-                optionSelected: request.isActivo,
+                value: request.isActivo,
                 onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
@@ -113,42 +113,38 @@ class _BuildDataTableState extends State<_BuildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(List<Map<String, dynamic>> event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      final List<PaginaRequest> requestList = <PaginaRequest>[];
-      for (final Map<String, dynamic> map in listUpdate) {
-        final PaginaRequest request = PaginaRequestModel.fromTable(map);
-        requestList.add(request);
-      }
-      context.read<PaginaBloc>().add(UpdatePaginaEvent(requestList));
-    }
-
-    Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina, AutocompleteSelect autocompleteSelect) {
-      return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: pagina.codigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
-        'path': DataItemGrid(type: Tipo.text, value: pagina.path, edit: false),
-        'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, autocompleteSelect: autocompleteSelect),
-        'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
-        'visible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
-        'activo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
-      };
-    }
-
     return BlocBuilder<PaginaBloc, PaginaState>(
       builder: (BuildContext context, PaginaState state) {
         if (state.status == PaginaStatus.consulted) {
+          void onRowChecked(List<Map<String, dynamic>> event) {
+            listUpdate.clear();
+            setState(() => listUpdate.addAll(event));
+          }
+
+          void onPressedSave() {
+            final List<PaginaRequest> requestList = <PaginaRequest>[];
+            for (final Map<String, dynamic> map in listUpdate) {
+              final PaginaRequest request = PaginaRequestModel.fromTable(map);
+              requestList.add(request);
+            }
+            context.read<PaginaBloc>().add(UpdatePaginaEvent(requestList));
+          }
+
+          Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
+            return <String, DataItemGrid>{
+              'codigo': DataItemGrid(type: Tipo.item, value: pagina.codigo, edit: false),
+              'nombre': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
+              'path': DataItemGrid(type: Tipo.text, value: pagina.path, edit: false),
+              'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, entryMenus: state.entriesModulos),
+              'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
+              'visible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
+            };
+          }
+
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Pagina pagina in state.paginas) {
-            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
-              entryMenus: state.entriesModulos,
-              entryCodigoSelected: pagina.modulo,
-            );
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(pagina, autocompleteSelect);
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(pagina);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

@@ -42,7 +42,7 @@ class ModuloRequestModel extends ModuloRequest {
   static String toPocketBaseFilter(Map<String, dynamic> map) {
     final List<String> conditions = <String>[];
     if (map["modulo_nombre"] != null) {
-      conditions.add('modulo_nombre = "${map["modulo_nombre"]}"');
+      conditions.add('modulo_nombre ~ "${map["modulo_nombre"]}"');
     }
     if (map["modulo_codigo"] != null) {
       conditions.add('modulo_codigo = ${map["modulo_codigo"]}');

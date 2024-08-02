@@ -44,7 +44,7 @@ class PaginaRequestModel extends PaginaRequest {
   static String toPocketBaseFilter(Map<String, dynamic> map) {
     final List<String> conditions = <String>[];
     if (map["pagina_texto"] != null) {
-      conditions.add('pagina_texto = "${map["pagina_texto"]}"');
+      conditions.add('pagina_texto ~ "${map["pagina_texto"]}"');
     }
     if (map["pagina_codigo"] != null) {
       conditions.add('pagina_codigo = ${map["pagina_codigo"]}');

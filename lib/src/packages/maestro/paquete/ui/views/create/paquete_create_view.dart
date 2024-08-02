@@ -65,18 +65,18 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 5,
-                initialValue: request.nombre != null ? request.nombre! : "",
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Icono",
+                value: request.icono,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 5,
-                initialValue: request.icono != null ? request.icono! : "",
                 onChanged: (String result) => request.icono = result.isNotEmpty ? result.toUpperCase() : null,
               ),
             ],

@@ -5,7 +5,6 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquet
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -65,30 +64,26 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(
+              NumberInputForm(
                 title: "Codigo",
+                value: request.codigo,
                 autofocus: true,
-                initialValue: request.codigo != null ? "${request.codigo}" : "",
-                onChanged: (String result) {
-                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
-                },
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
-                initialValue: request.nombre != null ? request.nombre! : "",
-                onChanged: (String result) {
-                  request.nombre = result.isNotEmpty ? result : null;
-                },
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
-              SegmentedInputTitle(
+              SegmentedInputForm(
                 title: "Visible",
-                optionSelected: request.isVisible,
+                value: request.isVisible,
                 onChanged: (bool? newValue) => request.isVisible = newValue,
               ),
-              SegmentedInputTitle(
+              SegmentedInputForm(
                 title: "Activo",
-                optionSelected: request.isActivo,
+                value: request.isActivo,
                 onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
