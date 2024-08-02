@@ -1,21 +1,19 @@
 class Paquete {
-  String paqueteId;
-  int paqueteCodigo;
-  String paqueteNombre;
-  String paquetePath;
-  bool paqueteVisible;
-  bool paqueteActivo;
-  String paqueteIcono;
-  String fechaCreacion;
+  final int codigo;
+  final String nombre;
+  final String path;
+  final bool isVisible;
+  final bool isActivo;
+  final String icono;
+  final String fechaCreacion;
 
   Paquete({
-    required this.paqueteId,
-    required this.paqueteCodigo,
-    required this.paqueteNombre,
-    required this.paquetePath,
-    required this.paqueteVisible,
-    required this.paqueteActivo,
-    required this.paqueteIcono,
+    required this.codigo,
+    required this.nombre,
+    required this.path,
+    required this.isVisible,
+    required this.isActivo,
+    required this.icono,
     required this.fechaCreacion,
   });
 }

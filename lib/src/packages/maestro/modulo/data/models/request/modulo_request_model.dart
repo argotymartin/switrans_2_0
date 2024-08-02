@@ -42,24 +42,19 @@ class ModuloRequestModel extends ModuloRequest {
   static String toPocketBaseFilter(Map<String, dynamic> map) {
     final List<String> conditions = <String>[];
     if (map["modulo_nombre"] != null) {
-      final String moduloNombre = map["modulo_nombre"];
-      conditions.add('modulo_nombre = "$moduloNombre"');
+      conditions.add('modulo_nombre = "${map["modulo_nombre"]}"');
     }
     if (map["modulo_codigo"] != null) {
-      final int moduloCodigo = map["modulo_codigo"];
-      conditions.add('modulo_codigo = $moduloCodigo');
+      conditions.add('modulo_codigo = ${map["modulo_codigo"]}');
     }
     if (map["paquete"] != null) {
-      final String paquete = map["paquete"];
-      conditions.add('paquete = "$paquete"');
+      conditions.add('paquete = "${map["paquete"]}"');
     }
     if (map["modulo_visible"] != null) {
-      final bool moduloVisible = map["modulo_visible"];
-      conditions.add('modulo_visible = $moduloVisible');
+      conditions.add('modulo_visible = ${map["modulo_visible"]}');
     }
     if (map["modulo_activo"] != null) {
-      final bool moduloActivo = map["modulo_activo"];
-      conditions.add('modulo_activo = $moduloActivo');
+      conditions.add('modulo_activo = ${map["modulo_activo"]}');
     }
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
     final String data = queryString.isNotEmpty ? '($queryString)' : '';

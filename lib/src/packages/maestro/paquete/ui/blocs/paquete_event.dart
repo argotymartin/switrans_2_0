@@ -6,19 +6,22 @@ sealed class PaqueteEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitialPaqueteEvent extends PaqueteEvent {
+  const InitialPaqueteEvent();
+}
+
 class SetPaqueteEvent extends PaqueteEvent {
   final PaqueteRequest request;
   const SetPaqueteEvent(this.request);
 }
 
 class UpdatePaqueteEvent extends PaqueteEvent {
-  final PaqueteRequest request;
-  const UpdatePaqueteEvent(this.request);
+  final List<PaqueteRequest> requestList;
+  const UpdatePaqueteEvent(this.requestList);
 }
 
 class GetPaqueteEvent extends PaqueteEvent {
-  final PaqueteRequest request;
-  const GetPaqueteEvent(this.request);
+  const GetPaqueteEvent();
 }
 
 class ActivetePaqueteEvent extends PaqueteEvent {
@@ -26,6 +29,6 @@ class ActivetePaqueteEvent extends PaqueteEvent {
 }
 
 class ErrorFormPaqueteEvent extends PaqueteEvent {
-  final String exception;
-  const ErrorFormPaqueteEvent(this.exception);
+  final String error;
+  const ErrorFormPaqueteEvent(this.error);
 }

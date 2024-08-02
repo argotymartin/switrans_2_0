@@ -1,18 +1,18 @@
 class Pagina {
-  int paginaCodigo;
-  String paginaTexto;
-  String paginaPath;
-  bool paginaVisible;
-  bool paginaActivo;
-  int modulo;
-  String fechaCreacion;
+  final int codigo;
+  final String texto;
+  final String path;
+  final bool isVisible;
+  final bool isActivo;
+  final int modulo;
+  final String fechaCreacion;
 
   Pagina({
-    required this.paginaCodigo,
-    required this.paginaTexto,
-    required this.paginaPath,
-    required this.paginaVisible,
-    required this.paginaActivo,
+    required this.codigo,
+    required this.texto,
+    required this.path,
+    required this.isVisible,
+    required this.isActivo,
     required this.modulo,
     required this.fechaCreacion,
   });

@@ -20,7 +20,7 @@ class PaginaCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == PaginaStatus.succes) {
-          context.read<PaginaBloc>().request = PaginaRequest(nombre: state.pagina!.paginaTexto);
+          context.read<PaginaBloc>().request = PaginaRequest(codigo: state.pagina!.codigo);
           context.read<PaginaBloc>().add(const GetPaginaEvent());
           context.go('/maestros/pagina/buscar');
           Preferences.isResetForm = false;

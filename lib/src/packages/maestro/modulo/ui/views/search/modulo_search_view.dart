@@ -94,7 +94,7 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
-          state.status == ModuloStatus.error ? ErrorModal(title: state.error!) : const SizedBox(),
+          if (state.status == ModuloStatus.error) ErrorModal(title: state.error!),
         ],
       ),
     );

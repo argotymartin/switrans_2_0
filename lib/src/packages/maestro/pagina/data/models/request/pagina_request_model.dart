@@ -44,25 +44,19 @@ class PaginaRequestModel extends PaginaRequest {
   static String toPocketBaseFilter(Map<String, dynamic> map) {
     final List<String> conditions = <String>[];
     if (map["pagina_texto"] != null) {
-      final String moduloTexto = map["pagina_texto"];
-      conditions.add('pagina_texto = "$moduloTexto"');
+      conditions.add('pagina_texto = "${map["pagina_texto"]}"');
     }
     if (map["pagina_codigo"] != null) {
-      final int paginaCodigo = map["pagina_codigo"];
-      conditions.add('pagina_codigo = $paginaCodigo');
+      conditions.add('pagina_codigo = ${map["pagina_codigo"]}');
     }
     if (map["pagina_visible"] != null) {
-      final bool paginaVisible = map["pagina_visible"];
-      conditions.add('pagina_visible = $paginaVisible');
+      conditions.add('pagina_visible = ${map["pagina_visible"]}');
     }
     if (map["pagina_activo"] != null) {
-      final String moduloActivo = map["pagina_activo"];
-      conditions.add('pagina_activo = $moduloActivo');
+      conditions.add('pagina_activo = ${map["pagina_activo"]}');
     }
-
     if (map["modulo"] != null) {
-      final String modulo = map["modulo"];
-      conditions.add('modulo = "$modulo"');
+      conditions.add('modulo = "${map["modulo"]}"');
     }
     final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
     final String data = queryString.isNotEmpty ? '($queryString)' : '';

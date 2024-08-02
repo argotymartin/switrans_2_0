@@ -1,6 +1,6 @@
 class TipoDocumentoAccionDocumento {
-  int codigo;
-  String nombre;
+  final int codigo;
+  final String nombre;
   TipoDocumentoAccionDocumento({
     required this.codigo,
     required this.nombre,

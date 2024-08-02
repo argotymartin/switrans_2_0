@@ -95,6 +95,7 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
+          if (state.status == PaginaStatus.error) ErrorModal(title: state.error),
         ],
       ),
     );
@@ -128,13 +129,13 @@ class _BuildDataTableState extends State<_BuildDataTable> {
 
     Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina, AutocompleteSelect autocompleteSelect) {
       return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: pagina.paginaCodigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: pagina.paginaTexto, edit: true),
-        'path': DataItemGrid(type: Tipo.text, value: pagina.paginaPath, edit: false),
+        'codigo': DataItemGrid(type: Tipo.item, value: pagina.codigo, edit: false),
+        'nombre': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
+        'path': DataItemGrid(type: Tipo.text, value: pagina.path, edit: false),
         'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, autocompleteSelect: autocompleteSelect),
         'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
-        'visible': DataItemGrid(type: Tipo.boolean, value: pagina.paginaVisible, edit: true),
-        'activo': DataItemGrid(type: Tipo.boolean, value: pagina.paginaActivo, edit: true),
+        'visible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
+        'activo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
       };
     }
 

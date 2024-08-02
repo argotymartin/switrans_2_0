@@ -14,7 +14,7 @@ class CustomFunctions {
   }
 
   static String formatPath(String text) {
-    return "/${text.replaceAll(RegExp(r'\/'), '_').replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(' ', '_')}";
+    return "/${text.toLowerCase().replaceAll(RegExp(r'\/'), '_').replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(' ', '_')}";
   }
 
   static String capitalize(String text) {
@@ -23,5 +23,4 @@ class CustomFunctions {
     }
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
-
 }
