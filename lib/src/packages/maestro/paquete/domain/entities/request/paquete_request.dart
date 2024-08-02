@@ -1,28 +1,29 @@
 class PaqueteRequest {
-  late int? paqueteCodigo;
-  final String? paqueteNombre;
-  late String? paquetePath;
-  final bool? paqueteVisible;
-  final bool? paqueteActivo;
-  final String? paqueteIcono;
+  int? codigo;
+  String? nombre;
+  String? path;
+  bool? isVisible;
+  bool? isActivo;
+  String? icono;
 
   PaqueteRequest({
-    this.paqueteCodigo,
-    this.paqueteNombre,
-    this.paquetePath,
-    this.paqueteVisible,
-    this.paqueteActivo,
-    this.paqueteIcono,
+    this.codigo,
+    this.nombre,
+    this.path,
+    this.isVisible,
+    this.isActivo,
+    this.icono,
   });
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'codigo': paqueteCodigo,
-      'nombre': paqueteNombre,
-      'path': paquetePath,
-      'visible': paqueteVisible,
-      'icono': paqueteIcono,
-    };
+  bool hasNonNullField() {
+    return codigo != null || nombre != null || path != null || isVisible != null || isActivo != null;
   }
 
+  void clean() {
+    codigo = null;
+    nombre = null;
+    path = null;
+    isVisible = null;
+    isActivo = null;
+  }
 }

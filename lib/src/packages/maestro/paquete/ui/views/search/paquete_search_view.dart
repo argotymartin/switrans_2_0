@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/paquete_request_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/request/paquete_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/segmented_input_title.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -14,57 +13,47 @@ class PaqueteSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PaqueteBloc, PaqueteState>(
+    return BlocConsumer<PaqueteBloc, PaqueteState>(
       listener: (BuildContext context, PaqueteState state) {
-        if (state is PaqueteExceptionState) {
+        if (state.status == PaqueteStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              _BluildDataTable(),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, PaqueteState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+                const _BluildDataTable(),
+              ],
+            ),
+            if (state.status == PaqueteStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final PaqueteState state;
+  const _BuildFieldsForm(this.state);
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
+
     final PaqueteBloc paqueteBloc = context.read<PaqueteBloc>();
-    bool? isVisible;
-    bool? isActivo;
+    final PaqueteRequest request = paqueteBloc.request;
 
     void onPressed() {
-      bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty && isVisible == null && isActivo == null;
-
-      if (isCampoVacio) {
-        isValid = false;
+      if (request.hasNonNullField()) {
+        paqueteBloc.add(const GetPaqueteEvent());
+      } else {
         paqueteBloc.add(const ErrorFormPaqueteEvent("Por favor diligenciar por lo menos un campo del formulario"));
-      }
-
-      if (isValid) {
-        final PaqueteRequest request = PaqueteRequest(
-          paqueteNombre: nombreController.text,
-          paqueteCodigo: int.tryParse(codigoController.text),
-          paqueteVisible: isVisible,
-          paqueteActivo: isActivo,
-        );
-        context.read<PaqueteBloc>().add(GetPaqueteEvent(request));
       }
     }
 
@@ -75,13 +64,32 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              SegmentedInputTitle(title: "Visible", optionSelected: isVisible, onChanged: (bool? newValue) => isVisible = newValue),
-              SegmentedInputTitle(title: "Activo", optionSelected: isActivo, onChanged: (bool? newValue) => isActivo = newValue),
+              NumberInputForm(
+                title: "Codigo",
+                value: request.codigo,
+                autofocus: true,
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
+              ),
+              TextInputForm(
+                title: "Nombre",
+                value: request.nombre,
+                typeInput: TypeInput.lettersAndNumbers,
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
+              ),
+              SegmentedInputForm(
+                title: "Visible",
+                value: request.isVisible,
+                onChanged: (bool? newValue) => request.isVisible = newValue,
+              ),
+              SegmentedInputForm(
+                title: "Activo",
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
+              ),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
+          if (state.status == PaqueteStatus.error) ErrorModal(title: state.error!),
         ],
       ),
     );
@@ -100,33 +108,35 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(List<Map<String, dynamic>> event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      for (final Map<String, dynamic> map in listUpdate) {
-        final PaqueteRequest request = PaqueteRequestModel.fromMap(map);
-        context.read<PaqueteBloc>().add(UpdatePaqueteEvent(request));
-      }
-    }
-
-    Map<String, DataItemGrid> buildPlutoRowData(Paquete paquete) {
-      return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: paquete.paqueteCodigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: paquete.paqueteNombre, edit: true),
-        'path': DataItemGrid(type: Tipo.text, value: paquete.paquetePath, edit: false),
-        'icono': DataItemGrid(type: Tipo.text, value: paquete.paqueteIcono, edit: true),
-        'fecha_creacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
-        'visible': DataItemGrid(type: Tipo.boolean, value: paquete.paqueteVisible, edit: true),
-        'activo': DataItemGrid(type: Tipo.boolean, value: paquete.paqueteActivo, edit: true),
-      };
-    }
-
     return BlocBuilder<PaqueteBloc, PaqueteState>(
       builder: (BuildContext context, PaqueteState state) {
-        if (state is PaqueteConsultedState) {
+        if (state.status == PaqueteStatus.consulted) {
+          void onRowChecked(List<Map<String, dynamic>> event) {
+            listUpdate.clear();
+            setState(() => listUpdate.addAll(event));
+          }
+
+          void onPressedSave() {
+            final List<PaqueteRequest> requestList = <PaqueteRequest>[];
+            for (final Map<String, dynamic> map in listUpdate) {
+              final PaqueteRequest request = PaqueteRequestModel.fromMap(map);
+              requestList.add(request);
+            }
+            context.read<PaqueteBloc>().add(UpdatePaqueteEvent(requestList));
+          }
+
+          Map<String, DataItemGrid> buildPlutoRowData(Paquete paquete) {
+            return <String, DataItemGrid>{
+              'codigo': DataItemGrid(type: Tipo.item, value: paquete.codigo, edit: false),
+              'nombre': DataItemGrid(type: Tipo.text, value: paquete.nombre, edit: true),
+              'path': DataItemGrid(type: Tipo.text, value: paquete.path, edit: false),
+              'icono': DataItemGrid(type: Tipo.text, value: paquete.icono, edit: true),
+              'fecha_creacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
+              'visible': DataItemGrid(type: Tipo.boolean, value: paquete.isVisible, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: paquete.isActivo, edit: true),
+            };
+          }
+
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final Paquete paquete in state.paquetes) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(paquete);

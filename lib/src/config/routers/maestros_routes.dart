@@ -14,6 +14,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
@@ -192,12 +193,18 @@ class MaestrosRoutes {
     const String modulePath = "paquete";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return MenuLayout(child: child);
+        return BlocProvider<PaqueteBloc>(
+          create: (_) => PaqueteBloc(injector())..add(const InitialPaqueteEvent()),
+          child: MenuLayout(child: child),
+        );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<PaqueteBloc>().add(const InitialPaqueteEvent());
+            }
             return const PaqueteCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,

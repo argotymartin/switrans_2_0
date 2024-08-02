@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/field_modulo.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -20,7 +20,7 @@ class PaginaCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == PaginaStatus.succes) {
-          context.read<PaginaBloc>().request = PaginaRequest(nombre: state.pagina!.paginaTexto);
+          context.read<PaginaBloc>().request = PaginaRequest(codigo: state.pagina!.codigo);
           context.read<PaginaBloc>().add(const GetPaginaEvent());
           context.go('/maestros/pagina/buscar');
           Preferences.isResetForm = false;
@@ -64,14 +64,20 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 3,
-                initialValue: request.nombre != null ? request.nombre! : "",
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
-              FieldModulo(request.codigo),
+              AutocompleteInputForm(
+                title: "Modulos",
+                entries: paginaBloc.state.entriesModulos,
+                value: request.modulo,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.modulo = result.codigo,
+              ),
             ],
           ),
           FormButton(

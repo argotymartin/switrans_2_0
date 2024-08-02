@@ -7,22 +7,13 @@ class DataItemGrid {
   final dynamic value;
   final bool edit;
   final List<String>? dataList;
-  final AutocompleteSelect? autocompleteSelect;
+  final List<EntryAutocomplete>? entryMenus;
 
   DataItemGrid({
     required this.type,
     required this.value,
     required this.edit,
     this.dataList,
-    this.autocompleteSelect,
-  });
-}
-
-class AutocompleteSelect {
-  final List<EntryAutocomplete> entryMenus;
-  final int entryCodigoSelected;
-  AutocompleteSelect({
-    required this.entryMenus,
-    required this.entryCodigoSelected,
+    this.entryMenus,
   });
 }

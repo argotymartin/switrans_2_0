@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -65,18 +65,25 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 autofocus: true,
-                typeInput: TypeInput.lettersAndNumbers,
-                onChanged: (String result) {
-                  request.nombre = result.isNotEmpty ? result.toLowerCase() : null;
-                },
-                initialValue: request.nombre != null ? request.nombre! : "",
                 minLength: 3,
+                typeInput: TypeInput.lettersAndNumbers,
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toLowerCase() : null,
               ),
-              FieldTipoDocumento(entryCodigoSelected: request.tipoDocumento),
-              SwitchBoxInputTitle(title: "Es Naturaleza Inversa", onChanged: (bool value) => isNaturalezaInversa = value),
+              AutocompleteInputForm(
+                entries: accionDocumentoBloc.state.entriesTiposDocumento,
+                title: "Tipo Documento",
+                value: request.tipoDocumento,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.tipoDocumento = result.codigo,
+              ),
+              SwitchBoxInputForm(
+                title: "Es Naturaleza Inversa",
+                onChanged: (bool value) => isNaturalezaInversa = value,
+              ),
             ],
           ),
           FormButton(

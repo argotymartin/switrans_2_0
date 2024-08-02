@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/request/accion_documento_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/field_tipo_documento.dart';
+import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -63,23 +63,24 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(
+              NumberInputForm(
                 title: "Codigo",
+                value: request.codigo,
                 autofocus: true,
-                initialValue: request.codigo != null ? "${request.codigo}" : "",
-                onChanged: (String result) {
-                  request.codigo = result.isNotEmpty ? int.parse(result) : null;
-                },
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
-              TextInputTitle(
+              TextInputForm(
                 title: "Nombre",
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
-                initialValue: request.nombre != null ? request.nombre! : "",
-                onChanged: (String result) {
-                  request.nombre = result.isNotEmpty ? result : null;
-                },
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
-              FieldTipoDocumento(entryCodigoSelected: request.tipoDocumento),
+              AutocompleteInputForm(
+                entries: accionDocumentoBloc.state.entriesTiposDocumento,
+                title: "Tipo Documento",
+                value: request.tipoDocumento,
+                onChanged: (EntryAutocomplete result) => request.tipoDocumento = result.codigo,
+              ),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
@@ -98,32 +99,32 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
-  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
-  void onRowChecked(List<Map<String, dynamic>> event) {
-    listUpdate.clear();
-    setState(() => listUpdate.addAll(event));
-  }
-
-  void onPressedSave() {
-    final List<AccionDocumentoRequest> requestList = <AccionDocumentoRequest>[];
-    for (final Map<String, dynamic> map in listUpdate) {
-      final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromTable(map);
-      requestList.add(request);
-    }
-    context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (BuildContext context, AccionDocumentoState state) {
         if (state.status == AccionDocumentoStatus.consulted) {
-          Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento, AutocompleteSelect autocompleteSelect) {
+          final List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
+          void onRowChecked(List<Map<String, dynamic>> event) {
+            listUpdate.clear();
+            setState(() => listUpdate.addAll(event));
+          }
+
+          void onPressedSave() {
+            final List<AccionDocumentoRequest> requestList = <AccionDocumentoRequest>[];
+            for (final Map<String, dynamic> map in listUpdate) {
+              final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromTable(map);
+              requestList.add(request);
+            }
+            context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
+          }
+
+          Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento) {
+            final List<EntryAutocomplete> entryMenus = state.entriesTiposDocumento;
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
-              'tipo_documento':
-                  DataItemGrid(type: Tipo.select, value: accionDocumento.tipoNombre, edit: true, autocompleteSelect: autocompleteSelect),
+              'tipo_documento': DataItemGrid(type: Tipo.select, value: accionDocumento.tipoCodigo, edit: true, entryMenus: entryMenus),
               'naturaleza_inversa': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esInverso, edit: true),
               'activo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esActivo, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
@@ -135,11 +136,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
 
           for (final AccionDocumento accionDocumento in state.accionDocumentos) {
-            final AutocompleteSelect autocompleteSelect = AutocompleteSelect(
-              entryMenus: state.entriesTiposDocumento,
-              entryCodigoSelected: accionDocumento.tipoCodigo,
-            );
-            final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento, autocompleteSelect);
+            final Map<String, DataItemGrid> rowData = buildPlutoRowData(accionDocumento);
             plutoRes.add(rowData);
           }
           if (plutoRes.isEmpty) {

@@ -11,47 +11,73 @@ part 'paquete_state.dart';
 
 class PaqueteBloc extends Bloc<PaqueteEvent, PaqueteState> {
   final AbstractPaqueteRepository _repository;
-  List<Paquete> paquetes = <Paquete>[];
 
-  PaqueteBloc(this._repository) : super(const PaqueteInitialState()) {
+  PaqueteRequest _request = PaqueteRequest();
+  PaqueteBloc(this._repository) : super(const PaqueteState().initial()) {
+    on<InitialPaqueteEvent>(_onInitialPaquete);
+    on<GetPaqueteEvent>(_onGetPaquete);
     on<SetPaqueteEvent>(_onSetPaquete);
     on<UpdatePaqueteEvent>(_onUpdatePaquete);
-    on<GetPaqueteEvent>(_onGetPaquete);
     on<ErrorFormPaqueteEvent>(_onErrorFormPaquete);
   }
 
+  Future<void> _onInitialPaquete(InitialPaqueteEvent event, Emitter<PaqueteState> emit) async {
+    request.clean();
+    emit(state.copyWith(status: PaqueteStatus.initial));
+  }
+
+  Future<void> _onGetPaquete(GetPaqueteEvent event, Emitter<PaqueteState> emit) async {
+    emit(state.copyWith(status: PaqueteStatus.loading));
+    final DataState<List<Paquete>> response = await _repository.getPaquetesService(request);
+    if (response.data != null) {
+      emit(state.copyWith(status: PaqueteStatus.consulted, paquetes: response.data));
+    } else {
+      emit(state.copyWith(status: PaqueteStatus.exception, exception: response.error));
+    }
+  }
+
   Future<void> _onSetPaquete(SetPaqueteEvent event, Emitter<PaqueteState> emit) async {
-    emit(const PaqueteLoadingState());
+    emit(state.copyWith(status: PaqueteStatus.loading));
     final DataState<Paquete> response = await _repository.setPaqueteService(event.request);
     if (response.data != null) {
-      emit(PaqueteSuccessState(paquete: response.data));
+      emit(state.copyWith(status: PaqueteStatus.succes, paquete: response.data));
     } else {
-      emit(PaqueteExceptionState(exception: response.error));
+      emit(state.copyWith(status: PaqueteStatus.exception, exception: response.error));
     }
   }
 
   Future<void> _onUpdatePaquete(UpdatePaqueteEvent event, Emitter<PaqueteState> emit) async {
-    emit(const PaqueteLoadingState());
-    final DataState<Paquete> response = await _repository.updatePaqueteService(event.request);
-    if (response.data != null) {
-      emit(PaqueteSuccessState(paquete: response.data));
-    } else {
-      emit(PaqueteExceptionState(exception: response.error));
-    }
-  }
+    emit(state.copyWith(status: PaqueteStatus.loading));
+    final List<DataState<Paquete>> dataStateList = await Future.wait(
+      event.requestList.map((PaqueteRequest request) => _repository.updatePaqueteService(request)),
+    );
 
-  Future<void> _onGetPaquete(GetPaqueteEvent event, Emitter<PaqueteState> emit) async {
-    emit(const PaqueteLoadingState());
-    final DataState<List<Paquete>> response = await _repository.getPaquetesService(event.request);
-    if (response.data != null) {
-      emit(PaqueteConsultedState(paquetes: response.data!));
-    } else {
-      emit(PaqueteExceptionState(exception: response.error));
+    final List<Paquete> paquetes = <Paquete>[];
+    final List<DioException> exceptions = <DioException>[];
+
+    for (final DataState<Paquete> dataState in dataStateList) {
+      if (dataState.data != null) {
+        paquetes.add(dataState.data!);
+      } else if (dataState.error != null) {
+        exceptions.add(dataState.error!);
+      }
+    }
+
+    if (paquetes.isNotEmpty) {
+      emit(state.copyWith(status: PaqueteStatus.consulted, paquetes: paquetes));
+    }
+
+    if (exceptions.isNotEmpty) {
+      for (final DioException exception in exceptions) {
+        emit(state.copyWith(status: PaqueteStatus.exception, exception: exception));
+      }
     }
   }
 
   Future<void> _onErrorFormPaquete(ErrorFormPaqueteEvent event, Emitter<PaqueteState> emit) async {
-    emit(const PaqueteLoadingState());
-    emit(PaqueteErrorFormState(error: event.exception));
+    emit(state.copyWith(status: PaqueteStatus.error, error: event.error));
   }
+
+  PaqueteRequest get request => _request;
+  set request(PaqueteRequest value) => _request = value;
 }

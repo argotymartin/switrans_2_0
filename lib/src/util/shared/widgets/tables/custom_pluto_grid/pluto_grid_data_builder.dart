@@ -63,8 +63,6 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.select) {
-          final AutocompleteSelect data = v.autocompleteSelect!;
-
           columns.add(
             PlutoColumn(
               // enableEditingMode: isEdit,
@@ -76,7 +74,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               type: PlutoColumnType.text(),
               renderer: (PlutoColumnRendererContext rendererContext) => _BuildFieldAutoComplete(
                 renderContext: rendererContext,
-                autocompleteSelect: data,
+                entryMenus: v.entryMenus!,
               ),
             ),
           );
@@ -293,10 +291,10 @@ class _BuildFieldCheckBox extends StatelessWidget {
 
 class _BuildFieldAutoComplete extends StatelessWidget {
   final PlutoColumnRendererContext renderContext;
-  final AutocompleteSelect autocompleteSelect;
+  final List<EntryAutocomplete> entryMenus;
   const _BuildFieldAutoComplete({
     required this.renderContext,
-    required this.autocompleteSelect,
+    required this.entryMenus,
   });
 
   @override
@@ -306,7 +304,7 @@ class _BuildFieldAutoComplete extends StatelessWidget {
         padding: const EdgeInsets.only(top: 8),
         child: AutocompleteInput2(
           entryCodigoSelected: renderContext.cell.value,
-          entries: autocompleteSelect.entryMenus,
+          entries: entryMenus,
           onPressed: (EntryAutocomplete result) {
             renderContext.cell.value = result.codigo;
           },
