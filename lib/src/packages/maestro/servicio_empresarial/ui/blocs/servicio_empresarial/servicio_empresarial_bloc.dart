@@ -23,7 +23,9 @@ class ServicioEmpresarialBloc extends Bloc<ServicioEmpresarialEvent, ServicioEmp
   }
 
   Future<void> _onInitializationServicioEmpresarial(
-      InitializationServicioEmpresarialEvent event, Emitter<ServicioEmpresarialState> emit) async {
+    InitializationServicioEmpresarialEvent event,
+    Emitter<ServicioEmpresarialState> emit,
+  ) async {
     emit(state.copyWith(status: ServicioEmpresarialStatus.loading));
     final DataState<List<ServicioEmpresarial>> resp = await _repository.getServicioEmpresarialService(_request);
     if (resp.data != null) {
