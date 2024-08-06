@@ -3,14 +3,14 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/en
 class ServicioEmpresarialRequestModel extends ServicioEmpresarialRequest {
   ServicioEmpresarialRequestModel({
     super.codigo,
-    super.esActivo,
+    super.isActivo,
     super.nombre,
     super.usuario,
   });
 
   factory ServicioEmpresarialRequestModel.fromTable(Map<String, dynamic> map) => ServicioEmpresarialRequestModel(
         codigo: map['codigo'],
-        esActivo: map['activo'],
+        isActivo: map['activo'],
         nombre: map['nombre'],
       );
 }

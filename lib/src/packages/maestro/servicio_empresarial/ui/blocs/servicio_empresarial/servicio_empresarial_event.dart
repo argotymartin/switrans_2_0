@@ -7,6 +7,10 @@ sealed class ServicioEmpresarialEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitializationServicioEmpresarialEvent extends ServicioEmpresarialEvent {
+  const InitializationServicioEmpresarialEvent();
+}
+
 class GetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
   const GetServicioEmpresarialEvent();
 }

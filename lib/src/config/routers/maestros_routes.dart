@@ -144,7 +144,10 @@ class MaestrosRoutes {
     const String modulePath = "servicio_empresarial";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return MenuLayout(child: child);
+        return BlocProvider<ServicioEmpresarialBloc>(
+          create: (_) => ServicioEmpresarialBloc(injector())..add(const InitializationServicioEmpresarialEvent()),
+          child: MenuLayout(child: child),
+        );
       },
       routes: <RouteBase>[
         GoRoute(

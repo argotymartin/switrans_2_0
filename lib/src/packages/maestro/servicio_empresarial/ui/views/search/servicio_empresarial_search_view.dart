@@ -37,6 +37,7 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
                 const _BluildDataTable(),
               ],
             ),
+            if (state.status == ServicioEmpresarialStatus.loading) const LoadingModal(),
           ],
         );
       },
@@ -80,6 +81,11 @@ class _BuildFieldsForm extends StatelessWidget {
                 value: request.nombre != null ? request.nombre! : "",
                 typeInput: TypeInput.lettersAndNumbers,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
+              ),
+              SegmentedInputForm(
+                title: "Activo",
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
           ),
