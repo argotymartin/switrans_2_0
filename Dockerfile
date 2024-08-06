@@ -1,31 +1,33 @@
 FROM ubuntu:22.04
 
-# Installing necessary dependencies
-RUN apt update
-RUN apt install -y curl git unzip openjdk-8-jdk wget
+#RUN which bash file mkdir rm
+RUN apt update -y && apt upgrade -y &&  \
+    apt install -y curl git unzip openjdk-8-jdk wget clang cmake ninja-build pkg-config libgtk-3-dev \
+    xz-utils zip libglu1-mesa iputils-ping
 
-# Intalaciones para linux
-RUN apt install -y clang cmake ninja-build pkg-config libgtk-3-dev
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt install -y nodejs
 
-# Configuring the working directory and user to use
 ARG USER=root
 USER $USER
 WORKDIR /home/$USER
 
-# Download Flutter SDK estable
-# RUN git clone https://github.com/flutter/flutter.git
-
-# Downoload Flutter SDK Tag Version
 RUN git clone -b 3.22.0 https://github.com/flutter/flutter.git
+#COPY flutter/ flutter/
 
-# Entornos Virtuales
-ENV PATH $PATH:/home/$USER/flutter/bin
+ENV PATH="/home/root/flutter/bin:${PATH}"
+COPY /web /app/web
+
+WORKDIR /app/web
+RUN npm install
+
 
 WORKDIR /app
 
-ADD pubspec.yaml ./
+#RUN flutter pub get
 
-RUN flutter pub get
+#WORKDIR /app/web
 
-# Set base command (use ENTRYPOINT)
-#ENTRYPOINT ["flutter", "analyze"]
+CMD ["tail", "-f", "/dev/null"]
+#CMD ["node", "web/app.js"]
+
