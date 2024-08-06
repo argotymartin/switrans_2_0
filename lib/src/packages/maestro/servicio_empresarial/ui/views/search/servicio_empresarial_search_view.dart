@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/models/request/servicio_empresarial_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
@@ -12,55 +14,51 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
+    return BlocConsumer<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (BuildContext context, ServicioEmpresarialState state) {
-        if (state is ServicioEmpresarialExceptionState) {
-          CustomToast.showError(context, state.exception);
+        if (state.status == ServicioEmpresarialStatus.exception) {
+          CustomToast.showError(context, state.exception!);
+        }
+
+        if (state.status == ServicioEmpresarialStatus.succes) {
+          context.read<ServicioEmpresarialBloc>().add(const GetServicioEmpresarialEvent());
+          Preferences.isResetForm = false;
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm()),
-              _BluildDataTable(),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, ServicioEmpresarialState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
+                const _BluildDataTable(),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final ServicioEmpresarialState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nombreController = TextEditingController();
-    final TextEditingController codigoController = TextEditingController();
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     final ServicioEmpresarialBloc accionDocumentoBloc = context.read<ServicioEmpresarialBloc>();
+    final ServicioEmpresarialRequest request = accionDocumentoBloc.request;
 
     void onPressed() {
-      bool isValid = formKey.currentState!.validate();
-      final bool isCampoVacio = nombreController.text.isEmpty && codigoController.text.isEmpty;
-
-      if (isCampoVacio) {
-        isValid = false;
+      if (request.hasNonNullField()) {
+        accionDocumentoBloc.add(const GetServicioEmpresarialEvent());
+      } else {
         accionDocumentoBloc.add(const ErrorFormServicioEmpresarialEvent("Por favor diligenciar por lo menos un campo del formulario"));
-      }
-      if (isValid) {
-        final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(
-          nombre: nombreController.text,
-          codigo: int.tryParse(codigoController.text),
-        );
-        accionDocumentoBloc.add(GetServicioEmpresarialEvent(request));
       }
     }
 
@@ -71,11 +69,22 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              NumberInputTitle(title: "Codigo", controller: codigoController),
-              TextInputTitle(title: "Nombre", controller: nombreController, typeInput: TypeInput.lettersAndNumbers),
+              NumberInputForm(
+                title: "Codigo",
+                value: request.codigo,
+                autofocus: true,
+                onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
+              ),
+              TextInputForm(
+                title: "Nombre",
+                value: request.nombre != null ? request.nombre! : "",
+                typeInput: TypeInput.lettersAndNumbers,
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
+              ),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
+          if (state.status == ServicioEmpresarialStatus.error) ErrorModal(title: state.error!),
         ],
       ),
     );
@@ -93,32 +102,34 @@ class _BluildDataTableState extends State<_BluildDataTable> {
   List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
   @override
   Widget build(BuildContext context) {
-    void onRowChecked(List<Map<String, dynamic>> event) {
-      listUpdate.clear();
-      setState(() => listUpdate.addAll(event));
-    }
-
-    void onPressedSave() {
-      for (final Map<String, dynamic> map in listUpdate) {
-        final ServicioEmpresarialRequest request = ServicioEmpresarialRequest.fromMapTable(map);
-        context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(request));
-      }
-    }
-
-    Map<String, DataItemGrid> buildPlutoRowData(ServicioEmpresarial servicio) {
-      return <String, DataItemGrid>{
-        'codigo': DataItemGrid(type: Tipo.item, value: servicio.codigo, edit: false),
-        'nombre': DataItemGrid(type: Tipo.text, value: servicio.nombre, edit: true),
-        'activo': DataItemGrid(type: Tipo.boolean, value: servicio.esActivo, edit: true),
-        'fecha_creacion': DataItemGrid(type: Tipo.date, value: servicio.fechaCreacion, edit: false),
-        'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: servicio.fechaModificacion, edit: false),
-        'usuario': DataItemGrid(type: Tipo.text, value: servicio.usuario, edit: false),
-      };
-    }
-
     return BlocBuilder<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       builder: (BuildContext context, ServicioEmpresarialState state) {
-        if (state is ServicioEmpresarialConsultedState) {
+        if (state.status == ServicioEmpresarialStatus.consulted) {
+          void onRowChecked(List<Map<String, dynamic>> event) {
+            listUpdate.clear();
+            setState(() => listUpdate.addAll(event));
+          }
+
+          void onPressedSave() {
+            final List<ServicioEmpresarialRequest> requestList = <ServicioEmpresarialRequest>[];
+            for (final Map<String, dynamic> map in listUpdate) {
+              final ServicioEmpresarialRequest request = ServicioEmpresarialRequestModel.fromTable(map);
+              requestList.add(request);
+            }
+            context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(requestList));
+          }
+
+          Map<String, DataItemGrid> buildPlutoRowData(ServicioEmpresarial servicio) {
+            return <String, DataItemGrid>{
+              'codigo': DataItemGrid(type: Tipo.item, value: servicio.codigo, edit: false),
+              'nombre': DataItemGrid(type: Tipo.text, value: servicio.nombre, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: servicio.esActivo, edit: true),
+              'fecha_creacion': DataItemGrid(type: Tipo.date, value: servicio.fechaCreacion, edit: false),
+              'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: servicio.fechaModificacion, edit: false),
+              'usuario': DataItemGrid(type: Tipo.text, value: servicio.usuario, edit: false),
+            };
+          }
+
           final List<Map<String, DataItemGrid>> plutoRes = <Map<String, DataItemGrid>>[];
           for (final ServicioEmpresarial servico in state.serviciosEmpresariales) {
             final Map<String, DataItemGrid> rowData = buildPlutoRowData(servico);

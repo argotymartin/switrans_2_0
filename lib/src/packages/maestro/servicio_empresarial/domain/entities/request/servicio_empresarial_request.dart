@@ -1,8 +1,8 @@
 class ServicioEmpresarialRequest {
-  final int? codigo;
-  final String? nombre;
-  final int? usuario;
-  final bool? esActivo;
+  int? codigo;
+  String? nombre;
+  int? usuario;
+  bool? esActivo;
 
   ServicioEmpresarialRequest({
     this.codigo,
@@ -11,9 +11,15 @@ class ServicioEmpresarialRequest {
     this.esActivo,
   });
 
-  factory ServicioEmpresarialRequest.fromMapTable(Map<String, dynamic> map) => ServicioEmpresarialRequest(
-        codigo: map['codigo'],
-        nombre: map['nombre'],
-        esActivo: map['activo'],
-      );
+  bool hasNonNullField() {
+    return codigo != null || nombre != null || usuario != null || esActivo != null;
+  }
+
+  void clean() {
+    codigo = null;
+    nombre = null;
+    usuario = null;
+    esActivo = null;
+  }
+
 }

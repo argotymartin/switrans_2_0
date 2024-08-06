@@ -17,6 +17,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
@@ -148,12 +149,22 @@ class MaestrosRoutes {
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
-          builder: (_, __) => const ServicioEmpresarialCreateView(),
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<ServicioEmpresarialBloc>().add(const CleanFormServicioEmpresarialEvent());
+            }
+            return const ServicioEmpresarialCreateView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const ServicoEmpresarialSearchView(),
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<ServicioEmpresarialBloc>().add(const CleanFormServicioEmpresarialEvent());
+            }
+            return const ServicoEmpresarialSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
