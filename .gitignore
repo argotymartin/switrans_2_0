@@ -45,7 +45,6 @@ app.*.map.json
 # Compilacion de Node y Express
 /web/node_modules/
 /web/package-lock.json
-/web/package.json
 /web/server.js
 
 # plugins para sitemas operativos
