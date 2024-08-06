@@ -1,0 +1,38 @@
+services:
+  flutter:
+    image: flutter-image
+    container_name: flutter_container
+    
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "flutter pub get && flutter pub dev"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    networks:
+      switrans_2_0_red: 
+        ipv4_address: 192.168.102.32
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      switrans_2_0_red: 
+        ipv4_address: 192.168.102.33
+
+volumes:
+  mongo_data:
+
+networks:
+  switrans_2_0_red:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.0.0/16
+          gateway: 192.168.102.254
