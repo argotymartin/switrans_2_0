@@ -1,49 +1,32 @@
 part of 'tipo_impuesto_bloc.dart';
 
-sealed class TipoImpuestoState extends Equatable {
+enum TipoImpuestoStatus { initial, loading, succes, consulted, error, exception }
+
+class TipoImpuestoState extends Equatable {
+  final TipoImpuestoStatus? status;
   final TipoImpuesto? tipoImpuesto;
   final List<TipoImpuesto> tipoImpuestos;
   final DioException? exception;
   final String? error;
-  const TipoImpuestoState({this.tipoImpuesto, this.exception, this.tipoImpuestos = const <TipoImpuesto>[], this.error});
-}
+  const TipoImpuestoState({this.status, this.tipoImpuesto, this.exception, this.tipoImpuestos = const <TipoImpuesto>[], this.error});
 
-class TipoImpuestoInitialState extends TipoImpuestoState {
-  const TipoImpuestoInitialState();
+  TipoImpuestoState initial() => const TipoImpuestoState(status: TipoImpuestoStatus.initial);
 
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class TipoImpuestoLoadingState extends TipoImpuestoState {
-  const TipoImpuestoLoadingState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class TipoImpuestoSuccesState extends TipoImpuestoState {
-  const TipoImpuestoSuccesState({super.tipoImpuesto});
-
-  @override
-  List<Object> get props => <Object>[tipoImpuesto!];
-}
-
-class TipoImpuestoConsultedState extends TipoImpuestoState {
-  const TipoImpuestoConsultedState({super.tipoImpuestos});
+  TipoImpuestoState copyWith({
+    TipoImpuestoStatus? status,
+    TipoImpuesto? tipoImpuesto,
+    List<TipoImpuesto>? tipoImpuestos,
+    DioException? exception,
+    String? error,
+  }) =>
+      TipoImpuestoState(
+        status: status ?? this.status,
+        tipoImpuesto: tipoImpuesto ?? this.tipoImpuesto,
+        exception: exception ?? this.exception,
+        tipoImpuestos: tipoImpuestos ?? this.tipoImpuestos,
+        error: error ?? this.error,
+      );
 
   @override
-  List<Object> get props => <Object>[tipoImpuestos];
-}
-
-class TipoImpuestoExceptionState extends TipoImpuestoState {
-  const TipoImpuestoExceptionState({super.exception});
-  @override
-  List<Object> get props => <Object>[exception!];
-}
-
-class TipoImpuestoErrorFormState extends TipoImpuestoState {
-  const TipoImpuestoErrorFormState({super.error});
-  @override
-  List<Object> get props => <Object>[error!];
+  List<Object?> get props => <Object?>[ status, tipoImpuesto, exception, tipoImpuestos, error];
 }
