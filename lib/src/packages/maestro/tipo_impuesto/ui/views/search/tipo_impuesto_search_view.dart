@@ -34,6 +34,7 @@ class TipoImpuestoSearchView extends StatelessWidget {
                 const _BluildDataTable(),
               ],
             ),
+            if (state.status == TipoImpuestoStatus.loading) const LoadingModal(),
           ],
         );
       },
@@ -80,6 +81,11 @@ class _BuildFieldsForm extends StatelessWidget {
                 autofocus: true,
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
+              SegmentedInputForm(
+                title: "Activo",
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
+              ),
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
@@ -124,6 +130,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: tipoImpuesto.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: tipoImpuesto.nombre, edit: true),
               'usuario': DataItemGrid(type: Tipo.text, value: tipoImpuesto.usuario, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: tipoImpuesto.isActivo, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.date, value: tipoImpuesto.fechaCreacion, edit: false),
             };
           }

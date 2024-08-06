@@ -5,8 +5,7 @@ class TipoImpuestoRequestModel extends TipoImpuestoRequest {
     super.codigo,
     super.usuario,
     super.nombre,
-    super.fechaInicio,
-    super.fechaFin,
+    super.isActivo,
   });
 
   factory TipoImpuestoRequestModel.fromRequestPB(TipoImpuestoRequest request) {
@@ -14,15 +13,15 @@ class TipoImpuestoRequestModel extends TipoImpuestoRequest {
       codigo: request.codigo,
       usuario: request.usuario,
       nombre: request.nombre,
-      fechaInicio: request.fechaInicio,
-      fechaFin: request.fechaFin,
+      isActivo: request.isActivo,
     );
   }
 
   factory TipoImpuestoRequestModel.fromTable(Map<String, dynamic> map) => TipoImpuestoRequestModel(
         codigo: map['codigo'],
-        usuario: int.parse(map['usuario']),
+        usuario: map['usuario'] is String ? int.parse(map['usuario']) : map['usuario'],
         nombre: map['nombre'],
+        isActivo: map['activo'],
       );
 
   Map<String, dynamic> toJson() {
@@ -30,6 +29,7 @@ class TipoImpuestoRequestModel extends TipoImpuestoRequest {
       'usuario': usuario,
       'nombre': nombre,
       'codigo': codigo,
+      'is_activo': isActivo,
     };
 
     return data;
@@ -44,6 +44,10 @@ class TipoImpuestoRequestModel extends TipoImpuestoRequest {
 
     if (map["codigo"] != null) {
       conditions.add('codigo = ${map["codigo"]}');
+    }
+
+    if (map["is_activo"] != null) {
+      conditions.add('is_activo = ${map["is_activo"]}');
     }
 
     final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();

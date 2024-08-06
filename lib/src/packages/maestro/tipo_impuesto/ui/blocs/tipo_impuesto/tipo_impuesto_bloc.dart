@@ -13,6 +13,7 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
   final AbstractTipoImpuestoRepository _repository;
   TipoImpuestoRequest _request = TipoImpuestoRequest();
   TipoImpuestoBloc(this._repository) : super(const TipoImpuestoState().initial()) {
+    on<InitializationTipoImpuestoEvent>(_onInitialization);
     on<SetImpuestoEvent>(_onSetImpuesto);
     on<GetImpuestoEvent>(_onGetImpuesto);
     on<UpdateImpuestoEvent>(_onUpdateImpuesto);
@@ -20,9 +21,9 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
     on<CleanFormTipoImpuestoEvent>(_onCleanFormTipoImpuesto);
   }
 
-  Future<void> _onGetImpuesto(GetImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
+  Future<void> _onInitialization(InitializationTipoImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
     emit(state.copyWith(status: TipoImpuestoStatus.loading));
-    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(request);
+    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(_request);
     if (resp.data != null) {
       emit(state.copyWith(status: TipoImpuestoStatus.consulted, tipoImpuestos: resp.data!));
     } else {
@@ -35,6 +36,16 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
     final DataState<TipoImpuesto> resp = await _repository.setTipoImpuestoService(event.request);
     if (resp.data != null) {
       emit(state.copyWith(status: TipoImpuestoStatus.succes, tipoImpuesto: resp.data));
+    } else {
+      emit(state.copyWith(status: TipoImpuestoStatus.exception, exception: resp.error));
+    }
+  }
+
+  Future<void> _onGetImpuesto(GetImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
+    emit(state.copyWith(status: TipoImpuestoStatus.loading));
+    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(request);
+    if (resp.data != null) {
+      emit(state.copyWith(status: TipoImpuestoStatus.consulted, tipoImpuestos: resp.data!));
     } else {
       emit(state.copyWith(status: TipoImpuestoStatus.exception, exception: resp.error));
     }
@@ -67,7 +78,6 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
   }
 
   Future<void> _onErrorFormTipoImpuesto(ErrorFormTipoImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
-    emit(state.copyWith(status: TipoImpuestoStatus.loading));
     emit(state.copyWith(status: TipoImpuestoStatus.error, error: event.error));
   }
 

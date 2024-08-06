@@ -2,24 +2,24 @@ class TipoImpuestoRequest {
   int? codigo;
   int? usuario;
   String? nombre;
-  String? fechaInicio;
-  String? fechaFin;
+  bool? isActivo;
+
 
   TipoImpuestoRequest({
     this.nombre,
     this.usuario,
     this.codigo,
-    this.fechaInicio,
-    this.fechaFin,
+    this.isActivo,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || usuario != null;
+    return codigo != null || nombre != null || usuario != null || isActivo != null;
   }
 
   void clean() {
     codigo = null;
     nombre = null;
     usuario = null;
+    isActivo = null;
   }
 }

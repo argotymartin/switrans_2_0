@@ -13,7 +13,7 @@ class TipoImpuestoCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TipoImpuestoBloc, TipoImpuestoState>(
+    return BlocConsumer<TipoImpuestoBloc, TipoImpuestoState>(
       listener: (BuildContext context, TipoImpuestoState state) {
         if (state.status == TipoImpuestoStatus.exception) {
           CustomToast.showError(context, state.exception!);
@@ -26,18 +26,21 @@ class TipoImpuestoCreateView extends StatelessWidget {
           Preferences.isResetForm = false;
         }
       },
-      child: Stack(
-        children: <Widget>[
-          ListView(
-            padding: const EdgeInsets.only(right: 32, top: 8),
-            physics: const ClampingScrollPhysics(),
-            children: const <Widget>[
-              BuildViewDetail(),
-              CardExpansionPanel(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
-            ],
-          ),
-        ],
-      ),
+      builder: (BuildContext context, TipoImpuestoState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: const <Widget>[
+                BuildViewDetail(),
+                CardExpansionPanel(title: "Registrar Nuevo", icon: Icons.price_change_outlined, child: _BuildFieldsForm()),
+              ],
+            ),
+            if (state.status == TipoImpuestoStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }

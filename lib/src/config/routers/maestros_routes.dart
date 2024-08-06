@@ -121,7 +121,10 @@ class MaestrosRoutes {
     const String modulePath = "tipo_impuesto";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return MenuLayout(child: child);
+        return BlocProvider<TipoImpuestoBloc>(
+          create: (_) => TipoImpuestoBloc(injector())..add(const InitializationTipoImpuestoEvent()),
+          child: MenuLayout(child: child),
+        );
       },
       routes: <RouteBase>[
         GoRoute(
