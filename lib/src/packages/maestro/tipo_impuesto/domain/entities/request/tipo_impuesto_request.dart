@@ -1,42 +1,25 @@
 class TipoImpuestoRequest {
-  final int? codigo;
-  final int? usuario;
-  final String? nombre;
-  final String? fechaInicio;
-  final String? fechaFin;
+  int? codigo;
+  int? usuario;
+  String? nombre;
+  bool? isActivo;
+
 
   TipoImpuestoRequest({
     this.nombre,
     this.usuario,
     this.codigo,
-    this.fechaInicio,
-    this.fechaFin,
+    this.isActivo,
   });
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{
-      'usuario': usuario,
-      'nombre': nombre,
-    };
-    if (codigo != 0) {
-      data['codigo'] = codigo;
-    }
-
-    return data;
+  bool hasNonNullField() {
+    return codigo != null || nombre != null || usuario != null || isActivo != null;
   }
 
-  String toPocketBaseFilter() {
-    final List<String> conditions = <String>[];
-
-    if (nombre!.isNotEmpty) {
-      conditions.add("nombre~'$nombre'");
-    }
-    if (codigo != null) {
-      conditions.add("codigo=$codigo");
-    }
-
-    final String queryString = conditions.isNotEmpty ? conditions.join("&&") : conditions.join();
-    final String data = queryString.isNotEmpty ? "($queryString)" : "";
-    return data;
+  void clean() {
+    codigo = null;
+    nombre = null;
+    usuario = null;
+    isActivo = null;
   }
 }

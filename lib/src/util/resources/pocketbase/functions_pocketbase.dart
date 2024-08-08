@@ -9,7 +9,7 @@ class FunctionsPocketbase {
     final Map<String, dynamic> queryParameters = <String, dynamic>{"sort": "-$field", "perPage": 1};
     final Response<String> response = await dio.get('$url', queryParameters: queryParameters);
     int codigo = 0;
-    if (response.data != null) {
+    if (response.data != null && jsonDecode(response.data!)['items'].length > 0) {
       codigo = jsonDecode(response.data!)["items"][0]["$field"];
     }
     return codigo + 1;

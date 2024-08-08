@@ -29,4 +29,14 @@ class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTi
     }
     return DataFailed<TipoImpuesto>(httpResponse.error!);
   }
+
+  @override
+  Future<DataState<TipoImpuesto>> updateTipoImpuestoService(TipoImpuestoRequest request) async {
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateTipoImpuestoApi(request));
+    if (httpResponse.data != null) {
+      final TipoImpuesto response = TipoImpuestoModel.fromJson(httpResponse.data);
+      return DataSuccess<TipoImpuesto>(response);
+    }
+    return DataFailed<TipoImpuesto>(httpResponse.error!);
+  }
 }

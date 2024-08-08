@@ -7,14 +7,26 @@ sealed class TipoImpuestoEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitializationTipoImpuestoEvent extends TipoImpuestoEvent {
+  const InitializationTipoImpuestoEvent();
+}
+
 class SetImpuestoEvent extends TipoImpuestoEvent {
   final TipoImpuestoRequest request;
   const SetImpuestoEvent(this.request);
 }
 
 class GetImpuestoEvent extends TipoImpuestoEvent {
-  final TipoImpuestoRequest request;
-  const GetImpuestoEvent(this.request);
+  const GetImpuestoEvent();
+}
+
+class UpdateImpuestoEvent extends TipoImpuestoEvent {
+  final List<TipoImpuestoRequest> requestList;
+  const UpdateImpuestoEvent(this.requestList);
+}
+
+class CleanFormTipoImpuestoEvent extends TipoImpuestoEvent {
+  const CleanFormTipoImpuestoEvent();
 }
 
 class ActiveteTipoImpuestoEvent extends TipoImpuestoEvent {

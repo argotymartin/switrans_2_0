@@ -5,4 +5,5 @@ import 'package:switrans_2_0/src/util/resources/data_state.dart';
 abstract class AbstractTipoImpuestoRepository {
   Future<DataState<List<TipoImpuesto>>> getTipoImpuestosService(TipoImpuestoRequest request);
   Future<DataState<TipoImpuesto>> setTipoImpuestoService(TipoImpuestoRequest request);
+  Future<DataState<TipoImpuesto>> updateTipoImpuestoService(TipoImpuestoRequest request);
 }
