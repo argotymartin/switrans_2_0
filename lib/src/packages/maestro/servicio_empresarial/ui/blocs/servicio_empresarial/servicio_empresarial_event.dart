@@ -7,14 +7,17 @@ sealed class ServicioEmpresarialEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitializationServicioEmpresarialEvent extends ServicioEmpresarialEvent {
+  const InitializationServicioEmpresarialEvent();
+}
+
 class GetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
-  final ServicioEmpresarialRequest request;
-  const GetServicioEmpresarialEvent(this.request);
+  const GetServicioEmpresarialEvent();
 }
 
 class UpdateServicioEmpresarialEvent extends ServicioEmpresarialEvent {
-  final ServicioEmpresarialRequest request;
-  const UpdateServicioEmpresarialEvent(this.request);
+  final List<ServicioEmpresarialRequest> requestList;
+  const UpdateServicioEmpresarialEvent(this.requestList);
 }
 
 class SetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
@@ -25,4 +28,8 @@ class SetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
 class ErrorFormServicioEmpresarialEvent extends ServicioEmpresarialEvent {
   final String error;
   const ErrorFormServicioEmpresarialEvent(this.error);
+}
+
+class CleanFormServicioEmpresarialEvent extends ServicioEmpresarialEvent {
+  const CleanFormServicioEmpresarialEvent();
 }

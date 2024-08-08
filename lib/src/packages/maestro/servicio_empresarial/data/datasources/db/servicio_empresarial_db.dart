@@ -18,6 +18,10 @@ class ServicioEmpresarialDB {
         }
       }
 
+      if (request.isActivo != null) {
+        conditions.add("seremp_es_activo = ${request.isActivo!}");
+      }
+
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
@@ -67,8 +71,8 @@ class ServicioEmpresarialDB {
       if (request.nombre != null) {
         updateFields.add("seremp_nombre = '${request.nombre}'");
       }
-      if (request.esActivo != null) {
-        updateFields.add("seremp_es_activo = ${request.esActivo}");
+      if (request.isActivo != null) {
+        updateFields.add("seremp_es_activo = ${request.isActivo}");
       }
 
       final String updateFieldsStr = updateFields.join(', ');

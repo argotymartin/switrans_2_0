@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
@@ -12,30 +13,38 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ServicioEmpresarialBloc, ServicioEmpresarialState>(
+    return BlocConsumer<ServicioEmpresarialBloc, ServicioEmpresarialState>(
       listener: (BuildContext context, ServicioEmpresarialState state) {
-        if (state is ServicioEmpresarialExceptionState) {
-          CustomToast.showError(context, state.exception);
+        if (state.status == ServicioEmpresarialStatus.exception) {
+          CustomToast.showError(context, state.exception!);
         }
 
-        if (state is ServicioEmpresarialSuccesState) {
-          final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
-          context.read<ServicioEmpresarialBloc>().add(GetServicioEmpresarialEvent(request));
+        if (state.status == ServicioEmpresarialStatus.succes) {
+          context.read<ServicioEmpresarialBloc>().request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
+          context.read<ServicioEmpresarialBloc>().add(const GetServicioEmpresarialEvent());
           context.go('/maestros/servicio_empresarial/buscar');
+          Preferences.isResetForm = false;
         }
       },
-      child: ListView(
-        padding: const EdgeInsets.only(right: 32, top: 8),
-        physics: const ClampingScrollPhysics(),
-        children: const <Widget>[
-          BuildViewDetail(),
-          CardExpansionPanel(
-            title: "Registrar Nuevo",
-            icon: Icons.add_circle_outline_outlined,
-            child: _BuildFieldsForm(),
-          ),
-        ],
-      ),
+      builder: (BuildContext context, ServicioEmpresarialState state) {
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: const <Widget>[
+                BuildViewDetail(),
+                CardExpansionPanel(
+                  title: "Registrar Nuevo",
+                  icon: Icons.add_circle_outline_outlined,
+                  child: _BuildFieldsForm(),
+                ),
+              ],
+            ),
+            if (state.status == ServicioEmpresarialStatus.loading) const LoadingModal(),
+          ],
+        );
+      },
     );
   }
 }
@@ -45,8 +54,10 @@ class _BuildFieldsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final ServicioEmpresarialBloc servicioEmpresarialBloc = context.read<ServicioEmpresarialBloc>();
+    final ServicioEmpresarialRequest request = servicioEmpresarialBloc.request;
+
     return Form(
       key: formKey,
       child: Column(
@@ -54,17 +65,19 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputTitle(title: "Nombre", controller: nameController, typeInput: TypeInput.lettersAndNumbers, minLength: 5),
+              TextInputForm(
+                title: "Nombre",
+                value: request.nombre,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
+              ),
             ],
           ),
           FormButton(
             onPressed: () {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(
-                  nombre: nameController.text.toUpperCase(),
-                  usuario: 1,
-                );
                 context.read<ServicioEmpresarialBloc>().add(SetServicioEmpresarialEvent(request));
               }
             },

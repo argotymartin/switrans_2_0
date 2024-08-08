@@ -1,59 +1,46 @@
 part of 'servicio_empresarial_bloc.dart';
 
-sealed class ServicioEmpresarialState extends Equatable {
+enum ServicioEmpresarialStatus {
+  initial,
+  loading,
+  succes,
+  consulted,
+  error,
+  exception,
+}
+
+class ServicioEmpresarialState extends Equatable {
+  final ServicioEmpresarialStatus? status;
   final List<ServicioEmpresarial> serviciosEmpresariales;
   final ServicioEmpresarial? servicioEmpresarial;
-  final String errorForm;
+  final DioException? exception;
+  final String? error;
 
   const ServicioEmpresarialState({
+    this.status,
     this.serviciosEmpresariales = const <ServicioEmpresarial>[],
-    this.errorForm = '',
+    this.exception,
+    this.error = '',
     this.servicioEmpresarial,
   });
 
-  @override
-  List<Object> get props => <Object>[];
-}
+  ServicioEmpresarialState initial() => const ServicioEmpresarialState(status: ServicioEmpresarialStatus.initial);
 
-class ServicioEmpresarialInitialState extends ServicioEmpresarialState {
-  const ServicioEmpresarialInitialState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class ServicioEmpresarialLoadingState extends ServicioEmpresarialState {
-  const ServicioEmpresarialLoadingState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class ServicioEmpresarialSuccesState extends ServicioEmpresarialState {
-  const ServicioEmpresarialSuccesState({super.servicioEmpresarial});
+  ServicioEmpresarialState copyWith({
+    ServicioEmpresarialStatus? status,
+    List<ServicioEmpresarial>? serviciosEmpresariales,
+    String? error,
+    DioException? exception,
+    ServicioEmpresarial? servicioEmpresarial,
+  }) =>
+      ServicioEmpresarialState(
+        status: status ?? this.status,
+        error: error ?? this.error,
+        exception: exception ?? this.exception,
+        serviciosEmpresariales: serviciosEmpresariales ?? this.serviciosEmpresariales,
+        servicioEmpresarial: servicioEmpresarial ?? this.servicioEmpresarial,
+      );
 
   @override
-  List<Object> get props => <Object>[servicioEmpresarial!];
-}
-
-class ServicioEmpresarialConsultedState extends ServicioEmpresarialState {
-  const ServicioEmpresarialConsultedState({super.serviciosEmpresariales});
-
-  @override
-  List<Object> get props => <Object>[serviciosEmpresariales];
-}
-
-class ServicioEmpresarialErrorFormState extends ServicioEmpresarialState {
-  const ServicioEmpresarialErrorFormState({super.errorForm});
-
-  @override
-  List<Object> get props => <Object>[errorForm];
-}
-
-class ServicioEmpresarialExceptionState extends ServicioEmpresarialState {
-  final DioException exception;
-
-  const ServicioEmpresarialExceptionState({required this.exception});
-  @override
-  List<Object> get props => <Object>[exception];
+  List<Object?> get props => <Object?>[serviciosEmpresariales, status, error, servicioEmpresarial];
 }
