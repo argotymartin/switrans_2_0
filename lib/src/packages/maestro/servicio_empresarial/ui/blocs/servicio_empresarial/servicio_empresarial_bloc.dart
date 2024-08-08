@@ -15,8 +15,8 @@ class ServicioEmpresarialBloc extends Bloc<ServicioEmpresarialEvent, ServicioEmp
 
   ServicioEmpresarialBloc(this._repository) : super(const ServicioEmpresarialState().initial()) {
     on<InitializationServicioEmpresarialEvent>(_onInitializationServicioEmpresarial);
-    on<SetServicioEmpresarialEvent>(_onSetServicioEmpresarial);
     on<GetServicioEmpresarialEvent>(_onGetServicioEmpresarial);
+    on<SetServicioEmpresarialEvent>(_onSetServicioEmpresarial);
     on<UpdateServicioEmpresarialEvent>(_onUpdateServicioEmpresarial);
     on<ErrorFormServicioEmpresarialEvent>(_onErrorFormServicioEmpresarial);
     on<CleanFormServicioEmpresarialEvent>(_onCleanFormServicioEmpresarial);
@@ -26,12 +26,17 @@ class ServicioEmpresarialBloc extends Bloc<ServicioEmpresarialEvent, ServicioEmp
     InitializationServicioEmpresarialEvent event,
     Emitter<ServicioEmpresarialState> emit,
   ) async {
+    request.clean();
+    emit(state.copyWith(status: ServicioEmpresarialStatus.initial));
+  }
+
+  Future<void> _onGetServicioEmpresarial(GetServicioEmpresarialEvent event, Emitter<ServicioEmpresarialState> emit) async {
     emit(state.copyWith(status: ServicioEmpresarialStatus.loading));
-    final DataState<List<ServicioEmpresarial>> resp = await _repository.getServicioEmpresarialService(_request);
-    if (resp.data != null) {
-      emit(state.copyWith(status: ServicioEmpresarialStatus.succes, serviciosEmpresariales: resp.data));
+    final DataState<List<ServicioEmpresarial>> response = await _repository.getServicioEmpresarialService(request);
+    if (response.data != null) {
+      emit(state.copyWith(status: ServicioEmpresarialStatus.consulted, serviciosEmpresariales: response.data));
     } else {
-      emit(state.copyWith(status: ServicioEmpresarialStatus.exception, exception: resp.error));
+      emit(state.copyWith(status: ServicioEmpresarialStatus.exception, exception: response.error));
     }
   }
 
@@ -42,16 +47,6 @@ class ServicioEmpresarialBloc extends Bloc<ServicioEmpresarialEvent, ServicioEmp
       emit(state.copyWith(status: ServicioEmpresarialStatus.succes, servicioEmpresarial: resp.data));
     } else {
       emit(state.copyWith(status: ServicioEmpresarialStatus.exception, exception: resp.error));
-    }
-  }
-
-  Future<void> _onGetServicioEmpresarial(GetServicioEmpresarialEvent event, Emitter<ServicioEmpresarialState> emit) async {
-    emit(state.copyWith(status: ServicioEmpresarialStatus.loading));
-    final DataState<List<ServicioEmpresarial>> response = await _repository.getServicioEmpresarialService(request);
-    if (response.data != null) {
-      emit(state.copyWith(status: ServicioEmpresarialStatus.consulted, serviciosEmpresariales: response.data));
-    } else {
-      emit(state.copyWith(status: ServicioEmpresarialStatus.exception, exception: response.error));
     }
   }
 
