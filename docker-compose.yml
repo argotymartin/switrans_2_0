@@ -50,7 +50,7 @@ services:
     working_dir: /app/server
     restart: unless-stopped
     command: >
-      sh -c "cp -r ../switrans_2_0/build/web/ ./ && npm install && npm start"
+      sh -c "cp -r ../switrans_2_0/build/web/ ./ && cp -r ../switrans_2_0/web/node_server/. ./ && npm install && npm start"
     ports:
       - "3000:3000"
     depends_on:
