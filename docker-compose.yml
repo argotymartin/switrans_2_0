@@ -1,29 +1,32 @@
 services:
   flutter:
-    image: flutter-image
+    image: flutter-image:3.22.0
     container_name: flutter_container
-    
+    restart: unless-stopped
     volumes:
       - .:/app
     working_dir: /app
     command: >
-      sh -c "
-        flutter pub get &&
-        tail -f /dev/null
-      "
-    ports:
-      - "3001:3001"
-    depends_on:
-      - mongo
-    #network_mode: host 
+      sh -c "tail -f /dev/null"
+    healthcheck:
+      test: echo "Flutter container is running"
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mongo:
     image: mongo:6.0
     container_name: mongo_container
+    restart: unless-stopped
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
+      - ${PWD}/../db/mongo_data:/data/db
+    healthcheck:
+      test: echo "db.runCommand('ping').ok" | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
@@ -32,13 +35,32 @@ services:
     ports:
       - "8090:8090"
     volumes:
-      - /home/evargas/development/frontend/web/projects_flutter/switrans_2_0/db/pocketbase/pb_data:/pb_data
+      - ${PWD}/../db/pocketbase/pb_data:/pb_data
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
       interval: 5s
       timeout: 5s
       retries: 5
 
+  node:
+    image: node:18
+    container_name: node_container
+    volumes:
+      - ${PWD}/../:/app
+    working_dir: /app/server
+    restart: unless-stopped
+    command: >
+      sh -c "cp -r ../switrans_2_0/build/web/ ./ && npm install && npm start"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - pocketbase
+    healthcheck:
+      test: curl -f http://localhost:3002 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 volumes:
   mongo_data:
-
