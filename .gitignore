@@ -54,3 +54,4 @@ windows/flutter/*
 
 # FVM Version Cache
 .fvm/
+/db

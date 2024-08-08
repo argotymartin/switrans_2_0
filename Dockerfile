@@ -21,10 +21,10 @@ COPY /web /app/web
 WORKDIR /app/web
 RUN npm install
 
-
+COPY pubspec.yaml /app/pubspec.yaml
 WORKDIR /app
 
-#RUN flutter pub get
+RUN flutter pub get
 
 #WORKDIR /app/web
 
