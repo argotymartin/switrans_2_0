@@ -22,8 +22,13 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
   }
 
   Future<void> _onInitialization(InitializationTipoImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
+    request.clean();
+    emit(state.copyWith(status: TipoImpuestoStatus.initial));
+  }
+
+  Future<void> _onGetImpuesto(GetImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
     emit(state.copyWith(status: TipoImpuestoStatus.loading));
-    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(_request);
+    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(request);
     if (resp.data != null) {
       emit(state.copyWith(status: TipoImpuestoStatus.consulted, tipoImpuestos: resp.data!));
     } else {
@@ -36,16 +41,6 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
     final DataState<TipoImpuesto> resp = await _repository.setTipoImpuestoService(event.request);
     if (resp.data != null) {
       emit(state.copyWith(status: TipoImpuestoStatus.succes, tipoImpuesto: resp.data));
-    } else {
-      emit(state.copyWith(status: TipoImpuestoStatus.exception, exception: resp.error));
-    }
-  }
-
-  Future<void> _onGetImpuesto(GetImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
-    emit(state.copyWith(status: TipoImpuestoStatus.loading));
-    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(request);
-    if (resp.data != null) {
-      emit(state.copyWith(status: TipoImpuestoStatus.consulted, tipoImpuestos: resp.data!));
     } else {
       emit(state.copyWith(status: TipoImpuestoStatus.exception, exception: resp.error));
     }
