@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class MenuButtonNavar extends StatelessWidget {
   const MenuButtonNavar({super.key});

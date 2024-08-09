@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 
 class FunctionsPocketbase {
   static Future<int> getMaxCodigoCollection({required Dio dio, required String collection, required String field}) async {
