@@ -4,7 +4,7 @@ class UnidadNegocio {
   final bool isActivo;
   final String fechaCreacion;
   final String usuario;
-  final String empresa;
+  final String? empresa;
 
   UnidadNegocio({
     required this.codigo,

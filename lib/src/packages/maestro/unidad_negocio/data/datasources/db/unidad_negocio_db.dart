@@ -17,7 +17,7 @@ class UnidadNegocioDB {
           conditions.add("tu.unineg_nombre ILIKE '%${request.nombre!}%'");
         }
       }
-      if (request.empresa != null && request.empresa!.isNotEmpty) {
+      if (request.empresa != null ) {
         conditions.add("e.empresa_codigo = ${request.empresa}");
       }
       if (request.isActivo != null) {
@@ -83,7 +83,7 @@ class UnidadNegocioDB {
       if (request.empresa != null) {
         final Response<dynamic> empresa = await getEmpresaCodigoDB(request.empresa!);
         updateFields.add("empresa_codigo = ${empresa.data[0]['empresa_codigo']}");
-        request.empresa = '${empresa.data[0]['empresa_codigo']}';
+        request.empresa = empresa.data[0]['empresa_codigo'];
       }
 
       final String updateFieldsStr = updateFields.join(', ');
@@ -110,9 +110,9 @@ class UnidadNegocioDB {
     return response;
   }
 
-  Future<Response<dynamic>> getEmpresaCodigoDB(String empresaNombre) async {
+  Future<Response<dynamic>> getEmpresaCodigoDB(int empresa) async {
     final String sql =
-        """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_NOMBRE = '$empresaNombre' """;
+        """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_CODIGO = '$empresa' """;
     final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }

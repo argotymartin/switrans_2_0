@@ -190,25 +190,30 @@ class MaestrosRoutes {
     const String modulePath = "unidad_negocio";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<UnidadNegocioBloc>().onGetEmpresas(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
+        return BlocProvider<UnidadNegocioBloc>(
+          create: (_) => UnidadNegocioBloc(injector())..add(const InitializationUnidadNegocioEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
-          builder: (_, __) => const UnidadNegocioCreateView(),
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<UnidadNegocioBloc>().add(const CleanFormUnidadNegocioEvent());
+            }
+            return const UnidadNegocioCreateView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const UnidadNegocioSearchView(),
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<UnidadNegocioBloc>().add(const CleanFormUnidadNegocioEvent());
+            }
+            return const UnidadNegocioSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

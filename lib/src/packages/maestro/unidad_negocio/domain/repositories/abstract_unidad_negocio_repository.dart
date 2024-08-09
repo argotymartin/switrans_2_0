@@ -4,8 +4,8 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractUnidadNegocioRepository {
-  Future<DataState<List<UnidadNegocio>>> getUnidadNegocioService(UnidadNegocioRequest request);
+  Future<DataState<List<UnidadNegocio>>> getUnidadNegociosService(UnidadNegocioRequest request);
+  Future<DataState<UnidadNegocio>> setUnidadNegocioService(UnidadNegocioRequest request);
   Future<DataState<UnidadNegocio>> updateUnidadNegocioService(UnidadNegocioRequest request);
-  Future<DataState<UnidadNegocio>> createUnidadNegocioService(UnidadNegocioRequest request);
   Future<DataState<List<UnidadNegocioEmpresa>>> getEmpresasService();
 }

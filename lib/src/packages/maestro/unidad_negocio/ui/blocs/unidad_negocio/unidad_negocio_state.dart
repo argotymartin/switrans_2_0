@@ -1,55 +1,42 @@
 part of 'unidad_negocio_bloc.dart';
 
-abstract class UnidadNegocioState extends Equatable {
+enum UnidadNegocioStatus { initial, loading, succes, error, consulted, exception }
+
+class UnidadNegocioState extends Equatable {
+  final UnidadNegocioStatus? status;
   final UnidadNegocio? unidadNegocio;
-  final List<UnidadNegocio> unidadNegocioList;
-  final String? errorForm;
+  final List<UnidadNegocio> unidadNegocios;
+  final List<EntryAutocomplete> entriesEmpresa;
   final DioException? exception;
+  final String? error;
+  const UnidadNegocioState({
+    this.status,
+    this.unidadNegocio,
+    this.exception,
+    this.unidadNegocios = const <UnidadNegocio>[],
+    this.entriesEmpresa = const <EntryAutocomplete>[],
+    this.error,
+  });
 
-  const UnidadNegocioState({this.unidadNegocio, this.unidadNegocioList = const <UnidadNegocio>[], this.errorForm, this.exception});
+  UnidadNegocioState initial() => const UnidadNegocioState(status: UnidadNegocioStatus.initial);
 
-  @override
-  List<Object?> get props => <Object?>[];
-}
-
-class UnidadNegocioInitialState extends UnidadNegocioState {
-  const UnidadNegocioInitialState();
-
-  @override
-  List<Object?> get props => <Object?>[];
-}
-
-class UnidadNegocioLoadingState extends UnidadNegocioState {
-  const UnidadNegocioLoadingState();
-
-  @override
-  List<Object?> get props => <Object?>[];
-}
-
-class UnidadNegocioSuccessState extends UnidadNegocioState {
-  const UnidadNegocioSuccessState({super.unidadNegocio});
-
-  @override
-  List<Object?> get props => <Object?>[unidadNegocio!];
-}
-
-class UnidadNegocioConsultedState extends UnidadNegocioState {
-  const UnidadNegocioConsultedState({super.unidadNegocioList});
+  UnidadNegocioState copyWith({
+    UnidadNegocioStatus? status,
+    UnidadNegocio? unidadNegocio,
+    List<UnidadNegocio>? unidadNegocios,
+    List<EntryAutocomplete>? entriesEmpresa,
+    DioException? exception,
+    String? error,
+  }) =>
+      UnidadNegocioState(
+        status: status ?? this.status,
+        unidadNegocio: unidadNegocio ?? this.unidadNegocio,
+        exception: exception ?? this.exception,
+        unidadNegocios: unidadNegocios ?? this.unidadNegocios,
+        entriesEmpresa: entriesEmpresa ?? this.entriesEmpresa,
+        error: error ?? this.error,
+      );
 
   @override
-  List<Object?> get props => <Object?>[unidadNegocioList];
-}
-
-class UnidadNegocioFailedState extends UnidadNegocioState {
-  const UnidadNegocioFailedState({super.exception});
-
-  @override
-  List<Object?> get props => <Object?>[exception!];
-}
-
-class UnidadNegocioErrorFormState extends UnidadNegocioState {
-  const UnidadNegocioErrorFormState({super.errorForm});
-
-  @override
-  List<Object?> get props => <Object?>[errorForm!];
+  List<Object?> get props => <Object?>[unidadNegocio, unidadNegocios, entriesEmpresa, exception, error, status];
 }
