@@ -4,11 +4,10 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/req
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
-
-import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
 class UnidadNegocioSearchView extends StatelessWidget {
   const UnidadNegocioSearchView({super.key});
@@ -77,7 +76,6 @@ class _BuildFieldsForm extends StatelessWidget {
                 value: request.empresa,
                 onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
               ),
-
               TextInputForm(
                 title: "Nombre",
                 value: request.nombre != null ? request.nombre! : "",

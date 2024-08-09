@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/db/unidad_negocio_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/unidad_negocio_empresa_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/unidad_negocio_model.dart';
@@ -20,7 +18,11 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.getUnidadNegocioDB(request));
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data;
-      final List<UnidadNegocio> response = List<UnidadNegocio>.from(resp.map((x) => UnidadNegocioModel.fromDB(x)));
+
+      final List<UnidadNegocio> response = List<UnidadNegocio>.from(
+          resp.map((Map<String, dynamic> x) => UnidadNegocioModel.fromDB(x)),
+      );
+
       return DataSuccess<List<UnidadNegocio>>(response);
     }
     return DataFailed<List<UnidadNegocio>>(httpResponse.error!);
