@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 const String endPoint = "api/v1/erp/facturas";
 

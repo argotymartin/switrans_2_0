@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/models/request/tipo_impuesto_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
 
 class TipoImpuestoApi {

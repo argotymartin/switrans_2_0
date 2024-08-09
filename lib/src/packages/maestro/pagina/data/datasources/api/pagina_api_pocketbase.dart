@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
 
 class PaginaApiPocketBase {

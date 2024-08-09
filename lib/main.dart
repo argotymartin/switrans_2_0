@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+//import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nested/nested.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
@@ -79,10 +79,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const AnimatedSwitcher(
-      duration: Duration(milliseconds: 1000),
-      child: _BuildMaterialApp(),
-    );
+    return const _BuildMaterialApp();
   }
 
   @override
@@ -103,14 +100,6 @@ class _BuildMaterialApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       theme: AppTheme(theme.color!, theme.themeMode!).getTheme(context),
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const <Locale>[
-        Locale('es', 'ES'),
-      ],
     );
   }
 }

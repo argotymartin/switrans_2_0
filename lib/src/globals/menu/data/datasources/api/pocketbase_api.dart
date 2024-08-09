@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 
 class PocketbaseAPI {
   final Dio _dio;

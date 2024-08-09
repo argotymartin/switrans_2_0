@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/request/modulo_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
 
 class ModuloApiPocketBase {

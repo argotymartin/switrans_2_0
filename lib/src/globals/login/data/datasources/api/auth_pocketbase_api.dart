@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/request/usuario.request.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
 
 class AuthPocketbaseApi {
   final Dio _dio;

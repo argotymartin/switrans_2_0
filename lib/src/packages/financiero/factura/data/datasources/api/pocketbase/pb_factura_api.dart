@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/util/constans/constants.dart';
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 
 class PBClienteAPI {
   final Dio _dio;

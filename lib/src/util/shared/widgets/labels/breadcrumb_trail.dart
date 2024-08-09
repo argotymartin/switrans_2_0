@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu/menu_bloc.dart';
 
 class BreadcrumbTrail extends StatelessWidget {
@@ -15,7 +14,7 @@ class BreadcrumbTrail extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final MenuState menuState = context.watch<MenuBloc>().state;
     final DateTime now = DateTime.now();
-    final String formattedDate = DateFormat("EEEE, MMMM d 'del' y", 'es').format(now);
+    //final String formattedDate = DateFormat("EEEE, MMMM d 'del' y").format(now);
 
     final List<Widget> result = <Widget>[];
     bool primeraIteracion = true;
@@ -35,7 +34,7 @@ class BreadcrumbTrail extends StatelessWidget {
       children: <Widget>[
         menuState.isOpenMenu && size.width > 480 ? Row(children: result) : const SizedBox(),
         const Spacer(),
-        menuState.isOpenMenu && size.width > 900 ? Text(formattedDate) : const SizedBox(),
+        menuState.isOpenMenu && size.width > 900 ? Text(now.toString()) : const SizedBox(),
       ],
     );
   }

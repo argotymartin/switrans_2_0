@@ -11,7 +11,7 @@ class CustomToast {
   static void showError(BuildContext context, DioException exception) {
     ErrorResponse? error;
     if (exception.response!.data != null) {
-      error = CustomToast._getErrorType(exception.response!);
+      error = CustomToast._getErrorResponse(exception.response!);
     }
     if (kIsWeb) {
       final AudioPlayer player = AudioPlayer();
@@ -76,8 +76,12 @@ class CustomToast {
 
   static void showErrorLogin(BuildContext context, DioException exception) {
     ErrorResponse? error;
-    if (exception.response!.data != null) {
-      error = CustomToast._getErrorType(exception.response!);
+    if (exception.response != null) {
+      if (exception.response!.data != null) {
+        error = CustomToast._getErrorResponse(exception.response!);
+      }
+    } else if (exception.message != null) {
+      error = CustomToast._getErrorMessage(exception.message!);
     }
     if (kIsWeb) {
       final AudioPlayer player = AudioPlayer();
@@ -137,7 +141,7 @@ class CustomToast {
     );
   }
 
-  static ErrorResponse _getErrorType(Response<dynamic> response) {
+  static ErrorResponse _getErrorResponse(Response<dynamic> response) {
     final Map<String, dynamic> errorData;
     if (response.data is String) {
       errorData = jsonDecode(response.data);
@@ -172,6 +176,10 @@ class CustomToast {
     } else {
       return ErrorResponse(code: 400, title: "Error no controlado", details: "");
     }
+  }
+
+  static ErrorResponse _getErrorMessage(String message) {
+    return ErrorResponse(code: 500, title: message, details: "");
   }
 }
 
