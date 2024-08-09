@@ -1,7 +1,7 @@
 services:
   flutter:
     image: flutter-image:3.22.0
-    container_name: flutter_container
+    container_name: switrans2-flutter
     restart: unless-stopped
     volumes:
       - .:/app
@@ -13,10 +13,13 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.100
 
   mongo:
     image: mongo:6.0
-    container_name: mongo_container
+    container_name: switrans2-mongo
     restart: unless-stopped
     ports:
       - "27017:27017"
@@ -27,10 +30,13 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.101
 
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
-    container_name: pocketbase
+    container_name: switrans2-pocketbase
     restart: unless-stopped
     ports:
       - "8090:8090"
@@ -41,10 +47,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.102
 
   node:
     image: node:18
-    container_name: node_container
+    container_name: switrans2-node
     volumes:
       - ${PWD}/../:/app
     working_dir: /app/server
@@ -61,6 +70,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
-volumes:
-  mongo_data:
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.103
