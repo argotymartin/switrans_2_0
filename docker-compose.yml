@@ -13,7 +13,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
- 
+
   mongo:
     image: mongo:6.0
     container_name: switrans2-mongo
@@ -23,7 +23,7 @@ services:
     volumes:
       - ${PWD}/../db/mongo_data:/data/db
     healthcheck:
-      test: echo "db.runCommand('ping').ok" | mongo localhost:27017/test --quiet
+      test: echo "db.runCommand('ping').ok" | mongo http://192.168.102.100:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5
@@ -39,7 +39,6 @@ services:
       - "8090:8090"
     volumes:
       - ${PWD}/../db/pocketbase/pb_data:/pb_data
-   # command: sh -c '/usr/local/bin/pocketbase serve --http="192.168.102.101:8090
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://192.168.102.101:8090/api/health || exit 1
       interval: 5s
