@@ -9,7 +9,7 @@ ARG USER=root
 USER $USER
 WORKDIR /home/$USER
 
-RUN git clone -b 3.22.0 https://github.com/flutter/flutter.git
+RUN git clone -b 3.22.3 https://github.com/flutter/flutter.git
 
 ENV PATH="/home/root/flutter/bin:${PATH}"
 COPY /web /app/web

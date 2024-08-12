@@ -1,6 +1,6 @@
 services:
   flutter:
-    image: flutter-image:3.22.0
+    image: flutter-image:3.22.3
     container_name: switrans2-flutter
     restart: unless-stopped
     volumes:
