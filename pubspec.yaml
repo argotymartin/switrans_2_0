@@ -54,7 +54,7 @@ dependencies:
   popover: ^0.3.0
   postgres: ^3.2.0
   printing: ^5.13.1
-  shared_preferences: ^2.2.3
+  shared_preferences: ^2.3.1
   stream_disposable: ^2.0.0
   syncfusion_flutter_pdf: ^26.1.41
   toastification: ^2.0.0
