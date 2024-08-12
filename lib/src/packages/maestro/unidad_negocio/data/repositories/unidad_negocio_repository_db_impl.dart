@@ -20,7 +20,7 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
       final dynamic resp = httpResponse.data;
 
       final List<UnidadNegocio> response = List<UnidadNegocio>.from(
-          resp.map((Map<String, dynamic> x) => UnidadNegocioModel.fromDB(x)),
+        resp.map((Map<String, dynamic> x) => UnidadNegocioModel.fromDB(x)),
       );
 
       return DataSuccess<List<UnidadNegocio>>(response);
@@ -43,7 +43,8 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
   Future<DataState<UnidadNegocio>> updateUnidadNegocioService(UnidadNegocioRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.updateUnidadNegocioDB(request));
     if (httpResponse.data != null) {
-      final UnidadNegocio response = UnidadNegocioModel.fromDB(httpResponse.data);
+      final dynamic dataJson = (httpResponse.data as List<dynamic>).first;
+      final UnidadNegocio response = UnidadNegocioModel.fromDB(dataJson);
       return DataSuccess<UnidadNegocio>(response);
     }
     return DataFailed<UnidadNegocio>(httpResponse.error!);

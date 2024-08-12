@@ -17,7 +17,7 @@ class UnidadNegocioDB {
           conditions.add("tu.unineg_nombre ILIKE '%${request.nombre!}%'");
         }
       }
-      if (request.empresa != null ) {
+      if (request.empresa != null) {
         conditions.add("e.empresa_codigo = ${request.empresa}");
       }
       if (request.isActivo != null) {
@@ -33,7 +33,7 @@ class UnidadNegocioDB {
                       TU.UNINEG_ACTIVO,
                       TU.UNINEG_FECHACREACION,
                       U.USUARIO_NOMBRE AS USUARIO,
-                      E.EMPRESA_NOMBRE AS EMPRESA
+                      E.EMPRESA_CODIGO AS EMPRESA
                       FROM TB_UNIDADNEGOCIO TU
                       LEFT JOIN TB_USUARIO U ON U.USUARIO_CODIGO = TU.USUARIO_CODIGO
                       LEFT JOIN TB_EMPRESA E ON E.EMPRESA_CODIGO = TU.EMPRESA_CODIGO
@@ -111,8 +111,7 @@ class UnidadNegocioDB {
   }
 
   Future<Response<dynamic>> getEmpresaCodigoDB(int empresa) async {
-    final String sql =
-        """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_CODIGO = '$empresa' """;
+    final String sql = """ SELECT EMPRESA_CODIGO FROM TB_EMPRESA WHERE EMPRESA_APLICA_PREFACTURA = TRUE AND EMPRESA_CODIGO = '$empresa' """;
     final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }

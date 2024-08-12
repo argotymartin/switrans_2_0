@@ -29,7 +29,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
     final DataState<List<UnidadNegocioEmpresa>> resp = await _repository.getEmpresasService();
     if (resp.data != null) {
       final List<EntryAutocomplete> entriesEmpresa =
-      resp.data!.map((UnidadNegocioEmpresa e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+          resp.data!.map((UnidadNegocioEmpresa e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
       emit(state.copyWith(status: UnidadNegocioStatus.initial, entriesEmpresa: entriesEmpresa));
     } else {
       emit(state.copyWith(status: UnidadNegocioStatus.exception, exception: resp.error));
