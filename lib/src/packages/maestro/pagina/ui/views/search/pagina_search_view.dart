@@ -18,7 +18,6 @@ class PaginaSearchView extends StatelessWidget {
     return BlocConsumer<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
         Preferences.usuarioNombre;
-        print(Preferences.usuarioNombre);
         if (state.status == PaginaStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }

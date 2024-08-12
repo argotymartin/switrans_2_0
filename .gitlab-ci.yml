@@ -11,7 +11,7 @@ lints:
   stage: lints
   script:
     - cd /home/erneyvargas/docker/frontend/switrans2/switrans_2_0
-    - docker exec switrans2-flutter /bin/bash -c "flutter pub get flutter analyze"
+    - docker exec switrans2-flutter /bin/bash -c "flutter pub get && flutter analyze"
 
 deploy:
   stage: deploy
