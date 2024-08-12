@@ -1,14 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
-  static late SharedPreferences _prefs;
+  static late SharedPreferencesWithCache _prefs;
   static String _token = "";
+  static String _usuarioNombre = "";
   static int _themeMode = 1;
   static int _colorValue = 4282339765;
   static bool _isResetForm = true;
 
   static Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferencesWithCache.create(
+      cacheOptions: const SharedPreferencesWithCacheOptions(
+        allowList: <String>{'token', 'usuarioNombre', 'themeMode', 'color', 'isResetForm'},
+      ),
+    );
   }
 
   static String get token => _prefs.getString("token") ?? _token;
@@ -16,6 +21,13 @@ class Preferences {
   static set token(String value) {
     _token = value;
     _prefs.setString("token", value);
+  }
+
+  static String get usuarioNombre => _prefs.getString("usuarioNombre") ?? _token;
+
+  static set usuarioNombre(String value) {
+    _usuarioNombre = value;
+    _prefs.setString("usuarioNombre", _usuarioNombre);
   }
 
   static int get themeMode => _prefs.getInt("themeMode") ?? _themeMode;

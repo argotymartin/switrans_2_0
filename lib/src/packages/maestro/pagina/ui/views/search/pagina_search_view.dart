@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
@@ -16,6 +17,8 @@ class PaginaSearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PaginaBloc, PaginaState>(
       listener: (BuildContext context, PaginaState state) {
+        Preferences.usuarioNombre;
+        print(Preferences.usuarioNombre);
         if (state.status == PaginaStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }

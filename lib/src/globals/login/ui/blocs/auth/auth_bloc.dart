@@ -25,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthLoadInProgressState());
     final DataState<Auth> dataState = await _repository.signin(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
+      Preferences.usuarioNombre = dataState.data!.usuario.nombre;
       emit(AuthSuccesState(auth: dataState.data!, isSignedIn: true));
       Preferences.token = dataState.data!.token;
     }
