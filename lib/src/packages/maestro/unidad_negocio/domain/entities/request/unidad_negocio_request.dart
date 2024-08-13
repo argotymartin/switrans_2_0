@@ -3,7 +3,7 @@ class UnidadNegocioRequest {
   String? nombre;
   bool? isActivo;
   int? usuario;
-  String? empresa;
+  int? empresa;
 
   UnidadNegocioRequest({
     this.codigo,
@@ -12,4 +12,16 @@ class UnidadNegocioRequest {
     this.usuario,
     this.empresa,
   });
+
+  bool hasNonNullField() {
+    return codigo != null || nombre != null || isActivo != null || usuario != null || empresa != null;
+  }
+
+  void clean() {
+    codigo = null;
+    nombre = null;
+    isActivo = null;
+    usuario = null;
+    empresa = null;
+  }
 }

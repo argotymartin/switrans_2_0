@@ -14,33 +14,37 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
   UnidadNegocioRepositoryDBImpl(this._unidadNegocioDB);
 
   @override
-  Future<DataState<UnidadNegocio>> createUnidadNegocioService(UnidadNegocioRequest request) async {
-    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.setUnidadNegocioDB(request));
-    if (httpResponse.data != null) {
-      final dynamic resp = httpResponse.data[0];
-      final UnidadNegocio response = UnidadNegocioModel.fromDB(resp);
-      return DataSuccess<UnidadNegocio>(response);
-    }
-    return DataFailed<UnidadNegocio>(httpResponse.error!);
-  }
-
-  @override
-  Future<DataState<List<UnidadNegocio>>> getUnidadNegocioService(UnidadNegocioRequest request) async {
+  Future<DataState<List<UnidadNegocio>>> getUnidadNegociosService(UnidadNegocioRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.getUnidadNegocioDB(request));
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data;
-      final List<UnidadNegocio> response = List<UnidadNegocio>.from(resp.map((dynamic x) => UnidadNegocioModel.fromDB(x)));
+
+      final List<UnidadNegocio> response = List<UnidadNegocio>.from(
+        resp.map((Map<String, dynamic> x) => UnidadNegocioModel.fromDB(x)),
+      );
+
       return DataSuccess<List<UnidadNegocio>>(response);
     }
     return DataFailed<List<UnidadNegocio>>(httpResponse.error!);
   }
 
   @override
+  Future<DataState<UnidadNegocio>> setUnidadNegocioService(UnidadNegocioRequest request) async {
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.setUnidadNegocioDB(request));
+    if (httpResponse.data != null) {
+      final dynamic dataJson = httpResponse.data[0];
+      final UnidadNegocio response = UnidadNegocioModel.fromDB(dataJson);
+      return DataSuccess<UnidadNegocio>(response);
+    }
+    return DataFailed<UnidadNegocio>(httpResponse.error!);
+  }
+
+  @override
   Future<DataState<UnidadNegocio>> updateUnidadNegocioService(UnidadNegocioRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.updateUnidadNegocioDB(request));
     if (httpResponse.data != null) {
-      final dynamic resp = httpResponse.data[0];
-      final UnidadNegocio response = UnidadNegocioModel.fromDB(resp);
+      final dynamic dataJson = (httpResponse.data as List<dynamic>).first;
+      final UnidadNegocio response = UnidadNegocioModel.fromDB(dataJson);
       return DataSuccess<UnidadNegocio>(response);
     }
     return DataFailed<UnidadNegocio>(httpResponse.error!);
@@ -49,6 +53,7 @@ class UnidadNegocioRepositoryDBImpl extends BaseApiRepository implements Abstrac
   @override
   Future<DataState<List<UnidadNegocioEmpresa>>> getEmpresasService() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _unidadNegocioDB.getEmpresasDB());
+
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data;
       final List<UnidadNegocioEmpresa> response =
