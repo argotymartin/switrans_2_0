@@ -3,7 +3,7 @@ class TransaccionContable {
   final String nombre;
   final String sigla;
   final bool isActivo;
-  final String? tipoimpuesto;
+  final int? tipoimpuesto;
   final String usuario;
   final int secuencia;
   final String fechaCreacion;

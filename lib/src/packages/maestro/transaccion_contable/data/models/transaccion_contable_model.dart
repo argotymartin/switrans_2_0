@@ -13,13 +13,13 @@ class TransaccionContableModel extends TransaccionContable {
   });
 
   factory TransaccionContableModel.fromDB(Map<String, dynamic> map) => TransaccionContableModel(
-    codigo: map['tracon_codigo'],
-    nombre: map['tracon_nombre'],
-    sigla: map['tracon_sigla'],
-    isActivo: map['tracon_es_activo'],
-    tipoimpuesto: map['impuesto'],
-    usuario: map['usuario'],
-    secuencia: map['tracon_orden'],
-    fechaCreacion: map['tracon_fecha_creacion'].toString(),
-  );
+        codigo: map['tracon_codigo'],
+        nombre: map['tracon_nombre'],
+        sigla: map['tracon_sigla'],
+        isActivo: map['tracon_es_activo'],
+        tipoimpuesto: map['impuesto'],
+        usuario: map['usuario'],
+        secuencia: map['tracon_orden'],
+        fechaCreacion: map['tracon_fecha_creacion'].toString(),
+      );
 }

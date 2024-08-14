@@ -4,9 +4,8 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractTransaccionContableRepository {
-  Future<DataState<List<TransaccionContable>>> getTransaccionesContablesService(TransaccionContableRequest request);
-  Future<DataState<TransaccionContable>> createTransaccionesContablesService(TransaccionContableRequest request);
-  Future<DataState<TransaccionContable>> updateTransaccionesContablesService(TransaccionContableRequest request);
-  Future<DataState<List<TransaccionContableTipoImpuesto>>> getImpuestosService();
-
+  Future<DataState<List<TransaccionContable>>> getTransaccionContablesService(TransaccionContableRequest request);
+  Future<DataState<TransaccionContable>> setTransaccionContableService(TransaccionContableRequest request);
+  Future<DataState<TransaccionContable>> updateTransaccionContableService(TransaccionContableRequest request);
+  Future<DataState<List<TransaccionContableTipoImpuesto>>> getTipoImpuestosService();
 }

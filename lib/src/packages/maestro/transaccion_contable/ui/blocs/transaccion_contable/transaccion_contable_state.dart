@@ -1,55 +1,43 @@
 part of 'transaccion_contable_bloc.dart';
 
-abstract class TransaccionContableState extends Equatable {
+enum TransaccionContableStatus { initial, loading, succes, error, consulted, exception }
+
+class TransaccionContableState extends Equatable {
+  final TransaccionContableStatus? status;
   final TransaccionContable? transaccionContable;
-  final List<TransaccionContable> transaccionesContables;
-  final String? errorForm;
+  final List<TransaccionContable> transaccionContables;
+  final List<EntryAutocomplete> entriesTipoImpuesto;
   final DioException? exception;
+  final String? error;
 
-  const TransaccionContableState({this.transaccionContable, this.transaccionesContables = const <TransaccionContable>[], this.errorForm, this.exception});
+  const TransaccionContableState({
+    this.status,
+    this.transaccionContable,
+    this.exception,
+    this.transaccionContables = const <TransaccionContable>[],
+    this.entriesTipoImpuesto = const <EntryAutocomplete>[],
+    this.error,
+  });
 
-  @override
-  List<Object?> get props => <Object?>[];
-}
+  TransaccionContableState initial() => const TransaccionContableState(status: TransaccionContableStatus.initial);
 
-class TransaccionContableInitialState extends TransaccionContableState {
-  const TransaccionContableInitialState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class TransaccionContableLoadingState extends TransaccionContableState {
-  const TransaccionContableLoadingState();
-
-  @override
-  List<Object?> get props => <Object?>[];
-}
-
-class TransaccionContableSuccessState extends TransaccionContableState {
-  const TransaccionContableSuccessState({super.transaccionContable});
-
-  @override
-  List<Object?> get props => <Object?>[transaccionContable!];
-}
-
-class TransaccionContableConsultedState extends TransaccionContableState {
-  const TransaccionContableConsultedState({super.transaccionesContables});
-
-  @override
-  List<Object?> get props => <Object?>[transaccionesContables];
-}
-
-class TransaccionContableFailedState extends TransaccionContableState {
-  const TransaccionContableFailedState({super.exception});
+  TransaccionContableState copyWith({
+    TransaccionContableStatus? status,
+    TransaccionContable? transaccionContable,
+    List<TransaccionContable>? transaccionContables,
+    List<EntryAutocomplete>? entriesTipoImpuesto,
+    DioException? exception,
+    String? error,
+  }) =>
+      TransaccionContableState(
+        status: status ?? this.status,
+        transaccionContable: transaccionContable ?? this.transaccionContable,
+        exception: exception ?? this.exception,
+        transaccionContables: transaccionContables ?? this.transaccionContables,
+        entriesTipoImpuesto: entriesTipoImpuesto ?? this.entriesTipoImpuesto,
+        error: error ?? this.error,
+      );
 
   @override
-  List<Object?> get props => <Object?>[exception!];
-}
-
-class TransaccionContableErrorFormState extends TransaccionContableState {
-  const TransaccionContableErrorFormState({super.errorForm});
-
-  @override
-  List<Object?> get props => <Object?>[errorForm!];
+  List<Object?> get props => <Object?>[transaccionContable, transaccionContables, entriesTipoImpuesto, exception, error, status];
 }
