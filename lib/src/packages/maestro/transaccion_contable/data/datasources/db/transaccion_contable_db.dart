@@ -10,37 +10,37 @@ class TransaccionContableDB {
       final List<String> conditions = <String>[];
 
       if (request.codigo != null) {
-        conditions.add("TTC.TRACON_CODIGO = ${request.codigo!}");
+        conditions.add("tc.tracon_codigo = ${request.codigo!}");
       }
       if (request.nombre != null) {
         if (request.nombre!.isNotEmpty) {
-          conditions.add("TTC.TRACON_NOMBRE ILIKE '%${request.nombre!}%'");
+          conditions.add("tc.tracon_nombre ILIKE '%${request.nombre!}%'");
         }
       }
-      if (request.tipoImpuesto != null && request.tipoImpuesto!.isNotEmpty) {
-        conditions.add("TTC.TIPIMP_CODIGO = ${request.tipoImpuesto}");
+      if (request.tipoImpuesto != null) {
+        conditions.add("tc.tipimp_codigo = ${request.tipoImpuesto}");
       }
       if (request.isActivo != null) {
-        conditions.add("TTC.TRACON_ES_ACTIVO = ${request.isActivo}");
+        conditions.add("tc.tracon_es_activo = ${request.isActivo}");
       }
       if (conditions.isNotEmpty) {
         where = "WHERE ${conditions.join(" AND ")}";
       }
 
       final String sql = """
-              SELECT TTC.TRACON_CODIGO,
-              TTC.TRACON_NOMBRE,
-              TTC.TRACON_SIGLA,
-              TTC.TRACON_ES_ACTIVO,
-              TTC.TRACON_FECHA_CREACION,
-              TTC.TRACON_ORDEN,
+             SELECT TC.TRACON_CODIGO,
+              TC.TRACON_NOMBRE,
+              TC.TRACON_SIGLA,
+              TC.TRACON_ES_ACTIVO,
+              TC.TRACON_FECHA_CREACION,
+              TC.TRACON_ORDEN,
               U.USUARIO_NOMBRE AS USUARIO,
-              CASE WHEN TI.TIPIMP_NOMBRE IS NULL THEN 'SIN TIPO IMPUESTO' ELSE TI.TIPIMP_NOMBRE END AS IMPUESTO
-              FROM TB_TRANSACCIONES_CONTABLES TTC
-              LEFT JOIN TB_USUARIO U ON U.USUARIO_CODIGO = TTC.USUARIO_CREACION
-              LEFT JOIN TB_TIPOIMPUESTO TI ON TI.TIPIMP_CODIGO = TTC.TIPIMP_CODIGO
+              TI.TIPIMP_CODIGO AS IMPUESTO
+              FROM TB_TRANSACCIONES_CONTABLES TC
+              LEFT JOIN TB_USUARIO U ON U.USUARIO_CODIGO = TC.USUARIO_CREACION
+              LEFT JOIN TB_TIPOIMPUESTO TI ON TI.TIPIMP_CODIGO = TC.TIPIMP_CODIGO
                 $where 
-                ORDER BY TTC.TRACON_ORDEN""";
+                ORDER BY TC.TRACON_ORDEN""";
       final Future<Response<dynamic>> response = FunctionsPostgresql.executeQueryDB(sql);
       return response;
     } on Exception catch (e) {
@@ -51,7 +51,7 @@ class TransaccionContableDB {
 
   Future<Response<dynamic>> setTransaccionContableDB(TransaccionContableRequest request) async {
     final String max = await FunctionsPostgresql.getMaxIdTable(table: 'tb_transacciones_contables', key: 'tracon_codigo');
-    request.codigo = int.parse(max);
+
     final String sql = """
       INSERT INTO public.tb_transacciones_contables (
         tracon_codigo, 
@@ -63,9 +63,9 @@ class TransaccionContableDB {
         tracon_fecha_creacion,
         tracon_orden)
         VALUES ($max, 
-        '${request.nombre}', 
+        '${request.nombre}',
         '${request.sigla}',
-        ${request.isActivo},
+        true,
         ${request.usuario},
         ${request.tipoImpuesto}, 
         '${DateTime.now()}',
@@ -84,19 +84,13 @@ class TransaccionContableDB {
       if (request.nombre != null) {
         updateFields.add("tracon_nombre = '${request.nombre}'");
       }
-      if (request.sigla != null) {
-        updateFields.add("tracon_sigla = '${request.sigla}'");
-      }
       if (request.isActivo != null) {
         updateFields.add("tracon_es_activo = ${request.isActivo}");
-      }
-      if (request.secuencia != null) {
-        updateFields.add("tracon_orden = ${request.secuencia}");
       }
       if (request.tipoImpuesto != null) {
         final Response<dynamic> tipoImpuesto = await getTipoImpuestoCodigoDB(request.tipoImpuesto!);
         updateFields.add("tipimp_codigo = ${tipoImpuesto.data[0]['tipimp_codigo']}");
-        request.tipoImpuesto = '${tipoImpuesto.data[0]['tipimp_codigo']}';
+        request.tipoImpuesto = tipoImpuesto.data[0]['tipimp_codigo'];
       }
 
       final String updateFieldsStr = updateFields.join(', ');
@@ -116,15 +110,14 @@ class TransaccionContableDB {
     }
   }
 
-  Future<Response<dynamic>> getTipoImpuestoDB() async {
-    const String sql =
-    """ SELECT TIPIMP_CODIGO, TIPIMP_NOMBRE FROM TB_TIPOIMPUESTO ORDER BY TIPIMP_CODIGO """;
+  Future<Response<dynamic>> getTipoImpuestosDB() async {
+    const String sql = """SELECT TIPIMP_CODIGO, TIPIMP_NOMBRE FROM TB_TIPOIMPUESTO ORDER BY TIPIMP_NOMBRE ASC """;
     final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }
 
-  Future<Response<dynamic>> getTipoImpuestoCodigoDB(String tipoImpuestoNombre) async {
-    final String sql = """ SELECT TIPIMP_CODIGO from TB_TIPOIMPUESTO WHERE TIPIMP_NOMBRE = '$tipoImpuestoNombre' """;
+  Future<Response<dynamic>> getTipoImpuestoCodigoDB(int tipoImpuesto) async {
+    final String sql = """ SELECT TIPIMP_CODIGO FROM TB_TIPOIMPUESTO WHERE TIPIMP_CODIGO = '$tipoImpuesto' """;
     final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
     return response;
   }

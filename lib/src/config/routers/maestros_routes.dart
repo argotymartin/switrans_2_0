@@ -253,27 +253,31 @@ class MaestrosRoutes {
     const String modulePath = "transaccion_contable";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return FutureBuilder<void>(
-          future: context.read<TransaccionContableBloc>().onGetImpuestos(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MenuLayout(child: child);
-            }
-            return const MenuLayout(child: SplashView());
-          },
+        return BlocProvider<TransaccionContableBloc>(
+          create: (_) => TransaccionContableBloc(injector())..add(const InitializationTransaccionContableEvent()),
+          child: MenuLayout(child: child),
         );
       },
       routes: <RouteBase>[
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<TransaccionContableBloc>().add(const CleanFormTransaccionContableEvent());
+            }
             return const TransaccionContableCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const TransaccionContableSearchView(),
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<TransaccionContableBloc>().add(const CleanFormTransaccionContableEvent());
+            }
+
+            return const TransaccionContableSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
