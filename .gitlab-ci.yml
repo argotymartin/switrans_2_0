@@ -10,13 +10,13 @@ stages:
 lints:
   stage: lints
   script:
-    - cd /home/erneyvargas/docker/frontend/switrans2/switrans_2_0
+    - cd /home/docker/front-end/proyecto-switrans-2/switrans_2_0
     - docker exec switrans2-flutter /bin/bash -c "flutter pub get && flutter analyze"
 
 deploy:
   stage: deploy
   script:
-    - cd /home/erneyvargas/docker/frontend/switrans2/switrans_2_0
+    - cd /home/docker/front-end/proyecto-switrans-2/switrans_2_0
     - "credeciales=\"$GIT_USER:$GIT_USER_CLAVE@\""
     - "ruta=$(git config --get remote.origin.url | sed \"s/:\\/\\//:\\/\\/$credeciales/g\")"
     - "echo $ruta"
