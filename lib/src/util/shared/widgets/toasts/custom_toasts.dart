@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:postgres/postgres.dart';
 import 'package:toastification/toastification.dart';
@@ -81,7 +82,9 @@ class CustomToast {
         error = CustomToast._getErrorResponse(exception.response!);
       }
     } else if (exception.message != null) {
-      error = CustomToast._getErrorMessage(exception.message!);
+      context.go("/error-connection");
+      return;
+      //error = CustomToast._getErrorMessage(exception.message!);
     }
     if (kIsWeb) {
       final AudioPlayer player = AudioPlayer();
@@ -178,9 +181,9 @@ class CustomToast {
     }
   }
 
-  static ErrorResponse _getErrorMessage(String message) {
-    return ErrorResponse(code: 500, title: message, details: "");
-  }
+  // static ErrorResponse _getErrorMessage(String message) {
+  //   return ErrorResponse(code: 500, title: message, details: "");
+  // }
 }
 
 class ErrorResponse {
