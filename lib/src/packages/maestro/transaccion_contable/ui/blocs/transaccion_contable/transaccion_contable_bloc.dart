@@ -25,7 +25,9 @@ class TransaccionContableBloc extends Bloc<TransaccionContableEvent, Transaccion
   }
 
   Future<void> _onInitializationTransaccionContable(
-      InitializationTransaccionContableEvent event, Emitter<TransaccionContableState> emit) async {
+    InitializationTransaccionContableEvent event,
+    Emitter<TransaccionContableState> emit,
+  ) async {
     emit(state.copyWith(status: TransaccionContableStatus.loading));
     final DataState<List<TransaccionContableTipoImpuesto>> resp = await _repository.getTipoImpuestosService();
     if (resp.data != null) {

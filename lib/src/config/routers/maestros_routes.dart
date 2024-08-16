@@ -29,7 +29,6 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
-import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 
 class MaestrosRoutes {
   static const String packagePath = "/maestros";

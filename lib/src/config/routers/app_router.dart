@@ -2,13 +2,13 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/routers/financiero_routes.dart';
 import 'package:switrans_2_0/src/config/routers/maestros_routes.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/auth_layout.dart';
+import 'package:switrans_2_0/src/globals/login/ui/layouts/views/error_connection_view.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/token_expired_view.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 
 class AppRouter {
   static const String login = "/sign-in";
-  static const String tokenExpired = "/token-expired";
   static const String loading = "/loading";
 
   bool isSignedIn = false;
@@ -21,11 +21,15 @@ class AppRouter {
         builder: (_, __) => const AuthLayout(),
       ),
       GoRoute(
-        path: tokenExpired,
+        path: "/token-expired",
         builder: (_, __) => const TokenExpired(),
       ),
       GoRoute(
-        path: loading,
+        path: "/error-connection",
+        builder: (_, __) => const ErrorConnectionScreen(),
+      ),
+      GoRoute(
+        path: "/loading",
         builder: (_, __) => const LoadingView(),
       ),
       ...FinancieroRoutes.getRoutesFinaciero(),
