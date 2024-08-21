@@ -32,12 +32,12 @@ class ModuloCreateView extends StatelessWidget {
             ListView(
               padding: const EdgeInsets.only(right: 32, top: 8),
               physics: const ClampingScrollPhysics(),
-              children: const <Widget>[
-                BuildViewDetail(),
+              children: <Widget>[
+                const BuildViewDetail(),
                 CardExpansionPanel(
                   title: "Registrar Nuevo",
                   icon: Icons.storage_outlined,
-                  child: _BuildFieldsForm(),
+                  child: _BuildFieldsForm(state),
                 ),
               ],
             ),
@@ -50,7 +50,8 @@ class ModuloCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final ModuloState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.icono = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
-                entries: moduloBloc.state.entriesPaquete,
+                entries: state.entriesPaquete,
                 title: "Paquete",
                 value: request.paquete,
                 isRequired: true,
