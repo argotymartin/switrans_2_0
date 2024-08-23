@@ -1,13 +1,15 @@
 class FormFacturaRequest {
-  final int empresa;
-  final int cliente;
-  final String? remesas;
-  final String? inicio;
-  final String? fin;
+  int? empresa;
+  int? cliente;
+  int? documentoCodigo;
+  String? documentos;
+  String? inicio;
+  String? fin;
   FormFacturaRequest({
-    required this.empresa,
-    required this.cliente,
-    this.remesas,
+    this.empresa,
+    this.cliente,
+    this.documentoCodigo,
+    this.documentos,
     this.inicio,
     this.fin,
   });
@@ -16,9 +18,10 @@ class FormFacturaRequest {
     final Map<String, dynamic> data = <String, dynamic>{
       'empresa': empresa,
       'cliente': cliente,
+      'documentoCodigo': documentoCodigo,
     };
-    if (remesas != "") {
-      data['remesas'] = remesas;
+    if (documentos != "") {
+      data['documentos'] = documentos;
     }
     if (inicio != "") {
       data['inicio'] = inicio;

@@ -22,11 +22,12 @@ class TableDocumentos extends StatelessWidget {
     final double rowHeight = size.height * 0.16;
     const double titleHeight = 48;
     const double columnFilterHeight = 36;
+    final int tableHigth = documentos.length >= 3 ? 3 : documentos.length;
 
     return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
       builder: (BuildContext context, ItemDocumentoState state) {
         return Container(
-          height: (rowHeight * 3) + (titleHeight + columnFilterHeight + 100),
+          height: (rowHeight * tableHigth) + (titleHeight + columnFilterHeight + 84),
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: PlutoGrid(
             columns: DocumentosTableDataBuilder.buildColumns(context),

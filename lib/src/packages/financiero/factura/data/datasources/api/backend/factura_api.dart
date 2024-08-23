@@ -27,7 +27,7 @@ class FacturaAPI {
   }
 
   Future<Response<dynamic>> getDocumentosApi(FormFacturaRequest request) async {
-    const String url = '$kBackendBaseUrl/$endPoint/remesas';
+    const String url = '$kBackendBaseUrl/$endPoint/documentos';
     final Map<String, dynamic> params = request.toJson();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;

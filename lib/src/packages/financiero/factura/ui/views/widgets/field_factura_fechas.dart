@@ -15,7 +15,9 @@ class FieldFacturaFechas extends StatelessWidget {
       children: <Widget>[
         Text(" Fecha Inicio - Fecha Fin", style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        WebDatePicker2(controller: formFacturaBloc.fechacontroller),
+        WebDatePicker2(
+          controller: formFacturaBloc.fechacontroller,
+        ),
       ],
     );
   }

@@ -23,7 +23,7 @@ class CardDetailsFactura extends StatelessWidget {
         final List<Documento> documentos = facturaBloc.state.documentos;
         final Iterable<ItemDocumento> itemDocumento = state.itemDocumentos.where((ItemDocumento element) => element.tipo.isNotEmpty);
 
-        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
+        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
         final double totalPrefacturas = itemDocumento.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
 
         return AnimatedSwitcher(

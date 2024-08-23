@@ -23,7 +23,7 @@ class CustomSizeButton extends StatelessWidget {
       width: width,
       child: ElevatedButton(
         style: ButtonStyle(
-          iconSize: WidgetStatePropertyAll<double>(width * 0.8),
+          iconSize: WidgetStatePropertyAll<double>(width * 0.6),
           padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(EdgeInsetsDirectional.symmetric(horizontal: width * 0.1)),
           shape: const WidgetStatePropertyAll<OutlinedBorder>(StadiumBorder()),
           backgroundColor: WidgetStatePropertyAll<Color?>(color),

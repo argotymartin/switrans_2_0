@@ -16,11 +16,11 @@ class ItemDocumentoModel extends ItemDocumento {
   factory ItemDocumentoModel.toDocumetnoTR(Documento documento) => ItemDocumentoModel(
         cantidad: 1,
         documentoImpreso: documento.impreso,
-        descripcion: documento.observacionFactura.isNotEmpty ? documento.observacionFactura : documento.observacion,
-        documento: documento.remesa,
-        valor: documento.flete,
+        descripcion: documento.descripcion,
+        documento: documento.documento,
+        valor: documento.valorEgreso,
         tipo: "TR",
-        total: documento.total,
+        total: documento.valorTotal,
       );
 
   factory ItemDocumentoModel.init() => ItemDocumentoModel(
