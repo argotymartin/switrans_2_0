@@ -32,12 +32,12 @@ class PaginaCreateView extends StatelessWidget {
             ListView(
               padding: const EdgeInsets.only(right: 32, top: 8),
               physics: const ClampingScrollPhysics(),
-              children: const <Widget>[
-                BuildViewDetail(),
+              children: <Widget>[
+                const BuildViewDetail(),
                 CardExpansionPanel(
                   title: "Registrar Nuevo",
                   icon: Icons.storage_outlined,
-                  child: _BuildFieldsForm(),
+                  child: _BuildFieldsForm(state),
                 ),
               ],
             ),
@@ -50,7 +50,8 @@ class PaginaCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final PaginaState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +73,8 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
               AutocompleteInputForm(
+                entries: state.entriesModulos,
                 title: "Modulos",
-                entries: paginaBloc.state.entriesModulos,
                 value: request.modulo,
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.modulo = result.codigo,

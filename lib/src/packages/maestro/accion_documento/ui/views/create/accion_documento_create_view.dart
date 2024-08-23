@@ -32,12 +32,12 @@ class AccionDocumentoCreateView extends StatelessWidget {
           children: <Widget>[
             ListView(
               padding: const EdgeInsets.only(right: 32, top: 8),
-              children: const <Widget>[
-                BuildViewDetail(),
+              children: <Widget>[
+                const BuildViewDetail(),
                 CardExpansionPanel(
                   title: "Registrar Nuevo",
                   icon: Icons.price_change_outlined,
-                  child: _BuildFieldsForm(),
+                  child: _BuildFieldsForm(state),
                 ),
               ],
             ),
@@ -50,7 +50,8 @@ class AccionDocumentoCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final AccionDocumentoState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toLowerCase() : null,
               ),
               AutocompleteInputForm(
-                entries: accionDocumentoBloc.state.entriesTiposDocumento,
+                entries: state.entriesTiposDocumento,
                 title: "Tipo Documento",
                 value: request.tipoDocumento,
                 isRequired: true,

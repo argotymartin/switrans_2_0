@@ -33,12 +33,12 @@ class UnidadNegocioCreateView extends StatelessWidget {
             ListView(
               padding: const EdgeInsets.only(right: 32, top: 8),
               physics: const ClampingScrollPhysics(),
-              children: const <Widget>[
-                BuildViewDetail(),
+              children: <Widget>[
+                const BuildViewDetail(),
                 CardExpansionPanel(
                   title: "Registrar Nuevo",
                   icon: Icons.storage_outlined,
-                  child: _BuildFieldsForm(),
+                  child: _BuildFieldsForm(state),
                 ),
               ],
             ),
@@ -51,7 +51,8 @@ class UnidadNegocioCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final UnidadNegocioState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
-                entries: unidadNegocioBloc.state.entriesEmpresa,
+                entries: state.entriesEmpresa,
                 title: "Empresa",
                 value: request.empresa,
                 onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,

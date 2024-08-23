@@ -71,7 +71,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
               AutocompleteInputForm(
-                entries: unidadNegocioBloc.state.entriesEmpresa,
+                entries: state.entriesEmpresa,
                 title: "Empresa",
                 value: request.empresa,
                 onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,

@@ -80,7 +80,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               AutocompleteInputForm(
                 title: "Modulos",
-                entries: paginaBloc.state.entriesModulos,
+                entries: state.entriesModulos,
                 value: request.modulo,
                 onChanged: (EntryAutocomplete result) => request.modulo = result.codigo,
               ),

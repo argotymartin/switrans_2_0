@@ -33,12 +33,12 @@ class TransaccionContableCreateView extends StatelessWidget {
             ListView(
               padding: const EdgeInsets.only(right: 32, top: 8),
               physics: const ClampingScrollPhysics(),
-              children: const <Widget>[
-                BuildViewDetail(),
+              children: <Widget>[
+                const BuildViewDetail(),
                 CardExpansionPanel(
                   title: "Registrar Nuevo",
                   icon: Icons.storage_outlined,
-                  child: _BuildFieldsForm(),
+                  child: _BuildFieldsForm(state),
                 ),
               ],
             ),
@@ -51,7 +51,8 @@ class TransaccionContableCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  const _BuildFieldsForm();
+  final TransaccionContableState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.secuencia = result.isNotEmpty ? int.parse(result) : null,
               ),
               AutocompleteInputForm(
-                entries: transaccionContableBloc.state.entriesTipoImpuesto,
+                entries: state.entriesTipoImpuesto,
                 title: "Tipo Impuesto",
                 value: request.tipoImpuesto,
                 onChanged: (EntryAutocomplete result) => request.tipoImpuesto = result.codigo,
