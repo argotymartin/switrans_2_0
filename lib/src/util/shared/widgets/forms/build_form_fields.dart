@@ -40,14 +40,16 @@ class BuildFormFields extends StatelessWidget {
           if (index < children.length) {
             rowChildren.add(Expanded(child: children[index]));
             if (j < columnsCount - 1) {
-              rowChildren.add(const SizedBox(width: 16));
+              if (i != (children.length - 1)) {
+                rowChildren.add(const SizedBox(width: 16));
+              }
             }
           }
         }
         columnChildren.add(
           Padding(
-            padding: const EdgeInsets.all(24),
-            child: Row(children: rowChildren),
+            padding: const EdgeInsets.all(16),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: rowChildren),
           ),
         );
       }

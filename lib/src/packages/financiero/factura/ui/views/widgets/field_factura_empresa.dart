@@ -6,7 +6,10 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_doma
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
 class FieldFacturaEmpresa extends StatefulWidget {
-  const FieldFacturaEmpresa({super.key});
+  final int value;
+  final Function(int result) onChanged;
+  final String title;
+  const FieldFacturaEmpresa({required this.value, required this.onChanged, required this.title, super.key});
 
   @override
   State<FieldFacturaEmpresa> createState() => _FieldFacturaEmpresaState();
@@ -14,6 +17,12 @@ class FieldFacturaEmpresa extends StatefulWidget {
 
 class _FieldFacturaEmpresaState extends State<FieldFacturaEmpresa> {
   int? selectedEmpresaCodigo;
+  @override
+  void initState() {
+    selectedEmpresaCodigo = widget.value;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +31,8 @@ class _FieldFacturaEmpresaState extends State<FieldFacturaEmpresa> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Empresa", style: AppTheme.titleStyle),
-        const SizedBox(height: 8),
+        Text(widget.title, style: AppTheme.titleStyle),
+        const SizedBox(height: 12),
         Wrap(
           runSpacing: 8,
           spacing: 16,
@@ -39,7 +48,7 @@ class _FieldFacturaEmpresaState extends State<FieldFacturaEmpresa> {
                   setState(() {
                     selectedEmpresaCodigo = codigo;
                   });
-                  formFacturaBloc.request.empresa = codigo;
+                  widget.onChanged(codigo);
                 },
               ),
             ),

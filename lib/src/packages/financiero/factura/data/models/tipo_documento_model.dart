@@ -8,6 +8,6 @@ class TipoDocumentoModel extends TipoDocumento {
 
   factory TipoDocumentoModel.fromJson(Map<String, dynamic> json) => TipoDocumentoModel(
         codigo: json["codigo"],
-        nombre: json["nombre"],
+        nombre: json["documento"],
       );
 }

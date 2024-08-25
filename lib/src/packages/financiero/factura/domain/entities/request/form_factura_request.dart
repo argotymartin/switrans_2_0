@@ -3,15 +3,13 @@ class FormFacturaRequest {
   int? cliente;
   int? documentoCodigo;
   String? documentos;
-  String? inicio;
-  String? fin;
+  String? rangoFechas;
   FormFacturaRequest({
     this.empresa,
     this.cliente,
     this.documentoCodigo,
     this.documentos,
-    this.inicio,
-    this.fin,
+    this.rangoFechas,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,11 +21,8 @@ class FormFacturaRequest {
     if (documentos != "") {
       data['documentos'] = documentos;
     }
-    if (inicio != "") {
-      data['inicio'] = inicio;
-    }
-    if (fin != "") {
-      data['fin'] = fin;
+    if (rangoFechas != "") {
+      data['rangoFechas'] = rangoFechas;
     }
 
     return data;

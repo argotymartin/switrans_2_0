@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/tipo_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
@@ -13,9 +12,7 @@ part 'form_factura_state.dart';
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final AbstractFacturaRepository _repository;
 
-  final TextEditingController remesasController = TextEditingController();
-  final TextEditingController fechacontroller = TextEditingController();
-  FormFacturaRequest _request = FormFacturaRequest();
+  FormFacturaRequest _request = FormFacturaRequest(empresa: 1, documentoCodigo: 11);
 
   FormFacturaBloc(this._repository) : super(const FormFacturaState().initial()) {
     on<GetFormFacturaEvent>(_onGetDataFactura);

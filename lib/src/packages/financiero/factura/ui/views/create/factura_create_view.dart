@@ -5,9 +5,9 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_doma
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_empresa.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_fechas.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/date_picker_input_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -85,21 +85,33 @@ class _BuildFieldsForm extends StatelessWidget {
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.cliente = result.codigo,
               ),
-              const FieldFacturaEmpresa(),
-              const FieldFacturaDocumentos(),
-              const FieldFacturaFechas(),
+              FieldFacturaEmpresa(
+                title: "Empresa",
+                value: request.empresa!,
+                onChanged: (int result) => request.empresa = result,
+              ),
+              DatePickerInputForm(
+                title: "Fecha Inicio - Fecha Fin",
+                value: request.rangoFechas,
+                onChanged: (String result) => request.rangoFechas = result,
+              ),
+              FieldFacturaDocumentos(
+                title: "Documentos",
+                value: request.documentos,
+                onChanged: (String result) => request.documentos = result,
+              ),
             ],
           ),
           FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
 
-              final List<String> fechas = formFacturaBloc.fechacontroller.text.split(" - ");
+              final List<String> fechas = request.rangoFechas!.split(" - ");
               String inicio = "";
               String fin = "";
               final int empresa = state.empresa;
-              final List<String> parts = formFacturaBloc.remesasController.text.split(',').map((String e) => e.trim()).toList();
-              final String remesas = parts.join(', ');
+              final List<String> parts = request.documentos!.split(',').map((String e) => e.trim()).toList();
+              final String documentos = parts.join(', ');
               if (fechas.length > 1) {
                 inicio = fechas[0].trim();
                 fin = fechas[1].trim();
@@ -113,9 +125,9 @@ class _BuildFieldsForm extends StatelessWidget {
                 error += " El campo Cliente no puede ser vacio";
               }
 
-              if (remesas.isEmpty && inicio.isEmpty) {
+              if (documentos.isEmpty && inicio.isEmpty) {
                 error +=
-                    " Si se selecciona el tipo (Factura 12), se deben incluir remesas en el filtro, o bien, selecciónar un intervalo de fechas";
+                    " Si se selecciona el tipo (Factura 12), se deben incluir documentos en el filtro, o bien, selecciónar un intervalo de fechas";
               }
               if (inicio != "" && fin == "") {
                 error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
@@ -132,8 +144,7 @@ class _BuildFieldsForm extends StatelessWidget {
                   cliente: 1228,
                   //documentos: remesas,
                   documentos: "01015-51728",
-                  inicio: inicio,
-                  fin: fin,
+                  rangoFechas: inicio,
                   documentoCodigo: 11,
                 );
                 formFacturaBloc.add(DocumentosFormFacturaEvent(request));
@@ -156,9 +167,14 @@ class _BuildDocumentos extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
         if (state.status == FormFacturaStatus.succes) {
-          if (state.documentos.isNotEmpty) {
-            return TableDocumentos(documentos: state.documentos);
-          }
+          final String texto = state.documentos.length == 1 ? "documento encontrado" : "documentos encontrados";
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("${state.documentos.length} $texto"),
+              state.documentos.isNotEmpty ? TableDocumentos(documentos: state.documentos) : const SizedBox(),
+            ],
+          );
         }
         return const SizedBox();
       },
@@ -260,7 +276,6 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
                       width: 400,
                       child: AutocompleteInput(
                         entries: entriesCentroCosto,
-                        label: "Centro Costo",
                         controller: controllerCentroCosto,
                         onPressed: setValueFactura,
                       ),

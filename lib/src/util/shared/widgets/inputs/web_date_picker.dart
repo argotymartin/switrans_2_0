@@ -1,30 +1,40 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 
-class WebDatePicker2 extends StatefulWidget {
-  const WebDatePicker2({
-    required this.controller,
+class WebDatePicker extends StatefulWidget {
+  final DateTime? initialDate;
+  final TextEditingController? controller;
+  final ValueChanged<String> onChange;
+  final bool isRequired;
+  final bool autofocus;
+  const WebDatePicker({
+    required this.onChange,
+    required this.autofocus,
+    required this.isRequired,
+    this.controller,
     this.initialDate,
-    this.onChange,
     super.key,
   });
 
-  final DateTime? initialDate;
-  final ValueChanged<DateTime?>? onChange;
-  final TextEditingController controller;
-
   @override
-  State<StatefulWidget> createState() => _WebDatePicker2State();
+  State<StatefulWidget> createState() => _WebDatePickerState();
 }
 
-class _WebDatePicker2State extends State<WebDatePicker2> {
+class _WebDatePickerState extends State<WebDatePicker> {
   late List<DateTime?> dialogCalendarPickerValue;
+  late TextEditingController controller;
   @override
   void initState() {
     DateTime dateStar = DateTime.now();
     DateTime dateEnd = dateStar.subtract(const Duration(days: 1));
-    if (widget.controller.text.isNotEmpty) {
-      final List<String> fechas = widget.controller.text.split(" - ");
+    if (widget.controller != null) {
+      controller = widget.controller!;
+    } else {
+      controller = TextEditingController();
+    }
+
+    if (controller.text.isNotEmpty) {
+      final List<String> fechas = controller.text.split(" - ");
       dateStar = DateTime.parse(fechas[0]);
       dateEnd = DateTime.parse(fechas[1]);
     }
@@ -147,37 +157,57 @@ class _WebDatePicker2State extends State<WebDatePicker2> {
         );
       },
     );
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 280),
-      child: TextFormField(
-        style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
-        controller: widget.controller,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-          border: OutlineInputBorder(),
+    return TextFormField(
+      style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
+      controller: controller,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        prefixIcon: const Icon(Icons.calendar_month_outlined),
+        constraints: const BoxConstraints(maxHeight: 42, minHeight: 42),
+        fillColor: Theme.of(context).colorScheme.surface,
+        filled: true,
+        isDense: true,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
-        onTap: () async {
-          final List<DateTime?>? values = await showCalendarDatePicker2Dialog(
-            context: context,
-            config: config.copyWith(
-              dayMaxWidth: 32,
-              controlsHeight: 40,
-              disableMonthPicker: true,
-              hideYearPickerDividers: true,
-            ),
-            dialogSize: const Size(400, 350),
-            borderRadius: BorderRadius.circular(15),
-            value: dialogCalendarPickerValue,
-            dialogBackgroundColor: Theme.of(context).colorScheme.surface,
-          );
-          if (values != null) {
-            setState(() {
-              dialogCalendarPickerValue = values;
-              widget.controller.text = _getValueText(config.calendarType, values);
-            });
-          }
-        },
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          gapPadding: 100,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
+          ),
+        ),
       ),
+      onTap: () async {
+        final List<DateTime?>? values = await showCalendarDatePicker2Dialog(
+          context: context,
+          config: config.copyWith(
+            dayMaxWidth: 32,
+            controlsHeight: 40,
+            disableMonthPicker: true,
+            hideYearPickerDividers: true,
+          ),
+          dialogSize: const Size(450, 350),
+          borderRadius: BorderRadius.circular(15),
+          value: dialogCalendarPickerValue,
+          dialogBackgroundColor: Theme.of(context).colorScheme.surface,
+        );
+        if (values != null) {
+          setState(() {
+            dialogCalendarPickerValue = values;
+            controller.text = _getValueText(config.calendarType, values);
+            widget.onChange(_getValueText(config.calendarType, values));
+          });
+        }
+      },
     );
   }
 }

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/formatear_miles.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -28,6 +30,8 @@ class DocumentosTableDataBuilder {
         minWidth: 88,
         width: 88,
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
+        footerRenderer: (PlutoColumnFooterRendererContext context) =>
+            buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -57,10 +61,10 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 92,
+        minWidth: 120,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
-        footerRenderer: buildRenderSumFooter,
+        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.red.shade700),
       ),
       PlutoColumn(
         title: 'Valor Ingreso',
@@ -68,10 +72,10 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 92,
+        minWidth: 120,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
-        footerRenderer: buildRenderSumFooter,
+        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade700),
       ),
       PlutoColumn(
         title: 'Adiciones',
@@ -80,9 +84,9 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 92,
+        minWidth: 120,
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
-        footerRenderer: buildRenderSumFooter,
+        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade700),
       ),
       PlutoColumn(
         title: 'Descuentos',
@@ -90,10 +94,10 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 92,
+        minWidth: 120,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
-        footerRenderer: buildRenderSumFooter,
+        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.red.shade700),
       ),
       PlutoColumn(
         title: 'Impuestos',
@@ -101,7 +105,7 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 160,
+        minWidth: 180,
         type: PlutoColumnType.text(),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFiledImpuestos(rendererContext, context),
       ),
@@ -111,10 +115,10 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 92,
+        minWidth: 120,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
-        footerRenderer: buildRenderSumFooter,
+        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade900),
       ),
       PlutoColumn(
         title: 'Accion',
@@ -143,13 +147,9 @@ class DocumentosTableDataBuilder {
         'origen': documento.origen,
         'destino': documento.destino,
       };
-
-      final Map<String, double> mapImpuestos = <String, double>{
-        'iva': 190000,
-        'reteiva': 7000,
-        'retefuente': 30000,
-        'reteica': 200,
-      };
+      final List<Map<String, dynamic>> mapImpuestos = documento.impuestos.map((Impuesto e) {
+        return <String, double>{e.nombre: e.valor};
+      }).toList();
 
       final Map<String, dynamic> obsMap = <String, dynamic>{
         'observacion': documento.descripcion,
@@ -203,30 +203,23 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFiledImpuestos(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final String cellValue = rendererContext.cell.value.toString();
-    final Map<String, dynamic> documentoMap = jsonDecode(cellValue);
-    final double iva = documentoMap['iva'];
-    final double reteiva = documentoMap['reteiva'];
-    final double retefuente = documentoMap['retefuente'];
-    final double reteica = documentoMap['reteica'];
+    final dynamic documentoMap = jsonDecode(cellValue);
+    final List<Widget> chlidren = <Widget>[];
+    for (final dynamic mapa in documentoMap) {
+      mapa.forEach((String key, dynamic value) {
+        chlidren.add(
+          Column(
+            children: <Widget>[_DetailImpuestos(title: key, subtitle: "$value"), const Divider()],
+          ),
+        );
+      });
+    }
 
     return SelectionArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SizedBox(height: 8),
-          _DetailDocumento(
-            title: 'Iva',
-            subtitle: "$iva",
-          ),
-          const SizedBox(height: 4),
-          _DetailDocumento(title: 'Reteiva', subtitle: "$reteiva"),
-          const SizedBox(height: 4),
-          _DetailDocumento(title: 'Retefuente', subtitle: "$retefuente"),
-          const SizedBox(height: 4),
-          _DetailDocumento(title: 'Reteica', subtitle: "$reteica"),
-          const SizedBox(height: 4),
-        ],
+        children: chlidren,
       ),
     );
   }
@@ -321,7 +314,7 @@ class DocumentosTableDataBuilder {
   static Widget buildFieldValuesCurrency(PlutoColumnRendererContext rendererContext, Color color) {
     return SelectableText(
       rendererContext.column.type.applyFormat(rendererContext.cell.value),
-      style: TextStyle(color: color, fontSize: 12),
+      style: TextStyle(color: color, fontSize: 16),
       textAlign: TextAlign.end,
     );
   }
@@ -349,17 +342,21 @@ class DocumentosTableDataBuilder {
   }
 }
 
-Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext) {
+Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Color color) {
   return PlutoAggregateColumnFooter(
     rendererContext: rendererContext,
     type: PlutoAggregateColumnType.sum,
     alignment: Alignment.centerRight,
     titleSpanBuilder: (String text) {
       return <InlineSpan>[
-        TextSpan(text: '\$ $text', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+        TextSpan(text: '\$ $text', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color)),
       ];
     },
   );
+}
+
+Widget buildRenderContadorFooter(PlutoColumnFooterRendererContext rendererContext, int length) {
+  return Center(child: Text("$length/$length"));
 }
 
 class _DetailDocumento extends StatelessWidget {
@@ -374,13 +371,46 @@ class _DetailDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: <Widget>[
-        icon != null ? Icon(icon, size: 16) : const SizedBox(),
-        Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold)),
-        Container(
-          constraints: const BoxConstraints(maxWidth: 180),
-          child: FittedBox(child: Text(subtitle, style: const TextStyle(fontSize: 10))),
+        Row(
+          children: <Widget>[
+            icon != null ? Icon(icon, size: 16) : const SizedBox(),
+            Text("$title: ", style: const TextStyle(fontWeight: FontWeight.bold)),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 180),
+              child: FittedBox(child: Text(subtitle, style: const TextStyle(fontSize: 12))),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _DetailImpuestos extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  const _DetailImpuestos({
+    required this.subtitle,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text(
+              "$title: ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Theme.of(context).colorScheme.onPrimaryContainer),
+            ),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 180),
+              child: Text("\$${formatearMiles(subtitle)}", style: const TextStyle(fontSize: 16, color: Colors.black)),
+            ),
+          ],
         ),
       ],
     );

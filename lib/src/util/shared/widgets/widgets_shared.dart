@@ -8,7 +8,6 @@ export 'package:switrans_2_0/src/util/shared/widgets/dialog/success_dialog.dart'
 export 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input2.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/currency_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/autocomplete_input_form.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/number_input_form.dart';
