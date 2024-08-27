@@ -1,33 +1,46 @@
-image: erneyvargasdev/flutter-image:3.22.0
-
 variables:
   GIT_DEPTH: "0"
+  REPO_URL: "http://$GIT_USER:$GIT_USER_CLAVE@git.mct.com.co/frontend/switrans_2_0.git"
+  WORK_DIR: "/home/docker/front-end/proyecto-switrans-2/switrans_2_0"
 
 stages:
   - lints
+  - review
   - deploy
 
 lints:
   stage: lints
   script:
-    - cd /home/docker/front-end/proyecto-switrans-2/switrans_2_0
+    - cd $WORK_DIR
     - docker exec switrans2-flutter /bin/bash -c "flutter pub get && flutter analyze"
+
+build-merge-request:
+  stage: review
+  script:
+    - cd $WORK_DIR
+    - git log --oneline -n 15
+    - echo "Construyendo con los cambios del Merge Request..."
+    - echo $CI_COMMIT_BRANCH
+    - echo $CI_MERGE_REQUEST_ID
+    - git remote set-url origin $REPO_URL
+    - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - docker compose down
+    - docker compose up -d
 
 deploy:
   stage: deploy
   script:
-    - cd /home/docker/front-end/proyecto-switrans-2/switrans_2_0
-    - "credeciales=\"$GIT_USER:$GIT_USER_CLAVE@\""
-    - "ruta=$(git config --get remote.origin.url | sed \"s/:\\/\\//:\\/\\/$credeciales/g\")"
-    - "echo $ruta"
-    - "git checkout develop"
-    - "git pull $ruta develop"
-    - "git status"
-    - "git log --oneline -n 15"
+    - cd $WORK_DIR
+    - git checkout develop
+    - git pull origin develop
+    - git status
+    - git log --oneline -n 15
     - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
-    - rm -fR ../server/web/
+    - rm -rf ../server/web/
     - cp -r build/web/ ../server/
-    - echo "Finalizo con Exito!!"
-    
+    - echo "Finalizó con Éxito!!"
   only:
     - develop
+  when: manual
