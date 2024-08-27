@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
@@ -179,13 +180,13 @@ class _BuildItemFactura extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
         if (state.status == FormFacturaStatus.succes) {
-          return const Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _BuildTableItemsDocumento(),
-              Divider(height: 48, color: Colors.white),
-              _BuildPrefacturarDocumento(),
-              SizedBox(height: 24),
+              _BuildTableItemsDocumento(state),
+              const Divider(height: 48, color: Colors.white),
+              const _BuildPrefacturarDocumento(),
+              const SizedBox(height: 24),
             ],
           );
         }
@@ -196,20 +197,23 @@ class _BuildItemFactura extends StatelessWidget {
 }
 
 class _BuildTableItemsDocumento extends StatelessWidget {
-  const _BuildTableItemsDocumento();
+  final FormFacturaState state;
+  const _BuildTableItemsDocumento(this.state);
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Theme.of(context).colorScheme.onPrimary,
-      child: const Column(
-        children: <Widget>[
-          const TableItemsDocumento(),
-          const SizedBox(height: 24),
-          CardDetailsFactura(),
-        ],
-      ),
-    );
+    return state.documentosSelected.isNotEmpty
+        ? ColoredBox(
+            color: Theme.of(context).colorScheme.onPrimary,
+            child: const Column(
+              children: <Widget>[
+                const TableItemsDocumento(),
+                const SizedBox(height: 24),
+                CardDetailsFactura(),
+              ],
+            ),
+          )
+        : const SizedBox();
   }
 }
 
@@ -221,130 +225,114 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
         if (state.status == FormFacturaStatus.succes) {
-          // final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-          // final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
+          if (state.documentosSelected.isNotEmpty) {
+            final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+            final FormFacturaRequest request = formFacturaBloc.request;
+            final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
+            final EntryAutocomplete cliente =
+                state.entriesClientes.firstWhere((EntryAutocomplete element) => element.codigo == request.cliente);
+            final TextEditingController controllerCentroCosto = TextEditingController();
 
-          // final TextEditingController controllerCentroCosto = TextEditingController();
+            final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
+            final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
+              return EntryAutocomplete(
+                codigo: centro.key,
+                title: centro.value,
+                subTitle: '(${centro.key})',
+              );
+            }).toList();
 
-          // final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
-          // final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
-          //   return EntryAutocomplete(
-          //     codigo: centro.key,
-          //     title: centro.value,
-          //     subTitle: '(${centro.key})',
-          //   );
-          // }).toList();
+            void setValueFactura(EntryAutocomplete value) {
+              if (value.codigo != null) {
+                //context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+              }
+            }
 
-          // void setValueFactura(EntryAutocomplete value) {
-          //   if (value.codigo != null) {
-          //     //context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-          //   }
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                SizedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          const Icon(Icons.work_outline_outlined),
+                          const SizedBox(width: 8),
+                          Text(empresaSelect.nombre),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          const Icon(Icons.contact_emergency_outlined),
+                          const SizedBox(width: 8),
+                          Text(cliente.title),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                SizedBox(
+                  width: 400,
+                  child: AutocompleteInput(
+                    entries: entriesCentroCosto,
+                    controller: controllerCentroCosto,
+                    onPressed: setValueFactura,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const SizedBox(width: 16),
+                const _BuildButtonRegistrar(),
+              ],
+            );
+          }
         }
-
-        // return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-        //   builder: (BuildContext context, ItemDocumentoState state) {
-        //     if (state is ItemDocumentoSuccesState) {
-        //       return Row(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         children: <Widget>[
-        //           SizedBox(
-        //             child: Column(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: <Widget>[
-        //                 Row(
-        //                   children: <Widget>[
-        //                     const Icon(Icons.work_outline_outlined),
-        //                     const SizedBox(width: 8),
-        //                     Text(empresaSelect.nombre),
-        //                   ],
-        //                 ),
-        //                 const Row(
-        //                   children: <Widget>[
-        //                     Icon(Icons.contact_emergency_outlined),
-        //                     SizedBox(width: 8),
-        //                     Text("ACa va el nombre del cliente"),
-        //                   ],
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           const SizedBox(width: 16),
-        //           SizedBox(
-        //             width: 400,
-        //             child: AutocompleteInput(
-        //               entries: entriesCentroCosto,
-        //               controller: controllerCentroCosto,
-        //               onPressed: setValueFactura,
-        //             ),
-        //           ),
-        //           const SizedBox(width: 16),
-        //           SizedBox(
-        //             width: 160,
-        //             child: CustomOutlinedButton(
-        //               icon: Icons.delete_forever_outlined,
-        //               colorText: Colors.white,
-        //               onPressed: () {},
-        //               color: Theme.of(context).colorScheme.error,
-        //               text: "Cancelar",
-        //             ),
-        //           ),
-        //           const SizedBox(width: 16),
-        //           const _BuildButtonRegistrar(),
-        //         ],
-        //       );
-        //     }
-        //     return const SizedBox();
-        //   },
-        // );
-        //} else {
-
-        // return const SizedBox();
-        //}
-
         return const SizedBox();
       },
     );
   }
 }
 
-// class _BuildButtonRegistrar extends StatelessWidget {
-//   const _BuildButtonRegistrar();
+class _BuildButtonRegistrar extends StatelessWidget {
+  const _BuildButtonRegistrar();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final AuthBloc authBloc = context.read<AuthBloc>();
+  @override
+  Widget build(BuildContext context) {
+    final AuthBloc authBloc = context.read<AuthBloc>();
 
-//     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-//       builder: (BuildContext context, FormFacturaState state) {
-//         final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
-//         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-//         final List<Documento> documentos = facturaBloc.state.documentos;
-//         final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
-//         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
+        final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
+        final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+        final List<Documento> documentos = facturaBloc.state.documentos;
+        final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
+        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
 
-//         return FormButton(
-//           label: "Registrar",
-//           icon: Icons.add_card_rounded,
-//           onPressed: () {
-//             //final int centroCosto = formFacturaBloc.centroCosto;
-//             //final int clienteCodigo = formFacturaBloc.clienteCodigo;
-//             final int empresaCodigo = formFacturaBloc.state.empresa;
-//             final int usuario = authBloc.state.auth!.usuario.codigo;
-//             final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
-//               centroCosto: 1,
-//               cliente: 1,
-//               empresa: empresaCodigo,
-//               usuario: usuario,
-//               valorImpuesto: totalDocumentos.toInt(),
-//               valorNeto: 2000,
-//               documentos: documentos,
-//               items: itemDocumentos.toList(),
-//             );
+        return FormButton(
+          label: "Registrar",
+          icon: Icons.add_card_rounded,
+          onPressed: () async {
+            await Future<dynamic>.delayed(const Duration(seconds: 5));
+            //final int centroCosto = formFacturaBloc.centroCosto;
+            //final int clienteCodigo = formFacturaBloc.clienteCodigo;
+            final int empresaCodigo = formFacturaBloc.state.empresa;
+            final int usuario = authBloc.state.auth!.usuario.codigo;
+            final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
+              centroCosto: 1,
+              cliente: 1,
+              empresa: empresaCodigo,
+              usuario: usuario,
+              valorImpuesto: totalDocumentos.toInt(),
+              valorNeto: 2000,
+              documentos: documentos,
+              items: itemDocumentos.toList(),
+            );
 
-//             debugPrint("${prefacturaRequest.toJson()}");
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
+            debugPrint("${prefacturaRequest.toJson()}");
+          },
+        );
+      },
+    );
+  }
+}
