@@ -20,7 +20,6 @@ final pw.SizedBox spacerBox = pw.SizedBox(height: 20);
 List<Documento> itemDocuemto = <Documento>[];
 
 Future<Uint8List> generatePreoperacional(PdfPageFormat format, DataPdf data) async {
-  itemDocuemto = data.itemDocumentos;
   final pw.Document doc = pw.Document(
     title: 'Factura',
     author: "Erney",
@@ -50,11 +49,11 @@ Future<Uint8List> generatePreoperacional(PdfPageFormat format, DataPdf data) asy
         return buildFooter(context);
       },
       build: (pw.Context context) => <pw.Widget>[
-        InformacionFacturaPDF(),
+        InformacionFacturaPDF(data),
         spacerBox,
-        TableFacturaPDF(),
+        TableFacturaPDF(data),
         spacerBox,
-        FooterFacturaPDF(),
+        FooterFacturaPDF(data),
       ],
     ),
   );
@@ -74,12 +73,39 @@ pw.Row buildFooter(pw.Context context) {
 }
 
 class DataPdf {
-  final String usuario;
-  final String vehiculo;
-  List<Documento> itemDocumentos;
+  final String centroCosto;
+  final String cliente;
+  final String direccionCliente;
+  final String remitente;
+  final String destinatario;
+  final String fecha;
+  final String nit;
+  final String telefono;
+  final String domicilio;
+  final String direccion;
+  final String empresa;
+  final String formaPago;
+  final String medioPago;
+  final String numeroFactura;
+  final String fechaVencimiento;
+
+  final List<Documento> documentos;
   DataPdf({
-    required this.usuario,
-    required this.vehiculo,
-    required this.itemDocumentos,
+    required this.centroCosto,
+    required this.cliente,
+    required this.direccionCliente,
+    required this.remitente,
+    required this.destinatario,
+    required this.fecha,
+    required this.nit,
+    required this.telefono,
+    required this.domicilio,
+    required this.direccion,
+    required this.empresa,
+    required this.formaPago,
+    required this.medioPago,
+    required this.numeroFactura,
+    required this.fechaVencimiento,
+    this.documentos = const <Documento>[],
   });
 }

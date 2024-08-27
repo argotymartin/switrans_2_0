@@ -1,10 +1,12 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/generate_pdf.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/items_factura_test.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/formatear_miles.dart';
 
 class TableFacturaPDF extends pw.StatelessWidget {
-  TableFacturaPDF();
+  final DataPdf data;
+  TableFacturaPDF(this.data);
 
   @override
   pw.Widget build(pw.Context context) {
@@ -16,6 +18,7 @@ class TableFacturaPDF extends pw.StatelessWidget {
       "IDENTIFICACION Y DESCRIPCION DE LOS SERVICIOS",
       "VALOR",
     ];
+
     final pw.TextStyle titleColumTextStyle = pw.TextStyle(font: fontPoppinsBold, fontSize: 8);
     final pw.TextStyle ligthMinStyle = pw.TextStyle(font: fontPoppinsLigth, fontSize: 6);
     return pw.TableHelper.fromTextArray(
@@ -46,17 +49,22 @@ class TableFacturaPDF extends pw.StatelessWidget {
         tableHeaders.length,
         (int col) => tableHeaders[col],
       ),
-      data: List<List<String>>.generate(
-        itemsFactura.length,
-        (int index) => <String>[
-          itemsFactura[index]['fecha'].toString(),
-          itemsFactura[index]['documento'].toString(),
-          itemsFactura[index]['origen'].toString(),
-          itemsFactura[index]['destino'].toString(),
-          itemsFactura[index]['obs'].toString(),
-          itemsFactura[index]['valor'].toString(),
-        ],
-      ),
+      data: data.documentos
+          .map(
+            (Documento e) => List<List<String>>.generate(
+              e.itemDocumentos.length,
+              (int index) => <String>[
+                'xxxxx',
+                e.impreso.toUpperCase(),
+                e.origen.toUpperCase(),
+                e.destino.toUpperCase(),
+                e.itemDocumentos[index].servicioNombre,
+                "\$${formatearMiles(e.itemDocumentos[index].total.toString())}",
+              ],
+            ),
+          )
+          .expand((List<List<String>> element) => element) // Aplana la lista de listas en una sola lista de filas
+          .toList(),
     );
   }
 }

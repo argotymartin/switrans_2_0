@@ -56,6 +56,7 @@ class FormFacturaState extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
+        status,
         empresa,
         tipoFactura,
         error,

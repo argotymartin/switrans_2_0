@@ -3,7 +3,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/generate_pdf.dart';
 
 class InformacionFacturaPDF extends pw.StatelessWidget {
-  InformacionFacturaPDF();
+  final DataPdf dataPdf;
+  InformacionFacturaPDF(this.dataPdf);
 
   @override
   pw.Widget build(pw.Context context) {
@@ -12,20 +13,21 @@ class InformacionFacturaPDF extends pw.StatelessWidget {
         pw.Row(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: <pw.Widget>[
-            _InformacionFactura(),
+            _InformacionFactura(dataPdf),
             pw.SizedBox(width: 4),
-            _Factura(),
+            _Factura(dataPdf),
           ],
         ),
         pw.SizedBox(height: 8),
-        _MedioPago(),
+        _MedioPago(dataPdf),
       ],
     );
   }
 }
 
 class _InformacionFactura extends pw.StatelessWidget {
-  _InformacionFactura();
+  final DataPdf dataPdf;
+  _InformacionFactura(this.dataPdf);
 
   @override
   pw.Widget build(pw.Context context) {
@@ -42,19 +44,19 @@ class _InformacionFactura extends pw.StatelessWidget {
             mainAxisSize: pw.MainAxisSize.min,
             children: <pw.Widget>[
               _BuildDataElement(
-                element: InfoElement(title: "CENTRO DE COSTO", contenet: "COTA - COOPIDROGAS FERRICAR"),
+                element: InfoElement(title: "CENTRO DE COSTO", contenet: dataPdf.centroCosto.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "SEÑORES", contenet: "COOPERATIVA NACIONAL DE DROGUISTAS DETALLISTA"),
+                element: InfoElement(title: "SEÑORES", contenet: dataPdf.cliente.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "DIRECCION", contenet: "AUTO. BTA-MED KM 4.7 ANTES DEL PTE SIBERIA"),
+                element: InfoElement(title: "DIRECCION", contenet: dataPdf.direccion.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "REMITENTE", contenet: "COOPIDROGAS COTA"),
+                element: InfoElement(title: "REMITENTE", contenet: dataPdf.remitente.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "DESTINATARIO", contenet: "COOPIDROGAS SOGAMOSO"),
+                element: InfoElement(title: "DESTINATARIO", contenet: dataPdf.destinatario.toUpperCase()),
               ),
             ],
           ),
@@ -65,16 +67,16 @@ class _InformacionFactura extends pw.StatelessWidget {
                 element: InfoElement(title: "FECHA", contenet: currenDate.toString()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "NIT", contenet: "860026123 - 0"),
+                element: InfoElement(title: "NIT", contenet: dataPdf.nit.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "TELEFONO", contenet: "3202356395"),
+                element: InfoElement(title: "TELEFONO", contenet: dataPdf.telefono.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "DOMICILIO", contenet: "AUTOPISTA BOGOTA MEDELLIN KILOMETRO 4.7"),
+                element: InfoElement(title: "DOMICILIO", contenet: dataPdf.domicilio.toUpperCase()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "DIRECCION", contenet: "SOGAMOSO SOGAMOSO"),
+                element: InfoElement(title: "DIRECCION", contenet: dataPdf.direccion.toUpperCase()),
               ),
             ],
           ),
@@ -85,7 +87,8 @@ class _InformacionFactura extends pw.StatelessWidget {
 }
 
 class _Factura extends pw.StatelessWidget {
-  _Factura();
+  final DataPdf dataPdf;
+  _Factura(this.dataPdf);
 
   @override
   pw.Widget build(pw.Context context) {
@@ -98,10 +101,10 @@ class _Factura extends pw.StatelessWidget {
       child: pw.Column(
         children: <pw.Widget>[
           pw.Text("FACTURA ELECTRÓNICA DE VENTA No", style: ligthTextStyle, textAlign: pw.TextAlign.center),
-          pw.Text("E044 - 4884", style: fontBoldMinStyle),
+          pw.Text(dataPdf.numeroFactura, style: fontBoldMinStyle),
           pw.SizedBox(height: 8),
           pw.Text("Fecha de Vencimiento: ", style: ligthTextStyle),
-          pw.Text("09/06/2024: ", style: semiBoldTextStyle),
+          pw.Text(dataPdf.fechaVencimiento, style: semiBoldTextStyle),
         ],
       ),
     );
@@ -109,7 +112,8 @@ class _Factura extends pw.StatelessWidget {
 }
 
 class _MedioPago extends pw.StatelessWidget {
-  _MedioPago();
+  final DataPdf dataPdf;
+  _MedioPago(this.dataPdf);
 
   @override
   pw.Widget build(pw.Context context) {
@@ -120,13 +124,13 @@ class _MedioPago extends pw.StatelessWidget {
       child: pw.Row(
         children: <pw.Widget>[
           pw.Text("DEBE A: ", style: ligthTextStyle),
-          pw.Text("FERRICAR S.A.S", style: semiBoldTextStyle),
+          pw.Text(dataPdf.empresa, style: semiBoldTextStyle),
           pw.SizedBox(width: 16),
           pw.Text("FORMA DE PAGO: ", style: ligthTextStyle),
-          pw.Text("Crédito", style: semiBoldTextStyle),
+          pw.Text(dataPdf.formaPago, style: semiBoldTextStyle),
           pw.SizedBox(width: 16),
           pw.Text("MEDIO DE PAGO: ", style: ligthTextStyle),
-          pw.Text("Consignacion bancaria", style: semiBoldTextStyle),
+          pw.Text(dataPdf.medioPago, style: semiBoldTextStyle),
         ],
       ),
     );
