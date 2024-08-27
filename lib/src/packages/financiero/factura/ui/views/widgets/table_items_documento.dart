@@ -28,7 +28,7 @@ class TableItemsDocumento extends StatelessWidget {
             _CellTitle(title: "Descripcion"),
             _CellTitle(title: "SubTotal"),
             _CellTitle(title: "Impuestos"),
-            _CellTitle(title: "Total"),
+            _CellTitle(title: "Total Valor a Pagar"),
           ],
         );
         int index = 0;

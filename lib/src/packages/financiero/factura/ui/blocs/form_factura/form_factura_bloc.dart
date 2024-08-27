@@ -49,19 +49,19 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     }
   }
 
-  Future<void> _onErrorFormFacturaEvent(ErrorFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
-    emit(state.copyWith(status: FormFacturaStatus.error, error: event.error));
-  }
-
   Future<void> _onSuccesDocumentos(DocumentosFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(state.copyWith(status: FormFacturaStatus.loading));
     final DataState<List<Documento>> resp = await _repository.getDocumentosService(event.request);
     if (resp.data != null) {
       final List<Documento> documentos = resp.data!;
-      emit(state.copyWith(status: FormFacturaStatus.succes, documentos: documentos));
+      emit(state.copyWith(status: FormFacturaStatus.succes, documentos: documentos, documentosSelected: <Documento>[]));
     } else {
       emit(state.copyWith(status: FormFacturaStatus.exception, exception: resp.error));
     }
+  }
+
+  Future<void> _onErrorFormFacturaEvent(ErrorFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+    emit(state.copyWith(status: FormFacturaStatus.error, error: event.error));
   }
 
   Future<void> _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
@@ -80,11 +80,6 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     final List<Documento> documentos = <Documento>[...state.documentosSelected];
     final List<Documento> newDocumentos = documentos..removeWhere((Documento element) => element.documento == event.documento.documento);
     emit(state.copyWith(status: FormFacturaStatus.succes, documentosSelected: newDocumentos));
-  }
-
-  Empresa getEmpresaSelected() {
-    final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
-    return empresaSelect;
   }
 
   List<MapEntry<int, String>> getCentosCosto() {
