@@ -13,6 +13,8 @@ lints:
   script:
     - cd $WORK_DIR
     - docker exec switrans2-flutter /bin/bash -c "flutter pub get && flutter analyze"
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
 
 build-merge-request:
   stage: review
@@ -43,6 +45,6 @@ deploy:
     - rm -rf ../server/web/
     - cp -r build/web/ ../server/
     - echo "Finalizó con Éxito!!"
-  only:
-    - develop
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  when: manual # Manualmente en la rama develop
