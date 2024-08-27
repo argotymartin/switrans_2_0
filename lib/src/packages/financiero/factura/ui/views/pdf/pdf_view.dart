@@ -16,9 +16,22 @@ class PdfView extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
         final DataPdf dataPDF = DataPdf(
-          usuario: "Erney VArgas",
-          vehiculo: "JYS 24D",
-          itemDocumentos: state.documentosSelected,
+          centroCosto: "xxxxx",
+          cliente: "xxxxx",
+          destinatario: "xxxxx",
+          direccion: "xxxxx",
+          direccionCliente: "xxxxx",
+          domicilio: "xxxxx",
+          fecha: DateTime.now().toString(),
+          nit: "xxxxx",
+          remitente: "xxxxx",
+          telefono: "xxxxx",
+          documentos: state.documentosSelected,
+          empresa: "xxxxx",
+          fechaVencimiento: "xxxxx",
+          formaPago: "xxxxx",
+          medioPago: "xxxxx",
+          numeroFactura: "xxx - xxx",
         );
         return PdfPreview(
           previewPageMargin: const EdgeInsets.all(60),
