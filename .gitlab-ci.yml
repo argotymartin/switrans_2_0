@@ -47,4 +47,4 @@ deploy:
     - echo "Finalizó con Éxito!!"
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-  when: manual # Manualmente en la rama develop
+    - when: manual # Manualmente en la rama develop
