@@ -1,6 +1,5 @@
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/adicion.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/descuento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
 class Documento {
   final int documento;
@@ -19,6 +18,7 @@ class Documento {
   final List<Adicion> adiciones;
   final List<Descuento> descuentos;
   final List<Impuesto> impuestos;
+  final List<ItemDocumento> itemDocumentos;
 
   Documento({
     required this.documento,
@@ -37,6 +37,7 @@ class Documento {
     required this.adiciones,
     required this.descuentos,
     required this.impuestos,
+    required this.itemDocumentos,
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{

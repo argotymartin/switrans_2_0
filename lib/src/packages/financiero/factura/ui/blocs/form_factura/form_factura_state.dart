@@ -12,6 +12,7 @@ class FormFacturaState extends Equatable {
   final List<EntryAutocomplete> entriesClientes;
   final DioException? exception;
   final List<Documento> documentos;
+  final List<Documento> documentosSelected;
 
   const FormFacturaState({
     this.empresa = 1,
@@ -22,6 +23,7 @@ class FormFacturaState extends Equatable {
     this.empresas = const <Empresa>[],
     this.entriesTiposDocumentos = const <EntryAutocomplete>[],
     this.documentos = const <Documento>[],
+    this.documentosSelected = const <Documento>[],
     this.exception,
   });
 
@@ -37,6 +39,7 @@ class FormFacturaState extends Equatable {
     List<EntryAutocomplete>? entriesClientes,
     DioException? exception,
     List<Documento>? documentos,
+    List<Documento>? documentosSelected,
   }) =>
       FormFacturaState(
         status: status ?? this.status,
@@ -48,6 +51,7 @@ class FormFacturaState extends Equatable {
         entriesTiposDocumentos: entriesTiposDocumentos ?? this.entriesTiposDocumentos,
         exception: exception ?? this.exception,
         documentos: documentos ?? this.documentos,
+        documentosSelected: documentosSelected ?? this.documentosSelected,
       );
 
   @override
@@ -60,5 +64,6 @@ class FormFacturaState extends Equatable {
         entriesTiposDocumentos,
         documentos,
         exception,
+        documentosSelected,
       ];
 }

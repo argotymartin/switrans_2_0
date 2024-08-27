@@ -12,15 +12,15 @@ part 'form_factura_state.dart';
 class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   final AbstractFacturaRepository _repository;
 
-  FormFacturaRequest _request = FormFacturaRequest(empresa: 1, documentoCodigo: 11);
+  FormFacturaRequest _request = FormFacturaRequest(empresa: 1, documentoCodigo: 11, cliente: 1228, documentos: "01015-51728");
 
   FormFacturaBloc(this._repository) : super(const FormFacturaState().initial()) {
     on<GetFormFacturaEvent>(_onGetDataFactura);
-    on<EmpresaFormFacturaEvent>(_onEventChanged);
-    on<TipoFacturaFormFacturaEvent>(_onEventChanged);
     on<DocumentosFormFacturaEvent>(_onSuccesDocumentos);
-    on<ErrorFormFacturaEvent>(_onEventChanged);
+    on<ErrorFormFacturaEvent>(_onErrorFormFacturaEvent);
     on<SuccesFormFacturaEvent>(_onSuccesChanged);
+    on<AddDocumentoFormFacturaEvent>(_onAddDocumentoFormFacturaEvent);
+    on<RemoveDocumentoFormFacturaEvent>(_onRemoveDocumentoFormFacturaEvent);
   }
 
   Future<void> _onGetDataFactura(GetFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
@@ -49,9 +49,8 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     }
   }
 
-  void _onEventChanged(FormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    emit(state.copyWith(status: FormFacturaStatus.loading));
-    emit(state.copyWith(status: FormFacturaStatus.facturar));
+  Future<void> _onErrorFormFacturaEvent(ErrorFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+    emit(state.copyWith(status: FormFacturaStatus.error, error: event.error));
   }
 
   Future<void> _onSuccesDocumentos(DocumentosFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
@@ -65,10 +64,22 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
     }
   }
 
-  void _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) {
-    // return <Documento>[];
-
+  Future<void> _onSuccesChanged(SuccesFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(state.copyWith(status: FormFacturaStatus.loading));
+  }
+
+  Future<void> _onAddDocumentoFormFacturaEvent(AddDocumentoFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+    emit(state.copyWith(status: FormFacturaStatus.loading));
+    final List<Documento> documentos = <Documento>[...state.documentosSelected];
+    documentos.add(event.documento);
+    emit(state.copyWith(status: FormFacturaStatus.succes, documentosSelected: documentos));
+  }
+
+  Future<void> _onRemoveDocumentoFormFacturaEvent(RemoveDocumentoFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
+    emit(state.copyWith(status: FormFacturaStatus.loading));
+    final List<Documento> documentos = <Documento>[...state.documentosSelected];
+    final List<Documento> newDocumentos = documentos..removeWhere((Documento element) => element.documento == event.documento.documento);
+    emit(state.copyWith(status: FormFacturaStatus.succes, documentosSelected: newDocumentos));
   }
 
   Empresa getEmpresaSelected() {

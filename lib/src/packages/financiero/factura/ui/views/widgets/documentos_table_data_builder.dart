@@ -117,7 +117,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 120,
         type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade900),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValueTotal(rendererContext, Colors.green.shade900),
         footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade900),
       ),
       PlutoColumn(
@@ -175,11 +175,11 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    return BlocListener<ItemDocumentoBloc, ItemDocumentoState>(
-      listener: (BuildContext context, ItemDocumentoState state) {
-        final List<ItemDocumento> itemDocumentos = state.itemDocumentos;
-        final int docuemnto = rendererContext.cell.row.cells["documento"]!.value;
-        final bool isPresent = itemDocumentos.any((ItemDocumento pre) => pre.documento == docuemnto && pre.tipo == "TR");
+    return BlocListener<FormFacturaBloc, FormFacturaState>(
+      listener: (BuildContext context, FormFacturaState state) {
+        final List<Documento> itemDocumentos = state.documentosSelected;
+        final int documento = rendererContext.cell.row.cells["documento"]!.value;
+        final bool isPresent = itemDocumentos.any((Documento element) => element.documento == documento);
 
         rendererContext.cell.row.setChecked(isPresent);
       },
@@ -319,6 +319,18 @@ class DocumentosTableDataBuilder {
     );
   }
 
+  static Widget buildFieldValueTotal(PlutoColumnRendererContext rendererContext, Color color) {
+    return Tooltip(
+      message: "(Valor Ingreso + Adiciones - Descuento) + Iva - (Retefuente + Reteica + Reteiva)",
+      padding: const EdgeInsets.all(8),
+      child: SelectableText(
+        rendererContext.column.type.applyFormat(rendererContext.cell.value),
+        style: TextStyle(color: color, fontSize: 16),
+        textAlign: TextAlign.end,
+      ),
+    );
+  }
+
   static Widget buildFieldAccion(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -329,9 +341,9 @@ class DocumentosTableDataBuilder {
 
             final List<Documento> documentosAll = context.read<FormFacturaBloc>().state.documentos;
             final Documento documento = documentosAll[rendererContext.rowIdx];
-            context.read<ItemDocumentoBloc>().add(RemoveItemDocumentoEvent(documento: documento));
+            context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
           },
-          width: 32,
+          size: 32,
           icon: Icons.delete_outlined,
           color: Colors.red,
           iconColor: Colors.white,

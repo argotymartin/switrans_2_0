@@ -28,6 +28,7 @@ class DatePickerInputForm extends StatelessWidget {
           onChange: onChanged,
           autofocus: autofocus,
           isRequired: isRequired,
+          initialValue: value != null ? value! : "",
         ),
       ],
     );

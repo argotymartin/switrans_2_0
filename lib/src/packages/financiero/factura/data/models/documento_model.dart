@@ -1,6 +1,7 @@
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/adicion_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/descuento_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/models/impuesto_model.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/data/models/item_documento_model.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
@@ -22,6 +23,7 @@ class DocumentoModel extends Documento {
     required super.adiciones,
     required super.descuentos,
     required super.impuestos,
+    required super.itemDocumentos,
   });
 
   factory DocumentoModel.fromJson(Map<String, dynamic> json) => DocumentoModel(
@@ -36,10 +38,12 @@ class DocumentoModel extends Documento {
         descripcion: json['descripcion'],
         datosAdicionales: json['datosAdicionales'],
         valorEgreso: json['valorEgreso'],
+        // valorIngreso: 100.0,
         valorIngreso: json['valorIngreso'],
         valorTotal: json['valorTotal'],
         adiciones: List<Adicion>.from(json["adiciones"].map((dynamic x) => AdicionModel.fromJson(x))),
         descuentos: List<Descuento>.from(json["descuentos"].map((dynamic x) => DescuentoModel.fromJson(x))),
         impuestos: List<Impuesto>.from(json["impuestosTotales"].map((dynamic x) => ImpuestoModel.fromJson(x))),
+        itemDocumentos: List<ItemDocumento>.from(json["items"].map((dynamic x) => ItemDocumentoModel.fromJson(x))),
       );
 }

@@ -11,16 +11,6 @@ class GetFormFacturaEvent extends FormFacturaEvent {
   const GetFormFacturaEvent();
 }
 
-class EmpresaFormFacturaEvent extends FormFacturaEvent {
-  final int empresa;
-  const EmpresaFormFacturaEvent(this.empresa);
-}
-
-class TipoFacturaFormFacturaEvent extends FormFacturaEvent {
-  final int tipoFactura;
-  const TipoFacturaFormFacturaEvent(this.tipoFactura);
-}
-
 class ErrorFormFacturaEvent extends FormFacturaEvent {
   final String error;
   const ErrorFormFacturaEvent(this.error);
@@ -33,4 +23,14 @@ class DocumentosFormFacturaEvent extends FormFacturaEvent {
 
 class SuccesFormFacturaEvent extends FormFacturaEvent {
   const SuccesFormFacturaEvent();
+}
+
+class AddDocumentoFormFacturaEvent extends FormFacturaEvent {
+  final Documento documento;
+  const AddDocumentoFormFacturaEvent(this.documento);
+}
+
+class RemoveDocumentoFormFacturaEvent extends FormFacturaEvent {
+  final Documento documento;
+  const RemoveDocumentoFormFacturaEvent(this.documento);
 }

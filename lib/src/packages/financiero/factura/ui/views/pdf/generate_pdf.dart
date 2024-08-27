@@ -17,7 +17,7 @@ late pw.Font fontPoppinsRegular;
 late pw.Font fontPoppinsLigth;
 late pw.Font fontSemiBold;
 final pw.SizedBox spacerBox = pw.SizedBox(height: 20);
-List<ItemDocumento> itemDocuemto = <ItemDocumento>[];
+List<Documento> itemDocuemto = <Documento>[];
 
 Future<Uint8List> generatePreoperacional(PdfPageFormat format, DataPdf data) async {
   itemDocuemto = data.itemDocumentos;
@@ -76,7 +76,7 @@ pw.Row buildFooter(pw.Context context) {
 class DataPdf {
   final String usuario;
   final String vehiculo;
-  List<ItemDocumento> itemDocumentos;
+  List<Documento> itemDocumentos;
   DataPdf({
     required this.usuario,
     required this.vehiculo,

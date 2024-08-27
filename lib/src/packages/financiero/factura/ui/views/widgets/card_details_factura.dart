@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_documento.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/pdf_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -18,13 +17,13 @@ class CardDetailsFactura extends StatelessWidget {
 
     final Size size = MediaQuery.of(context).size;
 
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (BuildContext context, ItemDocumentoState state) {
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
         final List<Documento> documentos = facturaBloc.state.documentos;
-        final Iterable<ItemDocumento> itemDocumento = state.itemDocumentos.where((ItemDocumento element) => element.tipo.isNotEmpty);
+        final Iterable<Documento> itemDocumento = state.documentosSelected.where((Documento element) => element.impuestos.isNotEmpty);
 
         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
-        final double totalPrefacturas = itemDocumento.fold(0, (double total, ItemDocumento prefactura) => total + prefactura.total);
+        final double totalPrefacturas = itemDocumento.fold(0, (double total, Documento prefactura) => total + prefactura.valorEgreso);
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),

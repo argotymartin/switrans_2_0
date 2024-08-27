@@ -4,7 +4,6 @@ export 'package:switrans_2_0/src/util/shared/widgets/buttons/custom_size_button.
 export 'package:switrans_2_0/src/util/shared/widgets/buttons/form_button.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/buttons/link_text.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/dialog/error_dialog.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/dialog/success_dialog.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/forms/build_button_form_save.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/forms/build_form_fields.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/autocomplete_input.dart';

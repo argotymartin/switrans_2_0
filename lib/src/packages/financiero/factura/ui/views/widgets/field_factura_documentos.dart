@@ -41,15 +41,37 @@ class _TextAreaDocumentos extends StatelessWidget {
     return TextFormField(
       onChanged: onChanged,
       autovalidateMode: AutovalidateMode.always,
+      initialValue: value,
       validator: onValidator,
       minLines: 4,
       style: const TextStyle(fontSize: 12),
       maxLines: null,
       keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        fillColor: Theme.of(context).colorScheme.surface,
+        filled: true,
+        isDense: true,
         errorMaxLines: 2,
         alignLabelWithHint: true,
-        border: OutlineInputBorder(),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          gapPadding: 100,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
+          ),
+        ),
+        border: const OutlineInputBorder(),
         labelText: 'Numeros de Documento (General / Impreso) separados por (,)',
       ),
     );

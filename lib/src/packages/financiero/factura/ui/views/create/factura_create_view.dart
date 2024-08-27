@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
@@ -105,32 +104,30 @@ class _BuildFieldsForm extends StatelessWidget {
           FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
-
-              final List<String> fechas = request.rangoFechas!.split(" - ");
-              String inicio = "";
-              String fin = "";
-              final int empresa = state.empresa;
-              final List<String> parts = request.documentos!.split(',').map((String e) => e.trim()).toList();
-              final String documentos = parts.join(', ');
-              if (fechas.length > 1) {
-                inicio = fechas[0].trim();
-                fin = fechas[1].trim();
-              }
-
               String error = "";
-              if (empresa <= 0) {
+
+              if (request.empresa == null) {
                 error += " El campo Empresa no puede ser vacio";
               }
               if (request.cliente == null) {
                 error += " El campo Cliente no puede ser vacio";
               }
 
-              if (documentos.isEmpty && inicio.isEmpty) {
-                error +=
-                    " Si se selecciona el tipo (Factura 12), se deben incluir documentos en el filtro, o bien, selecciónar un intervalo de fechas";
+              if (request.documentoCodigo == null) {
+                error += " El campo tipo Documento no puede ser vacio";
               }
-              if (inicio != "" && fin == "") {
-                error += " Si se selecciona el campo fecha Inicio se debe seleccionar fecha Fin";
+              if (request.cliente == null) {
+                error += " El campo Cliente no puede ser vacio";
+              }
+
+              if (request.documentos != null) {
+                final List<String> parts = request.documentos!.split(',').map((String e) => e.trim()).toList();
+                final String documentos = parts.join(', ');
+                request.documentos = documentos;
+              }
+
+              if (request.documentos!.isEmpty && request.rangoFechas!.isEmpty) {
+                error += " Se deben incluir documentos en el filtro, o bien, selecciónar un intervalo de fechas";
               }
 
               if (error.isNotEmpty) {
@@ -138,21 +135,13 @@ class _BuildFieldsForm extends StatelessWidget {
               }
 
               if (isValid) {
-                final FormFacturaRequest request = FormFacturaRequest(
-                  empresa: empresa,
-                  //cliente: clienteCodigo,
-                  cliente: 1228,
-                  //documentos: remesas,
-                  documentos: "01015-51728",
-                  rangoFechas: inicio,
-                  documentoCodigo: 11,
-                );
                 formFacturaBloc.add(DocumentosFormFacturaEvent(request));
               }
             },
             icon: Icons.search_rounded,
             label: "Buscar",
           ),
+          state.status == FormFacturaStatus.error ? ErrorModal(title: state.error) : const SizedBox(),
         ],
       ),
     );
@@ -187,14 +176,21 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _BuildTableItemsDocumento(),
-        Divider(height: 48, color: Colors.white),
-        _BuildPrefacturarDocumento(),
-        SizedBox(height: 24),
-      ],
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
+        if (state.status == FormFacturaStatus.succes) {
+          return const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _BuildTableItemsDocumento(),
+              Divider(height: 48, color: Colors.white),
+              _BuildPrefacturarDocumento(),
+              SizedBox(height: 24),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
@@ -224,128 +220,131 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
-        if (state.status == FormFacturaStatus.facturar) {
-          final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-          final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
-          final TextEditingController controllerCentroCosto = TextEditingController();
+        if (state.status == FormFacturaStatus.succes) {
+          // final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+          // final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
 
-          final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
-          final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
-            return EntryAutocomplete(
-              codigo: centro.key,
-              title: centro.value,
-              subTitle: '(${centro.key})',
-            );
-          }).toList();
+          // final TextEditingController controllerCentroCosto = TextEditingController();
 
-          void setValueFactura(EntryAutocomplete value) {
-            if (value.codigo != null) {
-              context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-            }
-          }
+          // final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
+          // final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
+          //   return EntryAutocomplete(
+          //     codigo: centro.key,
+          //     title: centro.value,
+          //     subTitle: '(${centro.key})',
+          //   );
+          // }).toList();
 
-          return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-            builder: (BuildContext context, ItemDocumentoState state) {
-              if (state is ItemDocumentoSuccesState) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.work_outline_outlined),
-                              const SizedBox(width: 8),
-                              Text(empresaSelect.nombre),
-                            ],
-                          ),
-                          const Row(
-                            children: <Widget>[
-                              Icon(Icons.contact_emergency_outlined),
-                              SizedBox(width: 8),
-                              Text("ACa va el nombre del cliente"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: 400,
-                      child: AutocompleteInput(
-                        entries: entriesCentroCosto,
-                        controller: controllerCentroCosto,
-                        onPressed: setValueFactura,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: 160,
-                      child: CustomOutlinedButton(
-                        icon: Icons.delete_forever_outlined,
-                        colorText: Colors.white,
-                        onPressed: () {},
-                        color: Theme.of(context).colorScheme.error,
-                        text: "Cancelar",
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const _BuildButtonRegistrar(),
-                  ],
-                );
-              }
-              return const SizedBox();
-            },
-          );
-        } else {
-          return const SizedBox();
+          // void setValueFactura(EntryAutocomplete value) {
+          //   if (value.codigo != null) {
+          //     //context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+          //   }
         }
+
+        // return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+        //   builder: (BuildContext context, ItemDocumentoState state) {
+        //     if (state is ItemDocumentoSuccesState) {
+        //       return Row(
+        //         mainAxisAlignment: MainAxisAlignment.end,
+        //         children: <Widget>[
+        //           SizedBox(
+        //             child: Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: <Widget>[
+        //                 Row(
+        //                   children: <Widget>[
+        //                     const Icon(Icons.work_outline_outlined),
+        //                     const SizedBox(width: 8),
+        //                     Text(empresaSelect.nombre),
+        //                   ],
+        //                 ),
+        //                 const Row(
+        //                   children: <Widget>[
+        //                     Icon(Icons.contact_emergency_outlined),
+        //                     SizedBox(width: 8),
+        //                     Text("ACa va el nombre del cliente"),
+        //                   ],
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           SizedBox(
+        //             width: 400,
+        //             child: AutocompleteInput(
+        //               entries: entriesCentroCosto,
+        //               controller: controllerCentroCosto,
+        //               onPressed: setValueFactura,
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           SizedBox(
+        //             width: 160,
+        //             child: CustomOutlinedButton(
+        //               icon: Icons.delete_forever_outlined,
+        //               colorText: Colors.white,
+        //               onPressed: () {},
+        //               color: Theme.of(context).colorScheme.error,
+        //               text: "Cancelar",
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           const _BuildButtonRegistrar(),
+        //         ],
+        //       );
+        //     }
+        //     return const SizedBox();
+        //   },
+        // );
+        //} else {
+
+        // return const SizedBox();
+        //}
+
+        return const SizedBox();
       },
     );
   }
 }
 
-class _BuildButtonRegistrar extends StatelessWidget {
-  const _BuildButtonRegistrar();
+// class _BuildButtonRegistrar extends StatelessWidget {
+//   const _BuildButtonRegistrar();
 
-  @override
-  Widget build(BuildContext context) {
-    final AuthBloc authBloc = context.read<AuthBloc>();
+//   @override
+//   Widget build(BuildContext context) {
+//     final AuthBloc authBloc = context.read<AuthBloc>();
 
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (BuildContext context, ItemDocumentoState state) {
-        final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
-        final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-        final List<Documento> documentos = facturaBloc.state.documentos;
-        final Iterable<ItemDocumento> itemDocumentos = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);
-        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
-        final double totalImpuestos = itemDocumentos.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
+//     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+//       builder: (BuildContext context, FormFacturaState state) {
+//         final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
+//         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+//         final List<Documento> documentos = facturaBloc.state.documentos;
+//         final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
+//         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
 
-        return FormButton(
-          label: "Registrar",
-          icon: Icons.add_card_rounded,
-          onPressed: () {
-            //final int centroCosto = formFacturaBloc.centroCosto;
-            //final int clienteCodigo = formFacturaBloc.clienteCodigo;
-            final int empresaCodigo = formFacturaBloc.state.empresa;
-            final int usuario = authBloc.state.auth!.usuario.codigo;
-            final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
-              centroCosto: 1,
-              cliente: 1,
-              empresa: empresaCodigo,
-              usuario: usuario,
-              valorImpuesto: totalImpuestos.toInt(),
-              valorNeto: totalDocumentos.toInt(),
-              documentos: documentos,
-              items: itemDocumentos.toList(),
-            );
+//         return FormButton(
+//           label: "Registrar",
+//           icon: Icons.add_card_rounded,
+//           onPressed: () {
+//             //final int centroCosto = formFacturaBloc.centroCosto;
+//             //final int clienteCodigo = formFacturaBloc.clienteCodigo;
+//             final int empresaCodigo = formFacturaBloc.state.empresa;
+//             final int usuario = authBloc.state.auth!.usuario.codigo;
+//             final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
+//               centroCosto: 1,
+//               cliente: 1,
+//               empresa: empresaCodigo,
+//               usuario: usuario,
+//               valorImpuesto: totalDocumentos.toInt(),
+//               valorNeto: 2000,
+//               documentos: documentos,
+//               items: itemDocumentos.toList(),
+//             );
 
-            debugPrint("${prefacturaRequest.toJson()}");
-          },
-        );
-      },
-    );
-  }
-}
+//             debugPrint("${prefacturaRequest.toJson()}");
+//           },
+//         );
+//       },
+//     );
+//   }
+// }

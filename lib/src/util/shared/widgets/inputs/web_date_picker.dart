@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class WebDatePicker extends StatefulWidget {
   final DateTime? initialDate;
+  final String initialValue;
   final TextEditingController? controller;
   final ValueChanged<String> onChange;
   final bool isRequired;
@@ -11,6 +12,7 @@ class WebDatePicker extends StatefulWidget {
     required this.onChange,
     required this.autofocus,
     required this.isRequired,
+    required this.initialValue,
     this.controller,
     this.initialDate,
     super.key,
@@ -33,8 +35,9 @@ class _WebDatePickerState extends State<WebDatePicker> {
       controller = TextEditingController();
     }
 
-    if (controller.text.isNotEmpty) {
-      final List<String> fechas = controller.text.split(" - ");
+    if (widget.initialValue.isNotEmpty) {
+      controller.text = widget.initialValue;
+      final List<String> fechas = widget.initialValue.split(" - ");
       dateStar = DateTime.parse(fechas[0]);
       dateEnd = DateTime.parse(fechas[1]);
     }
