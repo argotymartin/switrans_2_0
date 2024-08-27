@@ -28,6 +28,8 @@ build-merge-request:
     - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
     - docker compose down
     - docker compose up -d
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
 
 deploy:
   stage: deploy
