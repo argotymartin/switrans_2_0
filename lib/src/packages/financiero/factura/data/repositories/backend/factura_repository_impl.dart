@@ -43,8 +43,7 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDocumentosApi(request));
     if (httpResponse.data != null) {
       final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Documento> response =
-          resp.data.cast<Map<String, dynamic>>().map((Map<String, dynamic> x) => DocumentoModel.fromJson(x)).toList();
+      final List<Documento> response = resp.data.map((dynamic x) => DocumentoModel.fromJson(x)).toList();
       return DataSuccess<List<Documento>>(response);
     }
     return DataFailed<List<Documento>>(httpResponse.error!);
@@ -54,7 +53,8 @@ class FacturaRepositoryImpl extends BaseApiRepository implements AbstractFactura
   Future<DataState<List<TipoDocumento>>> getTipoDocumento() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getTipoDocumentoApi());
     if (httpResponse.data != null) {
-      final List<TipoDocumento> response = List<TipoDocumento>.from(httpResponse.data.map((dynamic x) => TipoDocumentoModel.fromJson(x)));
+      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
+      final List<TipoDocumento> response = resp.data.map((dynamic x) => TipoDocumentoModel.fromJson(x)).toList();
       return DataSuccess<List<TipoDocumento>>(response);
     }
     return DataFailed<List<TipoDocumento>>(httpResponse.error!);

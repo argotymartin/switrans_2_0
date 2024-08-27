@@ -1,5 +1,4 @@
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/documento.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_documento.dart';
 
 class PrefacturaRequest {
   final int centroCosto;
@@ -9,7 +8,7 @@ class PrefacturaRequest {
   final int valorImpuesto;
   final int valorNeto;
   final List<Documento> documentos;
-  final List<ItemDocumento> items;
+  final List<Documento> items;
 
   PrefacturaRequest({
     required this.centroCosto,
@@ -30,6 +29,6 @@ class PrefacturaRequest {
         "valorImpuesto": valorImpuesto,
         "valorNeto": valorNeto,
         "documentos": List<dynamic>.from(documentos.map((Documento x) => x.toJson())),
-        "items": List<dynamic>.from(items.map((ItemDocumento x) => x.toJson())),
+        //"items": List<dynamic>.from(items.map((ItemDocumento x) => x.toJson())),
       };
 }

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_cliente.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_empresa.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_fechas.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_tipo_documento.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/forms/build_flex_form_fields.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/date_picker_input_form.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class FacturaCreateView extends StatelessWidget {
@@ -20,115 +16,132 @@ class FacturaCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<FormFacturaBloc, FormFacturaState>(
       listener: (BuildContext context, FormFacturaState state) {
-        if (state is FormFacturaErrorState) {
+        if (state.status == FormFacturaStatus.error) {
           CustomToast.showError(context, state.exception!);
         }
       },
       builder: (BuildContext context, FormFacturaState state) {
-        if (state is FormFacturaLoadingState) {
-          return const LoadingView();
-        }
-        return const FacturaCreateFields();
+        return Stack(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(right: 32, top: 8),
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                const BuildViewDetail(),
+                CardExpansionPanel(
+                  title: "Registrar Nuevo",
+                  icon: Icons.storage_outlined,
+                  child: _BuildFieldsForm(state),
+                ),
+                const CardExpansionPanel(
+                  title: "Documentos",
+                  icon: Icons.folder,
+                  child: _BuildDocumentos(),
+                ),
+                const CardExpansionPanel(
+                  title: "Items Documentos",
+                  icon: Icons.content_paste_outlined,
+                  child: _BuildItemFactura(),
+                ),
+              ],
+            ),
+            if (state.status == FormFacturaStatus.loading) const LoadingModal(),
+          ],
+        );
       },
     );
   }
 }
 
-class FacturaCreateFields extends StatefulWidget {
-  const FacturaCreateFields({super.key});
-
-  @override
-  State<FacturaCreateFields> createState() => _FacturaCreateFieldsState();
-}
-
-class _FacturaCreateFieldsState extends State<FacturaCreateFields> {
-  late ScrollController _controller;
-  double pixels = 0.0;
-  @override
-  void initState() {
-    _controller = context.read<FormFacturaBloc>().scrollController;
-    _controller.addListener(() {
-      if (mounted) {
-        setState(() => pixels = _controller.offset);
-      }
-    });
-    super.initState();
-  }
+class _BuildFieldsForm extends StatelessWidget {
+  final FormFacturaState state;
+  const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      controller: context.read<FormFacturaBloc>().scrollController,
-      padding: const EdgeInsets.only(right: 32, top: 8),
-      physics: const ClampingScrollPhysics(),
-      children: const <Widget>[
-        BuildViewDetail(),
-        SizedBox(height: 16),
-        CustomExpansionPanel(
-          title: "Filtros",
-          iconOn: Icons.filter_alt_rounded,
-          iconOff: Icons.filter_alt_off_outlined,
-          child: _BuildFiltros(),
-        ),
-        SizedBox(height: 16),
-        CustomExpansionPanel(
-          title: "Documentos",
-          iconOn: Icons.folder,
-          iconOff: Icons.folder_off_outlined,
-          child: _BuildDocumentos(),
-        ),
-        SizedBox(height: 16),
-        CustomExpansionPanel(
-          title: "Item Documentos",
-          iconOn: Icons.content_paste_outlined,
-          iconOff: Icons.content_paste_off,
-          child: _BuildItemFactura(),
-        ),
-      ],
-    );
-  }
-}
-
-class _BuildFiltros extends StatelessWidget {
-  const _BuildFiltros();
-
-  @override
-  Widget build(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
-    final ItemDocumentoBloc itemDocumentoBloc = BlocProvider.of<ItemDocumentoBloc>(context);
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+    final FormFacturaRequest request = formFacturaBloc.request;
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildFlexFormFields(
-            children: <FlexWidgetForm>[
-              FlexWidgetForm(flex: 1, widget: const FieldFacturaTipoDocumento()),
-              FlexWidgetForm(flex: 2, widget: const FieldFacturaCliente()),
-              FlexWidgetForm(flex: 3, widget: const FieldFacturaEmpresa()),
-              FlexWidgetForm(flex: 3, widget: const FieldFacturaDocumentos()),
-              FlexWidgetForm(flex: 3, widget: const FieldFacturaFechas()),
+          BuildFormFields(
+            spaces: 2,
+            children: <Widget>[
+              AutocompleteInputForm(
+                entries: state.entriesTiposDocumentos,
+                title: "Tipo Documento",
+                value: request.documentoCodigo,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.documentoCodigo = result.codigo,
+              ),
+              AutocompleteInputForm(
+                entries: state.entriesClientes,
+                title: "Cliente",
+                value: request.cliente,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.cliente = result.codigo,
+              ),
+              FieldFacturaEmpresa(
+                title: "Empresa",
+                value: request.empresa!,
+                onChanged: (int result) => request.empresa = result,
+              ),
+              DatePickerInputForm(
+                title: "Fecha Inicio - Fecha Fin",
+                value: request.rangoFechas,
+                onChanged: (String result) => request.rangoFechas = result,
+              ),
+              FieldFacturaDocumentos(
+                title: "Documentos",
+                value: request.documentos,
+                onChanged: (String result) => request.documentos = result,
+              ),
             ],
           ),
-          const SizedBox(height: 24),
           FormButton(
-            label: "Buscar",
-            icon: Icons.search,
-            onPressed: () {
+            onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
-              itemDocumentoBloc.add(const ResetDocumentoEvent());
-              formFacturaBloc.onPressedSearch(isValid: isValid);
+              String error = "";
+
+              if (request.empresa == null) {
+                error += " El campo Empresa no puede ser vacio";
+              }
+              if (request.cliente == null) {
+                error += " El campo Cliente no puede ser vacio";
+              }
+
+              if (request.documentoCodigo == null) {
+                error += " El campo tipo Documento no puede ser vacio";
+              }
+              if (request.cliente == null) {
+                error += " El campo Cliente no puede ser vacio";
+              }
+
+              if (request.documentos != null) {
+                final List<String> parts = request.documentos!.split(',').map((String e) => e.trim()).toList();
+                final String documentos = parts.join(', ');
+                request.documentos = documentos;
+              }
+
+              if (request.documentos!.isEmpty && request.rangoFechas!.isEmpty) {
+                error += " Se deben incluir documentos en el filtro, o bien, selecciónar un intervalo de fechas";
+              }
+
+              if (error.isNotEmpty) {
+                formFacturaBloc.add(ErrorFormFacturaEvent(error));
+              }
+
+              if (isValid) {
+                formFacturaBloc.add(DocumentosFormFacturaEvent(request));
+              }
             },
+            icon: Icons.search_rounded,
+            label: "Buscar",
           ),
-          const SizedBox(height: 8),
-          BlocBuilder<FormFacturaBloc, FormFacturaState>(
-            builder: (BuildContext context, FormFacturaState state) {
-              return (state.error != "") ? ErrorModal(title: state.error) : const SizedBox();
-            },
-          ),
+          state.status == FormFacturaStatus.error ? ErrorModal(title: state.error) : const SizedBox(),
         ],
       ),
     );
@@ -142,10 +155,15 @@ class _BuildDocumentos extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
-        if (state is FormDocumentosSuccesState) {
-          if (state.documentos.isNotEmpty) {
-            return TableDocumentos(documentos: state.documentos);
-          }
+        if (state.status == FormFacturaStatus.succes) {
+          final String texto = state.documentos.length == 1 ? "documento encontrado" : "documentos encontrados";
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("${state.documentos.length} $texto"),
+              state.documentos.isNotEmpty ? TableDocumentos(documentos: state.documentos) : const SizedBox(),
+            ],
+          );
         }
         return const SizedBox();
       },
@@ -158,14 +176,21 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _BuildTableItemsDocumento(),
-        Divider(height: 48, color: Colors.white),
-        _BuildPrefacturarDocumento(),
-        SizedBox(height: 24),
-      ],
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
+        if (state.status == FormFacturaStatus.succes) {
+          return const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _BuildTableItemsDocumento(),
+              Divider(height: 48, color: Colors.white),
+              _BuildPrefacturarDocumento(),
+              SizedBox(height: 24),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
@@ -195,131 +220,131 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
-        if (state is FormFacturaRequestState) {
-          final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-          final Cliente clienteSelect = formFacturaBloc.getClienteSelected();
-          final Empresa empresaSelect = formFacturaBloc.getEmpresaSelected();
-          final TextEditingController controllerCentroCosto = TextEditingController();
+        if (state.status == FormFacturaStatus.succes) {
+          // final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+          // final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
 
-          final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
-          final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
-            return EntryAutocomplete(
-              codigo: centro.key,
-              title: centro.value,
-              subTitle: '(${centro.key})',
-            );
-          }).toList();
+          // final TextEditingController controllerCentroCosto = TextEditingController();
 
-          void setValueFactura(EntryAutocomplete value) {
-            if (value.codigo != null) {
-              context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
-              formFacturaBloc.centroCosto = value.codigo!;
-            }
-          }
+          // final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
+          // final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
+          //   return EntryAutocomplete(
+          //     codigo: centro.key,
+          //     title: centro.value,
+          //     subTitle: '(${centro.key})',
+          //   );
+          // }).toList();
 
-          return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-            builder: (BuildContext context, ItemDocumentoState state) {
-              if (state is ItemDocumentoSuccesState) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.work_outline_outlined),
-                              const SizedBox(width: 8),
-                              Text(empresaSelect.nombre),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.contact_emergency_outlined),
-                              const SizedBox(width: 8),
-                              Text(clienteSelect.nombre),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: 400,
-                      child: AutocompleteInput(
-                        entries: entriesCentroCosto,
-                        label: "Centro Costo",
-                        controller: controllerCentroCosto,
-                        onPressed: setValueFactura,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: 160,
-                      child: CustomOutlinedButton(
-                        icon: Icons.delete_forever_outlined,
-                        colorText: Colors.white,
-                        onPressed: () {},
-                        color: Theme.of(context).colorScheme.error,
-                        text: "Cancelar",
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const _BuildButtonRegistrar(),
-                  ],
-                );
-              }
-              return const SizedBox();
-            },
-          );
-        } else {
-          return const SizedBox();
+          // void setValueFactura(EntryAutocomplete value) {
+          //   if (value.codigo != null) {
+          //     //context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+          //   }
         }
+
+        // return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
+        //   builder: (BuildContext context, ItemDocumentoState state) {
+        //     if (state is ItemDocumentoSuccesState) {
+        //       return Row(
+        //         mainAxisAlignment: MainAxisAlignment.end,
+        //         children: <Widget>[
+        //           SizedBox(
+        //             child: Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: <Widget>[
+        //                 Row(
+        //                   children: <Widget>[
+        //                     const Icon(Icons.work_outline_outlined),
+        //                     const SizedBox(width: 8),
+        //                     Text(empresaSelect.nombre),
+        //                   ],
+        //                 ),
+        //                 const Row(
+        //                   children: <Widget>[
+        //                     Icon(Icons.contact_emergency_outlined),
+        //                     SizedBox(width: 8),
+        //                     Text("ACa va el nombre del cliente"),
+        //                   ],
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           SizedBox(
+        //             width: 400,
+        //             child: AutocompleteInput(
+        //               entries: entriesCentroCosto,
+        //               controller: controllerCentroCosto,
+        //               onPressed: setValueFactura,
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           SizedBox(
+        //             width: 160,
+        //             child: CustomOutlinedButton(
+        //               icon: Icons.delete_forever_outlined,
+        //               colorText: Colors.white,
+        //               onPressed: () {},
+        //               color: Theme.of(context).colorScheme.error,
+        //               text: "Cancelar",
+        //             ),
+        //           ),
+        //           const SizedBox(width: 16),
+        //           const _BuildButtonRegistrar(),
+        //         ],
+        //       );
+        //     }
+        //     return const SizedBox();
+        //   },
+        // );
+        //} else {
+
+        // return const SizedBox();
+        //}
+
+        return const SizedBox();
       },
     );
   }
 }
 
-class _BuildButtonRegistrar extends StatelessWidget {
-  const _BuildButtonRegistrar();
+// class _BuildButtonRegistrar extends StatelessWidget {
+//   const _BuildButtonRegistrar();
 
-  @override
-  Widget build(BuildContext context) {
-    final AuthBloc authBloc = context.read<AuthBloc>();
+//   @override
+//   Widget build(BuildContext context) {
+//     final AuthBloc authBloc = context.read<AuthBloc>();
 
-    return BlocBuilder<ItemDocumentoBloc, ItemDocumentoState>(
-      builder: (BuildContext context, ItemDocumentoState state) {
-        final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
-        final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-        final List<Documento> documentos = facturaBloc.state.documentos;
-        final Iterable<ItemDocumento> itemDocumentos = state.itemDocumentos.where((ItemDocumento element) => element.documento > 0);
-        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.rcp);
-        final double totalImpuestos = itemDocumentos.fold(0, (double total, ItemDocumento item) => total + item.valorIva);
+//     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+//       builder: (BuildContext context, FormFacturaState state) {
+//         final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
+//         final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+//         final List<Documento> documentos = facturaBloc.state.documentos;
+//         final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
+//         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
 
-        return FormButton(
-          label: "Registrar",
-          icon: Icons.add_card_rounded,
-          onPressed: () {
-            final int centroCosto = formFacturaBloc.centroCosto;
-            final int clienteCodigo = formFacturaBloc.clienteCodigo;
-            final int empresaCodigo = formFacturaBloc.state.empresa;
-            final int usuario = authBloc.state.auth!.usuario.codigo;
-            final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
-              centroCosto: centroCosto,
-              cliente: clienteCodigo,
-              empresa: empresaCodigo,
-              usuario: usuario,
-              valorImpuesto: totalImpuestos.toInt(),
-              valorNeto: totalDocumentos.toInt(),
-              documentos: documentos,
-              items: itemDocumentos.toList(),
-            );
+//         return FormButton(
+//           label: "Registrar",
+//           icon: Icons.add_card_rounded,
+//           onPressed: () {
+//             //final int centroCosto = formFacturaBloc.centroCosto;
+//             //final int clienteCodigo = formFacturaBloc.clienteCodigo;
+//             final int empresaCodigo = formFacturaBloc.state.empresa;
+//             final int usuario = authBloc.state.auth!.usuario.codigo;
+//             final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
+//               centroCosto: 1,
+//               cliente: 1,
+//               empresa: empresaCodigo,
+//               usuario: usuario,
+//               valorImpuesto: totalDocumentos.toInt(),
+//               valorNeto: 2000,
+//               documentos: documentos,
+//               items: itemDocumentos.toList(),
+//             );
 
-            debugPrint("${prefacturaRequest.toJson()}");
-          },
-        );
-      },
-    );
-  }
-}
+//             debugPrint("${prefacturaRequest.toJson()}");
+//           },
+//         );
+//       },
+//     );
+//   }
+// }

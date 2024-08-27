@@ -1,31 +1,17 @@
-class ItemDocumento {
-  int documento;
-  String documentoImpreso;
-  String tipo;
-  String descripcion;
-  double valor;
-  int cantidad;
-  double total;
-  int porcentajeIva;
-  double valorIva;
-  ItemDocumento({
-    required this.documentoImpreso,
-    required this.documento,
-    required this.tipo,
-    required this.descripcion,
-    required this.valor,
-    required this.cantidad,
-    required this.total,
-    required this.porcentajeIva,
-    required this.valorIva,
-  });
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_impuesto.dart';
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        "documento": documento,
-        "tipo": tipo,
-        "descripcion": descripcion,
-        "cantidad": cantidad,
-        "valor": valor,
-        "impuesto": valorIva,
-      };
+class ItemDocumento {
+  final int servicioCodigo;
+  final String servicioNombre;
+  final double subtotal;
+  final double total;
+  final ItemImpuesto impuestos;
+
+  ItemDocumento({
+    required this.servicioCodigo,
+    required this.servicioNombre,
+    required this.subtotal,
+    required this.total,
+    required this.impuestos,
+  });
 }

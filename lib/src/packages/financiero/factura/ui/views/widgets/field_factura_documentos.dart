@@ -1,46 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
 class FieldFacturaDocumentos extends StatelessWidget {
-  const FieldFacturaDocumentos({super.key});
+  final String? value;
+  final String title;
+  final Function(String result) onChanged;
+  const FieldFacturaDocumentos({
+    required this.onChanged,
+    required this.value,
+    required this.title,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Documentos", style: AppTheme.titleStyle),
+        Text(title, style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        _TextAreaDocumentos(controller: formFacturaBloc.remesasController),
+        _TextAreaDocumentos(
+          value: value,
+          onChanged: onChanged,
+        ),
       ],
     );
   }
 }
 
 class _TextAreaDocumentos extends StatelessWidget {
-  final TextEditingController controller;
+  final String? value;
+  final Function(String result) onChanged;
   const _TextAreaDocumentos({
-    required this.controller,
+    required this.value,
+    required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      onChanged: onChanged,
       autovalidateMode: AutovalidateMode.always,
+      initialValue: value,
       validator: onValidator,
       minLines: 4,
       style: const TextStyle(fontSize: 12),
       maxLines: null,
       keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        fillColor: Theme.of(context).colorScheme.surface,
+        filled: true,
+        isDense: true,
         errorMaxLines: 2,
         alignLabelWithHint: true,
-        border: OutlineInputBorder(),
-        labelText: 'Numeros de remesa (General / Impreso) separados por (,)',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          gapPadding: 100,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 2,
+          ),
+        ),
+        border: const OutlineInputBorder(),
+        labelText: 'Numeros de Documento (General / Impreso) separados por (,)',
       ),
     );
   }
@@ -49,40 +81,40 @@ class _TextAreaDocumentos extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return null;
     }
-    RegExp regexRemesas = RegExp("");
+    RegExp regexDocumento = RegExp("");
 
     final RegExp regex = RegExp(r'^[0-9, -]+$');
     if (!regex.hasMatch(value)) {
       return "Los valores de texto no estan permitidos";
     }
-    final List<String> remesas = value
+    final List<String> documentos = value
         .split(",")
-        .map((String remesa) => remesa.trim())
-        .takeWhile((String remesa) => remesa != value.split(",").last.trim())
-        .where((String remesa) => regexRemesas.hasMatch(remesa))
+        .map((String doc) => doc.trim())
+        .takeWhile((String doc) => doc != value.split(",").last.trim())
+        .where((String doc) => regexDocumento.hasMatch(doc))
         .toList();
-    if (remesas.isEmpty) {
+    if (documentos.isEmpty) {
       return null;
     }
     String title = "";
     final RegExp regexGeneral = RegExp(r'^\d{6,7}$');
     final RegExp regexImpreso = RegExp(r'^\d{2,5}-\d+$');
 
-    if (regexGeneral.hasMatch(remesas.first)) {
-      regexRemesas = regexGeneral;
+    if (regexGeneral.hasMatch(documentos.first)) {
+      regexDocumento = regexGeneral;
       title = "General";
-    } else if (regexImpreso.hasMatch(remesas.first)) {
-      regexRemesas = regexImpreso;
+    } else if (regexImpreso.hasMatch(documentos.first)) {
+      regexDocumento = regexImpreso;
       title = "Impreso";
     } else {
-      return "Los valores digitados no parecen ser remesas validas";
+      return "Los valores digitados no parecen ser documentos validos";
     }
 
-    final List<String> remesasDiferentes = remesas.where((String remesa) => !regexRemesas.hasMatch(remesa)).toList();
+    final List<String> documentosDiferentes = documentos.where((String doc) => !regexDocumento.hasMatch(doc)).toList();
 
-    if (remesasDiferentes.isNotEmpty) {
-      if (remesasDiferentes.first != "") {
-        return "Las remesas (${remesasDiferentes.toList()}) No son válidas para el tipo $title";
+    if (documentosDiferentes.isNotEmpty) {
+      if (documentosDiferentes.first != "") {
+        return "Los Documentos (${documentosDiferentes.toList()}) No son válidas para el tipo $title";
       }
     }
 

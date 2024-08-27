@@ -1,32 +1,14 @@
 class FormFacturaRequest {
-  final int empresa;
-  final int cliente;
-  final String? remesas;
-  final String? inicio;
-  final String? fin;
+  int? empresa;
+  int? cliente;
+  int? documentoCodigo;
+  String? documentos;
+  String? rangoFechas;
   FormFacturaRequest({
-    required this.empresa,
-    required this.cliente,
-    this.remesas,
-    this.inicio,
-    this.fin,
+    this.empresa,
+    this.cliente,
+    this.documentoCodigo,
+    this.documentos,
+    this.rangoFechas,
   });
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{
-      'empresa': empresa,
-      'cliente': cliente,
-    };
-    if (remesas != "") {
-      data['remesas'] = remesas;
-    }
-    if (inicio != "") {
-      data['inicio'] = inicio;
-    }
-    if (fin != "") {
-      data['fin'] = fin;
-    }
-
-    return data;
-  }
 }

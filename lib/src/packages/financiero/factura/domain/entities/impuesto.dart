@@ -1,13 +1,15 @@
-class Adicion {
+class Impuesto {
   final int codigo;
   final String nombre;
   final double valor;
-  final String fecha;
+  final double? porcentaje;
+  final int? factorConversion;
 
-  Adicion({
+  Impuesto({
     required this.codigo,
     required this.nombre,
     required this.valor,
-    required this.fecha,
+    this.porcentaje,
+    this.factorConversion,
   });
 }

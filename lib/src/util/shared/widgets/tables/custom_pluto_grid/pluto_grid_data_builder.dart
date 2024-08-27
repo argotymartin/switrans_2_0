@@ -302,7 +302,7 @@ class _BuildFieldAutoComplete extends StatelessWidget {
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.only(top: 8),
-        child: AutocompleteInput2(
+        child: AutocompleteInput(
           entryCodigoSelected: renderContext.cell.value,
           entries: entryMenus,
           onPressed: (EntryAutocomplete result) {

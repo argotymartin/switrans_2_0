@@ -1,71 +1,69 @@
 part of 'form_factura_bloc.dart';
 
-abstract class FormFacturaState extends Equatable {
+enum FormFacturaStatus { initial, loading, succes, error, consulted, exception, facturar }
+
+class FormFacturaState extends Equatable {
+  final FormFacturaStatus? status;
   final int empresa;
   final int tipoFactura;
   final String error;
-  final List<Cliente> clientes;
   final List<Empresa> empresas;
-  final List<TipoDocumento> tiposDocumentos;
+  final List<EntryAutocomplete> entriesTiposDocumentos;
+  final List<EntryAutocomplete> entriesClientes;
   final DioException? exception;
   final List<Documento> documentos;
+  final List<Documento> documentosSelected;
 
   const FormFacturaState({
     this.empresa = 1,
+    this.status,
     this.tipoFactura = 10,
     this.error = "",
-    this.clientes = const <Cliente>[],
+    this.entriesClientes = const <EntryAutocomplete>[],
     this.empresas = const <Empresa>[],
-    this.tiposDocumentos = const <TipoDocumento>[],
+    this.entriesTiposDocumentos = const <EntryAutocomplete>[],
     this.documentos = const <Documento>[],
+    this.documentosSelected = const <Documento>[],
     this.exception,
   });
-}
 
-class FormFacturaInitialState extends FormFacturaState {
-  const FormFacturaInitialState();
+  FormFacturaState initial() => const FormFacturaState(status: FormFacturaStatus.initial);
 
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class FormFacturaDataState extends FormFacturaState {
-  const FormFacturaDataState({super.clientes, super.empresas, super.tiposDocumentos});
-
-  @override
-  List<Object> get props => <Object>[clientes, empresas, tiposDocumentos];
-}
-
-class FormFacturaLoadingState extends FormFacturaState {
-  const FormFacturaLoadingState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class FormFacturaRequestState extends FormFacturaState {
-  const FormFacturaRequestState({super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
-  @override
-  List<Object> get props => <Object>[empresa, clientes, empresas, tiposDocumentos];
-}
-
-class FormFacturaSuccesState extends FormFacturaState {
-  const FormFacturaSuccesState({super.empresa, super.clientes, super.empresas, super.tipoFactura});
+  FormFacturaState copyWith({
+    FormFacturaStatus? status,
+    int? empresa,
+    int? tipoFactura,
+    String? error,
+    List<Empresa>? empresas,
+    List<EntryAutocomplete>? entriesTiposDocumentos,
+    List<EntryAutocomplete>? entriesClientes,
+    DioException? exception,
+    List<Documento>? documentos,
+    List<Documento>? documentosSelected,
+  }) =>
+      FormFacturaState(
+        status: status ?? this.status,
+        empresa: empresa ?? this.empresa,
+        tipoFactura: tipoFactura ?? this.tipoFactura,
+        error: error ?? this.error,
+        entriesClientes: entriesClientes ?? this.entriesClientes,
+        empresas: empresas ?? this.empresas,
+        entriesTiposDocumentos: entriesTiposDocumentos ?? this.entriesTiposDocumentos,
+        exception: exception ?? this.exception,
+        documentos: documentos ?? this.documentos,
+        documentosSelected: documentosSelected ?? this.documentosSelected,
+      );
 
   @override
-  List<Object> get props => <Object>[empresa, clientes, empresas, tipoFactura];
-}
-
-class FormDocumentosSuccesState extends FormFacturaState {
-  const FormDocumentosSuccesState({super.documentos, super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
-
-  @override
-  List<Object> get props => <Object>[empresa, error, clientes, empresas, tipoFactura];
-}
-
-class FormFacturaErrorState extends FormFacturaState {
-  const FormFacturaErrorState({super.exception, super.documentos, super.empresa, super.clientes, super.empresas, super.tiposDocumentos});
-
-  @override
-  List<DioException?> get props => <DioException?>[exception];
+  List<Object?> get props => <Object?>[
+        empresa,
+        tipoFactura,
+        error,
+        entriesClientes,
+        empresas,
+        entriesTiposDocumentos,
+        documentos,
+        exception,
+        documentosSelected,
+      ];
 }

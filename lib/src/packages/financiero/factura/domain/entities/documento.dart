@@ -1,55 +1,46 @@
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/adicion.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/descuento.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 
 class Documento {
-  final int remesa;
+  final int documento;
   final String impreso;
-  final String fechaCreacion;
-  final int estadoCodigo;
-  final String estadoNombre;
-  final int empresa;
-  final bool cierreTarifa;
-  final int cencosCodigo;
-  final String cencosNombre;
-  final String tipoRemesa;
+  final int centroCostoCodigo;
+  final String centroCostoNombre;
+  final int tipoDocumentoCodigo;
+  final String tipoDocumentoNombre;
   final String origen;
   final String destino;
-  final String observacion;
-  final String observacionFactura;
-  final String remision;
-  final double rcp;
-  final double total;
-  final double flete;
-  final bool anulacionTrafico;
+  final String descripcion;
+  final String datosAdicionales;
+  final double valorEgreso;
+  final double valorIngreso;
+  final double valorTotal;
   final List<Adicion> adiciones;
   final List<Descuento> descuentos;
+  final List<Impuesto> impuestos;
+  final List<ItemDocumento> itemDocumentos;
 
   Documento({
-    required this.remesa,
+    required this.documento,
     required this.impreso,
-    required this.fechaCreacion,
-    required this.estadoCodigo,
-    required this.estadoNombre,
-    required this.empresa,
-    required this.cierreTarifa,
-    required this.cencosCodigo,
-    required this.cencosNombre,
-    required this.tipoRemesa,
+    required this.centroCostoCodigo,
+    required this.centroCostoNombre,
+    required this.tipoDocumentoCodigo,
+    required this.tipoDocumentoNombre,
     required this.origen,
     required this.destino,
-    required this.observacion,
-    required this.observacionFactura,
-    required this.remision,
-    required this.rcp,
-    required this.total,
-    required this.flete,
-    required this.anulacionTrafico,
+    required this.descripcion,
+    required this.datosAdicionales,
+    required this.valorEgreso,
+    required this.valorIngreso,
+    required this.valorTotal,
     required this.adiciones,
     required this.descuentos,
+    required this.impuestos,
+    required this.itemDocumentos,
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        "documento": remesa,
-        "tarifa": total,
+        "documento": documento,
       };
 }

@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
-import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/web_date_picker.dart';
 
-class AutocompleteInputForm extends StatelessWidget {
+class DatePickerInputForm extends StatelessWidget {
   final String title;
-  final List<EntryAutocomplete> entries;
-  final int? value;
-  final Function(EntryAutocomplete result) onChanged;
+  final String? value;
+  final Function(String result) onChanged;
   final bool isRequired;
+  final bool autofocus;
 
-  const AutocompleteInputForm({
+  const DatePickerInputForm({
     required this.title,
-    required this.entries,
     required this.value,
     required this.onChanged,
-    this.isRequired = false,
+    this.isRequired = true,
+    this.autofocus = false,
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,11 +24,11 @@ class AutocompleteInputForm extends StatelessWidget {
       children: <Widget>[
         Text(title, style: AppTheme.titleStyle),
         const SizedBox(height: 8),
-        AutocompleteInput(
-          entries: entries,
-          entryCodigoSelected: value,
-          onPressed: onChanged,
+        WebDatePicker(
+          onChange: onChanged,
+          autofocus: autofocus,
           isRequired: isRequired,
+          initialValue: value != null ? value! : "",
         ),
       ],
     );
