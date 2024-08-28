@@ -134,11 +134,13 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                 if (selectedItem != null) {
                   entryAutocompleteSelected = selectedItem;
                   widget.onPressed?.call(selectedItem);
-                  Future<void>.microtask(
-                    () => setState(() {
-                      isError = false;
-                    }),
-                  );
+                  Future<void>.microtask(() {
+                    if (mounted) {
+                      setState(() {
+                        isError = false;
+                      });
+                    }
+                  });
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
