@@ -25,6 +25,7 @@ build-merge-request:
     - echo $CI_COMMIT_BRANCH
     - echo $CI_MERGE_REQUEST_ID
     - git remote set-url origin $REPO_URL
+    - git fetch --all
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
