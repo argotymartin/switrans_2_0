@@ -58,7 +58,7 @@ class TableDocumentos extends StatelessWidget {
                 borderColor: Theme.of(context).colorScheme.primaryFixedDim,
                 gridBorderColor: Theme.of(context).colorScheme.primaryFixedDim,
                 columnTextStyle: TextStyle(color: Theme.of(context).colorScheme.inverseSurface, fontSize: 16, fontWeight: FontWeight.bold),
-                checkedColor: Theme.of(context).colorScheme.surface,
+                checkedColor: Theme.of(context).colorScheme.secondaryContainer,
                 activatedColor: Theme.of(context).colorScheme.onPrimary,
                 activatedBorderColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 columnHeight: titleHeight,

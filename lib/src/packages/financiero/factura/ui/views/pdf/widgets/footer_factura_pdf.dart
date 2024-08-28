@@ -16,6 +16,7 @@ class FooterFacturaPDF extends pw.StatelessWidget {
     final pw.TextStyle fontBoldMinStyle = pw.TextStyle(font: fontSemiBold, fontSize: 8);
     double total = 0;
     double subTotal = 0;
+    final Map<String, double> mapImpuestos = <String, double>{};
     final List<pw.Row> childrenImpuestos = <pw.Row>[];
     for (final Documento doc in data.documentos) {
       for (final ItemDocumento item in doc.itemDocumentos) {
@@ -24,17 +25,23 @@ class FooterFacturaPDF extends pw.StatelessWidget {
       }
 
       for (final Impuesto imp in doc.impuestos) {
-        childrenImpuestos.add(
-          pw.Row(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: <pw.Widget>[
-              pw.SizedBox(width: 64, child: pw.Text(imp.nombre, style: pw.TextStyle(font: fontSemiBold, fontSize: 10))),
-              pw.Text("COP \$${formatearMiles(imp.valor.toString())}", style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 9)),
-            ],
-          ),
+        mapImpuestos.update(
+          imp.nombre,
+          (double existingValue) => existingValue + imp.valor,
+          ifAbsent: () => imp.valor,
         );
       }
     }
+
+    mapImpuestos.forEach((String key, double value) {
+      pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: <pw.Widget>[
+          pw.SizedBox(width: 64, child: pw.Text(key, style: pw.TextStyle(font: fontSemiBold, fontSize: 10))),
+          pw.Text("COP \$${formatearMiles(value.toString())}", style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 9)),
+        ],
+      );
+    });
     return pw.Column(
       children: <pw.Widget>[
         pw.Row(

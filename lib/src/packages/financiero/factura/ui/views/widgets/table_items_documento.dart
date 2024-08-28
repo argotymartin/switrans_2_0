@@ -59,7 +59,7 @@ class TableItemsDocumento extends StatelessWidget {
           2: FractionColumnWidth(0.35),
           3: FractionColumnWidth(0.1),
           4: FractionColumnWidth(0.25),
-          5: FractionColumnWidth(0.08),
+          5: FractionColumnWidth(0.1),
         };
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class TableItemsDocumento extends StatelessWidget {
             Column(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
                   width: 80,
                   color: Theme.of(context).colorScheme.primaryContainer,
                   child: Text(
@@ -301,7 +301,7 @@ class _CellTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16),
         ),
       ),
     );

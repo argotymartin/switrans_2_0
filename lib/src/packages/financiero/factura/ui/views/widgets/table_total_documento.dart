@@ -19,33 +19,39 @@ class TableTotalDocumento extends StatelessWidget {
         double total = 0;
         double subTotal = 0;
         int cantidadItem = 3;
+        final int documentosLength = state.documentosSelected.length;
+        final int itemsLength = state.documentosSelected.fold(0, (int total, Documento e) => total + e.itemDocumentos.length);
+        final Color colorPrimaryContainer = Theme.of(context).colorScheme.onPrimaryContainer;
         final List<TableRow> childrenImpuestos = <TableRow>[];
+        final Map<String, double> mapImpuestos = <String, double>{};
+
         for (final Documento doc in state.documentosSelected) {
           for (final ItemDocumento item in doc.itemDocumentos) {
             subTotal += item.subtotal;
             total += item.total;
           }
-
           for (final Impuesto imp in doc.impuestos) {
-            cantidadItem++;
-            childrenImpuestos.add(
-              TableRow(
-                children: <Widget>[
-                  _CellTitle(title: imp.nombre, color: Theme.of(context).colorScheme.onPrimaryContainer),
-                  const SizedBox(),
-                  imp.codigo == 6
-                      ? _BuildValueCurrency(valor: imp.valor, color: Colors.green)
-                      : _BuildValueCurrency(valor: imp.valor, color: Colors.red),
-                  const SizedBox(),
-                ],
-              ),
+            mapImpuestos.update(
+              imp.nombre,
+              (double existingValue) => existingValue + imp.valor,
+              ifAbsent: () => imp.valor,
             );
           }
         }
+        mapImpuestos.forEach((String key, double value) {
+          cantidadItem++;
+          childrenImpuestos.add(
+            TableRow(
+              children: <Widget>[
+                _CellTitle(title: key, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                const SizedBox(),
+                _BuildValueCurrency(valor: value, color: key == "IVA" ? Colors.green : Colors.red),
+                const SizedBox(),
+              ],
+            ),
+          );
+        });
 
-        final int documentosLength = state.documentosSelected.length;
-        final int itemsLength = state.documentosSelected.fold(0, (int total, Documento e) => total + e.itemDocumentos.length);
-        final Color colorPrimaryContainer = Theme.of(context).colorScheme.onPrimaryContainer;
         final TableRow tableRowsTitle = TableRow(
           decoration: BoxDecoration(color: Colors.grey.shade300),
           children: <Widget>[

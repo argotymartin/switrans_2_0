@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
@@ -175,29 +176,29 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    return BlocListener<FormFacturaBloc, FormFacturaState>(
-      listener: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+      builder: (BuildContext context, FormFacturaState state) {
         final List<Documento> itemDocumentos = state.documentosSelected;
         final int documento = rendererContext.cell.row.cells["documento"]!.value;
         final bool isPresent = itemDocumentos.any((Documento element) => element.documento == documento);
-
         rendererContext.cell.row.setChecked(isPresent);
-      },
-      child: Container(
-        width: 12,
-        height: 20,
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        child: Center(
-          child: Text(
-            rendererContext.cell.value.toString(),
-            style: const TextStyle(color: Colors.white),
+
+        return Container(
+          width: 12,
+          height: 20,
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).colorScheme.primary,
           ),
-        ),
-      ),
+          child: Center(
+            child: Text(
+              rendererContext.cell.value.toString(),
+              style: TextStyle(color: AppTheme.colorThemePrimary),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -270,12 +271,12 @@ class DocumentosTableDataBuilder {
               text: TextSpan(
                 style: const TextStyle(fontSize: 12),
                 children: <InlineSpan>[
-                  const TextSpan(
+                  TextSpan(
                     text: 'Obs: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.colorTextTheme),
                   ),
                   TextSpan(
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: AppTheme.colorTextTheme),
                     text: CustomFunctions.limpiarTexto(obsDocumento),
                   ),
                 ],
@@ -290,12 +291,12 @@ class DocumentosTableDataBuilder {
                     text: TextSpan(
                       style: const TextStyle(fontSize: 12),
                       children: <InlineSpan>[
-                        const TextSpan(
+                        TextSpan(
                           text: 'Datos Adicionales: ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.colorTextTheme),
                         ),
                         TextSpan(
-                          style: const TextStyle(color: Colors.black),
+                          style: TextStyle(color: AppTheme.colorTextTheme),
                           text: CustomFunctions.limpiarTexto(datosAdicionales),
                         ),
                       ],
@@ -420,7 +421,7 @@ class _DetailImpuestos extends StatelessWidget {
             ),
             Container(
               constraints: const BoxConstraints(maxWidth: 180),
-              child: Text("\$${formatearMiles(subtitle)}", style: const TextStyle(fontSize: 16, color: Colors.black)),
+              child: Text("\$${formatearMiles(subtitle)}", style: TextStyle(fontSize: 16, color: AppTheme.colorTextTheme)),
             ),
           ],
         ),
