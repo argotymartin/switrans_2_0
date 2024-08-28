@@ -44,7 +44,7 @@ class _TextAreaDocumentos extends StatelessWidget {
       initialValue: value,
       validator: onValidator,
       minLines: 4,
-      style: const TextStyle(fontSize: 12),
+      style: TextStyle(fontSize: 12, color: AppTheme.colorTextTheme),
       maxLines: null,
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(

@@ -60,9 +60,9 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   }
 
   Future<void> _init() async {
-    final AuthBloc authBloc = context.read<AuthBloc>();
+    //final AuthBloc authBloc = context.read<AuthBloc>();
     final MenuSidebarBloc paqueteMenuBloc = context.read<MenuSidebarBloc>();
-    isTokenValid = await authBloc.onValidateToken();
+    //isTokenValid = await authBloc.onValidateToken();
     if (isTokenValid) {
       paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
     }

@@ -44,7 +44,7 @@ class AppTheme {
       colorThemeSecundary = theme.colorScheme.surfaceContainerLowest;
       colorTextTheme = Colors.black;
     } else if (themeModeCode == 2) {
-      colorThemePrimary = Colors.black38;
+      colorThemePrimary = Colors.black54;
       colorThemeSecundary = theme.colorScheme.surfaceContainerHighest;
       colorTextTheme = Colors.white;
     } else {
