@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_doma
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_empresa.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/table_total_documento.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/date_picker_input_form.dart';
@@ -25,7 +26,7 @@ class FacturaCreateView extends StatelessWidget {
         return Stack(
           children: <Widget>[
             ListView(
-              padding: const EdgeInsets.only(right: 32, top: 8),
+              padding: const EdgeInsets.only(right: 32, top: 8, bottom: 24),
               physics: const ClampingScrollPhysics(),
               children: <Widget>[
                 const BuildViewDetail(),
@@ -209,7 +210,6 @@ class _BuildTableItemsDocumento extends StatelessWidget {
               children: <Widget>[
                 const TableItemsDocumento(),
                 const SizedBox(height: 24),
-                CardDetailsFactura(),
               ],
             ),
           )
@@ -231,14 +231,12 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
             final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
             final EntryAutocomplete cliente =
                 state.entriesClientes.firstWhere((EntryAutocomplete element) => element.codigo == request.cliente);
-            final TextEditingController controllerCentroCosto = TextEditingController();
 
             final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
             final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
               return EntryAutocomplete(
                 codigo: centro.key,
                 title: centro.value,
-                subTitle: '(${centro.key})',
               );
             }).toList();
 
@@ -249,41 +247,48 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
             }
 
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
+                const TableTotalDocumento(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Icon(Icons.work_outline_outlined),
-                          const SizedBox(width: 8),
-                          Text(empresaSelect.nombre),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.work_outline_outlined),
+                              const SizedBox(width: 8),
+                              Text(empresaSelect.nombre),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.contact_emergency_outlined),
+                              const SizedBox(width: 8),
+                              Text(cliente.title),
+                            ],
+                          ),
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          const Icon(Icons.contact_emergency_outlined),
-                          const SizedBox(width: 8),
-                          Text(cliente.title),
-                        ],
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 400,
+                      child: AutocompleteInput(
+                        entries: entriesCentroCosto,
+                        entryCodigoSelected: entriesCentroCosto.first.codigo,
+                        onPressed: setValueFactura,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 16),
+                    const SizedBox(width: 16),
+                    const _BuildButtonRegistrar(),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                SizedBox(
-                  width: 400,
-                  child: AutocompleteInput(
-                    entries: entriesCentroCosto,
-                    controller: controllerCentroCosto,
-                    onPressed: setValueFactura,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                const SizedBox(width: 16),
-                const _BuildButtonRegistrar(),
               ],
             );
           }
