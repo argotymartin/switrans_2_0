@@ -27,9 +27,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    # networks:
-    #   macvlan_virbr_102SRV:
-    #     ipv4_address: 192.168.102.100
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.100
 
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
@@ -44,9 +44,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    # networks:
-    #   macvlan_virbr_102SRV:
-    #     ipv4_address: 192.168.102.101
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.101
 
   node:
     image: node:18
@@ -67,10 +67,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    # networks:
-    #   macvlan_virbr_102SRV:
-    #     ipv4_address: 192.168.102.102
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.102
 
-# networks:
-#   macvlan_virbr_102SRV:
-#     external: true 
+networks:
+  macvlan_virbr_102SRV:
+    external: true 
