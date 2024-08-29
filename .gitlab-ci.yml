@@ -6,6 +6,7 @@ variables:
 stages:
   - lints
   - review
+  - build
   - deploy
 
 lints:
@@ -34,8 +35,8 @@ build-merge-request:
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
 
-deploy:
-  stage: deploy
+build:
+  stage: build
   script:
     - cd $WORK_DIR
     - git checkout develop
@@ -48,4 +49,11 @@ deploy:
     - echo "Finalizó con Éxito!!"
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-    - when: manual # Manualmente en la rama develop
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Desplegando la aplicación..."
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - when: manual
