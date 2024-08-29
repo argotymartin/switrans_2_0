@@ -67,7 +67,7 @@ class _InformacionFactura extends pw.StatelessWidget {
                 element: InfoElement(title: "FECHA", contenet: currenDate.toString()),
               ),
               _BuildDataElement(
-                element: InfoElement(title: "NIT", contenet: dataPdf.nit.toUpperCase()),
+                element: InfoElement(title: "NIT", contenet: dataPdf.nitCliente.toUpperCase()),
               ),
               _BuildDataElement(
                 element: InfoElement(title: "TELEFONO", contenet: dataPdf.telefono.toUpperCase()),

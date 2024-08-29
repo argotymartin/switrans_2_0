@@ -18,6 +18,7 @@ class PdfView extends StatelessWidget {
         final DataPdf dataPDF = DataPdf(
           centroCosto: "xxxxx",
           cliente: "xxxxx",
+          nitCliente: "xxxxx",
           destinatario: "xxxxx",
           direccion: "xxxxx",
           direccionCliente: "xxxxx",
@@ -35,12 +36,13 @@ class PdfView extends StatelessWidget {
         );
         return PdfPreview(
           previewPageMargin: const EdgeInsets.all(60),
-          canChangeOrientation: false,
           allowSharing: false,
-          enableScrollToPage: true,
+          canChangePageFormat: false,
+          canChangeOrientation: false,
+          canDebug: false,
           loadingWidget: const LoadingView(),
           build: (PdfPageFormat format) async {
-            final Future<Uint8List> pdf = generatePreoperacional(format, dataPDF);
+            final Future<Uint8List> pdf = generateDocument(format, dataPDF);
             return pdf;
           },
         );

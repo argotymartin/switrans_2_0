@@ -8,7 +8,6 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/imp
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
-import 'package:switrans_2_0/src/util/resources/formatters/formatear_miles.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -106,7 +105,7 @@ class DocumentosTableDataBuilder {
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
-        minWidth: 180,
+        minWidth: 200,
         type: PlutoColumnType.text(),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFiledImpuestos(rendererContext, context),
       ),
@@ -205,22 +204,63 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledImpuestos(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final String cellValue = rendererContext.cell.value.toString();
     final dynamic documentoMap = jsonDecode(cellValue);
-    final List<Widget> chlidren = <Widget>[];
+    final List<TableRow> children = <TableRow>[];
     for (final dynamic mapa in documentoMap) {
       mapa.forEach((String key, dynamic value) {
-        chlidren.add(
-          Column(
-            children: <Widget>[_DetailImpuestos(title: key, subtitle: "$value"), const Divider()],
+        children.add(
+          TableRow(
+            children: <Widget>[
+              buildCellContent(Text(key)),
+              buildCellContent(
+                CurrencyLabel(
+                  text: '${value.toInt()}',
+                  color: key == "IVA" ? Colors.green.shade800 : Colors.red.shade800,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
         );
       });
     }
 
-    return SelectionArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: chlidren,
+    return Center(
+      child: SizedBox(
+        child: Table(
+          border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: <TableRow>[
+            TableRow(
+              decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
+              children: <Widget>[
+                buldTitleCell("Nombre", Colors.black),
+                buldTitleCell("Valor", Colors.black),
+              ],
+            ),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+
+  static TableCell buildCellContent(Widget child) {
+    return TableCell(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        child: child,
+      ),
+    );
+  }
+
+  static TableCell buldTitleCell(String title, Color color) {
+    return TableCell(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: color),
+        ),
       ),
     );
   }
@@ -322,7 +362,7 @@ class DocumentosTableDataBuilder {
 
   static Widget buildFieldValueTotal(PlutoColumnRendererContext rendererContext, Color color) {
     return Tooltip(
-      message: "(Valor Ingreso + Adiciones - Descuento) + Iva - (Retefuente + Reteica + Reteiva)",
+      message: "(Valor Ingreso + Adiciones - Descuentos) + IVA - (Retefuente + Reteica + Reteiva)",
       padding: const EdgeInsets.all(8),
       child: SelectableText(
         rendererContext.column.type.applyFormat(rendererContext.cell.value),
@@ -393,35 +433,6 @@ class _DetailDocumento extends StatelessWidget {
             Container(
               constraints: const BoxConstraints(maxWidth: 180),
               child: FittedBox(child: Text(subtitle, style: const TextStyle(fontSize: 12))),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _DetailImpuestos extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  const _DetailImpuestos({
-    required this.subtitle,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(
-              "$title: ",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Theme.of(context).colorScheme.onPrimaryContainer),
-            ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 180),
-              child: Text("\$${formatearMiles(subtitle)}", style: TextStyle(fontSize: 16, color: AppTheme.colorTextTheme)),
             ),
           ],
         ),

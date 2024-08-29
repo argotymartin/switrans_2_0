@@ -3,14 +3,17 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/generate_pdf.dart';
 
 class HeaderFacturaPDF extends pw.StatelessWidget {
+  final pw.ImageProvider imageEmmpresa;
+  final pw.ImageProvider imageSuper;
+  final pw.ImageProvider imageQR;
+  final DataPdf data;
   HeaderFacturaPDF({
     required this.imageEmmpresa,
     required this.imageSuper,
     required this.imageQR,
+    required this.data,
   });
-  final pw.ImageProvider imageEmmpresa;
-  final pw.ImageProvider imageSuper;
-  final pw.ImageProvider imageQR;
+
   @override
   pw.Widget build(pw.Context context) {
     final pw.TextStyle ligthTextStyle = pw.TextStyle(font: fontPoppinsLigth, fontSize: 8);
@@ -30,7 +33,7 @@ class HeaderFacturaPDF extends pw.StatelessWidget {
                 children: <pw.Widget>[
                   pw.Row(
                     children: <pw.Widget>[
-                      pw.Text('Ferricar SAS', style: fontBoldMinStyle),
+                      pw.Text(data.empresa, style: fontBoldMinStyle),
                       pw.Container(
                         margin: const pw.EdgeInsets.only(top: 5.6, left: 1),
                         height: 4,
@@ -39,7 +42,7 @@ class HeaderFacturaPDF extends pw.StatelessWidget {
                       ),
                     ],
                   ),
-                  pw.Text('NIT: 901051109-0', style: ligthTextStyle),
+                  pw.Text('NIT: ${data.nit}', style: ligthTextStyle),
                 ],
               ),
             ],
