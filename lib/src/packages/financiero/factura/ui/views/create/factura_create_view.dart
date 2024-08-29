@@ -45,6 +45,7 @@ class FacturaCreateView extends StatelessWidget {
                   icon: Icons.content_paste_outlined,
                   child: _BuildItemFactura(),
                 ),
+                const SizedBox(height: 200),
               ],
             ),
             if (state.status == FormFacturaStatus.loading) const LoadingModal(),
@@ -185,9 +186,7 @@ class _BuildItemFactura extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               _BuildTableItemsDocumento(state),
-              const Divider(height: 48, color: Colors.white),
               const _BuildPrefacturarDocumento(),
-              const SizedBox(height: 24),
             ],
           );
         }
@@ -246,50 +245,52 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
               }
             }
 
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                const TableTotalDocumento(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.work_outline_outlined),
-                              const SizedBox(width: 8),
-                              Text(empresaSelect.nombre),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.contact_emergency_outlined),
-                              const SizedBox(width: 8),
-                              Text(cliente.title),
-                            ],
-                          ),
-                        ],
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  const TableTotalDocumento(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                const Icon(Icons.work_outline_outlined),
+                                const SizedBox(width: 8),
+                                Text(empresaSelect.nombre),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                const Icon(Icons.contact_emergency_outlined),
+                                const SizedBox(width: 8),
+                                Text(cliente.title),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                      width: 400,
-                      child: AutocompleteInput(
-                        entries: entriesCentroCosto,
-                        entryCodigoSelected: entriesCentroCosto.first.codigo,
-                        onPressed: setValueFactura,
+                      const SizedBox(width: 16),
+                      SizedBox(
+                        width: 400,
+                        child: AutocompleteInput(
+                          entries: entriesCentroCosto,
+                          entryCodigoSelected: entriesCentroCosto.first.codigo,
+                          onPressed: setValueFactura,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    const SizedBox(width: 16),
-                    const _BuildButtonRegistrar(),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 16),
+                      const _BuildButtonRegistrar(),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
         }

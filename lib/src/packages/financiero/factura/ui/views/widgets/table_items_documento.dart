@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
-import 'package:switrans_2_0/src/util/resources/formatters/formatear_miles.dart';
 import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -66,7 +66,7 @@ class TableItemsDocumento extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Table(
-                border: TableBorder.all(color: Colors.grey.shade200),
+                border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 columnWidths: columnWidth,
                 children: <TableRow>[tableRowsTitle, ...buildTableRows],
@@ -75,12 +75,15 @@ class TableItemsDocumento extends StatelessWidget {
             Column(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14.8),
                   width: 80,
-                  color: Theme.of(context).colorScheme.primaryContainer,
                   child: Text(
                     "Borrar",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16),
                   ),
                 ),
                 ...acciones,
@@ -99,14 +102,13 @@ class _BuildButtonClear extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int totalImpuestos = documento.itemDocumentos.fold(0, (int sum, ItemDocumento item) => sum + item.impuestos.impuestos.length);
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade200,
-        ),
+        border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
       ),
       width: 80,
-      height: 148 * documento.itemDocumentos.length.toDouble(),
+      height: (80 * documento.itemDocumentos.length) + (28 * totalImpuestos.toDouble()),
       child: CustomSizeButton(
         onPressed: () {
           context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
@@ -208,7 +210,7 @@ class _BuildSubtotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int valor = value.toInt();
-    return CurrencyLabel(color: Colors.green.shade900, text: '${valor}');
+    return CurrencyLabel(color: AppTheme.colorTextTheme, text: '${valor}');
   }
 }
 
@@ -227,12 +229,10 @@ class _BuildImpuestos extends StatelessWidget {
         const SizedBox(),
         const _CellContent(child: Text("Total", style: TextStyle(fontWeight: FontWeight.bold))),
         _CellContent(
-          child: Text(
-            "\$${formatearMiles(impuestos.total.toString())}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+          child: CurrencyLabel(
+            text: '${impuestos.total.toInt()}',
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ],
@@ -250,29 +250,37 @@ class _BuildImpuestos extends StatelessWidget {
               ),
             ),
             _CellContent(
-              child: Text("\$${formatearMiles(impuesto.valor.toString())}", style: TextStyle(color: Colors.green[900], fontSize: 14)),
+              child: CurrencyLabel(
+                text: '${impuesto.valor.toInt()}',
+                color: impuesto.nombre == "IVA" ? Colors.green.shade800 : Colors.red.shade800,
+                fontSize: 14,
+              ),
             ),
           ],
         ),
       );
     }
-    return SizedBox(
-      height: 140,
-      child: Table(
-        border: TableBorder.all(color: Colors.grey.shade200),
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: <TableRow>[
-          TableRow(
-            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
-            children: const <Widget>[
-              _CellTitleImpuesto(title: "Nombre"),
-              _CellTitleImpuesto(title: "Porcentaje"),
-              _CellTitleImpuesto(title: "Valor"),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          child: Table(
+            border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: <TableRow>[
+              TableRow(
+                decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
+                children: const <Widget>[
+                  _CellTitleImpuesto(title: "Nombre"),
+                  _CellTitleImpuesto(title: "Porcentaje"),
+                  _CellTitleImpuesto(title: "Valor"),
+                ],
+              ),
+              ...children,
+              childTotal,
             ],
           ),
-          ...children,
-          childTotal,
-        ],
+        ),
       ),
     );
   }
@@ -321,7 +329,7 @@ class _CellTitleImpuesto extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer),
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.colorTextTheme),
         ),
       ),
     );

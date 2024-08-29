@@ -66,7 +66,7 @@ class _DesktopBody extends StatelessWidget {
           Positioned(
             top: 40,
             child: FadeInDown(
-              duration: const Duration(milliseconds: 2000),
+              duration: const Duration(milliseconds: 1000),
               child: BuildTitle(
                 size: size,
               ),
@@ -76,7 +76,7 @@ class _DesktopBody extends StatelessWidget {
             top: 200,
             left: size.width < 780 ? (size.width - width) / 2 : 80,
             child: FadeInUp(
-              duration: const Duration(milliseconds: 2000),
+              duration: const Duration(milliseconds: 1000),
               child: Container(
                 constraints: const BoxConstraints(minHeight: 460),
                 decoration: BoxDecoration(

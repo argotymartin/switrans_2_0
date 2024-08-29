@@ -19,7 +19,7 @@ late pw.Font fontSemiBold;
 final pw.SizedBox spacerBox = pw.SizedBox(height: 20);
 List<Documento> itemDocuemto = <Documento>[];
 
-Future<Uint8List> generatePreoperacional(PdfPageFormat format, DataPdf data) async {
+Future<Uint8List> generateDocument(PdfPageFormat format, DataPdf data) async {
   final pw.Document doc = pw.Document(
     title: 'Factura',
     author: "Erney",
@@ -43,7 +43,7 @@ Future<Uint8List> generatePreoperacional(PdfPageFormat format, DataPdf data) asy
     pw.MultiPage(
       margin: const pw.EdgeInsets.all(36),
       header: (pw.Context context) {
-        return HeaderFacturaPDF(imageEmmpresa: imageEmpresa, imageSuper: imageSuper, imageQR: imageQR);
+        return HeaderFacturaPDF(imageEmmpresa: imageEmpresa, imageSuper: imageSuper, imageQR: imageQR, data: data);
       },
       footer: (pw.Context context) {
         return buildFooter(context);
@@ -75,15 +75,16 @@ pw.Row buildFooter(pw.Context context) {
 class DataPdf {
   final String centroCosto;
   final String cliente;
+  final String nitCliente;
   final String direccionCliente;
   final String remitente;
   final String destinatario;
   final String fecha;
-  final String nit;
   final String telefono;
   final String domicilio;
   final String direccion;
   final String empresa;
+  final String nit;
   final String formaPago;
   final String medioPago;
   final String numeroFactura;
@@ -93,6 +94,7 @@ class DataPdf {
   DataPdf({
     required this.centroCosto,
     required this.cliente,
+    required this.nitCliente,
     required this.direccionCliente,
     required this.remitente,
     required this.destinatario,

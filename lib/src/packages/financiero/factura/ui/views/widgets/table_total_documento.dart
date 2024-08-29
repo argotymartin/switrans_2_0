@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/pdf_view.dart';
-import 'package:switrans_2_0/src/util/resources/formatters/formatear_miles.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class TableTotalDocumento extends StatelessWidget {
   const TableTotalDocumento({
@@ -43,7 +44,7 @@ class TableTotalDocumento extends StatelessWidget {
           childrenImpuestos.add(
             TableRow(
               children: <Widget>[
-                _CellTitle(title: key, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                _CellTitle(title: key, color: AppTheme.colorTextTheme),
                 const SizedBox(),
                 _BuildValueCurrency(valor: value, color: key == "IVA" ? Colors.green : Colors.red),
                 const SizedBox(),
@@ -59,9 +60,9 @@ class TableTotalDocumento extends StatelessWidget {
               title: "Items",
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
-            _CellTitle(title: "$itemsLength", color: colorPrimaryContainer),
+            _BuildValueNumber(valor: itemsLength, color: colorPrimaryContainer),
             _CellTitle(title: "Documentos", color: colorPrimaryContainer),
-            _CellTitle(title: "$documentosLength", color: colorPrimaryContainer),
+            _BuildValueNumber(valor: documentosLength, color: colorPrimaryContainer),
           ],
         );
 
@@ -78,7 +79,7 @@ class TableTotalDocumento extends StatelessWidget {
           children: <Widget>[
             _CellTitle(title: "SubTotal", color: colorPrimaryContainer),
             const SizedBox(),
-            _BuildValueCurrency(valor: subTotal, color: Colors.green),
+            _BuildValueCurrency(valor: subTotal, color: AppTheme.colorTextTheme),
             const SizedBox(),
           ],
         );
@@ -94,7 +95,7 @@ class TableTotalDocumento extends StatelessWidget {
             SizedBox(
               width: 500,
               child: Table(
-                border: TableBorder.all(color: Colors.grey.shade100),
+                border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 columnWidths: columnWidth,
                 children: <TableRow>[
@@ -107,17 +108,19 @@ class TableTotalDocumento extends StatelessWidget {
             ),
             Container(
               width: 100,
-              height: cantidadItem * 32.5,
+              height: cantidadItem * 32.7,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: cantidadItem * 8),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
+                border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
               ),
               child: IconButton(
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (_) => AlertDialog(
+                      shape: const RoundedRectangleBorder(),
                       backgroundColor: Theme.of(context).colorScheme.surface,
-                      content: SizedBox(width: size.width * 0.7, child: const PdfView()),
+                      content: SizedBox(width: size.width * 0.8, child: const PdfView()),
                       actions: <Widget>[
                         FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
                       ],
@@ -149,10 +152,13 @@ class _BuildValueCurrency extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "COP \$${formatearMiles(valor.toString())}",
-        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: size),
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: CurrencyLabel(
+        text: '${valor.toInt()}',
+        color: color,
+        fontSize: size,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -175,6 +181,25 @@ class _CellTitle extends StatelessWidget {
           title,
           style: TextStyle(fontWeight: FontWeight.bold, color: color),
         ),
+      ),
+    );
+  }
+}
+
+class _BuildValueNumber extends StatelessWidget {
+  final int valor;
+  final Color color;
+  const _BuildValueNumber({
+    required this.valor,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "$valor",
+        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14),
       ),
     );
   }

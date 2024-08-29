@@ -34,12 +34,21 @@ class FooterFacturaPDF extends pw.StatelessWidget {
     }
 
     mapImpuestos.forEach((String key, double value) {
-      pw.Row(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: <pw.Widget>[
-          pw.SizedBox(width: 64, child: pw.Text(key, style: pw.TextStyle(font: fontSemiBold, fontSize: 10))),
-          pw.Text("COP \$${formatearMiles(value.toString())}", style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 9)),
-        ],
+      childrenImpuestos.add(
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: <pw.Widget>[
+            pw.SizedBox(width: 64, child: pw.Text(key, style: pw.TextStyle(font: fontSemiBold, fontSize: 10))),
+            pw.Container(
+              width: 92,
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                "COP \$${formatearMiles(value.toString())}",
+                style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 9, color: key == "IVA" ? PdfColors.green800 : PdfColors.red800),
+              ),
+            ),
+          ],
+        ),
       );
     });
     return pw.Column(
@@ -80,14 +89,28 @@ class FooterFacturaPDF extends pw.StatelessWidget {
                 pw.Row(
                   children: <pw.Widget>[
                     pw.SizedBox(width: 64, child: pw.Text("SUBTOTAL", style: pw.TextStyle(font: fontSemiBold, fontSize: 12))),
-                    pw.Text("COP \$${formatearMiles(subTotal.toString())}", style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 11)),
+                    pw.Container(
+                      width: 92,
+                      alignment: pw.Alignment.centerRight,
+                      child: pw.Text(
+                        "COP \$${formatearMiles(subTotal.toString())}",
+                        style: pw.TextStyle(font: fontPoppinsLigth, fontSize: 11),
+                      ),
+                    ),
                   ],
                 ),
                 ...childrenImpuestos,
                 pw.Row(
                   children: <pw.Widget>[
                     pw.SizedBox(width: 64, child: pw.Text("TOTAL", style: pw.TextStyle(font: fontSemiBold, fontSize: 14))),
-                    pw.Text("COP \$${formatearMiles(total.toString())}", style: pw.TextStyle(font: fontSemiBold, fontSize: 11)),
+                    pw.Container(
+                      width: 92,
+                      alignment: pw.Alignment.centerRight,
+                      child: pw.Text(
+                        "COP \$${formatearMiles(total.toString())}",
+                        style: pw.TextStyle(font: fontSemiBold, fontSize: 11, color: PdfColors.green800),
+                      ),
+                    ),
                   ],
                 ),
               ],
