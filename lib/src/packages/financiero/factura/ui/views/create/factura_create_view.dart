@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
@@ -163,7 +164,14 @@ class _BuildDocumentos extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("${state.documentos.length} $texto"),
+              Text(
+                "${state.documentos.length} $texto",
+                style: TextStyle(
+                  color: AppTheme.colorTextTheme,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
               state.documentos.isNotEmpty ? TableDocumentos(documentos: state.documentos) : const SizedBox(),
             ],
           );

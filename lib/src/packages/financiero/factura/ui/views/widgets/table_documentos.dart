@@ -27,7 +27,7 @@ class TableDocumentos extends StatelessWidget {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
         return Container(
-          height: (rowHeight * tableHigth) + (titleHeight + columnFilterHeight + 84),
+          height: (rowHeight * tableHigth) + (titleHeight + columnFilterHeight + 86),
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: PlutoGrid(
             columns: DocumentosTableDataBuilder.buildColumns(context),
@@ -67,8 +67,13 @@ class TableDocumentos extends StatelessWidget {
               ),
               columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
               scrollbar: const PlutoGridScrollbarConfig(
+                isAlwaysShown: true,
                 longPressDuration: Duration.zero,
                 onlyDraggingThumb: false,
+                scrollbarThickness: 12,
+                mainAxisMargin: 5,
+                crossAxisMargin: 2,
+                scrollbarRadius: Radius.circular(4),
               ),
               localeText: const PlutoGridLocaleText.spanish(),
             ),
