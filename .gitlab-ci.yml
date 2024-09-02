@@ -54,6 +54,10 @@ deploy:
   stage: deploy
   script:
     - echo "Desplegando la aplicación..."
-  only:
-    - develop
-  when: manual
+    - cd $WORK_DIR
+    - scp -r build/web/ root@192.168.102.21:/home/docker/front-end/proyecto-switrans-2/switrans_2_0/build/web
+    - docker restart switrans2-node
+    - echo "Finalizó Despliegue a Prepo"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - when: manual
