@@ -14,6 +14,23 @@ services:
       timeout: 10s
       retries: 3
 
+  #mongo:
+  #  image: mongo:6.0
+  #  container_name: switrans2-mongo
+  #  restart: unless-stopped
+  #  ports:
+  #    - "27017:27017"
+  #  volumes:
+  #    - ${PWD}/../db/mongo_data:/data/db
+  #  healthcheck:
+  #    test: echo "db.runCommand('ping').ok" | mongo http://192.168.102.130:27017/test --quiet
+  #    interval: 10s
+  #    timeout: 10s
+  #    retries: 5
+  #  networks:
+  #    macvlan_virbr_102SRV:
+  #      ipv4_address: 192.168.102.130
+
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
     container_name: switrans2-pocketbase
@@ -23,10 +40,13 @@ services:
     volumes:
       - ${PWD}/../db/pocketbase/pb_data:/pb_data
     healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      test: wget --no-verbose --tries=1 --spider http://192.168.102.131:8090/api/health || exit 1
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.131
 
   node:
     image: node:18
@@ -36,18 +56,20 @@ services:
     working_dir: /app/server
     restart: unless-stopped
     command: >
-      sh -c "cp -r ../switrans_2_0/build/web/ ./ && cp -r ../switrans_2_0/web/node_server/. ./ && npm install && npm start" 
+      sh -c "cp -r ../switrans_2_0/build/web/ ./ && cp -r ../switrans_2_0/web/node_server/. ./ && tail -f /dev/null" 
     ports:
       - "3000:3000"
     depends_on:
       - pocketbase
     healthcheck:
-      test: curl -f http://localhost:3000 || exit 1
+      test: curl -f http://192.168.102.132:3000 || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      macvlan_virbr_102SRV:
+        ipv4_address: 192.168.102.132
 
 networks:
-  default:
-    driver: bridge
-
+  macvlan_virbr_102SRV:
+    external: true 
