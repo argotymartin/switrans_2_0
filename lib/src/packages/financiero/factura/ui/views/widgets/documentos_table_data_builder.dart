@@ -31,7 +31,7 @@ class DocumentosTableDataBuilder {
         width: 88,
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) =>
-            buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length),
+            buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length, formFacturaBloc.state.documentosSelected.length),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -408,8 +408,8 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Co
   );
 }
 
-Widget buildRenderContadorFooter(PlutoColumnFooterRendererContext rendererContext, int length) {
-  return Center(child: Text("$length/$length"));
+Widget buildRenderContadorFooter(PlutoColumnFooterRendererContext rendererContext, int documentos, int selected) {
+  return Center(child: Text("$documentos/$selected", style: const TextStyle(fontSize: 14)));
 }
 
 class _DetailDocumento extends StatelessWidget {

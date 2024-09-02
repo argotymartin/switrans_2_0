@@ -92,8 +92,7 @@ class TableTotalDocumento extends StatelessWidget {
         final Size size = MediaQuery.of(context).size;
         return Row(
           children: <Widget>[
-            SizedBox(
-              width: 500,
+            Expanded(
               child: Table(
                 border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
