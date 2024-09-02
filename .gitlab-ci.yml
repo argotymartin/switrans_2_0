@@ -54,6 +54,6 @@ deploy:
   stage: deploy
   script:
     - echo "Desplegando la aplicación..."
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-    - when: manual
+  only:
+    - develop
+  when: manual

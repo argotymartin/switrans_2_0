@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class BuildFormFields extends StatelessWidget {
   final List<Widget> children;
   final int spaces;
+  final CrossAxisAlignment crossAxisAlignment;
 
   const BuildFormFields({
     required this.children,
     this.spaces = 1,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
     super.key,
   });
 
@@ -49,7 +51,7 @@ class BuildFormFields extends StatelessWidget {
         columnChildren.add(
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: rowChildren),
+            child: Row(crossAxisAlignment: crossAxisAlignment, children: rowChildren),
           ),
         );
       }

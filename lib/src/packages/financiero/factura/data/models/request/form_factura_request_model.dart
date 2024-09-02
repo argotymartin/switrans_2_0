@@ -30,8 +30,8 @@ class FormFacturaRequestModel extends FormFacturaRequest {
     }
     if (rangoFechas != null) {
       final List<String> listFechas = rangoFechas!.split(' - ');
-      data['inicio'] = listFechas[0].trim();
-      data['fin'] = listFechas[1].trim();
+      data['fechaInicio'] = listFechas[0].trim();
+      data['fechaFin'] = listFechas[1].trim();
     }
 
     return data;

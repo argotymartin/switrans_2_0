@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
@@ -163,7 +164,14 @@ class _BuildDocumentos extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("${state.documentos.length} $texto"),
+              Text(
+                "${state.documentos.length} $texto",
+                style: TextStyle(
+                  color: AppTheme.colorTextTheme,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
               state.documentos.isNotEmpty ? TableDocumentos(documentos: state.documentos) : const SizedBox(),
             ],
           );
@@ -247,15 +255,20 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: BuildFormFields(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                spaces: 2,
                 children: <Widget>[
                   const TableTotalDocumento(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    spacing: 16,
+                    runSpacing: 16,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runAlignment: WrapAlignment.spaceEvenly,
                     children: <Widget>[
                       SizedBox(
+                        width: 300,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -276,16 +289,14 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
                       SizedBox(
-                        width: 400,
+                        width: 300,
                         child: AutocompleteInput(
                           entries: entriesCentroCosto,
                           entryCodigoSelected: entriesCentroCosto.first.codigo,
                           onPressed: setValueFactura,
                         ),
                       ),
-                      const SizedBox(width: 16),
                       const _BuildButtonRegistrar(),
                     ],
                   ),
