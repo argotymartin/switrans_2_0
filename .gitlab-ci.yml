@@ -56,4 +56,5 @@ deploy:
     - echo "Desplegando la aplicación..."
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_MESSAGE =~ Merge branch "develop"'
     - when: manual
