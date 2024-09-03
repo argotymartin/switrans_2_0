@@ -14,6 +14,9 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/views/create/pais_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/views/search/pais_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
@@ -43,6 +46,7 @@ class MaestrosRoutes {
     routes.add(routerPaquete());
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
+    routes.add(routerPais());
     return routes;
   }
 
@@ -242,6 +246,35 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const PaqueteSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerPais() {
+    const String modulePath = "pais";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<PaisBloc>(
+          create: (_) => PaisBloc(injector())..add(const InitialPaisEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<PaisBloc>().add(const InitialPaisEvent());
+            }
+            return const PaisCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const PaisSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
