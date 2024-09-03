@@ -60,4 +60,4 @@ deploy:
     - echo "Finalizó Despliegue a Prepo"
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-    - when: manual
+      when: manual
