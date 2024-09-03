@@ -100,7 +100,7 @@ class SidebarExpanded extends StatelessWidget {
                     ),
                     label: Text("Salir", style: TextStyle(color: color)),
                     onPressed: () {
-                      context.read<AuthBloc>().onLogoutAuthEvent();
+                      context.read<AuthBloc>().add(const LogoutAuthEvent());
                       context.go(AppRouter.login);
                     },
                     icon: Icon(
@@ -172,7 +172,7 @@ class SidebarMimimized extends StatelessWidget {
                   child: OutlinedButton.icon(
                     label: const SizedBox(),
                     onPressed: () {
-                      context.read<AuthBloc>().onLogoutAuthEvent();
+                      context.read<AuthBloc>().add(const LogoutAuthEvent());
                       context.go(AppRouter.login);
                     },
                     icon: Icon(

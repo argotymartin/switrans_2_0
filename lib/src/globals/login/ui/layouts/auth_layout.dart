@@ -15,15 +15,15 @@ class AuthLayout extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
-          if (state is AuthErrorState) {
+          if (state.status == AuthStatus.error) {
             CustomToast.showErrorLogin(context, state.error!);
             context.pop();
           }
-          if (state is AuthSuccesState) {
+          if (state.status == AuthStatus.succes) {
             context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
             context.go("/");
           }
-          if (state is AuthLoadInProgressState) {
+          if (state.status == AuthStatus.loading) {
             await showDialog(
               context: context,
               barrierColor: Colors.black.withOpacity(0.6),

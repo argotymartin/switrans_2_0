@@ -34,7 +34,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<MenuBloc>(create: (_) => injector<MenuBloc>()),
         BlocProvider<ThemeCubit>(create: (_) => injector<ThemeCubit>()),
         BlocProvider<FormFacturaBloc>(create: (_) => injector<FormFacturaBloc>()),
-        BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
+        BlocProvider<AuthBloc>(create: (_) => injector<AuthBloc>()),
         BlocProvider<MenuSidebarBloc>(create: (_) => injector<MenuSidebarBloc>()),
       ],
       child: const MyMaterialApp(),
