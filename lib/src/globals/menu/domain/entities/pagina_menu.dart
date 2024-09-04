@@ -4,7 +4,6 @@ class PaginaMenu {
   final int codigo;
   final String texto;
   final String path;
-  bool isSelected;
 
   PaginaMenu({
     required this.id,
@@ -12,6 +11,5 @@ class PaginaMenu {
     required this.codigo,
     required this.texto,
     required this.path,
-    this.isSelected = false,
   });
 }

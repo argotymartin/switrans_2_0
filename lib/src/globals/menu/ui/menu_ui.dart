@@ -1,5 +1,4 @@
 export 'package:switrans_2_0/src/globals/menu/ui/blocs/menu/menu_bloc.dart';
-export 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/blocs/theme/theme_cubit.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/error_layout.dart';
 export 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';

@@ -14,7 +14,7 @@ class _SearchModuloState extends State<SearchModulo> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final MenuSidebarBloc menusidebar = context.read<MenuSidebarBloc>();
+    final MenuBloc menuBloc = context.read<MenuBloc>();
     final ThemeState themeState = context.watch<ThemeCubit>().state;
     final Color? color = themeState.color;
     Color colorText;
@@ -37,7 +37,7 @@ class _SearchModuloState extends State<SearchModulo> {
           ),
           onChanged: (String value) async {
             await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-            menusidebar.add(SearchMenuSidebarEvent(value));
+            menuBloc.add(SearchMenuEvent(value));
             setState(() => isPressed = true);
           },
           decoration: InputDecoration(
@@ -66,7 +66,7 @@ class _SearchModuloState extends State<SearchModulo> {
                 setState(() => isPressed = false);
                 controller.text = "";
                 await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-                menusidebar.add(const SearchMenuSidebarEvent(""));
+                menuBloc.add(const SearchMenuEvent(""));
               },
             ),
           ),
