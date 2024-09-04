@@ -13,9 +13,9 @@ class MenuButtonNavar extends StatelessWidget {
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
         final Size size = MediaQuery.of(context).size;
-        final bool isOpenMenu = state.isOpenMenu;
-        final bool isMinimize = state.isMinimize;
-        final bool isBlocked = state.isBlocked;
+        final bool isOpenMenu = state.isOpenMenu!;
+        final bool isMinimize = state.isMinimize!;
+        final bool isBlocked = state.isBlocked!;
         double positionedLeft = 16;
 
         if (isOpenMenu) {
@@ -51,7 +51,7 @@ class MenuButtonNavar extends StatelessWidget {
                               context.read<MenuBloc>().add(ExpandedMenuEvent(!isOpenMenu));
                             }
                           },
-                          isSelected: !state.isOpenMenu,
+                          isSelected: !state.isOpenMenu!,
                         ),
                         _BuildButton(
                           icon: Icons.menu_open_outlined,
@@ -59,7 +59,7 @@ class MenuButtonNavar extends StatelessWidget {
                             tooltipController.hide();
                             context.read<MenuBloc>().add(MinimizedMenuEvent(!isMinimize));
                           },
-                          isSelected: state.isMinimize,
+                          isSelected: state.isMinimize!,
                         ),
                         _BuildButton(
                           icon: Icons.lock_outlined,
@@ -67,7 +67,7 @@ class MenuButtonNavar extends StatelessWidget {
                             tooltipController.hide();
                             context.read<MenuBloc>().add(BlockedMenuEvent(!isBlocked));
                           },
-                          isSelected: state.isBlocked,
+                          isSelected: state.isBlocked!,
                         ),
                       ],
                     ),
@@ -78,7 +78,7 @@ class MenuButtonNavar extends StatelessWidget {
             child: _BuildButton(
               icon: Icons.menu_outlined,
               onPressed: () {},
-              isSelected: !state.isOpenMenu,
+              isSelected: !state.isOpenMenu!,
             ),
           ),
         );

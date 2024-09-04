@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
@@ -15,15 +15,15 @@ class AuthLayout extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
-          if (state is AuthErrorState) {
+          if (state.status == AuthStatus.error) {
             CustomToast.showErrorLogin(context, state.error!);
             context.pop();
           }
-          if (state is AuthSuccesState) {
-            context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
+          if (state.status == AuthStatus.succes) {
+            context.read<MenuBloc>().add(const ActivateMenuEvent());
             context.go("/");
           }
-          if (state is AuthLoadInProgressState) {
+          if (state.status == AuthStatus.loading) {
             await showDialog(
               context: context,
               barrierColor: Colors.black.withOpacity(0.6),

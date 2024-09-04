@@ -34,8 +34,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider<MenuBloc>(create: (_) => injector<MenuBloc>()),
         BlocProvider<ThemeCubit>(create: (_) => injector<ThemeCubit>()),
         BlocProvider<FormFacturaBloc>(create: (_) => injector<FormFacturaBloc>()),
-        BlocProvider<AuthBloc>(create: (_) => injector()..add((const GetAuthEvent()))),
-        BlocProvider<MenuSidebarBloc>(create: (_) => injector<MenuSidebarBloc>()),
+        BlocProvider<AuthBloc>(create: (_) => injector<AuthBloc>()),
       ],
       child: const MyMaterialApp(),
     );
@@ -61,10 +60,10 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   Future<void> _init() async {
     //final AuthBloc authBloc = context.read<AuthBloc>();
-    final MenuSidebarBloc paqueteMenuBloc = context.read<MenuSidebarBloc>();
+    //final MenuBloc paqueteMenuBloc = context.read<MenuBloc>();
     //isTokenValid = await authBloc.onValidateToken();
     if (isTokenValid) {
-      paqueteMenuBloc.add(const ActiveteMenuSidebarEvent());
+      // paqueteMenuBloc.add(const ActiveteMenuEvent());
     }
   }
 

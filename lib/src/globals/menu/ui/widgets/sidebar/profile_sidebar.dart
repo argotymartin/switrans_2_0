@@ -37,7 +37,7 @@ class ProfileSidebar extends StatelessWidget {
                     ? const SizedBox()
                     : BlocBuilder<AuthBloc, AuthState>(
                         builder: (BuildContext context, AuthState state) {
-                          if (state is AuthSuccesState) {
+                          if (state.status == AuthStatus.succes) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[

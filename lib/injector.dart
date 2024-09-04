@@ -50,16 +50,15 @@ final GetIt injector = GetIt.instance;
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
-  injector.registerSingleton<MenuBloc>(MenuBloc());
+  injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
+  injector.registerSingleton<AbstractMenuSidebarRepository>(MenuSidebarRespositoryImpl(injector()));
+  injector.registerSingleton<MenuBloc>(MenuBloc(injector()));
+
   injector.registerSingleton<ThemeCubit>(ThemeCubit());
 
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
   injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));
   injector.registerSingleton<AuthBloc>(AuthBloc(injector()));
-
-  injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
-  injector.registerSingleton<AbstractMenuSidebarRepository>(MenuSidebarRespositoryImpl(injector()));
-  injector.registerSingleton<MenuSidebarBloc>(MenuSidebarBloc(injector()));
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));

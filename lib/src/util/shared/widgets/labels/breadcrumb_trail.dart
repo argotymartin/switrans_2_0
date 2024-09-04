@@ -32,9 +32,9 @@ class BreadcrumbTrail extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        menuState.isOpenMenu && size.width > 480 ? Row(children: result) : const SizedBox(),
+        menuState.isOpenMenu! && size.width > 480 ? Row(children: result) : const SizedBox(),
         const Spacer(),
-        menuState.isOpenMenu && size.width > 900 ? Text(now.toString()) : const SizedBox(),
+        menuState.isOpenMenu! && size.width > 900 ? Text(now.toString()) : const SizedBox(),
       ],
     );
   }

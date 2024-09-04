@@ -7,11 +7,12 @@ class Preferences {
   static int _themeMode = 1;
   static int _colorValue = 4282339765;
   static bool _isResetForm = true;
+  static String _paquetes = "";
 
   static Future<void> init() async {
     _prefs = await SharedPreferencesWithCache.create(
       cacheOptions: const SharedPreferencesWithCacheOptions(
-        allowList: <String>{'token', 'usuarioNombre', 'themeMode', 'color', 'isResetForm'},
+        allowList: <String>{'token', 'usuarioNombre', 'themeMode', 'color', 'isResetForm', 'paquetes'},
       ),
     );
   }
@@ -49,5 +50,12 @@ class Preferences {
   static set isResetForm(bool value) {
     _isResetForm = value;
     _prefs.setBool("isResetForm", value);
+  }
+
+  static String get paquetes => _prefs.getString("paquetes") ?? _paquetes;
+
+  static set paquetes(String value) {
+    _paquetes = value;
+    _prefs.setString("paquetes", value);
   }
 }

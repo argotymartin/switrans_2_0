@@ -338,7 +338,7 @@ class _CellTitle extends StatelessWidget {
       builder: (BuildContext context, MenuState state) {
         final Size sizeM = MediaQuery.of(context).size;
         final double sizeC = sizeM.width < 1600 ? 1600 : sizeM.width;
-        final double width = state.isOpenMenu ? sizeC - kWidthSidebar - 158 : sizeC - 158;
+        final double width = state.isOpenMenu! ? sizeC - kWidthSidebar - 158 : sizeC - 158;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),

@@ -8,7 +8,6 @@ class ModuloMenu {
   final String path;
   final String detalles;
   List<PaginaMenu> paginas;
-  bool isSelected;
 
   ModuloMenu({
     required this.codigo,
@@ -18,6 +17,5 @@ class ModuloMenu {
     required this.path,
     this.detalles = "",
     this.paginas = const <PaginaMenu>[],
-    this.isSelected = false,
   });
 }
