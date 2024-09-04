@@ -32,13 +32,13 @@ class _PaginasSidebarState extends State<PaginasSidebar> {
         Color color;
         Color colorText;
         if (themeState.themeMode == 1) {
-          color = isHovered || isSelected ? colorSelected!.withOpacity(0.3) : colorSelected!.withOpacity(0.4);
+          color = isHovered || isSelected ? colorSelected!.withOpacity(0.8) : colorSelected!.withOpacity(0.2);
           colorText = Theme.of(context).colorScheme.onPrimary;
         } else if (themeState.themeMode == 2) {
           color = isHovered || isSelected ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.4);
           colorText = Theme.of(context).colorScheme.primaryContainer;
         } else {
-          color = isHovered || isSelected ? colorSelected!.withOpacity(0.3) : colorSelected!.withOpacity(0.25);
+          color = isHovered || isSelected ? colorSelected!.withOpacity(0.3) : colorSelected!.withOpacity(0.2);
           colorText = Colors.black;
         }
         return MouseRegion(

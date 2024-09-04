@@ -11,11 +11,11 @@ class ColorOption {
 
 class CustomEndDrawerState extends State<CustomEndDrawer> {
   final List<ColorOption> colorOptions = <ColorOption>[
-    ColorOption("Morado Claro", const Color(0xFF886AB5)),
-    ColorOption("Rosa", const Color(0xFFB56A9F)),
-    ColorOption("Verde Claro", const Color(0xFF9FCB3D)),
-    ColorOption("Azul Medio", const Color(0xFF4679CC)),
-    ColorOption("Azul Brillante", const Color(0xFF2198F3)),
+    ColorOption("Morado Claro", const Color(0xff886ab5)),
+    ColorOption("Rosa", const Color(0xFF754467)),
+    ColorOption("Verde Claro", const Color(0xFF617a28)),
+    ColorOption("Azul Medio", const Color(0xFF2b4c81)),
+    ColorOption("Azul Brillante", const Color(0xFF0f619f)),
     ColorOption("Turquesa", const Color(0xFF6AB5B4)),
     ColorOption("Rosa Oscuro", const Color(0xFFDD5293)),
     ColorOption("Gris", const Color(0xFF868E96)),
@@ -26,7 +26,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
     ColorOption("Morado Oscuro", const Color(0xFF7976B3)),
     ColorOption("Verde Lima", const Color(0xFF55CE5F)),
     ColorOption("Amarillo", const Color(0xFFFBE231)),
-    ColorOption("Azul Gris", const Color(0xFF627CA0)),
+    ColorOption("Azul Gris", const Color(0xFF3955bc)),
   ];
 
   Color? selectedColor;
@@ -244,13 +244,13 @@ class _BuildCircleColorState extends State<_BuildCircleColor> {
           borderRadius: BorderRadius.circular(100),
           boxShadow: widget.isSelected || isHovering
               ? <BoxShadow>[
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ]
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
               : null,
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -262,12 +262,12 @@ class _BuildCircleColorState extends State<_BuildCircleColor> {
         ),
         child: widget.isSelected || isHovering
             ? const Center(
-          child: Icon(
-            Icons.check,
-            color: Colors.white,
-            size: 16,
-          ),
-        )
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              )
             : null,
       ),
     );

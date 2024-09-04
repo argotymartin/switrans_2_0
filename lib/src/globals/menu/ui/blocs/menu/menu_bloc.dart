@@ -25,17 +25,17 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     on<SearchMenuEvent>(_onSearchMenuEvent);
     on<BlockedMenuEvent>((BlockedMenuEvent event, Emitter<MenuState> emit) {
       emit(state.copyWith(status: MenuStatus.loading));
-      emit(state.copyWith(status: MenuStatus.succes, isOpenMenu: false, isBlocked: event.isBlocked));
+      emit(state.copyWith(status: MenuStatus.succes, isBlocked: event.isBlocked));
     });
 
     on<ExpandedMenuEvent>((ExpandedMenuEvent event, Emitter<MenuState> emit) {
       emit(state.copyWith(status: MenuStatus.loading));
-      emit(state.copyWith(status: MenuStatus.succes, isOpenMenu: event.isExpanded, isMinimize: false));
+      emit(state.copyWith(status: MenuStatus.succes, isOpenMenu: event.isExpanded));
     });
 
     on<MinimizedMenuEvent>((MinimizedMenuEvent event, Emitter<MenuState> emit) {
       emit(state.copyWith(status: MenuStatus.loading));
-      emit(state.copyWith(status: MenuStatus.succes, isMinimize: event.isMinimized, isOpenMenu: false));
+      emit(state.copyWith(status: MenuStatus.succes, isMinimize: event.isMinimized));
     });
   }
 

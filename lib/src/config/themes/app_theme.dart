@@ -13,11 +13,7 @@ class AppTheme {
   ThemeData getTheme(BuildContext context) {
     final ThemeData theme = ThemeData(
       useMaterial3: true,
-      textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme).copyWith(
-        bodyMedium: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 12)),
-        titleMedium: const TextStyle(fontSize: 12),
-        titleLarge: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black54)),
-      ),
+      textTheme: GoogleFonts.robotoFlexTextTheme(Theme.of(context).textTheme),
       brightness: themeModeCode == 2 ? Brightness.dark : Brightness.light,
       canvasColor: color,
       primaryTextTheme: Theme.of(context).textTheme,
