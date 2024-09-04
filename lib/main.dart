@@ -20,7 +20,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Preferences.init();
   await initializeDependencies();
-  //Bloc.observer = SimpleBlocObserver();
   runApp(const BlocsProviders());
 }
 
@@ -41,50 +40,15 @@ class BlocsProviders extends StatelessWidget {
   }
 }
 
-class MyMaterialApp extends StatefulWidget {
+class MyMaterialApp extends StatelessWidget {
   const MyMaterialApp({
     super.key,
   });
 
   @override
-  State<MyMaterialApp> createState() => _MyMaterialAppState();
-}
-
-class _MyMaterialAppState extends State<MyMaterialApp> {
-  bool isTokenValid = true;
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _init());
-    super.initState();
-  }
-
-  Future<void> _init() async {
-    //final AuthBloc authBloc = context.read<AuthBloc>();
-    //final MenuBloc paqueteMenuBloc = context.read<MenuBloc>();
-    //isTokenValid = await authBloc.onValidateToken();
-    if (isTokenValid) {
-      // paqueteMenuBloc.add(const ActiveteMenuEvent());
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const _BuildMaterialApp();
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('isTokenValid', isTokenValid));
-  }
-}
-
-class _BuildMaterialApp extends StatelessWidget {
-  const _BuildMaterialApp();
-
-  @override
   Widget build(BuildContext context) {
     final ThemeState theme = context.watch<ThemeCubit>().state;
+
     return MaterialApp.router(
       title: 'Switrans 2.0',
       debugShowCheckedModeBanner: false,

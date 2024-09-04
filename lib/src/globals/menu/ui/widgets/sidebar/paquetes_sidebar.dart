@@ -59,7 +59,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
                       }
                       context.read<MenuBloc>().add(SelectedPaqueteMenuEvent(widget.paquete));
                       if (widget.isMimimize) {
-                        showPopoverImpl(context, modulos, widget.paquete);
+                        showPopoverImpl(context, modulos, widget.paquete, color.withOpacity(1));
                       }
                     },
                   );
@@ -171,10 +171,10 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   }
 }
 
-Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete) {
+Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete, Color color) {
   return showPopover(
     context: context,
-    backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+    backgroundColor: color,
     direction: PopoverDirection.right,
     constraints: BoxConstraints.loose(const Size.fromWidth(250)),
     arrowWidth: 60,

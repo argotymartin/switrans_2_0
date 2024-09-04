@@ -25,9 +25,11 @@ class Sidebar extends StatelessWidget {
 
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
-        if (state.isOpenMenu!) {
+        if (state.isOpenMenu! && !state.isMinimize!) {
           return const SidebarExpanded();
-        } else if (state.isMinimize!) {
+        }
+
+        if (state.isMinimize!) {
           return const SidebarMimimized();
         } else {
           return const SizedBox();
