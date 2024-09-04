@@ -118,6 +118,21 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late int iconExa;
+    final RegExp hexRegex = RegExp(r'^[0-9a-fA-F]+$');
+    final String hexString = paquete.icono.startsWith('0x') ? paquete.icono.substring(2) : paquete.icono;
+
+    if (hexRegex.hasMatch(hexString)) {
+      try {
+        iconExa = int.parse(hexString, radix: 16);
+      } on FormatException catch (e) {
+        iconExa = 0xe33d;
+        debugPrint(e.toString());
+      }
+    } else {
+      iconExa = 0xe33d;
+    }
+
     return SizedBox(
       height: 46,
       child: Row(
@@ -128,7 +143,7 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Icon(
-                  IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),
+                  IconData(iconExa, fontFamily: 'MaterialIcons'),
                   color: isHovered || isSelected ? colorText : colorText.withOpacity(0.6),
                   size: 20,
                 ),
