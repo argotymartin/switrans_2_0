@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
@@ -140,6 +141,11 @@ class DocumentosTableDataBuilder {
       final double totalAdiciones = documento.adiciones.fold(0, (double total, Adicion adicion) => total + adicion.valor);
       final double totalDescuentos = documento.descuentos.fold(0, (double total, Descuento descuento) => total + descuento.valor);
 
+      final Map<String, dynamic> itemMap = <String, dynamic>{
+        'item': index + 1,
+        'isAnulacion': documento.isAnulacion,
+      };
+
       final Map<String, String> infoDocumentoMap = <String, String>{
         'documento': "${documento.impreso} (${documento.documento})",
         'centroCosto': documento.centroCostoNombre,
@@ -157,7 +163,7 @@ class DocumentosTableDataBuilder {
       };
 
       final Map<String, dynamic> dataColumn = <String, dynamic>{
-        'item': index + 1,
+        'item': jsonEncode(itemMap),
         'documento': documento.documento,
         'infoDocumento': jsonEncode(infoDocumentoMap),
         'obs': jsonEncode(obsMap),
@@ -177,25 +183,44 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
     return BlocBuilder<FormFacturaBloc, FormFacturaState>(
       builder: (BuildContext context, FormFacturaState state) {
+        final String cellValue = rendererContext.cell.value.toString();
+        final dynamic documentoMap = jsonDecode(cellValue);
+        final int item = documentoMap["item"];
+        final bool isAnulacion = documentoMap["isAnulacion"];
         final List<Documento> itemDocumentos = state.documentosSelected;
         final int documento = rendererContext.cell.row.cells["documento"]!.value;
         final bool isPresent = itemDocumentos.any((Documento element) => element.documento == documento);
         rendererContext.cell.row.setChecked(isPresent);
 
-        return Container(
-          width: 12,
-          height: 20,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Center(
-            child: Text(
-              rendererContext.cell.value.toString(),
-              style: TextStyle(color: AppTheme.colorThemePrimary),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            isAnulacion
+                ? Center(
+                    child: Lottie.asset(
+                      'assets/animations/warning.json',
+                      height: 48,
+                      width: 48,
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : const SizedBox(),
+            Container(
+              width: 24,
+              height: 24,
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Center(
+                child: Text(
+                  "$item",
+                  style: TextStyle(color: AppTheme.colorThemePrimary),
+                ),
+              ),
             ),
-          ),
+          ],
         );
       },
     );
