@@ -37,11 +37,13 @@ class AuthLayout extends StatelessWidget {
             );
           }
         },
-        child: const Column(
-          children: <Widget>[
-            _DesktopBody(child: AuthView()),
-            LinksBar(),
-          ],
+        child: const SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _DesktopBody(child: AuthView()),
+              LinksBar(),
+            ],
+          ),
         ),
       ),
     );
@@ -56,7 +58,7 @@ class _DesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final double width = size.width < 780 ? size.width * 0.8 : 500;
+    final double width = size.width < 780 ? size.width * 0.8 : 480;
     return SizedBox(
       width: size.width,
       height: size.height * 0.95,
@@ -90,7 +92,12 @@ class _DesktopBody extends StatelessWidget {
                     const SizedBox(height: 20),
                     const CustomTitle(),
                     const SizedBox(height: 20),
-                    Expanded(child: child),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: child,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -112,16 +119,22 @@ class BuildTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = size.width <= 720 ? 200 : size.width * 0.15;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(width: 8),
         Row(
           children: <Widget>[
-            const SizedBox(width: 80),
-            const Text(
-              "Switrans 2.0",
-              style: TextStyle(fontSize: 36, color: Colors.white),
+            const SizedBox(width: 20),
+            SizedBox(
+              width: width,
+              child: const FittedBox(
+                child: const Text(
+                  "Switrans 2.0",
+                  style: TextStyle(fontSize: 36, color: Colors.white),
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             Image.asset(

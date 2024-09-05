@@ -27,8 +27,8 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         type: PlutoColumnType.text(),
         enableRowChecked: true,
-        minWidth: 88,
-        width: 88,
+        minWidth: 110,
+        width: 110,
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) =>
             buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length, formFacturaBloc.state.documentosSelected.length),
@@ -210,7 +210,7 @@ class DocumentosTableDataBuilder {
         children.add(
           TableRow(
             children: <Widget>[
-              buildCellContent(Text(key)),
+              buildCellContent(Text(key, style: const TextStyle(fontSize: 12))),
               buildCellContent(
                 CurrencyLabel(
                   text: '${value.toInt()}',

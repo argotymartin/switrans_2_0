@@ -57,12 +57,14 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
   Widget build(BuildContext context) {
     final int converter = widget.entries.length >= 5 ? 5 : widget.entries.length;
     final double maxHeight = 70 + (converter * 66);
+    final Size size = MediaQuery.of(context).size;
+    final double height = size.width < 720 ? 48 : 38;
     return SafeArea(
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (BuildContext context, ThemeState state) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: isError ? 66 : 38,
+            height: isError ? 66 : height,
             child: DropdownSearch<EntryAutocomplete>(
               selectedItem: entryAutocompleteSelected,
               asyncItems: (String? filter) => getData(filter!, widget.entries),
@@ -108,7 +110,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                   fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
                   prefixIcon: const Icon(Icons.filter_list),
-                  constraints: const BoxConstraints(maxHeight: 38, minHeight: 38),
+                  constraints: const BoxConstraints(maxHeight: 38, minHeight: 20),
                   isDense: true,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(

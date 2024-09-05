@@ -106,8 +106,7 @@ class TableTotalDocumento extends StatelessWidget {
               ),
             ),
             Container(
-              width: 100,
-              height: cantidadItem * 32.7,
+              height: cantidadItem * 35.7,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: cantidadItem * 8),
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
