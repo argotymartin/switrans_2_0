@@ -269,7 +269,7 @@ class _BuildImpuestos extends StatelessWidget {
       children.add(
         TableRow(
           children: <Widget>[
-            _CellContent(child: Text(impuesto.nombre, style: const TextStyle(fontWeight: FontWeight.bold))),
+            _CellContent(child: Text(impuesto.nombre, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
             _CellContent(
               child: Text(
                 "${impuesto.porcentaje?.toStringAsFixed(2)} x ${impuesto.factorConversion}",

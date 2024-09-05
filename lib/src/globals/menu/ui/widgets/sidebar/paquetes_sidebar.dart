@@ -32,6 +32,8 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
         final bool isSelected = widget.paquete == state.paqueteMenu;
         final Color? colorSelected = context.read<ThemeCubit>().state.color;
         final List<ModulosSidebar> modulos = widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo)).toList();
+        final List<ModulosSidebar> modulosPop =
+            widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo, isShowPopover: true)).toList();
         final ThemeState themeState = context.watch<ThemeCubit>().state;
         Color color;
         Color colorText;
@@ -59,7 +61,7 @@ class _PaquetesSidebarState extends State<PaquetesSidebar> {
                       }
                       context.read<MenuBloc>().add(SelectedPaqueteMenuEvent(widget.paquete));
                       if (widget.isMimimize) {
-                        showPopoverImpl(context, modulos, widget.paquete, color.withOpacity(1));
+                        showPopoverImpl(context, modulosPop, widget.paquete, color.withOpacity(1));
                       }
                     },
                   );
@@ -187,11 +189,13 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
 }
 
 Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete, Color color) {
+  final Size size = MediaQuery.of(context).size;
+  final double width = size.width > 500 ? 250 : size.width * 0.5;
   return showPopover(
     context: context,
     backgroundColor: color,
     direction: PopoverDirection.right,
-    constraints: BoxConstraints.loose(const Size.fromWidth(250)),
+    constraints: BoxConstraints.loose(Size.fromWidth(width)),
     arrowWidth: 60,
     bodyBuilder: (BuildContext context) => SingleChildScrollView(
       child: Column(

@@ -8,8 +8,10 @@ import 'package:switrans_2_0/src/globals/menu/ui/widgets/sidebar/paginas_sidebar
 
 class ModulosSidebar extends StatefulWidget {
   final ModuloMenu modulo;
+  final bool isShowPopover;
   const ModulosSidebar({
     required this.modulo,
+    this.isShowPopover = false,
     super.key,
   });
 
@@ -59,7 +61,9 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                   child: DecoratedBox(
                     decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.black26))),
                     child: Container(
-                      margin: EdgeInsets.only(left: isHovered ? 40 : 40.5, top: 10, bottom: 10, right: 10),
+                      margin: widget.isShowPopover
+                          ? const EdgeInsets.all(10)
+                          : EdgeInsets.only(left: isHovered ? 40 : 40.5, top: 10, bottom: 10, right: 10),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -71,13 +75,15 @@ class _ModulosSidebarState extends State<ModulosSidebar> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Text(
-                            overflow: TextOverflow.ellipsis,
-                            widget.modulo.texto,
-                            style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: isHovered || isSelected ? FontWeight.w400 : FontWeight.w300,
-                              color: colorText,
+                          SizedBox(
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              widget.modulo.texto,
+                              style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: isHovered || isSelected ? FontWeight.w400 : FontWeight.w300,
+                                color: colorText,
+                              ),
                             ),
                           ),
                           const Spacer(),

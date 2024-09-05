@@ -12,7 +12,6 @@ class FooterSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     Color color;
     Color iconColor = Theme.of(context).colorScheme.onTertiary.withOpacity(0.6);
     final ThemeState state = context.watch<ThemeCubit>().state;
@@ -27,7 +26,7 @@ class FooterSidebar extends StatelessWidget {
       iconColor = Theme.of(context).colorScheme.onPrimaryContainer;
     }
     return Container(
-      height: size.height * 0.08,
+      height: 80,
       padding: isMinimize ? null : const EdgeInsets.symmetric(horizontal: 54),
       width: isMinimize ? 80 : 270,
       color: color,
