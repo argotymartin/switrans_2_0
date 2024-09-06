@@ -60,7 +60,7 @@ class TokenExpired extends StatelessWidget {
                           context.go("/sign-in");
                         },
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: width * 0.02),
+                          padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: 20),
                           backgroundColor: Colors.blue.shade700,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),

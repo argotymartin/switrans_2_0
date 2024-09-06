@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
@@ -98,6 +99,9 @@ class TableDocumentos extends StatelessWidget {
       if (documento.valorEgreso > documento.valorIngreso) {
         stateManager.setRowChecked(event.row, false);
         showErrorIngresoVSEgresoDialog(context, documento);
+      } else if (documento.isAnulacion) {
+        stateManager.setRowChecked(event.row, false);
+        showErrorAnulacionDialog(context, documento);
       } else {
         stateManager.setRowChecked(event.row, true);
         formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
@@ -118,6 +122,9 @@ class TableDocumentos extends StatelessWidget {
           if (documento.valorEgreso > documento.valorIngreso) {
             stateManager.setRowChecked(event.row!, false);
             showErrorIngresoVSEgresoDialog(context, documento);
+          } else if (documento.isAnulacion) {
+            stateManager.setRowChecked(event.row!, false);
+            showErrorAnulacionDialog(context, documento);
           } else {
             formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
           }
@@ -131,6 +138,9 @@ class TableDocumentos extends StatelessWidget {
         if (documento.valorEgreso > documento.valorIngreso) {
           stateManager.setRowChecked(event.row!, false);
           showErrorIngresoVSEgresoDialog(context, documento);
+        } else if (documento.isAnulacion) {
+          stateManager.setRowChecked(event.row!, false);
+          showErrorAnulacionDialog(context, documento);
         } else {
           formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
         }
@@ -159,6 +169,57 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, Documento documento) {
                 style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
               ),
               const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+      ],
+    ),
+  );
+}
+
+void showErrorAnulacionDialog(BuildContext context, Documento documento) {
+  final Size size = MediaQuery.of(context).size;
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      content: SizedBox(
+        width: size.width * 0.3,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Lottie.asset(
+                'assets/animations/warning.json',
+                height: 96,
+                width: 96,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "El documento: ",
+                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+                  ),
+                  Text(
+                    "${documento.documento}, ",
+                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Se encuentra anulado",
+                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              Text(
+                "No es posible facturar este documento",
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 20, fontStyle: FontStyle.italic),
+              ),
             ],
           ),
         ),

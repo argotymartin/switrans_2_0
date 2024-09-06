@@ -16,6 +16,7 @@ class Documento {
   final double valorIngreso;
   final double valorTotal;
   final List<Adicion> adiciones;
+  final bool isAnulacion;
   final List<Descuento> descuentos;
   final List<Impuesto> impuestos;
   final List<ItemDocumento> itemDocumentos;
@@ -34,6 +35,7 @@ class Documento {
     required this.valorEgreso,
     required this.valorIngreso,
     required this.valorTotal,
+    required this.isAnulacion,
     required this.adiciones,
     required this.descuentos,
     required this.impuestos,
