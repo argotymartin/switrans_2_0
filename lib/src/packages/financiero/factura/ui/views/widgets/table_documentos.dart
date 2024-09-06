@@ -19,8 +19,7 @@ class TableDocumentos extends StatelessWidget {
   Widget build(BuildContext context) {
     late PlutoGridStateManager stateManager;
     final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final Size size = MediaQuery.of(context).size;
-    final double rowHeight = size.height * 0.16;
+    const double rowHeight = 160;
     const double titleHeight = 48;
     const double columnFilterHeight = 36;
     final int tableHigth = documentos.length >= 3 ? 3 : documentos.length;

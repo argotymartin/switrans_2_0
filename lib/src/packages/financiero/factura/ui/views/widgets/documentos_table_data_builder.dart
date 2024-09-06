@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
@@ -81,12 +82,12 @@ class DocumentosTableDataBuilder {
       PlutoColumn(
         title: 'Adiciones',
         field: 'adiciones',
-        type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
+        type: PlutoColumnType.text(),
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
         minWidth: 120,
-        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldAdicion(rendererContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade700),
       ),
       PlutoColumn(
@@ -96,8 +97,8 @@ class DocumentosTableDataBuilder {
         enableContextMenu: false,
         enableDropToResize: false,
         minWidth: 120,
-        type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
+        type: PlutoColumnType.text(),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldDescuento(rendererContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.red.shade700),
       ),
       PlutoColumn(
@@ -138,12 +139,17 @@ class DocumentosTableDataBuilder {
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
     final List<PlutoRow> dataRows = <PlutoRow>[];
     documentos.asMap().forEach((int index, Documento documento) {
-      final double totalAdiciones = documento.adiciones.fold(0, (double total, Adicion adicion) => total + adicion.valor);
-      final double totalDescuentos = documento.descuentos.fold(0, (double total, Descuento descuento) => total + descuento.valor);
-
       final Map<String, dynamic> itemMap = <String, dynamic>{
         'item': index + 1,
         'isAnulacion': documento.isAnulacion,
+      };
+
+      final Map<String, dynamic> dataAdiciones = <String, dynamic>{
+        for (final Adicion adicion in documento.adiciones) adicion.nombre: adicion.valor,
+      };
+
+      final Map<String, dynamic> dataDescuentos = <String, dynamic>{
+        for (final Descuento descuento in documento.descuentos) descuento.nombre: descuento.valor,
       };
 
       final Map<String, String> infoDocumentoMap = <String, String>{
@@ -170,8 +176,8 @@ class DocumentosTableDataBuilder {
         'egreso': documento.valorEgreso,
         'ingreso': documento.valorIngreso,
         'impuestos': jsonEncode(mapImpuestos),
-        'adiciones': totalAdiciones,
-        'descuentos': totalDescuentos,
+        'adiciones': jsonEncode(dataAdiciones),
+        'descuentos': jsonEncode(dataDescuentos),
         'total': documento.valorTotal,
       };
       final PlutoRow row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
@@ -250,21 +256,19 @@ class DocumentosTableDataBuilder {
     }
 
     return Center(
-      child: SizedBox(
-        child: Table(
-          border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            TableRow(
-              decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
-              children: <Widget>[
-                buldTitleCell("Nombre", Colors.black),
-                buldTitleCell("Valor", Colors.black),
-              ],
-            ),
-            ...children,
-          ],
-        ),
+      child: Table(
+        border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: <TableRow>[
+          TableRow(
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
+            children: <Widget>[
+              buldTitleCell("Nombre", Colors.black),
+              buldTitleCell("Valor", Colors.black),
+            ],
+          ),
+          ...children,
+        ],
       ),
     );
   }
@@ -385,6 +389,38 @@ class DocumentosTableDataBuilder {
     );
   }
 
+  static Widget buildFieldAdicion(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final Map<String, dynamic> adicionesMap = jsonDecode(rendererContext.cell.value.toString());
+    final double totalAdiciones = adicionesMap.values.fold(0.0, (double total, dynamic value) => total + value);
+    final int documento = rendererContext.cell.row.cells["documento"]!.value;
+    return InkWell(
+      onTap: () {
+        showDataAdicionesAndDescuentos(context, adicionesMap, "Adiciones Doc: $documento", Colors.green.shade800);
+      },
+      child: SizedBox(
+        width: 100,
+        height: 140,
+        child: CurrencyLabel(text: '${totalAdiciones.toInt()}', color: Colors.green.shade800),
+      ),
+    );
+  }
+
+  static Widget buildFieldDescuento(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final Map<String, dynamic> descuentoMap = jsonDecode(rendererContext.cell.value.toString());
+    final double totalAdiciones = descuentoMap.values.fold(0.0, (double total, dynamic value) => total + value);
+    final int documento = rendererContext.cell.row.cells["documento"]!.value;
+    return InkWell(
+      onTap: () {
+        showDataAdicionesAndDescuentos(context, descuentoMap, "Descuentos Doc: $documento", Colors.red.shade800);
+      },
+      child: SizedBox(
+        width: 100,
+        height: 140,
+        child: CurrencyLabel(text: '${totalAdiciones.toInt()}', color: Colors.red.shade800),
+      ),
+    );
+  }
+
   static Widget buildFieldValueTotal(PlutoColumnRendererContext rendererContext, Color color) {
     return Tooltip(
       message: "(Valor Ingreso + Adiciones - Descuentos) + IVA - (Retefuente + Reteica + Reteiva)",
@@ -464,4 +500,69 @@ class _DetailDocumento extends StatelessWidget {
       ],
     );
   }
+}
+
+void showDataAdicionesAndDescuentos(BuildContext context, Map<String, dynamic> data, String title, Color color) {
+  final List<TableRow> children = <TableRow>[];
+  double total = 0;
+  data.forEach((String key, dynamic value) {
+    total += value;
+    children.add(
+      TableRow(
+        children: <Widget>[
+          DocumentosTableDataBuilder.buildCellContent(Text(key, style: const TextStyle(fontSize: 12))),
+          DocumentosTableDataBuilder.buildCellContent(CurrencyLabel(text: '${value.toInt()}', color: color, fontSize: 14)),
+        ],
+      ),
+    );
+  });
+
+  children.add(
+    TableRow(
+      children: <Widget>[
+        DocumentosTableDataBuilder.buildCellContent(const Text("Total", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
+        DocumentosTableDataBuilder.buildCellContent(
+          CurrencyLabel(
+            text: '${total.toInt()}',
+            color: Colors.green.shade800,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      title: Text(title),
+      content: Container(
+        padding: const EdgeInsets.all(16),
+        width: 360,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Table(
+              border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: <TableRow>[
+                TableRow(
+                  decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
+                  children: <Widget>[
+                    DocumentosTableDataBuilder.buldTitleCell("Nombre", Colors.black),
+                    DocumentosTableDataBuilder.buldTitleCell("Valor", Colors.black),
+                  ],
+                ),
+                ...children,
+              ],
+            ),
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+      ],
+    ),
+  );
 }
