@@ -1,3 +1,4 @@
+import 'package:switrans_2_0/src/config/constans/constants.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/usuario.dart';
 
 class UsuarioModel extends Usuario {
@@ -15,7 +16,7 @@ class UsuarioModel extends Usuario {
   factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
         id: json["id"],
         rol: json["rol"],
-        avatar: json["usunedAvatar"],
+        avatar: '$kPocketBaseUrl/api/files/usuario_nedimo/${json["id"]}/${json["avatar"]}',
         codigo: json["usunedCodigo"],
         login: json["usunedLogin"],
         nombre: json["usunedNombre"],

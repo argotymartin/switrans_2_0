@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/injector.dart';
+import 'package:switrans_2_0/src/globals/login/domain/entities/usuario.dart';
+import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/usuario/usuario_update_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/widgets/navbar/file_container.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
 class ColorOption {
   final String name;
@@ -11,120 +16,200 @@ class ColorOption {
 
 class CustomEndDrawerState extends State<CustomEndDrawer> {
   final List<ColorOption> colorOptions = <ColorOption>[
-    ColorOption("Morado Claro", const Color(0xff886ab5)),
-    ColorOption("Rosa", const Color(0xFF754467)),
-    ColorOption("Verde Claro", const Color(0xFF617a28)),
-    ColorOption("Azul Medio", const Color(0xFF2b4c81)),
-    ColorOption("Azul Brillante", const Color(0xFF0f619f)),
-    ColorOption("Turquesa", const Color(0xFF6AB5B4)),
-    ColorOption("Rosa Oscuro", const Color(0xFFDD5293)),
-    ColorOption("Gris", const Color(0xFF868E96)),
-    ColorOption("Azul Claro", const Color(0xFF7C91DF)),
-    ColorOption("Naranja", const Color(0xFFE59C6C)),
-    ColorOption("Verde Oscuro", const Color(0xFF778C85)),
+    ColorOption("Amarillo Claro", const Color(0xFFFFF176)),
+    ColorOption("Amarillo Medio", const Color(0xFFFDEB3D)),
+    ColorOption("Amarillo Medio Oscuro", const Color(0xFFFDD835)),
+    ColorOption("Amarillo Oscuro", const Color(0xFFFBC02D)),
+    ColorOption("Amarillo Night", const Color(0xFF967B00)),
+    ColorOption("Naranja Claro", const Color(0xFFFFE0B2)),
+    ColorOption("Naranja Medio", const Color(0xFFFFCC80)),
+    ColorOption("Naranja Medio Oscuro", const Color(0xFFFFB74D)),
+    ColorOption("Naranja Oscuro", const Color(0xFFFFA726)),
+    ColorOption("Naranja Night", const Color(0xFFAB3500)),
+    ColorOption("Rojo Claro", const Color(0xFFFFCDD2)),
+    ColorOption("Rojo Medio", const Color(0xFFEF9A9A)),
+    ColorOption("Rojo Medio Oscuro", const Color(0xFFE57373)),
+    ColorOption("Rojo Oscuro", const Color(0xFFEF5350)),
+    ColorOption("Rojo Night", const Color(0xFF8C0000)),
+    ColorOption("Rosa Claro", const Color(0xFFEEB2FF)),
+    ColorOption("Rosa Medio", const Color(0xFFE880FF)),
+    ColorOption("Rosa Medio Oscuro", const Color(0xFFDE4DFF)),
+    ColorOption("Rosa Oscuro", const Color(0xFFE926FF)),
+    ColorOption("Rosa Night", const Color(0xFF5B0067)),
+    ColorOption("Morado Claro", const Color(0xFFD1C4E9)),
+    ColorOption("Morado Medio", const Color(0xFFB39DDB)),
+    ColorOption("Morado Medio Oscuro", const Color(0xFF9575CD)),
+    ColorOption("Morado Oscuro", const Color(0xFF7E57C2)),
+    ColorOption("Morado Night", const Color(0xFF2C0070)),
+    ColorOption("Azul Claro", const Color(0xFFBBDEFB)),
+    ColorOption("Azul Medio", const Color(0xFF90CAF9)),
+    ColorOption("Azul Medio Oscuro", const Color(0xFF64B5F6)),
+    ColorOption("Azul Oscuro", const Color(0xFF42A5F5)),
+    ColorOption("Azul Night", const Color(0xFF004A88)),
+    ColorOption("Verde Claro", const Color(0xFFC8E6C9)),
+    ColorOption("Verde Medio", const Color(0xFFA5D6A7)),
+    ColorOption("Verde Medio Oscuro", const Color(0xFF81C784)),
+    ColorOption("Verde Oscuro", const Color(0xFF66BB6A)),
+    ColorOption("Verde Night", const Color(0xFF008006)),
+    ColorOption("Gris Claro", const Color(0xFFD5D5D5)),
+    ColorOption("Gris Medio Claro", const Color(0xFFB2B2B2)),
+    ColorOption("Gris Medio Oscuro", const Color(0xFF888888)),
+    ColorOption("Gris Oscuro", const Color(0xFF646464)),
+    ColorOption("Gris Night", const Color(0xFF484848)),
     ColorOption("Verde Oliva", const Color(0xFFA2B077)),
-    ColorOption("Morado Oscuro", const Color(0xFF7976B3)),
-    ColorOption("Verde Lima", const Color(0xFF55CE5F)),
-    ColorOption("Amarillo", const Color(0xFFFBE231)),
-    ColorOption("Azul Gris", const Color(0xFF3955bc)),
+    ColorOption("Turquesa", const Color(0xFF6AB5B4)),
+    ColorOption("Azul Gris", const Color(0xFF627CA0)),
   ];
 
   Color? selectedColor;
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      width: 260,
-      child: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.white)),
+    final Usuario? usuarioAuth = context.watch<AuthBloc>().state.auth?.usuario;
+    return BlocProvider<UsuarioUpdateBloc>(
+      create: (BuildContext context) => UsuarioUpdateBloc(injector())..add(const UsuarioInitialEvent()),
+      child: Drawer(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        width: 260,
+        child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.white)),
+              ),
+              child: Column(
+                children: <Widget>[
+                  BlocListener<UsuarioUpdateBloc, UsuarioUpdateState>(
+                    listener: (BuildContext context, UsuarioUpdateState state) {
+                      if (state.status == UsuarioStatus.success) {
+                        context.read<AuthBloc>().add(const RefreshAuthEvent());
+                      }
+                      if (state.status == UsuarioStatus.exception) {
+                        CustomToast.showError(context, state.exception!);
+                      }
+                    },
+                    child: const FileContainer(),
+                  ),
+                  Text(
+                    usuarioAuth!.nombre,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-            child: Column(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CircleAvatar(
-                  maxRadius: 50,
-                ),
-                Text(
-                  "Soy un usuario",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                const Text("Theme Colors"),
+                const SizedBox(height: 8),
+                PopupMenuButton<ColorOption>(
+                  icon: const Icon(
+                    Icons.color_lens_rounded,
+                    size: 36,
+                  ),
+                  tooltip: "Seleccionar color",
+                  elevation: 8,
+                  popUpAnimationStyle: AnimationStyle(
+                    curve: Easing.legacyAccelerate,
+                    duration: const Duration(seconds: 1),
+                  ),
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                    shape: WidgetStateProperty.all<OutlinedBorder>(const StadiumBorder()),
+                  ),
+                  onSelected: (ColorOption selectedOption) {
+                    setState(() {
+                      selectedColor = selectedOption.color;
+                      context.read<ThemeCubit>().onChangeColorTheme(selectedOption.color);
+                    });
+                    Navigator.pop(context);
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return <PopupMenuEntry<ColorOption>>[
+                      PopupMenuItem<ColorOption>(
+                        mouseCursor: SystemMouseCursors.click,
+                        enabled: false,
+                        child: SizedBox(
+                          width: 200,
+                          height: 400,
+                          child: GridView.count(
+                            crossAxisCount: 5,
+                            children: colorOptions.map<Widget>((ColorOption option) {
+                              return Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Tooltip(
+                                  message: option.name,
+                                  child: _BuildCircleColor(
+                                    color: option.color,
+                                    isSelected: selectedColor == option.color,
+                                    onTap: () {
+                                      setState(() {
+                                        selectedColor = option.color;
+                                        context.read<ThemeCubit>().onChangeColorTheme(option.color);
+                                      });
+                                      Navigator.pop(context);
+                                      Future<void>.delayed(const Duration(milliseconds: 1200)).then(( dynamic value) => Scaffold.of(context).closeEndDrawer());
+                                    },
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
                 ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text("Theme Colors"),
-              Wrap(
-                spacing: 8.0,
-                runSpacing: 8.0,
-                children: List<Widget>.generate(colorOptions.length, (int index) {
-                  final ColorOption option = colorOptions[index];
-                  return Tooltip(
-                    message: option.name,
-                    child: _BuildCircleColor(
-                      color: option.color,
-                      isSelected: selectedColor == option.color,
-                      onTap: () {
-                        setState(() {
-                          selectedColor = option.color;
-                          context.read<ThemeCubit>().onChangeColorTheme(option.color);
-                        });
-                        context.pop();
-                      },
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-          const Divider(),
-          const Text("Theme Mode"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              ContainerTheme(
-                colorPrimary: context.read<ThemeCubit>().state.color!,
-                secundaryColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Colors.white,
-                themeValueCode: 1,
-              ),
-              const ContainerTheme(
-                colorPrimary: Colors.black54,
-                secundaryColor: Colors.grey,
-                backgroundColor: Colors.blueGrey,
-                themeValueCode: 2,
-              ),
-              const ContainerTheme(
-                colorPrimary: Colors.white,
-                secundaryColor: Colors.grey,
-                backgroundColor: Colors.white,
-                themeValueCode: 3,
-              ),
-            ],
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.abc),
-            title: const Text('App Version'),
-            subtitle: const Text("Version: 0.0.12"),
-            onTap: () {},
-          ),
-          const ListTile(
-            leading: Icon(Icons.abc),
-            title: Text('App Version'),
-            subtitle: Text("Version: 0.0.12"),
-          ),
-          const ListTile(
-            leading: Icon(Icons.abc),
-            title: Text('App Version'),
-            subtitle: Text("Version: 0.0.12"),
-          ),
-        ],
+            const Divider(),
+            const Text("Theme Mode"),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                ContainerTheme(
+                  colorPrimary: context.read<ThemeCubit>().state.color!,
+                  secundaryColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Colors.white,
+                  themeValueCode: 1,
+                ),
+                const ContainerTheme(
+                  colorPrimary: Colors.black54,
+                  secundaryColor: Colors.grey,
+                  backgroundColor: Colors.blueGrey,
+                  themeValueCode: 2,
+                ),
+                const ContainerTheme(
+                  colorPrimary: Colors.white,
+                  secundaryColor: Colors.grey,
+                  backgroundColor: Colors.white,
+                  themeValueCode: 3,
+                ),
+              ],
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.abc),
+              title: const Text('App Version'),
+              subtitle: const Text("Version: 0.0.12"),
+              onTap: () {},
+            ),
+            const ListTile(
+              leading: Icon(Icons.abc),
+              title: Text('App Version'),
+              subtitle: Text("Version: 0.0.12"),
+            ),
+            const ListTile(
+              leading: Icon(Icons.abc),
+              title: Text('App Version'),
+              subtitle: Text("Version: 0.0.12"),
+            ),
+          ],
+        ),
       ),
     );
   }

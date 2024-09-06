@@ -6,7 +6,10 @@ import 'package:switrans_2_0/src/globals/login/domain/repositories/abstract_auth
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/data/datasources/api/pocketbase_api.dart';
 import 'package:switrans_2_0/src/globals/menu/data/repositories/menu_sidebar_repository_impl.dart';
+import 'package:switrans_2_0/src/globals/menu/data/repositories/usuario_update_repository_impl.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_menu_sidebar_repository.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_usuario_update_repository.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/usuario/usuario_update_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/backend/factura_api.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/backend/factura_repository_impl.dart';
@@ -53,6 +56,9 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
   injector.registerSingleton<AbstractMenuSidebarRepository>(MenuSidebarRespositoryImpl(injector()));
   injector.registerSingleton<MenuBloc>(MenuBloc(injector()));
+
+  injector.registerSingleton<AbstractUsuarioUpdateRepository>(UsuarioUpdateRepositoryImpl(injector()));
+  injector.registerSingleton<UsuarioUpdateBloc>(UsuarioUpdateBloc(injector()));
 
   injector.registerSingleton<ThemeCubit>(ThemeCubit());
 

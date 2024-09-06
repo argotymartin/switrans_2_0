@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
 
 class AvatarNavbar extends StatelessWidget {
   final double size;
@@ -9,13 +12,14 @@ class AvatarNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Image.asset(
-        'assets/profile/perfil_hombre.jpg',
-        height: size,
-        width: size,
-        fit: BoxFit.cover,
-      ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (BuildContext context, AuthState state) {
+        return ClipOval(
+          child: state.auth?.usuario.avatar != null
+              ? Image.network(state.auth!.usuario.avatar, width: size, height: size, fit: BoxFit.cover)
+              : Lottie.asset('assets/animations/sin_imagen.json', fit: BoxFit.cover),
+        );
+      },
     );
   }
 }

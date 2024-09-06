@@ -17,8 +17,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginAuthEvent>(_onLoginAuthEvent);
     on<LogoutAuthEvent>(_onLogoutAuthEvent);
     on<ValidateAuthEvent>(
-      ((ValidateAuthEvent event, Emitter<AuthState> emit) => emit(state.copyWith(status: AuthStatus.succes, auth: event.auth))),
+      ((ValidateAuthEvent event, Emitter<AuthState> emit) {
+        emit(state.copyWith(status: AuthStatus.succes, auth: event.auth));
+      }),
     );
+    on<RefreshAuthEvent>(_onRefreshAuthEvent);
   }
 
   Future<void> _onLoginAuthEvent(LoginAuthEvent event, Emitter<AuthState> emit) async {
@@ -52,5 +55,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       isValid = false;
     }
     return isValid;
+  }
+
+  Future<void> _onRefreshAuthEvent(RefreshAuthEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+    final DataState<Auth> dataState = await _repository.validateToken(UsuarioRequest(token: Preferences.token));
+    if (dataState is DataSuccess && dataState.data != null) {
+      Preferences.token = dataState.data!.token;
+      emit(state.copyWith(status: AuthStatus.succes, auth: dataState.data!));
+    }
   }
 }

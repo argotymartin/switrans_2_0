@@ -50,8 +50,6 @@ class Navbar extends StatelessWidget {
                         )
                       : const SizedBox(),
                   size.width > 480 ? const SizedBox(width: 16) : const SizedBox(),
-                  const AvatarNavbar(size: 32),
-                  const SizedBox(width: 48),
                 ],
               );
             },
