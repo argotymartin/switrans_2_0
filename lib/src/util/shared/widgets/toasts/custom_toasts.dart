@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:postgres/postgres.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/entities/usuario.dart';
 import 'package:toastification/toastification.dart';
 
 class CustomToast {
@@ -141,6 +142,57 @@ class CustomToast {
       applyBlurEffect: false,
       backgroundColor: Colors.white,
       foregroundColor: Theme.of(context).colorScheme.errorContainer,
+    );
+  }
+
+  static void showUpdateUserSuccess(BuildContext context, Usuario usuario) {
+    if (kIsWeb) {
+      final AudioPlayer player = AudioPlayer();
+      player.setAsset('assets/sounds/error-8-206492.mp3');
+      player.play();
+    }
+    toastification.show(
+      context: context,
+      dismissDirection: DismissDirection.startToEnd,
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(milliseconds: 5000),
+      title: const Center(
+        child: Text(
+          'Usuario Actualizado!',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Colors.black),
+        ),
+      ),
+      description: const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+              child: Text("Igresa nuevamente para ver los cambios",
+                  textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black))),
+        ],
+      ),
+      icon: const Icon(Icons.check_circle, size: 48, color: Colors.green),
+      alignment: Alignment.topRight,
+      direction: TextDirection.ltr,
+      animationDuration: const Duration(milliseconds: 400),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: const <BoxShadow>[
+        BoxShadow(
+          color: Color(0x07000000),
+          blurRadius: 16,
+          offset: Offset(0, 16),
+        ),
+      ],
+      showProgressBar: true,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+      applyBlurEffect: true,
+      backgroundColor: Colors.green.shade100,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
   }
 
