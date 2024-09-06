@@ -167,8 +167,12 @@ class CustomToast {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-              child: Text("Igresa nuevamente para ver los cambios",
-                  textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black))),
+            child: Text(
+              "Igresa nuevamente para ver los cambios",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black),
+            ),
+          ),
         ],
       ),
       icon: const Icon(Icons.check_circle, size: 48, color: Colors.green),

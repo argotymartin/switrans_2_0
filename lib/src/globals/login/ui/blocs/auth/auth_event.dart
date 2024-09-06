@@ -20,3 +20,7 @@ class ValidateAuthEvent extends AuthEvent {
   final Auth auth;
   const ValidateAuthEvent(this.auth);
 }
+
+class RefreshAuthEvent extends AuthEvent {
+  const RefreshAuthEvent();
+}

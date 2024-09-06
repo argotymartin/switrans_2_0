@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/usuario.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
@@ -84,7 +83,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                   BlocListener<UsuarioUpdateBloc, UsuarioUpdateState>(
                     listener: (BuildContext context, UsuarioUpdateState state) {
                       if (state.status == UsuarioStatus.success) {
-                        CustomToast.showUpdateUserSuccess(context, state.usuario!);
+                        context.read<AuthBloc>().add(const RefreshAuthEvent());
                       }
                       if (state.status == UsuarioStatus.exception) {
                         CustomToast.showError(context, state.exception!);
@@ -126,7 +125,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                       selectedColor = selectedOption.color;
                       context.read<ThemeCubit>().onChangeColorTheme(selectedOption.color);
                     });
-                    context.pop();
+                    Navigator.pop(context);
                   },
                   itemBuilder: (BuildContext context) {
                     return <PopupMenuEntry<ColorOption>>[
@@ -152,6 +151,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                                         context.read<ThemeCubit>().onChangeColorTheme(option.color);
                                       });
                                       Navigator.pop(context);
+                                      Future<void>.delayed(const Duration(milliseconds: 1200)).then(( dynamic value) => Scaffold.of(context).closeEndDrawer());
                                     },
                                   ),
                                 ),
