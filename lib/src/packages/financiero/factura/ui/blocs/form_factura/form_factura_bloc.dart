@@ -71,7 +71,9 @@ class FormFacturaBloc extends Bloc<FormFacturaEvent, FormFacturaState> {
   Future<void> _onAddDocumentoFormFacturaEvent(AddDocumentoFormFacturaEvent event, Emitter<FormFacturaState> emit) async {
     emit(state.copyWith(status: FormFacturaStatus.loading));
     final List<Documento> documentos = <Documento>[...state.documentosSelected];
-    documentos.add(event.documento);
+    if (!documentos.contains(event.documento)) {
+      documentos.add(event.documento);
+    }
     emit(state.copyWith(status: FormFacturaStatus.succes, documentosSelected: documentos));
   }
 
