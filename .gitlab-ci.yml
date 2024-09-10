@@ -36,6 +36,7 @@ build-merge-request:
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git log --oneline -n 15
     - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - cp -r build/web/ ../server/
     - docker compose down
     - docker compose up -d
     - echo consultar en http://192.168.102.18:3000
@@ -44,6 +45,23 @@ build-merge-request:
 
 build:
   stage: build
+  script:
+    - cd $WORK_DIR
+    - echo $WORK_DIR
+    - git checkout develop
+    - git pull origin develop
+    - git status
+    - git log --oneline -n 15
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - cp -r build/web/ ../server/
+    - docker compose restart node
+    - echo consultar en http://192.168.102.18:3000
+    - echo "Finalizó con Éxito!!"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+deploy-prepo:
+  stage: deploy
   script:
     - echo "Desplegando la aplicación..."
     - |
