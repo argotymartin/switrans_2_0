@@ -45,32 +45,18 @@ build-merge-request:
 build:
   stage: build
   script:
-    - cd $WORK_DIR
-    - echo $WORK_DIR
-    - git checkout develop
-    - git pull origin develop
-    - git status
-    - git log --oneline -n 15
-    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
-    - rm -rf ../server/web/
-    - cp -r build/web/ ../server/
-    - docker compose restart node
-    - echo consultar en http://192.168.102.18:3000
-    - echo "Finalizó con Éxito!!"
+    - echo "Desplegando la aplicación..."
+    - |
+      ssh root@192.168.102.21 "
+        cd $WORK_DIR &&
+        git checkout develop &&
+        git pull origin develop &&
+        docker exec switrans2-flutter /bin/bash -c 'flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons' &&
+        cp -r build/web/ ../server/ &&
+        docker compose restart node &&
+        echo 'Finalizó Despliegue a Prepo' &&
+        echo 'Consultar en http://192.168.102.21:3000'
+      "
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
 
-deploy:
-  stage: deploy
-  script:
-    - echo "Desplegando la aplicación..."
-    - cd $WORK_DIR
-    - git checkout develop
-    - git pull origin develop
-    - scp -r build/web/ root@192.168.102.21:/home/docker/front-end/proyecto-switrans-2/switrans_2_0/build/web
-    - ssh root@192.168.102.21 "docker compose restart node"
-    - echo "Finalizó Despliegue a Prepo"
-    - echo consultar en http://192.168.102.21:3000
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-      when: manual
