@@ -18,7 +18,7 @@ class DocumentosTableDataBuilder {
     final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
     final EntryAutocomplete titleTipoDocumento = formFacturaBloc.state.entriesTiposDocumentos.firstWhere(
       (EntryAutocomplete element) => element.codigo == formFacturaBloc.request.documentoCodigo,
-      orElse: () => EntryAutocomplete(title: ""), // Ajusta esto según tu modelo
+      orElse: () => EntryAutocomplete(title: ""),
     );
     return <PlutoColumn>[
       PlutoColumn(
@@ -88,7 +88,7 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         minWidth: 120,
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldAdicion(rendererContext, context),
-        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade700),
+        footerRenderer: buildRenderSumAdicionesFooter,
       ),
       PlutoColumn(
         title: 'Descuentos',
@@ -99,7 +99,7 @@ class DocumentosTableDataBuilder {
         minWidth: 120,
         type: PlutoColumnType.text(),
         renderer: (PlutoColumnRendererContext rendererContext) => buildFieldDescuento(rendererContext, context),
-        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.red.shade700),
+        footerRenderer: buildRenderSumDescuentosFooter,
       ),
       PlutoColumn(
         title: 'Impuestos',
@@ -257,7 +257,10 @@ class DocumentosTableDataBuilder {
 
     return Center(
       child: Table(
-        border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+        border: TableBorder.all(
+          color: Theme.of(context).colorScheme.primaryFixedDim,
+          borderRadius: BorderRadius.circular(8),
+        ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: <TableRow>[
           TableRow(
@@ -395,7 +398,7 @@ class DocumentosTableDataBuilder {
     final int documento = rendererContext.cell.row.cells["documento"]!.value;
     return InkWell(
       onTap: () {
-        showDataAdicionesAndDescuentos(context, adicionesMap, "Adiciones Doc: $documento", Colors.green.shade800);
+        showDataAdicionesAndDescuentos(context, adicionesMap, "Adiciones: $documento", Colors.green.shade800);
       },
       child: SizedBox(
         width: 100,
@@ -411,7 +414,7 @@ class DocumentosTableDataBuilder {
     final int documento = rendererContext.cell.row.cells["documento"]!.value;
     return InkWell(
       onTap: () {
-        showDataAdicionesAndDescuentos(context, descuentoMap, "Descuentos Doc: $documento", Colors.red.shade800);
+        showDataAdicionesAndDescuentos(context, descuentoMap, "Descuentos: $documento", Colors.red.shade800);
       },
       child: SizedBox(
         width: 100,
@@ -469,6 +472,42 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Co
   );
 }
 
+Widget buildRenderSumAdicionesFooter(PlutoColumnFooterRendererContext rendererContext) {
+  return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+    builder: (BuildContext context, FormFacturaState state) {
+      final double totalAdiciones = state.documentos.fold(0.0, (double total, Documento documento) {
+        return total + documento.adiciones.fold(0.0, (num totalAdicion, Adicion adicion) => totalAdicion + (adicion.valor));
+      });
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CurrencyLabel(
+          text: '${totalAdiciones.toInt()}',
+          color: Colors.green.shade800,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    },
+  );
+}
+
+Widget buildRenderSumDescuentosFooter(PlutoColumnFooterRendererContext rendererContext) {
+  return BlocBuilder<FormFacturaBloc, FormFacturaState>(
+    builder: (BuildContext context, FormFacturaState state) {
+      final double totalDescuentos = state.documentos.fold(0.0, (double total, Documento documento) {
+        return total + documento.descuentos.fold(0.0, (num totalDescuento, Descuento descuento) => totalDescuento + (descuento.valor));
+      });
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CurrencyLabel(
+          text: '${totalDescuentos.toInt()}',
+          color: Colors.red.shade800,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    },
+  );
+}
+
 Widget buildRenderContadorFooter(PlutoColumnFooterRendererContext rendererContext, int documentos, int selected) {
   return Center(child: Text("$documentos/$selected", style: const TextStyle(fontSize: 14)));
 }
@@ -522,12 +561,7 @@ void showDataAdicionesAndDescuentos(BuildContext context, Map<String, dynamic> d
       children: <Widget>[
         DocumentosTableDataBuilder.buildCellContent(const Text("Total", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
         DocumentosTableDataBuilder.buildCellContent(
-          CurrencyLabel(
-            text: '${total.toInt()}',
-            color: Colors.green.shade800,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
+          CurrencyLabel(text: '${total.toInt()}', color: color, fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ],
     ),

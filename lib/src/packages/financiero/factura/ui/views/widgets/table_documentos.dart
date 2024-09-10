@@ -64,6 +64,7 @@ class TableDocumentos extends StatelessWidget {
                 columnHeight: titleHeight,
                 columnFilterHeight: columnFilterHeight,
                 rowHeight: rowHeight,
+                gridBorderRadius: BorderRadius.circular(16),
               ),
               columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
               scrollbar: const PlutoGridScrollbarConfig(
@@ -115,14 +116,12 @@ class TableDocumentos extends StatelessWidget {
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
-    if (event.isAll && event.isChecked != null) {
+    if (event.isAll) {
       for (final Documento documento in documentos) {
         if (event.isChecked!) {
           if (documento.valorEgreso > documento.valorIngreso) {
-            stateManager.setRowChecked(event.row!, false);
             showErrorIngresoVSEgresoDialog(context, documento);
           } else if (documento.isAnulacion) {
-            stateManager.setRowChecked(event.row!, false);
             showErrorAnulacionDialog(context, documento);
           } else {
             formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
@@ -205,14 +204,14 @@ void showErrorAnulacionDialog(BuildContext context, Documento documento) {
                     style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
                   ),
                   Text(
-                    "${documento.documento}, ",
+                    "${documento.documento} ",
                     style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    "Se encuentra anulado",
-                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
-                  ),
                 ],
+              ),
+              Text(
+                "Esta vinculado a un despacho no realizado",
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
               ),
               const SizedBox(height: 32),
               Text(
