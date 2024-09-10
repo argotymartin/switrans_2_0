@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/models/request/tipo_impuesto_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
@@ -13,7 +13,7 @@ class TipoImpuestoApi {
     final Map<String, dynamic> requestMap = requestModel.toJson();
 
     final String filter = TipoImpuestoRequestModel.toPocketBaseFilter(requestMap);
-    const String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
+    final String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter};
 
     final Response<dynamic> response = await _dio.get('$url/', queryParameters: queryParameters);
@@ -24,7 +24,7 @@ class TipoImpuestoApi {
     final TipoImpuestoRequestModel requestModel = TipoImpuestoRequestModel.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJson();
     requestMap["codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "tipo_impuesto", field: "codigo");
-    const String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
+    final String url = '$kPocketBaseUrl/api/collections/tipo_impuesto/records';
     final Response<dynamic> response = await _dio.post('$url/', data: requestMap);
     return response;
   }

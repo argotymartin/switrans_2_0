@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/globals/login/domain/entities/usuario.dart';
 
 class UsuarioModel extends Usuario {

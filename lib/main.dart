@@ -6,6 +6,7 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 //import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:nested/nested.dart';
 import 'package:switrans_2_0/injector.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Preferences.init();
   await initializeDependencies();
+  initializeConfig();
   runApp(const BlocsProviders());
 }
 

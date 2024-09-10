@@ -35,7 +35,7 @@ build-merge-request:
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git log --oneline -n 15
-    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=develop"
     - cp -r build/web/ ../server/
     - docker compose down
     - docker compose up -d
@@ -52,7 +52,7 @@ build:
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=develop"
     - cp -r build/web/ ../server/
     - docker compose restart node
     - echo consultar en http://192.168.102.18:3000
@@ -60,7 +60,7 @@ build:
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
 
-deploy-prepo:
+deploy-release:
   stage: deploy
   script:
     - echo "Desplegando la aplicación..."
@@ -69,7 +69,7 @@ deploy-prepo:
         cd $WORK_DIR &&
         git checkout develop &&
         git pull origin develop &&
-        docker exec switrans2-flutter /bin/bash -c 'flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons' &&
+        docker exec switrans2-flutter /bin/bash -c 'flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=release' &&
         cp -r build/web/ ../server/ &&
         docker compose restart node &&
         echo 'Finalizó Despliegue a Prepo' &&
