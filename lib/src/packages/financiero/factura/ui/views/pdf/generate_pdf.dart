@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/cache/font_cache.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/cache/image_cache.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/cache/font_cache_pdf.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/cache/image_cache_pdf.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/footer_factura_pdf.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/header_factura_pdf.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/widgets/informacion_factura_pdf.dart';
@@ -25,14 +25,14 @@ Future<Uint8List> generateDocument(PdfPageFormat format, DataPdf data) async {
     author: "Erney",
   );
 
-  final pw.MemoryImage imageEmpresa = await ImageCacheCustom.getImage('assets/empresas/ferricar.png');
-  final pw.MemoryImage imageSuper = await ImageCacheCustom.getImage('assets/supertransporte.png');
-  final pw.MemoryImage imageQR = await ImageCacheCustom.getImage('assets/qr.png');
+  final pw.MemoryImage imageEmpresa = await ImageCachePdf.getImage('assets/empresas/ferricar.png');
+  final pw.MemoryImage imageSuper = await ImageCachePdf.getImage('assets/supertransporte.png');
+  final pw.MemoryImage imageQR = await ImageCachePdf.getImage('assets/qr.png');
 
-  fontPoppinsBold = await FontCache.getFont('poppinsBold');
-  fontPoppinsRegular = await FontCache.getFont('poppinsRegular');
-  fontPoppinsLigth = await FontCache.getFont('poppinsLight');
-  fontSemiBold = await FontCache.getFont('poppinsSemiBold');
+  fontPoppinsBold = await FontCachePdf.getFont('poppinsBold');
+  fontPoppinsRegular = await FontCachePdf.getFont('poppinsRegular');
+  fontPoppinsLigth = await FontCachePdf.getFont('poppinsLight');
+  fontSemiBold = await FontCachePdf.getFont('poppinsSemiBold');
 
   doc.addPage(
     pw.MultiPage(

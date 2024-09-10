@@ -1,7 +1,7 @@
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class FontCache {
+class FontCachePdf {
   static final Map<String, pw.Font> _cache = <String, pw.Font>{};
 
   static Future<pw.Font> getFont(String fontName) async {

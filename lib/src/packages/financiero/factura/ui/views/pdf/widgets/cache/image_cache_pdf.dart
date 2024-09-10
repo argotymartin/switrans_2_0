@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-class ImageCacheCustom {
+class ImageCachePdf {
   static final Map<String, pw.MemoryImage> _cache = <String, pw.MemoryImage>{};
 
   static Future<pw.MemoryImage> getImage(String assetPath) async {

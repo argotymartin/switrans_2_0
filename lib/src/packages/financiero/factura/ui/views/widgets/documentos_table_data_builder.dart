@@ -561,7 +561,7 @@ void showDataAdicionesAndDescuentos(BuildContext context, Map<String, dynamic> d
       children: <Widget>[
         DocumentosTableDataBuilder.buildCellContent(const Text("Total", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
         DocumentosTableDataBuilder.buildCellContent(
-          CurrencyLabel(text: '${total.toInt()}', color: Colors.green.shade800, fontSize: 14, fontWeight: FontWeight.bold),
+          CurrencyLabel(text: '${total.toInt()}', color: color, fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ],
     ),
