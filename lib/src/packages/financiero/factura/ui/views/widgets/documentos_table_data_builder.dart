@@ -11,6 +11,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_doma
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/labels/copyable_text.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class DocumentosTableDataBuilder {
@@ -153,7 +154,8 @@ class DocumentosTableDataBuilder {
       };
 
       final Map<String, String> infoDocumentoMap = <String, String>{
-        'documento': "${documento.impreso} (${documento.documento})",
+        'documento_impreso': "${documento.impreso}",
+        'documento_codigo': "${documento.documento}",
         'centroCosto': documento.centroCostoNombre,
         'tipo': documento.tipoDocumentoNombre,
         'origen': documento.origen,
@@ -300,7 +302,8 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledDocumento(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final String cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> documentoMap = jsonDecode(cellValue);
-    final String documentoText = documentoMap['documento'];
+    final String documentoImpreso = documentoMap['documento_impreso'];
+    final String documentoCodigo = documentoMap['documento_codigo'];
     final String centroCosto = documentoMap['centroCosto'];
     final String tipo = documentoMap['tipo'];
     final String origen = documentoMap['origen'];
@@ -311,9 +314,17 @@ class DocumentosTableDataBuilder {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            documentoText,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+          Row(
+            children: <Widget>[
+              Text(
+                "( $documentoImpreso ) ",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+              ),
+              CopyableText(
+                documentoCodigo,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           _DetailDocumento(title: 'CC', subtitle: centroCosto, icon: Icons.monetization_on_outlined),
