@@ -13,7 +13,7 @@ class UsuarioModel extends Usuario {
   factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
         id: json["id"],
         avatar: '$kPocketBaseUrl/api/files/users/${json["id"]}/${json["avatar"]}',
-        codigo: json["codigo_switrans"],
+        codigo: json["codigo_switrans"] ?? 2384,
         login: json["username"],
         nombre: json["name"],
       );
