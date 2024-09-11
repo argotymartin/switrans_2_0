@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-String kPocketBaseUrl = "";
-String kBackendBaseUrl = "";
+late String kPocketBaseUrl;
+late String kBackendBaseUrl;
 
 const String configParam = String.fromEnvironment('ENVIRONMENT', defaultValue: 'local');
 
@@ -23,7 +23,6 @@ void initializeConfig() {
   }
 }
 
-const String kTokenPocketBase =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDI2MDg3MDEsImlkIjoiMTN1MWRoMDIwZ2tjeDRpIiwidHlwZSI6ImFkbWluIn0.2ReuDrmuSJ_rMFY7wczpQlaGQ4LiXitA4BpcuzDt0qw";
+const String kISPocketBaseUrl = 'http://192.168.102.34:8090';
 
 const double kWidthSidebar = 270;

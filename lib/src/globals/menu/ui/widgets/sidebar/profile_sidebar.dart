@@ -46,7 +46,7 @@ class ProfileSidebar extends StatelessWidget {
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 Text(
-                                  state.auth!.usuario.telefonoContacto,
+                                  state.auth!.usuario.login,
                                   style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
                                 ),
                               ],
