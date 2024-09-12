@@ -18,14 +18,14 @@ class TableDocumentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late PlutoGridStateManager stateManager;
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
     const double rowHeight = 160;
     const double titleHeight = 48;
     const double columnFilterHeight = 36;
     final int tableHigth = documentos.length >= 3 ? 3 : documentos.length;
 
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         return Container(
           height: (rowHeight * tableHigth) + (titleHeight + columnFilterHeight + 86),
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -39,14 +39,14 @@ class TableDocumentos extends StatelessWidget {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) => onRowDoubleTap(
               event: event,
               documentos: documentos,
-              formFacturaBloc: formFacturaBloc,
+              facturaBloc: facturaBloc,
               stateManager: stateManager,
               context: context,
             ),
             onRowChecked: (PlutoGridOnRowCheckedEvent event) => onRowChecked(
               event: event,
               documentos: documentos,
-              formFacturaBloc: formFacturaBloc,
+              facturaBloc: facturaBloc,
               stateManager: stateManager,
               context: context,
             ),
@@ -87,14 +87,14 @@ class TableDocumentos extends StatelessWidget {
   void onRowDoubleTap({
     required PlutoGridOnRowDoubleTapEvent event,
     required List<Documento> documentos,
-    required FormFacturaBloc formFacturaBloc,
+    required FacturaBloc facturaBloc,
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
     final Documento documento = documentos[event.rowIdx];
     if (event.row.checked!) {
       stateManager.setRowChecked(event.row, false);
-      formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+      facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
     } else {
       if (documento.valorEgreso > documento.valorIngreso) {
         stateManager.setRowChecked(event.row, false);
@@ -104,7 +104,7 @@ class TableDocumentos extends StatelessWidget {
         showErrorAnulacionDialog(context, documento);
       } else {
         stateManager.setRowChecked(event.row, true);
-        formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+        facturaBloc.add(AddDocumentoFacturaEvent(documento));
       }
     }
   }
@@ -112,7 +112,7 @@ class TableDocumentos extends StatelessWidget {
   void onRowChecked({
     required PlutoGridOnRowCheckedEvent event,
     required List<Documento> documentos,
-    required FormFacturaBloc formFacturaBloc,
+    required FacturaBloc facturaBloc,
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
@@ -124,10 +124,10 @@ class TableDocumentos extends StatelessWidget {
           } else if (documento.isAnulacion) {
             showErrorAnulacionDialog(context, documento);
           } else {
-            formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+            facturaBloc.add(AddDocumentoFacturaEvent(documento));
           }
         } else {
-          formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+          facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
         }
       }
     } else if (event.rowIdx != null && event.isChecked != null) {
@@ -140,10 +140,10 @@ class TableDocumentos extends StatelessWidget {
           stateManager.setRowChecked(event.row!, false);
           showErrorAnulacionDialog(context, documento);
         } else {
-          formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+          facturaBloc.add(AddDocumentoFacturaEvent(documento));
         }
       } else {
-        formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+        facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
       }
     }
   }

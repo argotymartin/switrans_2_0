@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/blocs/form_factura/form_factura_bloc.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/ui/blocs/factura/factura_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/pdf/generate_pdf.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 
@@ -13,8 +13,8 @@ class PdfView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         final DataPdf dataPDF = DataPdf(
           centroCosto: "xxxxx",
           cliente: "xxxxx",

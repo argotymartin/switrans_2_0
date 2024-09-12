@@ -1,9 +1,9 @@
-part of 'form_factura_bloc.dart';
+part of 'factura_bloc.dart';
 
-enum FormFacturaStatus { initial, loading, succes, error, consulted, exception, facturar }
+enum FacturaStatus { initial, loading, succes, error, consulted, exception, facturar }
 
-class FormFacturaState extends Equatable {
-  final FormFacturaStatus? status;
+class FacturaState extends Equatable {
+  final FacturaStatus? status;
   final int empresa;
   final int tipoFactura;
   final String error;
@@ -14,7 +14,7 @@ class FormFacturaState extends Equatable {
   final List<Documento> documentos;
   final List<Documento> documentosSelected;
 
-  const FormFacturaState({
+  const FacturaState({
     this.empresa = 1,
     this.status,
     this.tipoFactura = 10,
@@ -27,10 +27,10 @@ class FormFacturaState extends Equatable {
     this.exception,
   });
 
-  FormFacturaState initial() => const FormFacturaState(status: FormFacturaStatus.initial);
+  FacturaState initial() => const FacturaState(status: FacturaStatus.initial);
 
-  FormFacturaState copyWith({
-    FormFacturaStatus? status,
+  FacturaState copyWith({
+    FacturaStatus? status,
     int? empresa,
     int? tipoFactura,
     String? error,
@@ -41,7 +41,7 @@ class FormFacturaState extends Equatable {
     List<Documento>? documentos,
     List<Documento>? documentosSelected,
   }) =>
-      FormFacturaState(
+      FacturaState(
         status: status ?? this.status,
         empresa: empresa ?? this.empresa,
         tipoFactura: tipoFactura ?? this.tipoFactura,

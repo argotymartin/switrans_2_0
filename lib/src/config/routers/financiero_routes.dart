@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
@@ -20,7 +21,10 @@ class FinancieroRoutes {
     const String modulePath = "factura";
     return ShellRoute(
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return MenuLayout(child: child);
+        return BlocProvider<FacturaBloc>(
+          create: (_) => FacturaBloc(injector())..add(const GetInitialFormFacturaEvent()),
+          child: MenuLayout(child: child),
+        );
       },
       routes: <RouteBase>[
         GoRoute(
@@ -31,7 +35,7 @@ class FinancieroRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            context.read<FormFacturaBloc>().add(const GetFormFacturaEvent());
+            context.read<FacturaBloc>().add(const GetInitialFormFacturaEvent());
             return const FacturaCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
