@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
@@ -249,7 +250,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
             void setValueFactura(EntryAutocomplete value) {
               if (value.codigo != null) {
-                //context.read<ItemDocumentoBloc>().add(const GetItemDocumentoEvent());
+                facturaBloc.request.centroCostoCodigo = value.codigo;
               }
             }
 
@@ -320,32 +321,45 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
     return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (BuildContext context, FacturaState state) {
-        final FacturaBloc facturaBloc = context.read<FacturaBloc>();
-        final List<Documento> documentos = facturaBloc.state.documentos;
-        final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
-        final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
+        final Map<String, double> mapImpuestos = <String, double>{};
+        final List<Documento> documentos = state.documentosSelected;
+        double total = 0;
+        double subTotal = 0;
+        for (final Documento doc in documentos) {
+          for (final ItemDocumento item in doc.itemDocumentos) {
+            subTotal += item.subtotal;
+            total += item.total;
+          }
+          for (final Impuesto imp in doc.impuestos) {
+            mapImpuestos.update(
+              imp.nombre,
+              (double existingValue) => existingValue + imp.valor,
+              ifAbsent: () => imp.valor,
+            );
+          }
+        }
 
         return FormButton(
           label: "Registrar",
           icon: Icons.add_card_rounded,
           onPressed: () async {
-            await Future<dynamic>.delayed(const Duration(seconds: 5));
-            //final int centroCosto = formFacturaBloc.centroCosto;
-            //final int clienteCodigo = formFacturaBloc.clienteCodigo;
-            final int empresaCodigo = facturaBloc.state.empresa;
+            final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+
+            await Future<dynamic>.delayed(const Duration(seconds: 1));
             final int usuario = authBloc.state.auth!.usuario.codigo;
-            final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
-              centroCosto: 1,
-              cliente: 1,
-              empresa: empresaCodigo,
+            final FacturaRequest facturaRequest = FacturaRequest(
+              tipoDocumento: facturaBloc.request.documentoCodigo!,
+              centroCosto: facturaBloc.request.centroCostoCodigo!,
+              cliente: facturaBloc.request.cliente!,
+              empresa: facturaBloc.request.empresa!,
               usuario: usuario,
-              valorImpuesto: totalDocumentos.toInt(),
-              valorNeto: 2000,
-              documentos: documentos,
-              items: itemDocumentos.toList(),
+              items: documentos.toList(),
+              impuestos: mapImpuestos,
+              subtotal: subTotal,
+              total: total,
             );
 
-            debugPrint("${prefacturaRequest.toJson()}");
+            debugPrint("${facturaRequest.toJson()}");
           },
         );
       },

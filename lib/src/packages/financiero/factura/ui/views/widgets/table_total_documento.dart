@@ -124,7 +124,10 @@ class TableTotalDocumento extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: cantidadItem * 8),
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-                borderRadius: const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16)),
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
               ),
               child: IconButton(
                 onPressed: () {
@@ -133,7 +136,10 @@ class TableTotalDocumento extends StatelessWidget {
                     builder: (_) => AlertDialog(
                       shape: const RoundedRectangleBorder(),
                       backgroundColor: Theme.of(context).colorScheme.surface,
-                      content: SizedBox(width: size.width * 0.8, child: const PdfView()),
+                      content: SizedBox(
+                        width: size.width * 0.8,
+                        child: PdfView(documentos: state.documentos),
+                      ),
                       actions: <Widget>[
                         FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
                       ],

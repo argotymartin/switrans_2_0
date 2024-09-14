@@ -12,4 +12,10 @@ class Impuesto {
     this.porcentaje,
     this.factorConversion,
   });
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        "codigo": codigo,
+        "nombre": nombre,
+        "valor": valor,
+      };
 }
