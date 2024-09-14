@@ -12,7 +12,6 @@ import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
-import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 
 Future<void> main() async {
   if (kIsWeb) {
@@ -34,7 +33,6 @@ class BlocsProviders extends StatelessWidget {
       providers: <SingleChildWidget>[
         BlocProvider<MenuBloc>(create: (_) => injector<MenuBloc>()),
         BlocProvider<ThemeCubit>(create: (_) => injector<ThemeCubit>()),
-        BlocProvider<FormFacturaBloc>(create: (_) => injector<FormFacturaBloc>()),
         BlocProvider<AuthBloc>(create: (_) => injector<AuthBloc>()),
       ],
       child: const MyMaterialApp(),

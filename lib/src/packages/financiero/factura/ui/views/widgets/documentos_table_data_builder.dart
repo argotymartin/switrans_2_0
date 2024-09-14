@@ -16,9 +16,9 @@ import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class DocumentosTableDataBuilder {
   static List<PlutoColumn> buildColumns(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final EntryAutocomplete titleTipoDocumento = formFacturaBloc.state.entriesTiposDocumentos.firstWhere(
-      (EntryAutocomplete element) => element.codigo == formFacturaBloc.request.documentoCodigo,
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final EntryAutocomplete titleTipoDocumento = facturaBloc.state.entriesTiposDocumentos.firstWhere(
+      (EntryAutocomplete element) => element.codigo == facturaBloc.request.documentoCodigo,
       orElse: () => EntryAutocomplete(title: ""),
     );
     return <PlutoColumn>[
@@ -34,7 +34,7 @@ class DocumentosTableDataBuilder {
         width: 110,
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) =>
-            buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length, formFacturaBloc.state.documentosSelected.length),
+            buildRenderContadorFooter(context, facturaBloc.state.documentos.length, facturaBloc.state.documentosSelected.length),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -189,8 +189,8 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         final String cellValue = rendererContext.cell.value.toString();
         final dynamic documentoMap = jsonDecode(cellValue);
         final int item = documentoMap["item"];
@@ -455,9 +455,9 @@ class DocumentosTableDataBuilder {
           onPressed: () {
             rendererContext.stateManager.removeRows(<PlutoRow>[rendererContext.row]);
 
-            final List<Documento> documentosAll = context.read<FormFacturaBloc>().state.documentos;
+            final List<Documento> documentosAll = context.read<FacturaBloc>().state.documentos;
             final Documento documento = documentosAll[rendererContext.rowIdx];
-            context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
+            context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento));
           },
           size: 32,
           icon: Icons.delete_outlined,
@@ -484,8 +484,8 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Co
 }
 
 Widget buildRenderSumAdicionesFooter(PlutoColumnFooterRendererContext rendererContext) {
-  return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-    builder: (BuildContext context, FormFacturaState state) {
+  return BlocBuilder<FacturaBloc, FacturaState>(
+    builder: (BuildContext context, FacturaState state) {
       final double totalAdiciones = state.documentos.fold(0.0, (double total, Documento documento) {
         return total + documento.adiciones.fold(0.0, (num totalAdicion, Adicion adicion) => totalAdicion + (adicion.valor));
       });
@@ -502,8 +502,8 @@ Widget buildRenderSumAdicionesFooter(PlutoColumnFooterRendererContext rendererCo
 }
 
 Widget buildRenderSumDescuentosFooter(PlutoColumnFooterRendererContext rendererContext) {
-  return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-    builder: (BuildContext context, FormFacturaState state) {
+  return BlocBuilder<FacturaBloc, FacturaState>(
+    builder: (BuildContext context, FacturaState state) {
       final double totalDescuentos = state.documentos.fold(0.0, (double total, Documento documento) {
         return total + documento.descuentos.fold(0.0, (num totalDescuento, Descuento descuento) => totalDescuento + (descuento.valor));
       });

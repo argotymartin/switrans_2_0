@@ -32,8 +32,8 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         final List<Widget> acciones = <Widget>[];
 
         const List<DataColumn> columns = <DataColumn>[
@@ -149,7 +149,7 @@ class _BuildButtonClear extends StatelessWidget {
       height: 170 * documento.itemDocumentos.length.toDouble(),
       child: CustomSizeButton(
         onPressed: () {
-          context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
+          context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento));
         },
         size: 32,
         icon: Icons.delete_outlined,

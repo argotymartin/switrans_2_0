@@ -17,13 +17,13 @@ class FacturaCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FormFacturaBloc, FormFacturaState>(
-      listener: (BuildContext context, FormFacturaState state) {
-        if (state.status == FormFacturaStatus.error) {
+    return BlocConsumer<FacturaBloc, FacturaState>(
+      listener: (BuildContext context, FacturaState state) {
+        if (state.status == FacturaStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
       },
-      builder: (BuildContext context, FormFacturaState state) {
+      builder: (BuildContext context, FacturaState state) {
         return Stack(
           children: <Widget>[
             ListView(
@@ -49,7 +49,7 @@ class FacturaCreateView extends StatelessWidget {
                 const SizedBox(height: 200),
               ],
             ),
-            if (state.status == FormFacturaStatus.loading) const LoadingModal(),
+            if (state.status == FacturaStatus.loading) const LoadingModal(),
           ],
         );
       },
@@ -58,14 +58,14 @@ class FacturaCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  final FormFacturaState state;
+  final FacturaState state;
   const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final FormFacturaRequest request = formFacturaBloc.request;
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final FormFacturaRequest request = facturaBloc.request;
     return Form(
       key: formKey,
       child: Column(
@@ -135,17 +135,17 @@ class _BuildFieldsForm extends StatelessWidget {
               }
 
               if (error.isNotEmpty) {
-                formFacturaBloc.add(ErrorFormFacturaEvent(error));
+                facturaBloc.add(ErrorFacturaEvent(error));
               }
 
               if (isValid) {
-                formFacturaBloc.add(DocumentosFormFacturaEvent(request));
+                facturaBloc.add(GetDocumentosFacturaEvent(request));
               }
             },
             icon: Icons.search_rounded,
             label: "Buscar",
           ),
-          state.status == FormFacturaStatus.error ? ErrorModal(title: state.error) : const SizedBox(),
+          state.status == FacturaStatus.error ? ErrorModal(title: state.error) : const SizedBox(),
         ],
       ),
     );
@@ -157,9 +157,9 @@ class _BuildDocumentos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
-        if (state.status == FormFacturaStatus.succes) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
+        if (state.status == FacturaStatus.succes) {
           final String texto = state.documentos.length == 1 ? "documento encontrado" : "documentos encontrados";
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,9 +187,9 @@ class _BuildItemFactura extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
-        if (state.status == FormFacturaStatus.succes) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
+        if (state.status == FacturaStatus.succes) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -205,7 +205,7 @@ class _BuildItemFactura extends StatelessWidget {
 }
 
 class _BuildTableItemsDocumento extends StatelessWidget {
-  final FormFacturaState state;
+  final FacturaState state;
   const _BuildTableItemsDocumento(this.state);
 
   @override
@@ -229,17 +229,17 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
-        if (state.status == FormFacturaStatus.succes) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
+        if (state.status == FacturaStatus.succes) {
           if (state.documentosSelected.isNotEmpty) {
-            final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-            final FormFacturaRequest request = formFacturaBloc.request;
+            final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+            final FormFacturaRequest request = facturaBloc.request;
             final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
             final EntryAutocomplete cliente =
                 state.entriesClientes.firstWhere((EntryAutocomplete element) => element.codigo == request.cliente);
 
-            final List<MapEntry<int, String>> centrosCosto = context.read<FormFacturaBloc>().getCentosCosto();
+            final List<MapEntry<int, String>> centrosCosto = context.read<FacturaBloc>().getCentosCosto();
             final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
               return EntryAutocomplete(
                 codigo: centro.key,
@@ -318,10 +318,9 @@ class _BuildButtonRegistrar extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthBloc authBloc = context.read<AuthBloc>();
 
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
-        final FormFacturaBloc facturaBloc = context.read<FormFacturaBloc>();
-        final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
+        final FacturaBloc facturaBloc = context.read<FacturaBloc>();
         final List<Documento> documentos = facturaBloc.state.documentos;
         final Iterable<Documento> itemDocumentos = state.documentosSelected.where((Documento element) => element.documento > 0);
         final double totalDocumentos = documentos.fold(0, (double total, Documento documento) => total + documento.valorTotal);
@@ -333,7 +332,7 @@ class _BuildButtonRegistrar extends StatelessWidget {
             await Future<dynamic>.delayed(const Duration(seconds: 5));
             //final int centroCosto = formFacturaBloc.centroCosto;
             //final int clienteCodigo = formFacturaBloc.clienteCodigo;
-            final int empresaCodigo = formFacturaBloc.state.empresa;
+            final int empresaCodigo = facturaBloc.state.empresa;
             final int usuario = authBloc.state.auth!.usuario.codigo;
             final PrefacturaRequest prefacturaRequest = PrefacturaRequest(
               centroCosto: 1,
