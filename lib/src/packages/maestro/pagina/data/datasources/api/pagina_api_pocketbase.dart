@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
@@ -14,7 +14,7 @@ class PaginaApiPocketBase {
     requestMap["modulo"] = request.modulo == null ? null : await getModuloId(request.modulo!);
 
     final String filter = PaginaRequestModel.toPocketBaseFilter(requestMap);
-    const String url = '$kPocketBaseUrl/api/collections/pagina/records';
+    final String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter, "expand": "modulo"};
     final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
@@ -26,7 +26,7 @@ class PaginaApiPocketBase {
     requestMap["pagina_codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "pagina", field: "pagina_codigo");
     requestMap["modulo"] = await getModuloId(request.modulo!);
 
-    const String url = '$kPocketBaseUrl/api/collections/pagina/records';
+    final String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Response<String> response = await _dio.post('$url/', data: requestMap, queryParameters: <String, String>{"expand": "modulo"});
     return response;
   }
@@ -50,7 +50,7 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> getModulosApi() async {
-    const String url = '$kPocketBaseUrl/api/collections/modulo/records';
+    final String url = '$kPocketBaseUrl/api/collections/modulo/records';
     final Map<String, dynamic> queryParameters = <String, dynamic>{"filter": "(modulo_visible = true && modulo_activo = true)"};
     final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;

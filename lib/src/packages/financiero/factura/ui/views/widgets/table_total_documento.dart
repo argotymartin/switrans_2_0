@@ -15,8 +15,8 @@ class TableTotalDocumento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         double total = 0;
         double subTotal = 0;
         int cantidadItem = 3;
@@ -54,7 +54,10 @@ class TableTotalDocumento extends StatelessWidget {
         });
 
         final TableRow tableRowsTitle = TableRow(
-          decoration: BoxDecoration(color: Colors.grey.shade300),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(16)),
+          ),
           children: <Widget>[
             _CellTitle(
               title: "Items",
@@ -67,7 +70,10 @@ class TableTotalDocumento extends StatelessWidget {
         );
 
         final TableRow tableRowsTotal = TableRow(
-          decoration: BoxDecoration(color: Colors.grey.shade300),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16)),
+          ),
           children: <Widget>[
             _CellTitle(title: "Total", color: colorPrimaryContainer),
             const SizedBox(),
@@ -93,24 +99,32 @@ class TableTotalDocumento extends StatelessWidget {
         return Row(
           children: <Widget>[
             Expanded(
-              child: Table(
-                border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: columnWidth,
-                children: <TableRow>[
-                  tableRowsTitle,
-                  tableRowsSubTotal,
-                  ...childrenImpuestos,
-                  tableRowsTotal,
-                ],
+              child: ClipRRect(
+                child: Table(
+                  border: TableBorder.all(
+                    color: Theme.of(context).colorScheme.primaryFixedDim,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: const Radius.circular(16),
+                      bottomLeft: const Radius.circular(16),
+                    ),
+                  ),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  columnWidths: columnWidth,
+                  children: <TableRow>[
+                    tableRowsTitle,
+                    tableRowsSubTotal,
+                    ...childrenImpuestos,
+                    tableRowsTotal,
+                  ],
+                ),
               ),
             ),
             Container(
-              width: 100,
-              height: cantidadItem * 32.7,
+              height: cantidadItem * 35.7,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: cantidadItem * 8),
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+                borderRadius: const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16)),
               ),
               child: IconButton(
                 onPressed: () {

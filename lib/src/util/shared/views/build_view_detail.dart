@@ -15,10 +15,10 @@ class BuildViewDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final String fullPath = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     final List<String> breadcrumbTrails = fullPath.split("/");
-    final MenuSidebarBloc menuBloc = context.read<MenuSidebarBloc>();
+    final MenuBloc menuBloc = context.read<MenuBloc>();
     final Size size = MediaQuery.of(context).size;
     ModuloMenu? moduloSelected;
-    for (final PaqueteMenu paquete in menuBloc.state.paquetes) {
+    for (final PaqueteMenu paquete in menuBloc.state.paquetes!) {
       for (final ModuloMenu modulo in paquete.modulos) {
         if (modulo.path.contains(breadcrumbTrails[2])) {
           moduloSelected = modulo;

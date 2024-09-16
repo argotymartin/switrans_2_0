@@ -13,30 +13,34 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AbstractAuthRepository _repository;
 
-  AuthBloc(this._repository) : super(const AuthInitialState()) {
-    on<GetAuthEvent>((GetAuthEvent event, Emitter<AuthState> emit) {});
-    on<LoginAuthEvent>(_onActivateUser);
-
-    on<LogoutAuthEvent>(((LogoutAuthEvent event, Emitter<AuthState> emit) => emit(const AuthInitialState())));
-    on<ValidateAuthEvent>(((ValidateAuthEvent event, Emitter<AuthState> emit) => emit(AuthSuccesState(auth: event.auth))));
+  AuthBloc(this._repository) : super(const AuthState().initial()) {
+    on<LoginAuthEvent>(_onLoginAuthEvent);
+    on<LogoutAuthEvent>(_onLogoutAuthEvent);
+    on<ValidateAuthEvent>(
+      ((ValidateAuthEvent event, Emitter<AuthState> emit) {
+        emit(state.copyWith(status: AuthStatus.succes, auth: event.auth));
+      }),
+    );
+    on<RefreshAuthEvent>(_onRefreshAuthEvent);
   }
 
-  Future<void> _onActivateUser(LoginAuthEvent event, Emitter<AuthState> emit) async {
-    emit(const AuthLoadInProgressState());
+  Future<void> _onLoginAuthEvent(LoginAuthEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
     final DataState<Auth> dataState = await _repository.signin(event.params);
     if (dataState is DataSuccess && dataState.data != null) {
       Preferences.usuarioNombre = dataState.data!.usuario.nombre;
-      emit(AuthSuccesState(auth: dataState.data!, isSignedIn: true));
+      emit(state.copyWith(status: AuthStatus.succes, auth: dataState.data!));
       Preferences.token = dataState.data!.token;
     }
     if (dataState.error != null) {
-      emit(AuthErrorState(error: dataState.error));
+      emit(state.copyWith(status: AuthStatus.error, error: dataState.error));
     }
   }
 
-  Future<void> onLogoutAuthEvent() async {
+  Future<void> _onLogoutAuthEvent(LogoutAuthEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+    emit(const AuthState().initial());
     Preferences.token = "";
-    add(const LogoutAuthEvent());
   }
 
   Future<bool> onValidateToken() async {
@@ -51,5 +55,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       isValid = false;
     }
     return isValid;
+  }
+
+  Future<void> _onRefreshAuthEvent(RefreshAuthEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+    final DataState<Auth> dataState = await _repository.validateToken(UsuarioRequest(token: Preferences.token));
+    if (dataState is DataSuccess && dataState.data != null) {
+      Preferences.token = dataState.data!.token;
+      emit(state.copyWith(status: AuthStatus.succes, auth: dataState.data!));
+    }
   }
 }

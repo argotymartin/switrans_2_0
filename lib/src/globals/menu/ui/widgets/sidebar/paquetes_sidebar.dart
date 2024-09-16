@@ -23,62 +23,76 @@ class PaquetesSidebar extends StatefulWidget {
 
 class _PaquetesSidebarState extends State<PaquetesSidebar> {
   bool isHovered = false;
+  bool isEntered = false;
 
   @override
   Widget build(BuildContext context) {
-    bool isEntered = widget.paquete.isSelected;
-    final Color? colorSelected = context.read<ThemeCubit>().state.color;
-    final List<ModulosSidebar> modulos = widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo)).toList();
-    final ThemeState state = context.watch<ThemeCubit>().state;
-    Color color;
-    Color colorText;
-    if (state.themeMode == 1) {
-      color = isHovered || widget.paquete.isSelected ? colorSelected!.withOpacity(0.6) : Colors.transparent;
-      colorText = Theme.of(context).colorScheme.onPrimary;
-    } else if (state.themeMode == 2) {
-      color = isHovered || widget.paquete.isSelected ? Colors.black.withOpacity(0.2) : Colors.transparent;
-      colorText = Theme.of(context).colorScheme.primaryContainer;
-    } else {
-      color = isHovered || widget.paquete.isSelected ? colorSelected!.withOpacity(0.05) : Colors.transparent;
-      colorText = Colors.black;
-    }
-    return Material(
-      color: color,
-      child: Column(
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              setState(
-                () {
-                  isEntered = !isEntered;
-                  context.read<MenuSidebarBloc>().onPaqueteSelected(isSelected: isEntered, paqueteMenu: widget.paquete);
-                  if (widget.isMimimize) {
-                    showPopoverImpl(context, modulos, widget.paquete);
-                  }
+    return BlocBuilder<MenuBloc, MenuState>(
+      builder: (BuildContext context, MenuState state) {
+        final bool isSelected = widget.paquete == state.paqueteMenu;
+        final Color? colorSelected = context.read<ThemeCubit>().state.color;
+        final List<ModulosSidebar> modulos = widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo)).toList();
+        final List<ModulosSidebar> modulosPop =
+            widget.paquete.modulos.map((ModuloMenu modulo) => ModulosSidebar(modulo: modulo, isShowPopover: true)).toList();
+        final ThemeState themeState = context.watch<ThemeCubit>().state;
+        Color color;
+        Color colorText;
+        if (themeState.themeMode == 1) {
+          color = isHovered || isEntered ? colorSelected!.withOpacity(0.6) : Colors.transparent;
+          colorText = Theme.of(context).colorScheme.onPrimary;
+        } else if (themeState.themeMode == 2) {
+          color = isHovered || isEntered ? Colors.black.withOpacity(0.2) : Colors.transparent;
+          colorText = Theme.of(context).colorScheme.primaryContainer;
+        } else {
+          color = isHovered || isEntered ? colorSelected!.withOpacity(0.05) : Colors.transparent;
+          colorText = Colors.black;
+        }
+        return Material(
+          color: color,
+          child: Column(
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  setState(
+                    () {
+                      isEntered = !isEntered;
+                      if (!isSelected && !isEntered) {
+                        isEntered = true;
+                      }
+                      context.read<MenuBloc>().add(SelectedPaqueteMenuEvent(widget.paquete));
+                      if (widget.isMimimize) {
+                        showPopoverImpl(context, modulosPop, widget.paquete, color.withOpacity(1));
+                      }
+                    },
+                  );
                 },
-              );
-            },
-            child: MouseRegion(
-              onHover: (_) => setState(() => isHovered = true),
-              onExit: (_) => setState(() => isHovered = false),
-              child: Material(
-                color: color,
-                child: BuildOptionPaqueteMenu(
-                  isMinimized: widget.isMimimize,
-                  paquete: widget.paquete,
-                  isHovered: isHovered,
-                  color: color,
-                  colorText: colorText,
+                child: MouseRegion(
+                  onHover: (_) => setState(() => isHovered = true),
+                  onExit: (_) => setState(() => isHovered = false),
+                  child: Material(
+                    color: color,
+                    child: BuildOptionPaqueteMenu(
+                      isMinimized: widget.isMimimize,
+                      paquete: widget.paquete,
+                      isHovered: isHovered,
+                      color: color,
+                      colorText: colorText,
+                      isSelected: isSelected,
+                      isEntered: isEntered,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: widget.paquete == state.paqueteMenu && isEntered && !widget.isMimimize || widget.paquete.isSelected
+                    ? Column(children: modulos)
+                    : const SizedBox(),
+              ),
+            ],
           ),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: widget.paquete.isSelected & !widget.isMimimize ? Column(children: modulos) : const SizedBox(),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -87,6 +101,9 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   final PaqueteMenu paquete;
   final bool isMinimized;
   final bool isHovered;
+  final bool isSelected;
+  final bool isEntered;
+
   final Color color;
   final Color colorText;
 
@@ -94,6 +111,8 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
     required this.paquete,
     required this.isMinimized,
     required this.isHovered,
+    required this.isSelected,
+    required this.isEntered,
     required this.color,
     required this.colorText,
     super.key,
@@ -101,24 +120,39 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late int iconExa;
+    final RegExp hexRegex = RegExp(r'^[0-9a-fA-F]+$');
+    final String hexString = paquete.icono.startsWith('0x') ? paquete.icono.substring(2) : paquete.icono;
+
+    if (hexRegex.hasMatch(hexString)) {
+      try {
+        iconExa = int.parse(hexString, radix: 16);
+      } on FormatException catch (e) {
+        iconExa = 0xe33d;
+        debugPrint(e.toString());
+      }
+    } else {
+      iconExa = 0xe33d;
+    }
+
     return SizedBox(
       height: 46,
       child: Row(
         children: <Widget>[
-          paquete.isSelected ? Container(width: 4, height: 48, color: color) : const SizedBox(width: 4),
+          isSelected ? Container(width: 4, height: 48, color: Theme.of(context).colorScheme.primaryContainer) : const SizedBox(width: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               children: <Widget>[
                 Icon(
-                  IconData(int.parse(paquete.icono), fontFamily: 'MaterialIcons'),
-                  color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.6),
+                  IconData(iconExa, fontFamily: 'MaterialIcons'),
+                  color: isHovered || isSelected ? colorText : colorText.withOpacity(0.6),
                   size: 20,
                 ),
                 isMinimized ? const SizedBox(width: 4) : const SizedBox(width: 10),
                 isMinimized
                     ? SizedBox(
-                        child: paquete.isSelected
+                        child: isSelected
                             ? Container(
                                 width: 8,
                                 height: 8,
@@ -133,17 +167,17 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
                           paquete.nombre,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
-                            fontWeight: isHovered || paquete.isSelected ? FontWeight.w400 : FontWeight.w300,
-                            color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.8),
+                            fontWeight: isHovered || isSelected ? FontWeight.w400 : FontWeight.w300,
+                            color: isHovered || isSelected ? colorText : colorText.withOpacity(0.8),
                           ),
                         ),
                       ),
                 isMinimized
                     ? const SizedBox()
                     : Icon(
-                        paquete.isSelected ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
+                        isEntered ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down,
                         size: 16,
-                        color: isHovered || paquete.isSelected ? colorText : colorText.withOpacity(0.6),
+                        color: isHovered || isSelected ? colorText : colorText.withOpacity(0.6),
                       ),
               ],
             ),
@@ -154,12 +188,14 @@ class BuildOptionPaqueteMenu extends StatelessWidget {
   }
 }
 
-Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete) {
+Future<Object?> showPopoverImpl(BuildContext context, List<ModulosSidebar> modulo, PaqueteMenu paquete, Color color) {
+  final Size size = MediaQuery.of(context).size;
+  final double width = size.width > 500 ? 250 : size.width * 0.5;
   return showPopover(
     context: context,
-    backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+    backgroundColor: color,
     direction: PopoverDirection.right,
-    constraints: BoxConstraints.loose(const Size.fromWidth(250)),
+    constraints: BoxConstraints.loose(Size.fromWidth(width)),
     arrowWidth: 60,
     bodyBuilder: (BuildContext context) => SingleChildScrollView(
       child: Column(

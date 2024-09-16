@@ -43,8 +43,8 @@ class _WebDatePickerState extends State<WebDatePicker> {
     }
 
     dialogCalendarPickerValue = <DateTime?>[
-      dateEnd,
       dateStar,
+      dateEnd,
     ];
     super.initState();
   }
@@ -70,7 +70,6 @@ class _WebDatePickerState extends State<WebDatePicker> {
       ),
       centerAlignModePicker: true,
       customModePickerIcon: const SizedBox(),
-      //selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
       dayTextStylePredicate: ({required DateTime date}) {
         TextStyle? textStyle;
         if (date.weekday == DateTime.saturday || date.weekday == DateTime.sunday) {

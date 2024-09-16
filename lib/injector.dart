@@ -6,7 +6,10 @@ import 'package:switrans_2_0/src/globals/login/domain/repositories/abstract_auth
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/data/datasources/api/pocketbase_api.dart';
 import 'package:switrans_2_0/src/globals/menu/data/repositories/menu_sidebar_repository_impl.dart';
+import 'package:switrans_2_0/src/globals/menu/data/repositories/usuario_update_repository_impl.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_menu_sidebar_repository.dart';
+import 'package:switrans_2_0/src/globals/menu/domain/repositories/abstract_usuario_update_repository.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/blocs/usuario/usuario_update_bloc.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/api/backend/factura_api.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/backend/factura_repository_impl.dart';
@@ -56,21 +59,23 @@ final GetIt injector = GetIt.instance;
 Future<void> initializeDependencies() async {
   injector.registerSingleton<Dio>(Dio());
 
-  injector.registerSingleton<MenuBloc>(MenuBloc());
+  injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
+  injector.registerSingleton<AbstractMenuSidebarRepository>(MenuSidebarRespositoryImpl(injector()));
+  injector.registerSingleton<MenuBloc>(MenuBloc(injector()));
+
+  injector.registerSingleton<AbstractUsuarioUpdateRepository>(UsuarioUpdateRepositoryImpl(injector()));
+  injector.registerSingleton<UsuarioUpdateBloc>(UsuarioUpdateBloc(injector()));
+
   injector.registerSingleton<ThemeCubit>(ThemeCubit());
 
   injector.registerSingleton<AuthPocketbaseApi>(AuthPocketbaseApi(injector()));
   injector.registerSingleton<AbstractAuthRepository>(AuthRepositoryImpl(injector()));
   injector.registerSingleton<AuthBloc>(AuthBloc(injector()));
 
-  injector.registerSingleton<PocketbaseAPI>(PocketbaseAPI(injector()));
-  injector.registerSingleton<AbstractMenuSidebarRepository>(MenuSidebarRespositoryImpl(injector()));
-  injector.registerSingleton<MenuSidebarBloc>(MenuSidebarBloc(injector()));
-
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
   //injector.registerSingleton<DocumentoBloc>(DocumentoBloc(injector()));
-  injector.registerSingleton<FormFacturaBloc>(FormFacturaBloc(injector()));
+  injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
 
   injector.registerSingleton<TipoImpuestoApi>(TipoImpuestoApi(injector()));
   injector.registerSingleton<AbstractTipoImpuestoRepository>(TipoImpuestoRepositoryImpl(injector()));

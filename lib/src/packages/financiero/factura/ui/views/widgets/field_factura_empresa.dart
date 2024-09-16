@@ -26,8 +26,8 @@ class _FieldFacturaEmpresaState extends State<FieldFacturaEmpresa> {
 
   @override
   Widget build(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = BlocProvider.of<FormFacturaBloc>(context);
-    final List<Empresa> empresas = formFacturaBloc.state.empresas;
+    final FacturaBloc facturaBloc = BlocProvider.of<FacturaBloc>(context);
+    final List<Empresa> empresas = facturaBloc.state.empresas;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

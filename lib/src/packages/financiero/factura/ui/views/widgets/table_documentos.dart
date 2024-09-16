@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
@@ -17,15 +18,14 @@ class TableDocumentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late PlutoGridStateManager stateManager;
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final Size size = MediaQuery.of(context).size;
-    final double rowHeight = size.height * 0.16;
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    const double rowHeight = 160;
     const double titleHeight = 48;
     const double columnFilterHeight = 36;
     final int tableHigth = documentos.length >= 3 ? 3 : documentos.length;
 
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         return Container(
           height: (rowHeight * tableHigth) + (titleHeight + columnFilterHeight + 86),
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -39,14 +39,14 @@ class TableDocumentos extends StatelessWidget {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) => onRowDoubleTap(
               event: event,
               documentos: documentos,
-              formFacturaBloc: formFacturaBloc,
+              facturaBloc: facturaBloc,
               stateManager: stateManager,
               context: context,
             ),
             onRowChecked: (PlutoGridOnRowCheckedEvent event) => onRowChecked(
               event: event,
               documentos: documentos,
-              formFacturaBloc: formFacturaBloc,
+              facturaBloc: facturaBloc,
               stateManager: stateManager,
               context: context,
             ),
@@ -64,6 +64,7 @@ class TableDocumentos extends StatelessWidget {
                 columnHeight: titleHeight,
                 columnFilterHeight: columnFilterHeight,
                 rowHeight: rowHeight,
+                gridBorderRadius: BorderRadius.circular(16),
               ),
               columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
               scrollbar: const PlutoGridScrollbarConfig(
@@ -86,21 +87,24 @@ class TableDocumentos extends StatelessWidget {
   void onRowDoubleTap({
     required PlutoGridOnRowDoubleTapEvent event,
     required List<Documento> documentos,
-    required FormFacturaBloc formFacturaBloc,
+    required FacturaBloc facturaBloc,
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
     final Documento documento = documentos[event.rowIdx];
     if (event.row.checked!) {
       stateManager.setRowChecked(event.row, false);
-      formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+      facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
     } else {
       if (documento.valorEgreso > documento.valorIngreso) {
         stateManager.setRowChecked(event.row, false);
         showErrorIngresoVSEgresoDialog(context, documento);
+      } else if (documento.isAnulacion) {
+        stateManager.setRowChecked(event.row, false);
+        showErrorAnulacionDialog(context, documento);
       } else {
         stateManager.setRowChecked(event.row, true);
-        formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+        facturaBloc.add(AddDocumentoFacturaEvent(documento));
       }
     }
   }
@@ -108,21 +112,22 @@ class TableDocumentos extends StatelessWidget {
   void onRowChecked({
     required PlutoGridOnRowCheckedEvent event,
     required List<Documento> documentos,
-    required FormFacturaBloc formFacturaBloc,
+    required FacturaBloc facturaBloc,
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
-    if (event.isAll && event.isChecked != null) {
+    if (event.isAll) {
       for (final Documento documento in documentos) {
         if (event.isChecked!) {
           if (documento.valorEgreso > documento.valorIngreso) {
-            stateManager.setRowChecked(event.row!, false);
             showErrorIngresoVSEgresoDialog(context, documento);
+          } else if (documento.isAnulacion) {
+            showErrorAnulacionDialog(context, documento);
           } else {
-            formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+            facturaBloc.add(AddDocumentoFacturaEvent(documento));
           }
         } else {
-          formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+          facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
         }
       }
     } else if (event.rowIdx != null && event.isChecked != null) {
@@ -131,11 +136,14 @@ class TableDocumentos extends StatelessWidget {
         if (documento.valorEgreso > documento.valorIngreso) {
           stateManager.setRowChecked(event.row!, false);
           showErrorIngresoVSEgresoDialog(context, documento);
+        } else if (documento.isAnulacion) {
+          stateManager.setRowChecked(event.row!, false);
+          showErrorAnulacionDialog(context, documento);
         } else {
-          formFacturaBloc.add(AddDocumentoFormFacturaEvent(documento));
+          facturaBloc.add(AddDocumentoFacturaEvent(documento));
         }
       } else {
-        formFacturaBloc.add(RemoveDocumentoFormFacturaEvent(documento));
+        facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
       }
     }
   }
@@ -159,6 +167,57 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, Documento documento) {
                 style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
               ),
               const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+      ],
+    ),
+  );
+}
+
+void showErrorAnulacionDialog(BuildContext context, Documento documento) {
+  final Size size = MediaQuery.of(context).size;
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      content: SizedBox(
+        width: size.width * 0.3,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Lottie.asset(
+                'assets/animations/warning.json',
+                height: 96,
+                width: 96,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "El documento: ",
+                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+                  ),
+                  Text(
+                    "${documento.documento} ",
+                    style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Text(
+                "Esta vinculado a un despacho no realizado",
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+              ),
+              const SizedBox(height: 32),
+              Text(
+                "No es posible facturar este documento",
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 20, fontStyle: FontStyle.italic),
+              ),
             ],
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/config/routers/app_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/domain/entities/paquete_menu.dart';
@@ -15,8 +15,8 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    if (size.width <= 480) {
-      context.read<MenuBloc>().add(const BlockedMenuEvent(true));
+    if (size.width <= 360) {
+      context.read<MenuBloc>().add(const ExpandedMenuEvent(false));
     } else if (size.width <= 960) {
       context.read<MenuBloc>().add(const MinimizedMenuEvent(true));
     } else {
@@ -25,9 +25,11 @@ class Sidebar extends StatelessWidget {
 
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
-        if (state.isOpenMenu) {
+        if (state.isOpenMenu! && !state.isMinimize!) {
           return const SidebarExpanded();
-        } else if (state.isMinimize) {
+        }
+
+        if (state.isMinimize!) {
           return const SidebarMimimized();
         } else {
           return const SizedBox();
@@ -42,7 +44,6 @@ class SidebarExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final int? themeMode = context.read<ThemeCubit>().state.themeMode;
 
     Color color;
@@ -56,60 +57,61 @@ class SidebarExpanded extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Container(
-          width: kWidthSidebar,
-          height: size.height * 0.92,
-          decoration: buildBoxDecoration(context),
-          child: Theme(
-            data: ThemeData(
-              scrollbarTheme: ScrollbarThemeData(
-                thickness: WidgetStateProperty.all(8.0),
-              ),
-            ),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
-              children: <Widget>[
-                const LogoSidebar(isMenuIcon: false),
-                const ProfileSidebar(isMenuIcon: false),
-                const SizedBox(height: 16),
-                const SearchModulo(),
-                const SizedBox(height: 16),
-                const TextSeparatorSidebar(text: 'Paquetes'),
-                BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
-                  builder: (BuildContext context, MenuSidebarState stateModulo) {
-                    final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
-                    for (final PaqueteMenu paquete in stateModulo.paquetes) {
-                      paquetesSidebar.add(
-                        PaquetesSidebar(
-                          paquete: paquete,
-                        ),
-                      );
-                    }
-                    return Column(children: paquetesSidebar);
-                  },
+        Expanded(
+          child: Container(
+            width: kWidthSidebar,
+            decoration: buildBoxDecoration(context),
+            child: Theme(
+              data: ThemeData(
+                scrollbarTheme: ScrollbarThemeData(
+                  thickness: WidgetStateProperty.all(8.0),
                 ),
-                const SizedBox(height: 50),
-                const TextSeparatorSidebar(text: 'Exit'),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton.icon(
-                    style: ButtonStyle(
-                      side: WidgetStatePropertyAll<BorderSide>(
-                        BorderSide(color: Theme.of(context).canvasColor, width: 2),
+              ),
+              child: ListView(
+                physics: const ClampingScrollPhysics(),
+                children: <Widget>[
+                  const LogoSidebar(isMenuIcon: false),
+                  const ProfileSidebar(isMenuIcon: false),
+                  const SizedBox(height: 16),
+                  const SearchModulo(),
+                  const SizedBox(height: 16),
+                  const TextSeparatorSidebar(text: 'Paquetes'),
+                  BlocBuilder<MenuBloc, MenuState>(
+                    builder: (BuildContext context, MenuState stateModulo) {
+                      final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
+                      for (final PaqueteMenu paquete in stateModulo.paquetes!) {
+                        paquetesSidebar.add(
+                          PaquetesSidebar(
+                            paquete: paquete,
+                          ),
+                        );
+                      }
+                      return Column(children: paquetesSidebar);
+                    },
+                  ),
+                  const SizedBox(height: 50),
+                  const TextSeparatorSidebar(text: 'Exit'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton.icon(
+                      style: ButtonStyle(
+                        side: WidgetStatePropertyAll<BorderSide>(
+                          BorderSide(color: Theme.of(context).canvasColor, width: 2),
+                        ),
+                      ),
+                      label: Text("Salir", style: TextStyle(color: color)),
+                      onPressed: () {
+                        context.read<AuthBloc>().add(const LogoutAuthEvent());
+                        context.go(AppRouter.login);
+                      },
+                      icon: Icon(
+                        Icons.logout_outlined,
+                        color: color,
                       ),
                     ),
-                    label: Text("Salir", style: TextStyle(color: color)),
-                    onPressed: () {
-                      context.read<AuthBloc>().onLogoutAuthEvent();
-                      context.go(AppRouter.login);
-                    },
-                    icon: Icon(
-                      Icons.logout_outlined,
-                      color: color,
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -124,7 +126,6 @@ class SidebarMimimized extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final int? themeMode = context.read<ThemeCubit>().state.themeMode;
 
     Color color;
@@ -138,50 +139,51 @@ class SidebarMimimized extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Container(
-          width: 80,
-          height: size.height * 0.92,
-          decoration: buildBoxDecoration(context),
-          child: Theme(
-            data: ThemeData(
-              scrollbarTheme: ScrollbarThemeData(
-                thickness: WidgetStateProperty.all(8.0),
-              ),
-            ),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
-              children: <Widget>[
-                const LogoSidebar(isMenuIcon: true),
-                const ProfileSidebar(isMenuIcon: true),
-                BlocBuilder<MenuSidebarBloc, MenuSidebarState>(
-                  builder: (BuildContext context, MenuSidebarState stateModulo) {
-                    final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
-                    for (final PaqueteMenu paquete in stateModulo.paquetes) {
-                      paquetesSidebar.add(
-                        PaquetesSidebar(
-                          paquete: paquete,
-                          isMimimize: true,
-                        ),
-                      );
-                    }
-                    return Column(children: paquetesSidebar);
-                  },
+        Expanded(
+          child: Container(
+            width: 80,
+            decoration: buildBoxDecoration(context),
+            child: Theme(
+              data: ThemeData(
+                scrollbarTheme: ScrollbarThemeData(
+                  thickness: WidgetStateProperty.all(8.0),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: OutlinedButton.icon(
-                    label: const SizedBox(),
-                    onPressed: () {
-                      context.read<AuthBloc>().onLogoutAuthEvent();
-                      context.go(AppRouter.login);
+              ),
+              child: ListView(
+                physics: const ClampingScrollPhysics(),
+                children: <Widget>[
+                  const LogoSidebar(isMenuIcon: true),
+                  const ProfileSidebar(isMenuIcon: true),
+                  BlocBuilder<MenuBloc, MenuState>(
+                    builder: (BuildContext context, MenuState stateModulo) {
+                      final List<PaquetesSidebar> paquetesSidebar = <PaquetesSidebar>[];
+                      for (final PaqueteMenu paquete in stateModulo.paquetes!) {
+                        paquetesSidebar.add(
+                          PaquetesSidebar(
+                            paquete: paquete,
+                            isMimimize: true,
+                          ),
+                        );
+                      }
+                      return Column(children: paquetesSidebar);
                     },
-                    icon: Icon(
-                      Icons.logout_outlined,
-                      color: color,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: OutlinedButton.icon(
+                      label: const SizedBox(),
+                      onPressed: () {
+                        context.read<AuthBloc>().add(const LogoutAuthEvent());
+                        context.go(AppRouter.login);
+                      },
+                      icon: Icon(
+                        Icons.logout_outlined,
+                        color: color,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/blocs/menu_sidebar/menu_sidebar_bloc.dart';
+import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
@@ -15,15 +15,15 @@ class AuthLayout extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
-          if (state is AuthErrorState) {
+          if (state.status == AuthStatus.error) {
             CustomToast.showErrorLogin(context, state.error!);
             context.pop();
           }
-          if (state is AuthSuccesState) {
-            context.read<MenuSidebarBloc>().add(const ActiveteMenuSidebarEvent());
+          if (state.status == AuthStatus.succes) {
+            context.read<MenuBloc>().add(const ActivateMenuEvent());
             context.go("/");
           }
-          if (state is AuthLoadInProgressState) {
+          if (state.status == AuthStatus.loading) {
             await showDialog(
               context: context,
               barrierColor: Colors.black.withOpacity(0.6),
@@ -37,11 +37,13 @@ class AuthLayout extends StatelessWidget {
             );
           }
         },
-        child: const Column(
-          children: <Widget>[
-            _DesktopBody(child: AuthView()),
-            LinksBar(),
-          ],
+        child: const SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _DesktopBody(child: AuthView()),
+              LinksBar(),
+            ],
+          ),
         ),
       ),
     );
@@ -56,7 +58,7 @@ class _DesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final double width = size.width < 780 ? size.width * 0.8 : 500;
+    final double width = size.width < 780 ? size.width * 0.8 : 480;
     return SizedBox(
       width: size.width,
       height: size.height * 0.95,
@@ -90,7 +92,12 @@ class _DesktopBody extends StatelessWidget {
                     const SizedBox(height: 20),
                     const CustomTitle(),
                     const SizedBox(height: 20),
-                    Expanded(child: child),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: child,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -112,16 +119,22 @@ class BuildTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = size.width <= 720 ? 200 : size.width * 0.15;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(width: 8),
         Row(
           children: <Widget>[
-            const SizedBox(width: 80),
-            const Text(
-              "Switrans 2.0",
-              style: TextStyle(fontSize: 36, color: Colors.white),
+            const SizedBox(width: 20),
+            SizedBox(
+              width: width,
+              child: const FittedBox(
+                child: const Text(
+                  "Switrans 2.0",
+                  style: TextStyle(fontSize: 36, color: Colors.white),
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             Image.asset(

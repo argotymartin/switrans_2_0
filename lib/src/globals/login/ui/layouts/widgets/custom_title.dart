@@ -5,20 +5,23 @@ class CustomTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Image.asset('assets/empresas/icon-multicompany.png', width: 60, height: 60),
-        const SizedBox(height: 20),
-        FittedBox(
-          child: Text(
-            'Ingreso Switrans 2.0',
-            style: TextStyle(
-              fontSize: 32,
-              color: Colors.white.withOpacity(0.8),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60),
+      child: Column(
+        children: <Widget>[
+          Image.asset('assets/empresas/icon-multicompany.png', width: 60, height: 60),
+          const SizedBox(height: 20),
+          FittedBox(
+            child: Text(
+              'Ingreso Switrans 2.0',
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.white.withOpacity(0.8),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

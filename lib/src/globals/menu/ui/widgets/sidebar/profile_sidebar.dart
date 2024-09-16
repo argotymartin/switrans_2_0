@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
@@ -37,7 +37,7 @@ class ProfileSidebar extends StatelessWidget {
                     ? const SizedBox()
                     : BlocBuilder<AuthBloc, AuthState>(
                         builder: (BuildContext context, AuthState state) {
-                          if (state is AuthSuccesState) {
+                          if (state.status == AuthStatus.succes) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -46,7 +46,7 @@ class ProfileSidebar extends StatelessWidget {
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 Text(
-                                  state.auth!.usuario.telefonoContacto,
+                                  state.auth!.usuario.login,
                                   style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
                                 ),
                               ],

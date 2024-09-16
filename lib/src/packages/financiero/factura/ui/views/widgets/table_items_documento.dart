@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
@@ -32,8 +32,8 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
         final List<Widget> acciones = <Widget>[];
 
         const List<DataColumn> columns = <DataColumn>[
@@ -46,9 +46,12 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
         ];
 
         int index = 0;
+        int cantidadDocumnetos = 1;
         final List<DataRow> buildTableRows = state.documentosSelected.expand(
           (Documento documento) {
-            acciones.add(_BuildButtonClear(documento: documento));
+            final bool sDocumentoFinal = cantidadDocumnetos == state.documentosSelected.length;
+            acciones.add(_BuildButtonClear(documento: documento, isDocumentoFinal: sDocumentoFinal));
+            cantidadDocumnetos++;
             return documento.itemDocumentos.map(
               (ItemDocumento item) {
                 index++;
@@ -81,12 +84,19 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
                     controller: _firstController,
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
+                      clipBehavior: Clip.hardEdge,
                       headingRowColor: WidgetStatePropertyAll<Color>(Theme.of(context).colorScheme.primaryContainer),
                       dataRowMaxHeight: 170,
                       dataRowMinHeight: 170,
                       columnSpacing: 0,
                       horizontalMargin: 0,
-                      border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+                      border: TableBorder.all(
+                        color: Theme.of(context).colorScheme.primaryFixedDim,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          topLeft: Radius.circular(16),
+                        ),
+                      ),
                       columns: columns,
                       rows: buildTableRows,
                     ),
@@ -99,6 +109,9 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(16),
+                      ),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
                     width: 80,
@@ -120,19 +133,23 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
 
 class _BuildButtonClear extends StatelessWidget {
   final Documento documento;
-  const _BuildButtonClear({required this.documento});
+  final bool isDocumentoFinal;
+  const _BuildButtonClear({required this.documento, required this.isDocumentoFinal});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+        borderRadius: BorderRadius.only(
+          bottomRight: isDocumentoFinal ? const Radius.circular(16) : Radius.zero,
+        ),
       ),
       width: 80,
-      height: 171 * documento.itemDocumentos.length.toDouble(),
+      height: 170 * documento.itemDocumentos.length.toDouble(),
       child: CustomSizeButton(
         onPressed: () {
-          context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
+          context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento));
         },
         size: 32,
         icon: Icons.delete_outlined,
@@ -269,7 +286,7 @@ class _BuildImpuestos extends StatelessWidget {
       children.add(
         TableRow(
           children: <Widget>[
-            _CellContent(child: Text(impuesto.nombre, style: const TextStyle(fontWeight: FontWeight.bold))),
+            _CellContent(child: Text(impuesto.nombre, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
             _CellContent(
               child: Text(
                 "${impuesto.porcentaje?.toStringAsFixed(2)} x ${impuesto.factorConversion}",
@@ -293,7 +310,7 @@ class _BuildImpuestos extends StatelessWidget {
         child: SizedBox(
           width: 300,
           child: Table(
-            border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+            border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim, borderRadius: BorderRadius.circular(8)),
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: <TableRow>[
               TableRow(
@@ -338,7 +355,7 @@ class _CellTitle extends StatelessWidget {
       builder: (BuildContext context, MenuState state) {
         final Size sizeM = MediaQuery.of(context).size;
         final double sizeC = sizeM.width < 1600 ? 1600 : sizeM.width;
-        final double width = state.isOpenMenu ? sizeC - kWidthSidebar - 158 : sizeC - 158;
+        final double width = state.isOpenMenu! ? sizeC - kWidthSidebar - 158 : sizeC - 158;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),

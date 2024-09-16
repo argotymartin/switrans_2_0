@@ -69,7 +69,7 @@ class FooterFacturaPDF extends pw.StatelessWidget {
                 pw.SizedBox(height: 2),
                 _buildItemsInformacion(
                   title: "SON",
-                  content: "CIENTO TREINTA MILLONES DOSCIENTOS VEINTIÚN MIL NOVECIENTOS SESENTA Y OCHO PESOS CERO CENTAVOS",
+                  content: "xxxxxxxxxxxxx",
                   titleStyle: fontBoldMinStyle,
                   contentStyle: ligthMinStyle6,
                 ),

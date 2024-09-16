@@ -13,6 +13,11 @@ lints:
   stage: lints
   script:
     - cd $WORK_DIR
+    - echo $WORK_DIR
+    - echo $CI_COMMIT_BRANCH
+    - git remote set-url origin $REPO_URL
+    - git fetch --all
+    - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - docker exec switrans2-flutter /bin/bash -c "flutter pub get && flutter analyze"
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
@@ -21,7 +26,7 @@ build-merge-request:
   stage: review
   script:
     - cd $WORK_DIR
-    - git log --oneline -n 15
+    - echo $WORK_DIR
     - echo "Construyendo con los cambios del Merge Request..."
     - echo $CI_COMMIT_BRANCH
     - echo $CI_MERGE_REQUEST_ID
@@ -29,9 +34,12 @@ build-merge-request:
     - git fetch --all
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
+    - git log --oneline -n 15
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=develop"
+    - cp -r build/web/ ../server/
     - docker compose down
     - docker compose up -d
+    - echo consultar en http://192.168.102.18:3000
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
 
@@ -39,21 +47,35 @@ build:
   stage: build
   script:
     - cd $WORK_DIR
+    - echo $WORK_DIR
     - git checkout develop
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons"
-    - rm -rf ../server/web/
+    - docker exec switrans2-flutter /bin/bash -c "flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=develop"
     - cp -r build/web/ ../server/
+    - docker compose restart node
+    - echo consultar en http://192.168.102.18:3000
     - echo "Finalizó con Éxito!!"
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
 
-deploy:
+deploy-release:
   stage: deploy
   script:
     - echo "Desplegando la aplicación..."
-  only:
-    - develop
-  when: manual
+    - |
+      ssh root@192.168.102.21 "
+        cd $WORK_DIR &&
+        git checkout develop &&
+        git pull origin develop &&
+        docker exec switrans2-flutter /bin/bash -c 'flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=release' &&
+        cp -r build/web/ ../server/ &&
+        docker compose restart node &&
+        echo 'Finalizó Despliegue a Prepo' &&
+        echo 'Consultar en http://192.168.102.21:3000'
+      "
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      when: manual
+

@@ -1,32 +1,69 @@
 part of 'menu_bloc.dart';
 
-sealed class MenuState extends Equatable {
-  final bool isOpenMenu;
-  final bool isMinimize;
-  final bool isBlocked;
-  const MenuState({this.isOpenMenu = true, this.isMinimize = false, this.isBlocked = false});
+enum MenuStatus { initial, loading, succes, error, consulted, exception }
+
+class MenuState extends Equatable {
+  final MenuStatus? status;
+  final bool? isOpenMenu;
+  final bool? isMinimize;
+  final bool? isBlocked;
+  final List<PaqueteMenu>? paquetes;
+  final DioException? error;
+  final PaginaMenu? paginaMenu;
+  final PaqueteMenu? paqueteMenu;
+  final ModuloMenu? moduloMenu;
+
+  const MenuState({
+    this.paginaMenu,
+    this.status,
+    this.isOpenMenu,
+    this.isMinimize,
+    this.isBlocked,
+    this.paquetes,
+    this.error,
+    this.moduloMenu,
+    this.paqueteMenu,
+  });
+  MenuState initial() => const MenuState(
+        status: MenuStatus.initial,
+        isOpenMenu: true,
+        isMinimize: false,
+        isBlocked: false,
+        paquetes: <PaqueteMenu>[],
+      );
+  MenuState copyWith({
+    MenuStatus? status,
+    bool? isOpenMenu,
+    bool? isMinimize,
+    bool? isBlocked,
+    List<PaqueteMenu>? paquetes,
+    DioException? error,
+    PaginaMenu? paginaMenu,
+    PaqueteMenu? paqueteMenu,
+    ModuloMenu? moduloMenu,
+  }) =>
+      MenuState(
+        status: status ?? this.status,
+        isOpenMenu: isOpenMenu ?? this.isOpenMenu,
+        isMinimize: isMinimize ?? this.isMinimize,
+        isBlocked: isBlocked ?? this.isBlocked,
+        paquetes: paquetes ?? this.paquetes,
+        error: error ?? this.error,
+        paginaMenu: paginaMenu ?? this.paginaMenu,
+        moduloMenu: moduloMenu ?? this.moduloMenu,
+        paqueteMenu: paqueteMenu ?? this.paqueteMenu,
+      );
 
   @override
-  List<Object> get props => <Object>[];
-}
-
-class MenuInitialState extends MenuState {
-  const MenuInitialState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class MenuLoadingState extends MenuState {
-  const MenuLoadingState();
-
-  @override
-  List<Object> get props => <Object>[];
-}
-
-class MenuSuccesState extends MenuState {
-  const MenuSuccesState({super.isOpenMenu, super.isMinimize, super.isBlocked});
-
-  @override
-  List<Object> get props => <Object>[isOpenMenu, isMinimize, isBlocked];
+  List<Object?> get props => <Object?>[
+        status,
+        isOpenMenu,
+        isMinimize,
+        isBlocked,
+        paquetes,
+        error,
+        paginaMenu,
+        paqueteMenu,
+        moduloMenu,
+      ];
 }

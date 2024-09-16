@@ -1,7 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/config/constans/constants.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 
 class MenuButtonNavar extends StatelessWidget {
@@ -13,12 +14,12 @@ class MenuButtonNavar extends StatelessWidget {
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
         final Size size = MediaQuery.of(context).size;
-        final bool isOpenMenu = state.isOpenMenu;
-        final bool isMinimize = state.isMinimize;
-        final bool isBlocked = state.isBlocked;
+        final bool isOpenMenu = state.isOpenMenu!;
+        final bool isMinimize = state.isMinimize!;
+        final bool isBlocked = state.isBlocked!;
         double positionedLeft = 16;
 
-        if (isOpenMenu) {
+        if (isOpenMenu && !isMinimize) {
           positionedLeft = positionedLeft + kWidthSidebar;
         }
         if (isMinimize) {
@@ -34,42 +35,44 @@ class MenuButtonNavar extends StatelessWidget {
                 left: positionedLeft,
                 child: MouseRegion(
                   onExit: (PointerExitEvent event) => tooltipController.toggle(),
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerLowest,
-                      borderRadius: BorderRadius.circular(4.0),
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        _BuildButton(
-                          icon: Icons.menu_outlined,
-                          onPressed: () {
-                            tooltipController.hide();
-                            if (size.width > 480) {
-                              context.read<MenuBloc>().add(ExpandedMenuEvent(!isOpenMenu));
-                            }
-                          },
-                          isSelected: !state.isOpenMenu,
-                        ),
-                        _BuildButton(
-                          icon: Icons.menu_open_outlined,
-                          onPressed: () {
-                            tooltipController.hide();
-                            context.read<MenuBloc>().add(MinimizedMenuEvent(!isMinimize));
-                          },
-                          isSelected: state.isMinimize,
-                        ),
-                        _BuildButton(
-                          icon: Icons.lock_outlined,
-                          onPressed: () {
-                            tooltipController.hide();
-                            context.read<MenuBloc>().add(BlockedMenuEvent(!isBlocked));
-                          },
-                          isSelected: state.isBlocked,
-                        ),
-                      ],
+                  child: FadeIn(
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                        borderRadius: BorderRadius.circular(4.0),
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          _BuildButton(
+                            icon: Icons.menu_outlined,
+                            onPressed: () {
+                              tooltipController.hide();
+                              if (size.width > 480) {
+                                context.read<MenuBloc>().add(ExpandedMenuEvent(!isOpenMenu));
+                              }
+                            },
+                            isSelected: !state.isOpenMenu!,
+                          ),
+                          _BuildButton(
+                            icon: Icons.menu_open_outlined,
+                            onPressed: () {
+                              tooltipController.hide();
+                              context.read<MenuBloc>().add(MinimizedMenuEvent(!isMinimize));
+                            },
+                            isSelected: state.isMinimize!,
+                          ),
+                          _BuildButton(
+                            icon: Icons.lock_outlined,
+                            onPressed: () {
+                              tooltipController.hide();
+                              context.read<MenuBloc>().add(BlockedMenuEvent(!isBlocked));
+                            },
+                            isSelected: state.isBlocked!,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -78,7 +81,7 @@ class MenuButtonNavar extends StatelessWidget {
             child: _BuildButton(
               icon: Icons.menu_outlined,
               onPressed: () {},
-              isSelected: !state.isOpenMenu,
+              isSelected: !state.isOpenMenu!,
             ),
           ),
         );

@@ -13,9 +13,6 @@ export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/number_
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/segmented_input_form.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/switch_box_input_form.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/text_input_form.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/number_input_title.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/switch_box_input_title.dart';
-export 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_with_titles/text_input_title.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/number_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/inputs/switch_box_input.dart';
 export 'package:switrans_2_0/src/util/shared/widgets/labels/breadcrumb_trail.dart';

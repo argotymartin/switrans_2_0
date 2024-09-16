@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
@@ -9,14 +11,15 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_doma
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/labels/copyable_text.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
 class DocumentosTableDataBuilder {
   static List<PlutoColumn> buildColumns(BuildContext context) {
-    final FormFacturaBloc formFacturaBloc = context.read<FormFacturaBloc>();
-    final EntryAutocomplete titleTipoDocumento = formFacturaBloc.state.entriesTiposDocumentos.firstWhere(
-      (EntryAutocomplete element) => element.codigo == formFacturaBloc.request.documentoCodigo,
-      orElse: () => EntryAutocomplete(title: ""), // Ajusta esto según tu modelo
+    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final EntryAutocomplete titleTipoDocumento = facturaBloc.state.entriesTiposDocumentos.firstWhere(
+      (EntryAutocomplete element) => element.codigo == facturaBloc.request.documentoCodigo,
+      orElse: () => EntryAutocomplete(title: ""),
     );
     return <PlutoColumn>[
       PlutoColumn(
@@ -27,11 +30,11 @@ class DocumentosTableDataBuilder {
         enableDropToResize: false,
         type: PlutoColumnType.text(),
         enableRowChecked: true,
-        minWidth: 88,
-        width: 88,
+        minWidth: 110,
+        width: 110,
         renderer: (PlutoColumnRendererContext renderContext) => buildFiledItem(renderContext, context),
         footerRenderer: (PlutoColumnFooterRendererContext context) =>
-            buildRenderContadorFooter(context, formFacturaBloc.state.documentos.length, formFacturaBloc.state.documentosSelected.length),
+            buildRenderContadorFooter(context, facturaBloc.state.documentos.length, facturaBloc.state.documentosSelected.length),
       ),
       PlutoColumn(
         title: 'Documento',
@@ -80,13 +83,13 @@ class DocumentosTableDataBuilder {
       PlutoColumn(
         title: 'Adiciones',
         field: 'adiciones',
-        type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
+        type: PlutoColumnType.text(),
         enableEditingMode: false,
         enableContextMenu: false,
         enableDropToResize: false,
         minWidth: 120,
-        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.green.shade700),
-        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.green.shade700),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldAdicion(rendererContext, context),
+        footerRenderer: buildRenderSumAdicionesFooter,
       ),
       PlutoColumn(
         title: 'Descuentos',
@@ -95,9 +98,9 @@ class DocumentosTableDataBuilder {
         enableContextMenu: false,
         enableDropToResize: false,
         minWidth: 120,
-        type: PlutoColumnType.currency(name: r'$', decimalDigits: 0),
-        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldValuesCurrency(rendererContext, Colors.red.shade700),
-        footerRenderer: (PlutoColumnFooterRendererContext context) => buildRenderSumFooter(context, Colors.red.shade700),
+        type: PlutoColumnType.text(),
+        renderer: (PlutoColumnRendererContext rendererContext) => buildFieldDescuento(rendererContext, context),
+        footerRenderer: buildRenderSumDescuentosFooter,
       ),
       PlutoColumn(
         title: 'Impuestos',
@@ -137,11 +140,22 @@ class DocumentosTableDataBuilder {
   static List<PlutoRow> buildDataRows(List<Documento> documentos, BuildContext context) {
     final List<PlutoRow> dataRows = <PlutoRow>[];
     documentos.asMap().forEach((int index, Documento documento) {
-      final double totalAdiciones = documento.adiciones.fold(0, (double total, Adicion adicion) => total + adicion.valor);
-      final double totalDescuentos = documento.descuentos.fold(0, (double total, Descuento descuento) => total + descuento.valor);
+      final Map<String, dynamic> itemMap = <String, dynamic>{
+        'item': index + 1,
+        'isAnulacion': documento.isAnulacion,
+      };
+
+      final Map<String, dynamic> dataAdiciones = <String, dynamic>{
+        for (final Adicion adicion in documento.adiciones) adicion.nombre: adicion.valor,
+      };
+
+      final Map<String, dynamic> dataDescuentos = <String, dynamic>{
+        for (final Descuento descuento in documento.descuentos) descuento.nombre: descuento.valor,
+      };
 
       final Map<String, String> infoDocumentoMap = <String, String>{
-        'documento': "${documento.impreso} (${documento.documento})",
+        'documento_impreso': "${documento.impreso}",
+        'documento_codigo': "${documento.documento}",
         'centroCosto': documento.centroCostoNombre,
         'tipo': documento.tipoDocumentoNombre,
         'origen': documento.origen,
@@ -157,15 +171,15 @@ class DocumentosTableDataBuilder {
       };
 
       final Map<String, dynamic> dataColumn = <String, dynamic>{
-        'item': index + 1,
+        'item': jsonEncode(itemMap),
         'documento': documento.documento,
         'infoDocumento': jsonEncode(infoDocumentoMap),
         'obs': jsonEncode(obsMap),
         'egreso': documento.valorEgreso,
         'ingreso': documento.valorIngreso,
         'impuestos': jsonEncode(mapImpuestos),
-        'adiciones': totalAdiciones,
-        'descuentos': totalDescuentos,
+        'adiciones': jsonEncode(dataAdiciones),
+        'descuentos': jsonEncode(dataDescuentos),
         'total': documento.valorTotal,
       };
       final PlutoRow row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
@@ -175,27 +189,46 @@ class DocumentosTableDataBuilder {
   }
 
   static Widget buildFiledItem(PlutoColumnRendererContext rendererContext, BuildContext context) {
-    return BlocBuilder<FormFacturaBloc, FormFacturaState>(
-      builder: (BuildContext context, FormFacturaState state) {
+    return BlocBuilder<FacturaBloc, FacturaState>(
+      builder: (BuildContext context, FacturaState state) {
+        final String cellValue = rendererContext.cell.value.toString();
+        final dynamic documentoMap = jsonDecode(cellValue);
+        final int item = documentoMap["item"];
+        final bool isAnulacion = documentoMap["isAnulacion"];
         final List<Documento> itemDocumentos = state.documentosSelected;
         final int documento = rendererContext.cell.row.cells["documento"]!.value;
         final bool isPresent = itemDocumentos.any((Documento element) => element.documento == documento);
         rendererContext.cell.row.setChecked(isPresent);
 
-        return Container(
-          width: 12,
-          height: 20,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Center(
-            child: Text(
-              rendererContext.cell.value.toString(),
-              style: TextStyle(color: AppTheme.colorThemePrimary),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            isAnulacion
+                ? Center(
+                    child: Lottie.asset(
+                      'assets/animations/warning.json',
+                      height: 48,
+                      width: 48,
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : const SizedBox(),
+            Container(
+              width: 24,
+              height: 24,
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Center(
+                child: Text(
+                  "$item",
+                  style: TextStyle(color: AppTheme.colorThemePrimary),
+                ),
+              ),
             ),
-          ),
+          ],
         );
       },
     );
@@ -210,7 +243,7 @@ class DocumentosTableDataBuilder {
         children.add(
           TableRow(
             children: <Widget>[
-              buildCellContent(Text(key)),
+              buildCellContent(Text(key, style: const TextStyle(fontSize: 12))),
               buildCellContent(
                 CurrencyLabel(
                   text: '${value.toInt()}',
@@ -225,21 +258,22 @@ class DocumentosTableDataBuilder {
     }
 
     return Center(
-      child: SizedBox(
-        child: Table(
-          border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            TableRow(
-              decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
-              children: <Widget>[
-                buldTitleCell("Nombre", Colors.black),
-                buldTitleCell("Valor", Colors.black),
-              ],
-            ),
-            ...children,
-          ],
+      child: Table(
+        border: TableBorder.all(
+          color: Theme.of(context).colorScheme.primaryFixedDim,
+          borderRadius: BorderRadius.circular(8),
         ),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: <TableRow>[
+          TableRow(
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer),
+            children: <Widget>[
+              buldTitleCell("Nombre", Colors.black),
+              buldTitleCell("Valor", Colors.black),
+            ],
+          ),
+          ...children,
+        ],
       ),
     );
   }
@@ -268,7 +302,8 @@ class DocumentosTableDataBuilder {
   static Widget buildFiledDocumento(PlutoColumnRendererContext rendererContext, BuildContext context) {
     final String cellValue = rendererContext.cell.value.toString();
     final Map<String, dynamic> documentoMap = jsonDecode(cellValue);
-    final String documentoText = documentoMap['documento'];
+    final String documentoImpreso = documentoMap['documento_impreso'];
+    final String documentoCodigo = documentoMap['documento_codigo'];
     final String centroCosto = documentoMap['centroCosto'];
     final String tipo = documentoMap['tipo'];
     final String origen = documentoMap['origen'];
@@ -279,9 +314,17 @@ class DocumentosTableDataBuilder {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            documentoText,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+          Row(
+            children: <Widget>[
+              Text(
+                "( $documentoImpreso ) ",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+              ),
+              CopyableText(
+                documentoCodigo,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           _DetailDocumento(title: 'CC', subtitle: centroCosto, icon: Icons.monetization_on_outlined),
@@ -360,6 +403,38 @@ class DocumentosTableDataBuilder {
     );
   }
 
+  static Widget buildFieldAdicion(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final Map<String, dynamic> adicionesMap = jsonDecode(rendererContext.cell.value.toString());
+    final double totalAdiciones = adicionesMap.values.fold(0.0, (double total, dynamic value) => total + value);
+    final int documento = rendererContext.cell.row.cells["documento"]!.value;
+    return InkWell(
+      onTap: () {
+        showDataAdicionesAndDescuentos(context, adicionesMap, "Adiciones: $documento", Colors.green.shade800);
+      },
+      child: SizedBox(
+        width: 100,
+        height: 140,
+        child: CurrencyLabel(text: '${totalAdiciones.toInt()}', color: Colors.green.shade800),
+      ),
+    );
+  }
+
+  static Widget buildFieldDescuento(PlutoColumnRendererContext rendererContext, BuildContext context) {
+    final Map<String, dynamic> descuentoMap = jsonDecode(rendererContext.cell.value.toString());
+    final double totalAdiciones = descuentoMap.values.fold(0.0, (double total, dynamic value) => total + value);
+    final int documento = rendererContext.cell.row.cells["documento"]!.value;
+    return InkWell(
+      onTap: () {
+        showDataAdicionesAndDescuentos(context, descuentoMap, "Descuentos: $documento", Colors.red.shade800);
+      },
+      child: SizedBox(
+        width: 100,
+        height: 140,
+        child: CurrencyLabel(text: '${totalAdiciones.toInt()}', color: Colors.red.shade800),
+      ),
+    );
+  }
+
   static Widget buildFieldValueTotal(PlutoColumnRendererContext rendererContext, Color color) {
     return Tooltip(
       message: "(Valor Ingreso + Adiciones - Descuentos) + IVA - (Retefuente + Reteica + Reteiva)",
@@ -380,9 +455,9 @@ class DocumentosTableDataBuilder {
           onPressed: () {
             rendererContext.stateManager.removeRows(<PlutoRow>[rendererContext.row]);
 
-            final List<Documento> documentosAll = context.read<FormFacturaBloc>().state.documentos;
+            final List<Documento> documentosAll = context.read<FacturaBloc>().state.documentos;
             final Documento documento = documentosAll[rendererContext.rowIdx];
-            context.read<FormFacturaBloc>().add(RemoveDocumentoFormFacturaEvent(documento));
+            context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento));
           },
           size: 32,
           icon: Icons.delete_outlined,
@@ -404,6 +479,42 @@ Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Co
       return <InlineSpan>[
         TextSpan(text: '\$ $text', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color)),
       ];
+    },
+  );
+}
+
+Widget buildRenderSumAdicionesFooter(PlutoColumnFooterRendererContext rendererContext) {
+  return BlocBuilder<FacturaBloc, FacturaState>(
+    builder: (BuildContext context, FacturaState state) {
+      final double totalAdiciones = state.documentos.fold(0.0, (double total, Documento documento) {
+        return total + documento.adiciones.fold(0.0, (num totalAdicion, Adicion adicion) => totalAdicion + (adicion.valor));
+      });
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CurrencyLabel(
+          text: '${totalAdiciones.toInt()}',
+          color: Colors.green.shade800,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    },
+  );
+}
+
+Widget buildRenderSumDescuentosFooter(PlutoColumnFooterRendererContext rendererContext) {
+  return BlocBuilder<FacturaBloc, FacturaState>(
+    builder: (BuildContext context, FacturaState state) {
+      final double totalDescuentos = state.documentos.fold(0.0, (double total, Documento documento) {
+        return total + documento.descuentos.fold(0.0, (num totalDescuento, Descuento descuento) => totalDescuento + (descuento.valor));
+      });
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CurrencyLabel(
+          text: '${totalDescuentos.toInt()}',
+          color: Colors.red.shade800,
+          fontWeight: FontWeight.bold,
+        ),
+      );
     },
   );
 }
@@ -439,4 +550,64 @@ class _DetailDocumento extends StatelessWidget {
       ],
     );
   }
+}
+
+void showDataAdicionesAndDescuentos(BuildContext context, Map<String, dynamic> data, String title, Color color) {
+  final List<TableRow> children = <TableRow>[];
+  double total = 0;
+  data.forEach((String key, dynamic value) {
+    total += value;
+    children.add(
+      TableRow(
+        children: <Widget>[
+          DocumentosTableDataBuilder.buildCellContent(Text(key, style: const TextStyle(fontSize: 12))),
+          DocumentosTableDataBuilder.buildCellContent(CurrencyLabel(text: '${value.toInt()}', color: color, fontSize: 14)),
+        ],
+      ),
+    );
+  });
+
+  children.add(
+    TableRow(
+      children: <Widget>[
+        DocumentosTableDataBuilder.buildCellContent(const Text("Total", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
+        DocumentosTableDataBuilder.buildCellContent(
+          CurrencyLabel(text: '${total.toInt()}', color: color, fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  );
+
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      title: Text(title),
+      content: Container(
+        padding: const EdgeInsets.all(16),
+        width: 360,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Table(
+              border: TableBorder.all(color: Theme.of(context).colorScheme.primaryFixedDim),
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: <TableRow>[
+                TableRow(
+                  decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
+                  children: <Widget>[
+                    DocumentosTableDataBuilder.buldTitleCell("Nombre", Colors.black),
+                    DocumentosTableDataBuilder.buldTitleCell("Valor", Colors.black),
+                  ],
+                ),
+                ...children,
+              ],
+            ),
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FilledButton(onPressed: () => context.pop(), child: const Text("OK")),
+      ],
+    ),
+  );
 }
