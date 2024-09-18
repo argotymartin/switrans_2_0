@@ -11,14 +11,15 @@ part 'pais_state.dart';
 
 class PaisBloc extends Bloc<PaisEvent, PaisState> {
   final AbstractPaisRepository _repository;
-
   PaisRequest _request = PaisRequest();
+
   PaisBloc(this._repository) : super(const PaisState().initial()) {
     on<InitialPaisEvent>(_onInitialPais);
     on<GetPaisEvent>(_onGetPais);
     on<SetPaisEvent>(_onSetPais);
     on<UpdatePaisEvent>(_onUpdatePais);
     on<ErrorFormPaisEvent>(_onErrorFormPais);
+    on<CleanFormPaisEvent>(_onCleanFormPais);
   }
 
   Future<void> _onInitialPais(InitialPaisEvent event, Emitter<PaisState> emit) async {
@@ -48,6 +49,7 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
 
   Future<void> _onUpdatePais(UpdatePaisEvent event, Emitter<PaisState> emit) async {
     emit(state.copyWith(status: PaisStatus.loading));
+
     final List<DataState<Pais>> dataStateList = await Future.wait(
       event.requestList.map((PaisRequest request) => _repository.updatePaisService(request)),
     );
@@ -76,6 +78,11 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
 
   Future<void> _onErrorFormPais(ErrorFormPaisEvent event, Emitter<PaisState> emit) async {
     emit(state.copyWith(status: PaisStatus.error, error: event.error));
+  }
+
+  Future<void> _onCleanFormPais(CleanFormPaisEvent event, Emitter<PaisState> emit) async {
+    request.clean();
+    emit(state.copyWith(status: PaisStatus.initial, paises: <Pais>[], error: ""));
   }
 
   PaisRequest get request => _request;

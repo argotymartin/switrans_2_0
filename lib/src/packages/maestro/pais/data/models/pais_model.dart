@@ -12,6 +12,32 @@ class PaisModel extends Pais {
         codigo: json['codigo'],
         nombre: json['nombre'],
         isActivo: json['activo'],
-        fechaCreacion: json['updated'],
+        fechaCreacion: json['fechaCreacion'].toString(),
       );
+
+  factory PaisModel.fromRequestAPI(Pais pais) {
+    return PaisModel(
+      codigo: pais.codigo,
+      nombre: pais.nombre,
+      isActivo: pais.isActivo,
+      fechaCreacion: '',
+    );
+  }
+
+  factory PaisModel.fromAPIResponse(Map<String, dynamic> map) {
+    return PaisModel(
+      codigo: map['codigo'],
+      nombre: map['nombre'],
+      isActivo: map['activo'],
+      fechaCreacion: '',
+    );
+  }
+
+  Map<String, dynamic> toJsonAPI() {
+    return <String, dynamic>{
+      'codigo': codigo,
+      'nombre': nombre,
+      'isActivo': isActivo,
+    };
+  }
 }

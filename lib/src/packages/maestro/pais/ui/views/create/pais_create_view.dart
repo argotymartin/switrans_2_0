@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
+import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
@@ -77,7 +78,8 @@ class _BuildFieldsForm extends StatelessWidget {
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                context.read<PaisBloc>().add(SetPaisEvent(request));
+                paisBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
+                context.read<PaisBloc>().add(SetPaisEvent(paisBloc.request));
               }
             },
             icon: Icons.save,

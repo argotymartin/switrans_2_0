@@ -7,15 +7,14 @@ class PaisState extends Equatable {
   final Pais? pais;
   final List<Pais> paises;
   final DioException? exception;
-  final String? error;
+  final String error;
   const PaisState({
     this.status,
     this.pais,
     this.exception,
     this.paises = const <Pais>[],
-    this.error,
+    this.error = "",
   });
-
   PaisState initial() => const PaisState(status: PaisStatus.initial);
 
   PaisState copyWith({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/data/models/request/pais_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/pais.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
@@ -84,7 +85,7 @@ class _BuildFieldsForm extends StatelessWidget {
             ],
           ),
           FormButton(label: "Buscar", icon: Icons.search, onPressed: onPressed),
-          if (state.status == PaisStatus.error) ErrorModal(title: state.error!),
+          if (state.status == PaisStatus.error) ErrorModal(title: state.error),
         ],
       ),
     );
@@ -103,6 +104,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
+    final PaisBloc paisBloc = context.read<PaisBloc>();
     return BlocBuilder<PaisBloc, PaisState>(
       builder: (BuildContext context, PaisState state) {
         if (state.status == PaisStatus.consulted) {
@@ -115,6 +117,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             final List<PaisRequest> requestList = <PaisRequest>[];
             for (final Map<String, dynamic> map in listUpdate) {
               final PaisRequest request = PaisRequestModel.fromTable(map);
+              paisBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
+              context.read<PaisBloc>().add(SetPaisEvent(paisBloc.request));
+              request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(request);
             }
             context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
@@ -124,7 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: pais.fechaCreacion, edit: false),
+              'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
               'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
             };
           }

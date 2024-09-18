@@ -32,3 +32,7 @@ class ErrorFormPaisEvent extends PaisEvent {
   final String error;
   const ErrorFormPaisEvent(this.error);
 }
+
+class CleanFormPaisEvent extends PaisEvent {
+  const CleanFormPaisEvent();
+}
