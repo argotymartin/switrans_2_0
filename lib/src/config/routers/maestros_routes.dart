@@ -8,6 +8,9 @@ import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/ui/views/create/departamento_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/ui/views/search/departamento_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
@@ -47,6 +50,7 @@ class MaestrosRoutes {
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
     routes.add(routerPais());
+    routes.add(routerDepartamento());
     return routes;
   }
 
@@ -275,6 +279,35 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (_, __) => const PaisSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
+  static ShellRoute routerDepartamento() {
+    const String modulePath = "departamento";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<DepartamentoBloc>(
+          create: (_) => DepartamentoBloc(injector())..add(const InitialDepartamentoEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<DepartamentoBloc>().add(const InitialDepartamentoEvent());
+            }
+            return const DepartamentoCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const DepartamentoSearchView(),
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

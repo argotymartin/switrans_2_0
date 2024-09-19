@@ -19,6 +19,10 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasour
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/datasources/api/backend/departamento_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/repositories/departamento_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/departamento_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/modulo_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
@@ -101,6 +105,10 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<PaisApi>(PaisApi(injector()));
   injector.registerSingleton<AbstractPaisRepository>(PaisRepositoryImpl(injector()));
   injector.registerSingleton<PaisBloc>(PaisBloc(injector()));
+
+  injector.registerSingleton<DepartamentoApi>(DepartamentoApi(injector()));
+  injector.registerSingleton<AbstractDepartamentoRepository>(DepartamentoRepositoryImpl(injector()));
+  injector.registerSingleton<DepartamentoBloc>(DepartamentoBloc(injector()));
 
   injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
   injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
