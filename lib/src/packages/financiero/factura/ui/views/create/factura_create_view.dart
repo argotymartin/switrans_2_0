@@ -97,6 +97,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Fecha Inicio - Fecha Fin",
                 value: request.rangoFechas,
                 onChanged: (String result) => request.rangoFechas = result,
+                isRange: true,
               ),
               FieldFacturaDocumentos(
                 title: "Documentos",
