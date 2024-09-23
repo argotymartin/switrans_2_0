@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 
 class ResolucionEmpresaModel extends ResolucionEmpresa {
   ResolucionEmpresaModel({
@@ -7,7 +7,7 @@ class ResolucionEmpresaModel extends ResolucionEmpresa {
     required super.nit,
   });
 
-  factory ResolucionEmpresaModel.fromDB(Map<String, dynamic> map) => ResolucionEmpresaModel(
+  factory ResolucionEmpresaModel.fromApi(Map<String, dynamic> map) => ResolucionEmpresaModel(
         codigo: map['codigo'],
         nombre: map['empresa'],
         nit: map['nit'],

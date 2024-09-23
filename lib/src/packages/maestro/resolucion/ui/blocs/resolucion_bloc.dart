@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
@@ -16,9 +16,9 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
 
   ResolucionBloc(this._resolucionRepository) : super(const ResolucionState().initial()) {
     on<InitializationResolucionEvent>(_onInitialization);
-    on<GetResolucionesEvent>(_onGetResolucion);
+    on<GetResolucionesEvent>(_onGetResoluciones);
     on<SetResolucionEvent>(_onSetResolucion);
-    on<UpdateResolucionesEvent>(_onUpdateResolucion);
+    on<UpdateResolucionesEvent>(_onUpdateResoluciones);
     on<ErrorFormResolucionEvent>(_onErrorFormResolucion);
     on<CleanFormResolucionEvent>(_onCleanFormResolucion);
     on<SelectResolucionEmpresaEvent>(_onSelectResolucionEmpresa);
@@ -27,11 +27,11 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
 
   Future<void> _onInitialization(InitializationResolucionEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading, resolucionesCentroCosto: <EntryAutocomplete>[]));
-    final DataState<List<ResolucionDocumento>> documentResponse = await _resolucionRepository.getDocumentosService();
+    final DataState<List<ResolucionDocumento>> documentoResponse = await _resolucionRepository.getDocumentosService();
     final DataState<List<ResolucionEmpresa>> empresaResponse = await _resolucionRepository.getEmpresasService();
-    if (empresaResponse.data != null || documentResponse.data != null) {
+    if (empresaResponse.data != null || documentoResponse.data != null) {
       final List<EntryAutocomplete> entriesDocumentos =
-          documentResponse.data!.map((ResolucionDocumento t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
+          documentoResponse.data!.map((ResolucionDocumento t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
       final List<EntryAutocomplete> entriesEmpresa = empresaResponse.data!
           .map((ResolucionEmpresa t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo, subTitle: t.nit))
           .toList();
@@ -47,7 +47,7 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
     }
   }
 
-  Future<void> _onGetResolucion(GetResolucionesEvent event, Emitter<ResolucionState> emit) async {
+  Future<void> _onGetResoluciones(GetResolucionesEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
     final DataState<List<Resolucion>> response = await _resolucionRepository.getResolucionesService(request);
     if (response.data != null) {
@@ -67,7 +67,7 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
     }
   }
 
-  Future<void> _onUpdateResolucion(UpdateResolucionesEvent event, Emitter<ResolucionState> emit) async {
+  Future<void> _onUpdateResoluciones(UpdateResolucionesEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
     final List<DataState<Resolucion>> dataStateList = await Future.wait(
       event.requestList!.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),

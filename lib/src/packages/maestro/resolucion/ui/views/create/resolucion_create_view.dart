@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
@@ -44,7 +44,7 @@ class ResolucionCreateView extends StatelessWidget {
                 ),
               ],
             ),
-            //if (state.status == ResolucionStatus.loading) const LoadingModal(),
+            if (state.status == ResolucionStatus.loading) const LoadingModal(),
           ],
         );
       },

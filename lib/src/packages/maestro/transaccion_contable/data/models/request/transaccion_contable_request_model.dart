@@ -10,7 +10,7 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
     required super.tipoImpuesto,
   });
 
-  factory TransaccionContableRequestModel.  fromMapTable(Map<String, dynamic> map) => TransaccionContableRequestModel(
+  factory TransaccionContableRequestModel.fromMapTable(Map<String, dynamic> map) => TransaccionContableRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
         sigla: map['sigla'],

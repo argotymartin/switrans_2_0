@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/data/models/request/resolucion_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';

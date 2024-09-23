@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 
 class ResolucionModel extends Resolucion {
   ResolucionModel({
@@ -19,7 +19,7 @@ class ResolucionModel extends Resolucion {
     required super.nombreUsuario,
   });
 
-  factory ResolucionModel.fromDB(Map<String, dynamic> map) => ResolucionModel(
+  factory ResolucionModel.fromApi(Map<String, dynamic> map) => ResolucionModel(
         codigo: map['codigo'],
         numero: map['numero'],
         fecha: map['fecha'],

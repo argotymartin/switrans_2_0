@@ -15,7 +15,7 @@ class DatePickerInputForm extends StatelessWidget {
     required this.title,
     required this.value,
     required this.onChanged,
-    required this.isRange,
+    this.isRange = true,
     this.isRequired = true,
     this.autofocus = false,
     super.key,

@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 
 class ResolucionDocumentoModel extends ResolucionDocumento {
   ResolucionDocumentoModel({
@@ -6,7 +6,7 @@ class ResolucionDocumentoModel extends ResolucionDocumento {
     required super.nombre,
   });
 
-  factory ResolucionDocumentoModel.fromDB(Map<String, dynamic> map) => ResolucionDocumentoModel(
+  factory ResolucionDocumentoModel.fromApi(Map<String, dynamic> map) => ResolucionDocumentoModel(
         codigo: map['codigoDocumento'],
         nombre: map['nombre'],
       );

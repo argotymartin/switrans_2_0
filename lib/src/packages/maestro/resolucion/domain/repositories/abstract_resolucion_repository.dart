@@ -1,4 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/resolucion_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractResolucionRepository {
