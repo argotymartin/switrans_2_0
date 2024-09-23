@@ -11,8 +11,7 @@ COPY --from=analyze /app/pubspec.yaml /app/pubspec.lock* ./
 COPY --from=analyze /app/.dart_tool/ ./.dart_tool/
 COPY . .
 COPY .env .
-RUN export $(cat .env | xargs)
-RUN flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=${ENVIRONMENT}
+RUN export $(cat .env | xargs) && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=${ENVIRONMENT}
 
 FROM node:slim
 WORKDIR /app
@@ -21,5 +20,6 @@ COPY /web/node_server/ .
 RUN npm install
 EXPOSE 3000
 ENTRYPOINT ["npm", "start"]
+
 
 
