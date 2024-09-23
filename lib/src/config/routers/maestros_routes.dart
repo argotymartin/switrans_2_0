@@ -17,6 +17,9 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/views/create/resolucion_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/views/search/resolucion_search_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
@@ -43,6 +46,7 @@ class MaestrosRoutes {
     routes.add(routerPaquete());
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
+    routes.add(routerResolucion());
     return routes;
   }
 
@@ -314,6 +318,40 @@ class MaestrosRoutes {
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
+      ],
+    );
+  }
+
+  static ShellRoute routerResolucion() {
+    const String modulePath = "resolucion";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<ResolucionBloc>(
+          create: (_) => ResolucionBloc(injector())..add(const InitializationResolucionEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<ResolucionBloc>().add(const CleanFormResolucionEvent());
+            }
+            return const ResolucionCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (BuildContext context, __) {
+            if (Preferences.isResetForm) {
+              context.read<ResolucionBloc>().add(const CleanFormResolucionEvent());
+            }
+            return const ResolucionSearchView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+              ),
       ],
     );
   }

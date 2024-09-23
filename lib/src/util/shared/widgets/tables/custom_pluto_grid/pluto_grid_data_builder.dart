@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/inputs/date_input_picker.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_area_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -86,7 +87,10 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldCheckBox(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldCheckBox(
+                renderContext: renderContext,
+                editing: isEdit,
+              ),
             ),
           );
         }
@@ -98,7 +102,10 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldDate(renderContext: renderContext),
+              renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldDate(
+                renderContext: renderContext,
+                editing: isEdit,
+              ),
             ),
           );
         }
@@ -248,43 +255,54 @@ class _BuildFieldTextEditState extends State<_BuildFieldTextEdit> {
 
 class _BuildFieldDate extends StatelessWidget {
   final PlutoColumnRendererContext renderContext;
+  final bool editing;
   const _BuildFieldDate({
     required this.renderContext,
+    required this.editing,
   });
 
   @override
   Widget build(BuildContext context) {
     final List<String> dateValue = renderContext.cell.value.toString().split(" ");
     final String fecha = dateValue[0];
-    final String hora = dateValue[1].split(".")[0];
+    final String hora = dateValue.length > 1 ? dateValue[1].split(".")[0] : "";
     final Color color = Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.6);
-    return Row(
-      children: <Widget>[
-        Icon(Icons.calendar_month, color: color),
-        Text(
-          fecha,
-        ),
-        const SizedBox(width: 4),
-        Icon(Icons.timelapse_rounded, color: color),
-        Text(
-          hora,
-        ),
-      ],
-    );
+    return editing
+        ? DateInputPicker(
+            onDateSelected: (String value) => renderContext.cell.value = value,
+            dateInitialValue: renderContext.cell.value.toString(),
+          )
+        : Row(
+            children: <Widget>[
+              Icon(Icons.calendar_month, color: color),
+              Text(
+                fecha,
+              ),
+              hora.isEmpty ? Container() : const SizedBox(width: 4),
+              hora.isEmpty ? Container() : Icon(Icons.timelapse_rounded, color: color),
+              hora.isEmpty
+                  ? Container()
+                  : Text(
+                      hora,
+                    ),
+            ],
+          );
   }
 }
 
 class _BuildFieldCheckBox extends StatelessWidget {
   final PlutoColumnRendererContext renderContext;
+  final bool editing;
   const _BuildFieldCheckBox({
     required this.renderContext,
+    required this.editing,
   });
 
   @override
   Widget build(BuildContext context) {
     void onChangedValue(bool newValue) => renderContext.cell.value = newValue;
     return Center(
-      child: SwitchBoxInput(onChanged: onChangedValue, value: renderContext.cell.value),
+      child: SwitchBoxInput(onChanged: editing ? onChangedValue : null, value: renderContext.cell.value),
     );
   }
 }
@@ -299,16 +317,13 @@ class _BuildFieldAutoComplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: AutocompleteInput(
-          entryCodigoSelected: renderContext.cell.value,
-          entries: entryMenus,
-          onPressed: (EntryAutocomplete result) {
-            renderContext.cell.value = result.codigo;
-          },
-        ),
+    return Center(
+      child: AutocompleteInput(
+        entryCodigoSelected: renderContext.cell.value,
+        entries: entryMenus,
+        onPressed: (EntryAutocomplete result) {
+          renderContext.cell.value = result.codigo;
+        },
       ),
     );
   }

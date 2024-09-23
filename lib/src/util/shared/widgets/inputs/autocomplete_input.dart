@@ -80,8 +80,10 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
               clearButtonProps: ClearButtonProps(
                 isVisible: true,
                 onPressed: () {
-                  entryAutocompleteSelected = null;
-                  widget.onPressed!(EntryAutocomplete(title: ""));
+                  setState(() {
+                    entryAutocompleteSelected = null;
+                    widget.onPressed!.call(EntryAutocomplete(title: ""));
+                  });
                 },
               ),
               popupProps: PopupPropsMultiSelection<EntryAutocomplete>.menu(
@@ -133,16 +135,21 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                 ),
               ),
               dropdownBuilder: (BuildContext context, EntryAutocomplete? selectedItem) {
-                if (selectedItem != null) {
-                  entryAutocompleteSelected = selectedItem;
-                  widget.onPressed?.call(selectedItem);
-                  Future<void>.microtask(() {
-                    if (mounted) {
-                      setState(() {
-                        isError = false;
-                      });
-                    }
-                  });
+                if (selectedItem != null ) {
+                  if (entryAutocompleteSelected == null || entryAutocompleteSelected != selectedItem) {
+                    entryAutocompleteSelected = selectedItem;
+                    widget.onPressed?.call(selectedItem);
+                    Future<void>.microtask(() {
+                      if (mounted) {
+                        setState(() {
+                          isError = false;
+                        });
+                      }
+                    });
+                   }
+                  if (entryAutocompleteSelected == null) {
+                    return const Text("Seleccionar item");
+                  }
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
