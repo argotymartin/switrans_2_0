@@ -20,7 +20,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/reposito
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/datasources/api/backend/departamento_api.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/repositories/departamento_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/repositories/backend/departamento_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/departamento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/modulo_api_pocketbase.dart';

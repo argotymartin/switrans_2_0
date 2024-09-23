@@ -8,7 +8,7 @@ class DepartamentoApiPocketBase {
   final Dio _dio;
   DepartamentoApiPocketBase(this._dio);
 
-  Future<Response<dynamic>> getDepartamentosApi1(DepartamentoRequest request) async {
+  Future<Response<dynamic>> getDepartamentosApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
 
@@ -19,7 +19,7 @@ class DepartamentoApiPocketBase {
     return response;
   }
 
-  Future<Response<dynamic>> setPaisApi(DepartamentoRequest request) async {
+  Future<Response<dynamic>> setDepartamentoApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
     requestMap["codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "departamento", field: "codigo");
@@ -44,5 +44,16 @@ class DepartamentoApiPocketBase {
     final Response<dynamic> response = await _dio.patch(url, data: requestMap, queryParameters: <String, dynamic>{"expand": "pais"});
 
     return response;
+  }
+
+  Future<Response<dynamic>> getPaisesApi() async {
+    final String url = '$kPocketBaseUrl/api/collections/pais/records';
+    final Map<String, dynamic> queryParameters = <String, dynamic>{"filter": "(pais_activo = true)"};
+    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    return response;
+  }
+
+  Future<String> getPaisId(int codigo) async {
+    return await FunctionsPocketbase.getIdCollection(dio: _dio, collection: "pais", field: "pais_codigo", value: codigo);
   }
 }
