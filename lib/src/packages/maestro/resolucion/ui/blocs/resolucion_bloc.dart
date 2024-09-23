@@ -30,14 +30,14 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
     final DataState<List<ResolucionDocumento>> documentoResponse = await _resolucionRepository.getDocumentosService();
     final DataState<List<ResolucionEmpresa>> empresaResponse = await _resolucionRepository.getEmpresasService();
     if (empresaResponse.data != null || documentoResponse.data != null) {
-      final List<EntryAutocomplete> entriesDocumentos =
+      final List<EntryAutocomplete> entriesDocumento =
           documentoResponse.data!.map((ResolucionDocumento t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
       final List<EntryAutocomplete> entriesEmpresa = empresaResponse.data!
           .map((ResolucionEmpresa t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo, subTitle: t.nit))
           .toList();
       emit(
         state.copyWith(
-          resolucionesDocumentos: entriesDocumentos,
+          resolucionesDocumentos: entriesDocumento,
           resolucionesEmpresas: entriesEmpresa,
           status: ResolucionStatus.initial,
         ),
@@ -72,17 +72,17 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
     final List<DataState<Resolucion>> dataStateList = await Future.wait(
       event.requestList!.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
     );
-    final List<Resolucion> resoluciones = <Resolucion>[];
+    final List<Resolucion> resolucion = <Resolucion>[];
     final List<DioException> exceptions = <DioException>[];
     for (final DataState<Resolucion> dataState in dataStateList) {
       if (dataState.data != null) {
-        resoluciones.add(dataState.data!);
+        resolucion.add(dataState.data!);
       } else if (dataState.error != null) {
         exceptions.add(dataState.error!);
       }
     }
-    if (resoluciones.isNotEmpty) {
-      emit(state.copyWith(status: ResolucionStatus.consulted, resoluciones: resoluciones));
+    if (resolucion.isNotEmpty) {
+      emit(state.copyWith(status: ResolucionStatus.consulted, resoluciones: resolucion));
     }
     if (exceptions.isNotEmpty) {
       for (final DioException exception in exceptions) {
