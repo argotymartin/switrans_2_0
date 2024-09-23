@@ -12,8 +12,7 @@ stages:
 lints:
   stage: lints
   script:
-    - cd $WORK_DIR
-    - echo $WORK_DIR
+    - cd $WORK_DIR && echo $WORK_DIR
     - echo $CI_COMMIT_BRANCH
     - git remote set-url origin $REPO_URL
     - git fetch --all
@@ -25,7 +24,7 @@ lints:
 build-merge-request:
   stage: review
   script:
-    - cd $WORK_DIR && $WORK_DIR
+    - cd $WORK_DIR && echo $WORK_DIR
     - echo "Construyendo con los cambios del Merge Request..."
     - git fetch --all
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
@@ -39,8 +38,7 @@ build-merge-request:
 build:
   stage: build
   script:
-    - cd $WORK_DIR
-    - echo $WORK_DIR
+    - cd $WORK_DIR && echo $WORK_DIR
     - git checkout develop
     - git pull origin develop
     - git status
@@ -57,7 +55,7 @@ deploy-release:
     - echo "Desplegando la aplicación..."
     - |
       ssh root@192.168.102.21 "
-        cd $WORK_DIR &&
+        cd $WORK_DIR && echo $WORK_DIR &&
         git checkout develop &&
         git pull origin develop &&
         docker compose -f docker-compose-production.yml up --build &&
