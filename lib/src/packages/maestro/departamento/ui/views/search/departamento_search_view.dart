@@ -20,6 +20,9 @@ class DepartamentoSearchView extends StatelessWidget {
         if (state.status == DepartamentoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
+        if (state.status == DepartamentoStatus.succes) {
+          context.read<DepartamentoBloc>().add(const GetDepartamentoEvent());
+        }
       },
       builder: (BuildContext context, DepartamentoState state) {
         return Stack(
@@ -43,7 +46,10 @@ class DepartamentoSearchView extends StatelessWidget {
 
 class _BuildFieldsForm extends StatelessWidget {
   final DepartamentoState state;
-  const _BuildFieldsForm(this.state);
+  const _BuildFieldsForm(
+    this.state,
+  );
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -85,8 +91,8 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               SegmentedInputForm(
                 title: "Activo",
-                value: request.isActivo,
-                onChanged: (bool? newValue) => request.isActivo = newValue,
+                value: request.estado,
+                onChanged: (bool? newValue) => request.estado = newValue,
               ),
             ],
           ),
@@ -124,11 +130,11 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             for (final Map<String, dynamic> map in listUpdate) {
               final DepartamentoRequest request = DepartamentoRequestModel.fromTable(map);
               departamentoBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<DepartamentoBloc>().add(SetDepartamentoEvent(departamentoBloc.request));
+              context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(request);
             }
-            context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
+            //context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Departamento departamento) {
@@ -137,7 +143,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'nombre': DataItemGrid(type: Tipo.text, value: departamento.nombre, edit: true),
               'pais': DataItemGrid(type: Tipo.select, value: departamento.pais, edit: true, entryMenus: state.entriesPaises),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: departamento.fechaCreacion, edit: false),
-              'activo': DataItemGrid(type: Tipo.boolean, value: departamento.isActivo, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: departamento.estado, edit: true),
             };
           }
 

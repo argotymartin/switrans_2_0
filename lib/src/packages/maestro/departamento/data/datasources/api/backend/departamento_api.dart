@@ -13,17 +13,15 @@ class DepartamentoApi {
   Future<Response<dynamic>> getDepartamentosApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
     final String url = '$kBackendBaseUrl/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJsonAPI();
-    params['codigoPais'] = params['pais'];
-    params.remove('pais');
-    final Response<dynamic> response = await _dio.get(url, data: params);
+    final Map<String, dynamic> params = requestModel.toJsonConsultarAPI();
+    final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
 
   Future<Response<dynamic>> setDepartamentoApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
     final String url = '$kBackendBaseUrl/$endPoint/crear';
-    final Map<String, dynamic> params = requestModel.toJsonAPI();
+    final Map<String, dynamic> params = requestModel.toJsonCrearAPI();
     final Response<dynamic> response = await _dio.post(url, data: params);
     return response;
   }
@@ -31,8 +29,8 @@ class DepartamentoApi {
   Future<Response<dynamic>> updateDepartamentoApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
     final String url = '$kBackendBaseUrl/$endPoint/actualizar/${request.codigo}';
-    final Map<String, dynamic> params = requestModel.toJsonAPI();
-    final Response<dynamic> responseUpdate = await _dio.patch(url, data: params);
+    final Map<String, dynamic> params = requestModel.toJsonUpdateAPI();
+    final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
       final DepartamentoRequest departamentoRequest = DepartamentoRequest(codigo: request.codigo);

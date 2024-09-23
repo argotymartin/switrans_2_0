@@ -6,9 +6,9 @@ class DepartamentoModel extends Departamento {
     required super.nombre,
     required super.pais,
     required super.codigoUsuario,
-    super.codigoDane,
-    required super.isActivo,
+    required super.estado,
     required super.fechaCreacion,
+    super.codigoDane,
   });
 
   factory DepartamentoModel.fromJson(Map<String, dynamic> json) => DepartamentoModel(
@@ -17,7 +17,7 @@ class DepartamentoModel extends Departamento {
         pais: json['codigoPais'],
         codigoUsuario: json['codigoUsuario'],
         codigoDane: json['codigoDane'],
-        isActivo: json['activo'],
+        estado: json['estado'],
         fechaCreacion: json['fechaCreacion'].toString(),
       );
 
@@ -28,7 +28,7 @@ class DepartamentoModel extends Departamento {
       pais: departamento.pais,
       codigoUsuario: departamento.codigoUsuario,
       codigoDane: departamento.codigoDane,
-      isActivo: departamento.isActivo,
+      estado: departamento.estado,
       fechaCreacion: '',
     );
   }
@@ -40,7 +40,7 @@ class DepartamentoModel extends Departamento {
       pais: map['pais'],
       codigoUsuario: map['codigoUsuario'],
       codigoDane: map['codigoDane'],
-      isActivo: map['activo'],
+      estado: map['activo'],
       fechaCreacion: '',
     );
   }
@@ -52,7 +52,7 @@ class DepartamentoModel extends Departamento {
       'pais': pais,
       'codigoUsuario': codigoUsuario,
       'codigoDane': codigoDane,
-      'isActivo': isActivo,
+      'estado': estado,
     };
   }
 }

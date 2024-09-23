@@ -4,16 +4,13 @@ class Departamento {
   final int codigoUsuario;
   final String? codigoDane;
   final int pais;
-  final bool isActivo;
+  final bool estado;
   final String fechaCreacion;
 
   Departamento({
     required this.codigo,
     required this.nombre,
     required this.codigoUsuario,
-    this.codigoDane,
-    required this.pais,
-    required this.isActivo,
-    required this.fechaCreacion,
+    required this.pais, required this.estado, required this.fechaCreacion, this.codigoDane,
   });
 }

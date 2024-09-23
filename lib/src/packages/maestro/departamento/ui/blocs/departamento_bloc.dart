@@ -24,7 +24,10 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
     on<CleanFormDepartamentoEvent>(_onCleanFormDepartamento);
   }
 
-  Future<void> _onInitialDepartamento(InitialDepartamentoEvent event, Emitter<DepartamentoState> emit) async {
+  Future<void> _onInitialDepartamento(
+      InitialDepartamentoEvent event,
+      Emitter<DepartamentoState> emit,
+      ) async {
     emit(state.copyWith(status: DepartamentoStatus.loading));
     final DataState<List<DepartamentoPais>> resp = await _repository.getPaisesService();
     if (resp.data != null) {

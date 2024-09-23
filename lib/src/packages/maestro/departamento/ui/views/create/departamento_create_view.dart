@@ -87,7 +87,7 @@ class _BuildFieldsForm extends StatelessWidget {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 departamentoBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-                request.isActivo = true;
+                request.estado = true;
                 context.read<DepartamentoBloc>().add(SetDepartamentoEvent(request));
               }
             },

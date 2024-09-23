@@ -5,7 +5,7 @@ class DepartamentoRequest {
   String? nombre;
   int? pais;
   String? fechaCreacion;
-  bool? isActivo;
+  bool? estado;
 
   DepartamentoRequest({
     this.codigo,
@@ -14,7 +14,7 @@ class DepartamentoRequest {
     this.nombre,
     this.pais,
     this.fechaCreacion,
-    this.isActivo,
+    this.estado,
   });
 
   bool hasNonNullField() {
@@ -24,7 +24,7 @@ class DepartamentoRequest {
         nombre != null ||
         pais != null ||
         fechaCreacion != null ||
-        isActivo != null;
+        estado != null;
   }
 
   void clean() {
@@ -34,6 +34,6 @@ class DepartamentoRequest {
     nombre = null;
     pais = null;
     fechaCreacion = null;
-    isActivo = null;
+    estado = null;
   }
 }

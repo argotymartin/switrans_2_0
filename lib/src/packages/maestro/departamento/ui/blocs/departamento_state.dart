@@ -37,5 +37,5 @@ class DepartamentoState extends Equatable {
       );
 
   @override
-  List<Object?> get props => <Object?>[status, departamento, exception, departamentos, entriesPaises, error];
+  List<Object?> get props => <Object?>[departamento, departamentos, departamentos, entriesPaises, exception, error, status];
 }
