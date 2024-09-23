@@ -27,23 +27,23 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
 
   Future<void> _onInitialization(InitializationResolucionEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading, resolucionesCentroCosto: <EntryAutocomplete>[]));
-    final DataState<List<ResolucionDocumento>> documentoResponse = await _resolucionRepository.getDocumentosService();
-    final DataState<List<ResolucionEmpresa>> empresaResponse = await _resolucionRepository.getEmpresasService();
-    if (empresaResponse.data != null || documentoResponse.data != null) {
-      final List<EntryAutocomplete> entriesDocumento =
-          documentoResponse.data!.map((ResolucionDocumento t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
-      final List<EntryAutocomplete> entriesEmpresa = empresaResponse.data!
+    final DataState<List<ResolucionDocumento>> documentosResponse = await _resolucionRepository.getDocumentosService();
+    final DataState<List<ResolucionEmpresa>> empresasResponse = await _resolucionRepository.getEmpresasService();
+    if (empresasResponse.data != null || documentosResponse.data != null) {
+      final List<EntryAutocomplete> entriesDocumentos =
+          documentosResponse.data!.map((ResolucionDocumento t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
+      final List<EntryAutocomplete> entriesEmpresas = empresasResponse.data!
           .map((ResolucionEmpresa t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo, subTitle: t.nit))
           .toList();
       emit(
         state.copyWith(
-          resolucionesDocumentos: entriesDocumento,
-          resolucionesEmpresas: entriesEmpresa,
+          resolucionesDocumentos: entriesDocumentos,
+          resolucionesEmpresas: entriesEmpresas,
           status: ResolucionStatus.initial,
         ),
       );
     } else {
-      emit(state.copyWith(status: ResolucionStatus.exception, exception: empresaResponse.error));
+      emit(state.copyWith(status: ResolucionStatus.exception, exception: empresasResponse.error));
     }
   }
 
@@ -72,17 +72,17 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
     final List<DataState<Resolucion>> dataStateList = await Future.wait(
       event.requestList!.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
     );
-    final List<Resolucion> resolucion = <Resolucion>[];
+    final List<Resolucion> resoluciones = <Resolucion>[];
     final List<DioException> exceptions = <DioException>[];
     for (final DataState<Resolucion> dataState in dataStateList) {
       if (dataState.data != null) {
-        resolucion.add(dataState.data!);
+        resoluciones.add(dataState.data!);
       } else if (dataState.error != null) {
         exceptions.add(dataState.error!);
       }
     }
-    if (resolucion.isNotEmpty) {
-      emit(state.copyWith(status: ResolucionStatus.consulted, resoluciones: resolucion));
+    if (resoluciones.isNotEmpty) {
+      emit(state.copyWith(status: ResolucionStatus.consulted, resoluciones: resoluciones));
     }
     if (exceptions.isNotEmpty) {
       for (final DioException exception in exceptions) {
@@ -108,14 +108,14 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
 
   Future<void> _onSelectResolucionEmpresa(SelectResolucionEmpresaEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
-    final DataState<List<ResolucionCentroCosto>> centroCostoResponse =
+    final DataState<List<ResolucionCentroCosto>> centroCostosResponse =
         await _resolucionRepository.getCentroCostoService(event.requestEmpresa!);
-    if (centroCostoResponse.data != null) {
-      final List<EntryAutocomplete> entriesCentroCosto =
-          centroCostoResponse.data!.map((ResolucionCentroCosto t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
-      emit(state.copyWith(resolucionesCentroCosto: entriesCentroCosto, status: ResolucionStatus.initial));
+    if (centroCostosResponse.data != null) {
+      final List<EntryAutocomplete> entriesCentroCostos =
+          centroCostosResponse.data!.map((ResolucionCentroCosto t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
+      emit(state.copyWith(resolucionesCentroCosto: entriesCentroCostos, status: ResolucionStatus.initial));
     } else {
-      emit(state.copyWith(status: ResolucionStatus.exception, exception: centroCostoResponse.error));
+      emit(state.copyWith(status: ResolucionStatus.exception, exception: centroCostosResponse.error));
     }
   }
 
