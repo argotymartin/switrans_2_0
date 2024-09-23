@@ -20,6 +20,10 @@ void initializeConfig() {
       kPocketBaseUrl = 'http://192.168.102.21:8090';
       kBackendBaseUrl = 'http://192.168.102.18:8082';
       break;
+    default:
+      kPocketBaseUrl = 'http://localhost:8090';
+      kBackendBaseUrl = 'http://192.168.102.18:10000';
+      break;
   }
 }
 
