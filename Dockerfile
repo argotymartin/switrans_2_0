@@ -11,7 +11,7 @@ COPY --from=analyze /app/pubspec.yaml /app/pubspec.lock* ./
 COPY --from=analyze /app/.dart_tool/ ./.dart_tool/
 COPY . .
 COPY .env .
-RUN export $(cat .env | xargs) && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=${ENVIRONMENT}
+RUN export $(cat .env | xargs) && flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=${ENVIRONMENT}
 
 FROM node:slim
 WORKDIR /app
