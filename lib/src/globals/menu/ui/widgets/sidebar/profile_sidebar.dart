@@ -27,35 +27,33 @@ class ProfileSidebar extends StatelessWidget {
         ),
         Center(
           child: Padding(
-            padding: isMenuIcon ? const EdgeInsets.only(top: 20) : const EdgeInsets.only(top: 48),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const AvatarNavbar(size: 48),
-                isMenuIcon ? const SizedBox() : const SizedBox(width: 8),
-                isMenuIcon
-                    ? const SizedBox()
-                    : BlocBuilder<AuthBloc, AuthState>(
-                        builder: (BuildContext context, AuthState state) {
-                          if (state.status == AuthStatus.succes) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
+            padding: isMenuIcon ? const EdgeInsets.only(top: 20) : const EdgeInsets.only(top: 44),
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const AvatarNavbar(size: 60),
+                  isMenuIcon ? const SizedBox() : const SizedBox(height: 10),
+                  isMenuIcon
+                      ? const SizedBox.shrink()
+                      : BlocBuilder<AuthBloc, AuthState>(
+                          builder: (BuildContext context, AuthState state) {
+                            if (state.status == AuthStatus.succes) {
+                              return SizedBox(
+                                child: Text(
                                   state.auth!.usuario.nombre,
                                   style: const TextStyle(color: Colors.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                  state.auth!.usuario.login,
-                                  style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w100),
-                                ),
-                              ],
-                            );
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-              ],
+                              );
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                ],
+              ),
             ),
           ),
         ),

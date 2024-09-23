@@ -90,10 +90,10 @@ class _FileContainerState extends State<FileContainer> {
                         height: 100,
                       ),
                     )
-              : auth?.usuario.avatar != null
+              : auth?.usuario.avatar != null  && auth!.usuario.avatar.contains('.jpg') || auth!.usuario.avatar.contains('.png') || auth.usuario.avatar.contains('.gif')
                   ? ClipOval(
                       child: Image.network(
-                        auth!.usuario.avatar,
+                        auth.usuario.avatar,
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
