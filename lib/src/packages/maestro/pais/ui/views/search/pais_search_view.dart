@@ -79,8 +79,8 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               SegmentedInputForm(
                 title: "Activo",
-                value: request.isActivo,
-                onChanged: (bool? newValue) => request.isActivo = newValue,
+                value: request.estado,
+                onChanged: (bool? newValue) => request.estado = newValue,
               ),
             ],
           ),
@@ -118,11 +118,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             for (final Map<String, dynamic> map in listUpdate) {
               final PaisRequest request = PaisRequestModel.fromTable(map);
               paisBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<PaisBloc>().add(SetPaisEvent(paisBloc.request));
+              context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(request);
             }
-            context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Pais pais) {
@@ -130,7 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
-              'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: pais.estado, edit: true),
             };
           }
 

@@ -4,14 +4,14 @@ class PaisModel extends Pais {
   PaisModel({
     required super.codigo,
     required super.nombre,
-    required super.isActivo,
+    required super.estado,
     required super.fechaCreacion,
   });
 
   factory PaisModel.fromJson(Map<String, dynamic> json) => PaisModel(
         codigo: json['codigo'],
         nombre: json['nombre'],
-        isActivo: json['activo'],
+        estado: json['estado'],
         fechaCreacion: json['fechaCreacion'].toString(),
       );
 
@@ -19,7 +19,7 @@ class PaisModel extends Pais {
     return PaisModel(
       codigo: pais.codigo,
       nombre: pais.nombre,
-      isActivo: pais.isActivo,
+      estado: pais.estado,
       fechaCreacion: '',
     );
   }
@@ -28,7 +28,7 @@ class PaisModel extends Pais {
     return PaisModel(
       codigo: map['codigo'],
       nombre: map['nombre'],
-      isActivo: map['activo'],
+      estado: map['estado'],
       fechaCreacion: '',
     );
   }
@@ -37,7 +37,7 @@ class PaisModel extends Pais {
     return <String, dynamic>{
       'codigo': codigo,
       'nombre': nombre,
-      'isActivo': isActivo,
+      'estado': estado,
     };
   }
 }

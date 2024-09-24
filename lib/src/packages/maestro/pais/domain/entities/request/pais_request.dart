@@ -3,23 +3,23 @@ class PaisRequest {
   int? codigoUsuario;
   String? nombre;
   String? fechaCreacion;
-  bool? isActivo;
+  bool? estado;
 
   PaisRequest({
     this.codigo,
     this.codigoUsuario,
     this.nombre,
     this.fechaCreacion,
-    this.isActivo,
+    this.estado,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || isActivo != null;
+    return codigo != null || nombre != null || estado != null;
   }
 
   void clean() {
     codigo = null;
     nombre = null;
-    isActivo = null;
+    estado = null;
   }
 }

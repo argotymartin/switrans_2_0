@@ -6,7 +6,7 @@ class PaisRequestModel extends PaisRequest {
     required super.codigoUsuario,
     required super.fechaCreacion,
     required super.nombre,
-    required super.isActivo,
+    required super.estado,
   });
 
   factory PaisRequestModel.fromRequestPB(PaisRequest request) {
@@ -15,7 +15,7 @@ class PaisRequestModel extends PaisRequest {
       codigoUsuario: request.codigoUsuario,
       fechaCreacion: request.fechaCreacion,
       nombre: request.nombre,
-      isActivo: request.isActivo,
+      estado: request.estado,
     );
   }
 
@@ -23,7 +23,7 @@ class PaisRequestModel extends PaisRequest {
     return <String, dynamic>{
       'codigo': codigo,
       'nombre': nombre,
-      'activo': isActivo,
+      'activo': estado,
     };
   }
 
@@ -33,7 +33,7 @@ class PaisRequestModel extends PaisRequest {
       codigoUsuario: map['codigoUsuario'],
       fechaCreacion: map['fechaCreacion'],
       nombre: map['nombre'],
-      isActivo: map['activo'],
+      estado: map['activo'],
     );
   }
 
@@ -43,7 +43,7 @@ class PaisRequestModel extends PaisRequest {
       codigoUsuario: request.codigoUsuario,
       fechaCreacion: request.fechaCreacion,
       nombre: request.nombre,
-      isActivo: request.isActivo,
+      estado: request.estado,
     );
   }
 
@@ -53,7 +53,7 @@ class PaisRequestModel extends PaisRequest {
       'codigoUsuario': codigoUsuario,
       'fechaCreacion': fechaCreacion,
       'nombre': nombre,
-      'activo': isActivo,
+      'estado': estado,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 
