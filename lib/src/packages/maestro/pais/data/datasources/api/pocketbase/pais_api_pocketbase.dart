@@ -8,7 +8,7 @@ class PaisApiPocketBase {
   final Dio _dio;
   PaisApiPocketBase(this._dio);
 
-  Future<Response<dynamic>> getPaisesApi1(PaisRequest request) async {
+  Future<Response<dynamic>> getPaisesApi(PaisRequest request) async {
     final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
 
