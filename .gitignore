@@ -58,3 +58,6 @@ windows/flutter/*
 # FVM Version Cache
 .fvm/
 /db
+
+# Variables de entorno
+.env

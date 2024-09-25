@@ -1,22 +1,25 @@
-FROM ubuntu:22.04
-
-#RUN which bash file mkdir rm
-RUN apt update -y && apt upgrade -y &&  \
-    apt install -y curl git unzip openjdk-8-jdk wget clang cmake ninja-build pkg-config libgtk-3-dev \
-    xz-utils zip libglu1-mesa iputils-ping vim
-
-ARG USER=root
-USER $USER
-WORKDIR /home/$USER
-
-RUN git clone -b 3.22.3 https://github.com/flutter/flutter.git
-
-ENV PATH="/home/root/flutter/bin:${PATH}"
-COPY /web /app/web
-
-COPY pubspec.yaml /app/pubspec.yaml
+FROM harbor.mct.com.co/front-end/flutter:3.22.3 AS analyze
 WORKDIR /app
-
+COPY pubspec.yaml /app/pubspec.yaml
 RUN flutter pub get
+COPY . .
+RUN flutter pub get && flutter analyze
 
-CMD ["tail", "-f", "/dev/null"]
+FROM harbor.mct.com.co/front-end/flutter:3.22.3 AS build
+WORKDIR /app
+COPY --from=analyze /app/pubspec.yaml /app/pubspec.lock* ./
+COPY --from=analyze /app/.dart_tool/ ./.dart_tool/
+COPY . .
+COPY .env .
+RUN export $(cat .env | xargs) && flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENVIRONMENT=${ENVIRONMENT}
+
+FROM node:slim
+WORKDIR /app
+COPY --from=build /app/build/web/ ./web/
+COPY /web/node_server/ .
+RUN npm install
+EXPOSE 3000
+ENTRYPOINT ["npm", "start"]
+
+
+

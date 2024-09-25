@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 late String kPocketBaseUrl;
 late String kBackendBaseUrlERP;
 late String kBackendBaseUrlMaestro;
@@ -7,7 +5,8 @@ late String kBackendBaseUrlMaestro;
 const String configParam = String.fromEnvironment('ENVIRONMENT', defaultValue: 'local');
 
 void initializeConfig() {
-  debugPrint(configParam);
+  // ignore: avoid_print
+  print("Configuracion: $configParam");
   switch (configParam) {
     case 'local':
       kPocketBaseUrl = 'http://localhost:8090';

@@ -68,16 +68,16 @@ class TableFacturaPDF extends pw.StatelessWidget {
               double reteFuente = 0.0;
               double reteIca = 0.0;
               for (final Impuesto impuesto in itemDocumento.impuestos.impuestos) {
-                if (impuesto.codigo == 6) {
+                if (impuesto.codigoTransaccionContable == 6) {
                   iva = impuesto.valor;
                 }
-                if (impuesto.codigo == 1) {
+                if (impuesto.codigoTransaccionContable == 1) {
                   reteIva = impuesto.valor;
                 }
-                if (impuesto.codigo == 4) {
+                if (impuesto.codigoTransaccionContable == 4) {
                   reteFuente = impuesto.valor;
                 }
-                if (impuesto.codigo == 5) {
+                if (impuesto.codigoTransaccionContable == 5) {
                   reteIca = impuesto.valor;
                 }
               }

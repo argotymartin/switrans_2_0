@@ -1,10 +1,9 @@
 services:
-
   switrans2-server:
     build:
       context: .
       dockerfile: Dockerfile
-      target: ${STAGE}
+    image: switrans2:1.0.0
     container_name: switrans2-server
     working_dir: /app
     restart: unless-stopped
