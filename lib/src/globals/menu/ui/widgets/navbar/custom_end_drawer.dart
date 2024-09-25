@@ -67,8 +67,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
   Widget build(BuildContext context) {
     final Usuario? usuarioAuth = context.watch<AuthBloc>().state.auth?.usuario;
     return BlocProvider<UsuarioUpdateBloc>(
-      create: (BuildContext context) =>
-          UsuarioUpdateBloc(injector())..add(const UsuarioInitialEvent()),
+      create: (BuildContext context) => UsuarioUpdateBloc(injector())..add(const UsuarioInitialEvent()),
       child: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         width: 260,
@@ -121,8 +120,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                     duration: const Duration(seconds: 1),
                   ),
                   style: ButtonStyle(
-                    padding:
-                        WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                    padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
                     shape: WidgetStateProperty.all<OutlinedBorder>(
                       const StadiumBorder(),
                     ),
@@ -130,9 +128,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                   onSelected: (ColorOption selectedOption) {
                     setState(() {
                       selectedColor = selectedOption.color;
-                      context
-                          .read<ThemeCubit>()
-                          .onChangeColorTheme(selectedOption.color);
+                      context.read<ThemeCubit>().onChangeColorTheme(selectedOption.color);
                     });
                     Navigator.pop(context);
                   },
@@ -146,8 +142,7 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                           height: 400,
                           child: GridView.count(
                             crossAxisCount: 5,
-                            children:
-                                colorOptions.map<Widget>((ColorOption option) {
+                            children: colorOptions.map<Widget>((ColorOption option) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Tooltip(
@@ -158,18 +153,16 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                                     onTap: () {
                                       setState(() {
                                         selectedColor = option.color;
-                                        context
-                                            .read<ThemeCubit>()
-                                            .onChangeColorTheme(option.color);
+                                        context.read<ThemeCubit>().onChangeColorTheme(option.color);
                                       });
                                       Navigator.pop(context);
-                                      Future<void>.delayed(
-                                        const Duration(milliseconds: 1200),
-                                      ).then((dynamic value) {
-                                        if (context.mounted) {
-                                          Scaffold.of(context).closeEndDrawer();
-                                        }
-                                      });
+                                      Future<void>.delayed(const Duration(milliseconds: 1200)).then(
+                                        (dynamic value) {
+                                          if (context.mounted) {
+                                            Scaffold.of(context).closeEndDrawer();
+                                          }
+                                        },
+                                      );
                                     },
                                   ),
                                 ),
@@ -341,9 +334,7 @@ class _BuildCircleColorState extends State<_BuildCircleColor> {
         height: 36,
         decoration: BoxDecoration(
           border: Border.all(
-            color: widget.isSelected || isHovering
-                ? Colors.black
-                : Colors.transparent,
+            color: widget.isSelected || isHovering ? Colors.black : Colors.transparent,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(100),
