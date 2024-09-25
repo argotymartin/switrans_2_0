@@ -16,9 +16,9 @@ class Impuesto {
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        "codigoTipoImpuesto": codigoTipoImpuesto,
-        "codigoTransaccionContable": codigoTransaccionContable,
-        "nombre": nombre,
-        "valor": valor,
+        "codigoImpuesto": codigoTipoImpuesto,
+        "porcentaje": porcentaje,
+        "factorConversion": factorConversion,
+        "valorImpuesto": valor,
       };
 }

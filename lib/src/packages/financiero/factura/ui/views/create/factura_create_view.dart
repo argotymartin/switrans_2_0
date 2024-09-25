@@ -248,7 +248,7 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
                 title: centro.value,
               );
             }).toList();
-
+            facturaBloc.request.centroCostoCodigo = entriesCentroCosto.first.codigo;
             void setValueFactura(EntryAutocomplete value) {
               if (value.codigo != null) {
                 facturaBloc.request.centroCostoCodigo = value.codigo;
@@ -324,12 +324,26 @@ class _BuildButtonRegistrar extends StatelessWidget {
       builder: (BuildContext context, FacturaState state) {
         final Map<String, double> mapImpuestos = <String, double>{};
         final List<Documento> documentos = state.documentosSelected;
+        final List<DocumentoRequest> documentosRequest = <DocumentoRequest>[];
+
         double total = 0;
         double subTotal = 0;
         for (final Documento doc in documentos) {
           for (final ItemDocumento item in doc.itemDocumentos) {
             subTotal += item.subtotal;
             total += item.total;
+            final DocumentoRequest documentoRequest = DocumentoRequest(
+              codigoServicio: item.servicioCodigo,
+              descripcion: doc.descripcion,
+              documento: doc.documento,
+              impuesto: item.impuestos.toJson(),
+              servicioNombre: item.servicioNombre,
+              subtotal: item.subtotal,
+              tipoItemFactura: item.tipoItemFactura,
+              total: item.total,
+            );
+
+            documentosRequest.add(documentoRequest);
           }
           for (final Impuesto imp in doc.impuestos) {
             mapImpuestos.update(
@@ -351,16 +365,16 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
             final FacturaRequest facturaRequest = FacturaRequest(
               tipoDocumento: facturaBloc.request.documentoCodigo!,
-              codigoCentroCosto: 11,
+              codigoCentroCosto: facturaBloc.request.centroCostoCodigo!,
               codigoCliente: facturaBloc.request.cliente!,
               codigoEmpresa: facturaBloc.request.empresa!,
               codigoUsuario: usuario,
               subtotal: subTotal,
-              items: <DocumentoRequest>[],
+              items: documentosRequest,
               total: total,
             );
 
-            debugPrint("${facturaRequest.toJson()}");
+            debugPrint("Aca Esperando el servicio del backend, o tocara en pocketbase? :::: ${facturaRequest.toJson()}");
           },
         );
       },

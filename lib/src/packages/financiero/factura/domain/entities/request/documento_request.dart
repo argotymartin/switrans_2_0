@@ -1,24 +1,22 @@
-import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/item_impuesto.dart';
-
 class DocumentoRequest {
-  final int documento;
-  final int codigoServicio;
-  final int tipoItemFactura;
-  final String servicioNombre;
-  final String descripcion;
-  final double subtotal;
-  final int total;
-  final List<ItemImpuesto> impuestos;
+  int? documento;
+  int? codigoServicio;
+  int? tipoItemFactura;
+  String? servicioNombre;
+  String? descripcion;
+  double? subtotal;
+  double? total;
+  Map<String, dynamic>? impuesto;
 
   DocumentoRequest({
-    required this.documento,
-    required this.codigoServicio,
-    required this.tipoItemFactura,
-    required this.servicioNombre,
-    required this.descripcion,
-    required this.subtotal,
-    required this.total,
-    required this.impuestos,
+    this.documento,
+    this.codigoServicio,
+    this.tipoItemFactura,
+    this.servicioNombre,
+    this.descripcion,
+    this.subtotal,
+    this.total,
+    this.impuesto,
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -29,6 +27,6 @@ class DocumentoRequest {
         "descripcion": descripcion,
         "subtotal": subtotal,
         "total": total,
-        "impuestos": impuestos,
+        "impuesto": impuesto,
       };
 }
