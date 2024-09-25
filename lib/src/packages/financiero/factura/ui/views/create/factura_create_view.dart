@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/impuesto.dart';
+import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/request/documento_request.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
@@ -347,15 +348,15 @@ class _BuildButtonRegistrar extends StatelessWidget {
 
             await Future<dynamic>.delayed(const Duration(seconds: 1));
             final int usuario = authBloc.state.auth!.usuario.codigo;
+
             final FacturaRequest facturaRequest = FacturaRequest(
               tipoDocumento: facturaBloc.request.documentoCodigo!,
-              centroCosto: facturaBloc.request.centroCostoCodigo!,
-              cliente: facturaBloc.request.cliente!,
-              empresa: facturaBloc.request.empresa!,
-              usuario: usuario,
-              items: documentos.toList(),
-              impuestos: mapImpuestos,
+              codigoCentroCosto: 11,
+              codigoCliente: facturaBloc.request.cliente!,
+              codigoEmpresa: facturaBloc.request.empresa!,
+              codigoUsuario: usuario,
               subtotal: subTotal,
+              items: <DocumentoRequest>[],
               total: total,
             );
 

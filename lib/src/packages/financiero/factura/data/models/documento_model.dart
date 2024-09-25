@@ -30,9 +30,9 @@ class DocumentoModel extends Documento {
   factory DocumentoModel.fromJson(Map<String, dynamic> json) => DocumentoModel(
         documento: json['documento'],
         impreso: json['documentoImpreso'],
-        centroCostoCodigo: json['centroCostoCodigo'],
+        centroCostoCodigo: json['codigoCentroCosto'],
         centroCostoNombre: json['centroCostoNombre'],
-        tipoDocumentoCodigo: json['tipoDocumentoCodigo'] ?? '',
+        tipoDocumentoCodigo: json['codigoTipoDocumento'] ?? '',
         tipoDocumentoNombre: json['tipoDocumentoNombre'] ?? '',
         origen: json['origen'] ?? '',
         destino: json['destino'] ?? '',
