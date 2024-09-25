@@ -1,25 +1,27 @@
 class PaisRequest {
   int? codigo;
-  int? codigoUsuario;
   String? nombre;
+  bool? isActivo;
+  int? codigoUsuario;
   String? fechaCreacion;
-  bool? estado;
 
   PaisRequest({
     this.codigo,
-    this.codigoUsuario,
     this.nombre,
+    this.isActivo,
+    this.codigoUsuario,
     this.fechaCreacion,
-    this.estado,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || estado != null;
+    return codigo != null || nombre != null || isActivo != null || codigoUsuario != null || fechaCreacion != null;
   }
 
   void clean() {
-    codigo = null;
-    nombre = null;
-    estado = null;
+    codigo ??= null;
+    nombre ??= null;
+    isActivo ??= null;
+    codigoUsuario ??= null;
+    fechaCreacion ??= null;
   }
 }

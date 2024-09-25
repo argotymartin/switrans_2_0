@@ -16,7 +16,7 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaisesApi(request));
     if (httpResponse.data != null) {
       final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Pais> response = List<Pais>.from(resp.data.map((dynamic x) => PaisModel.fromJson(x)));
+      final List<Pais> response = List<Pais>.from(resp.data.map((dynamic x) => PaisModel.fromApi(x)));
       return DataSuccess<List<Pais>>(response);
     }
     return DataFailed<List<Pais>>(httpResponse.error!);
@@ -27,7 +27,7 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setPaisApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final dynamic responseData = httpResponse.data['data'];
-      final Pais response = PaisModel.fromJson(responseData);
+      final Pais response = PaisModel.fromApi(responseData);
       return DataSuccess<Pais>(response);
     }
     return DataFailed<Pais>(httpResponse.error!);
@@ -43,7 +43,7 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
         final dynamic responseData = resp.data;
         if (responseData is List && responseData.isNotEmpty) {
           final Map<String, dynamic> firstItem = responseData.first as Map<String, dynamic>;
-          final Pais response = PaisModel.fromJson(firstItem);
+          final Pais response = PaisModel.fromApi(firstItem);
           return DataSuccess<Pais>(response);
         }
       }

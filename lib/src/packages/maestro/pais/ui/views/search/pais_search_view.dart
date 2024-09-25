@@ -79,8 +79,8 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               SegmentedInputForm(
                 title: "Activo",
-                value: request.estado,
-                onChanged: (bool? newValue) => request.estado = newValue,
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
           ),
@@ -129,7 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
-              'activo': DataItemGrid(type: Tipo.boolean, value: pais.estado, edit: true),
+              'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
             };
           }
 

@@ -1,13 +1,15 @@
 class Pais {
   final int codigo;
   final String nombre;
-  final bool estado;
+  final bool isActivo;
   final String fechaCreacion;
+  final int codigoUsuario;
 
   Pais({
     required this.codigo,
     required this.nombre,
-    required this.estado,
+    required this.isActivo,
     required this.fechaCreacion,
+    required this.codigoUsuario,
   });
 }
