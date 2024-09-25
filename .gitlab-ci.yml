@@ -30,7 +30,7 @@ build-merge-request:
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git log --oneline -n 5
-    - docker compose -f docker-compose-production.yml up --build
+    - docker compose -f docker-compose-production.yml up -d--build
     - echo consultar en http://192.168.102.18:3000
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
@@ -43,7 +43,7 @@ build:
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker compose -f docker-compose-production.yml up --build
+    - docker compose -f docker-compose-production.yml up -d--build
     - echo consultar en http://192.168.102.18:3000
     - echo "Finalizó con Éxito!!"
   rules:
@@ -58,7 +58,7 @@ deploy-release:
         cd $WORK_DIR && echo $WORK_DIR &&
         git checkout develop &&
         git pull origin develop &&
-        docker compose -f docker-compose-production.yml up --build &&
+        docker compose -f docker-compose-production.yml up -d --build &&
         echo 'Finalizó Despliegue a Prepo' &&
         echo 'Consultar en http://192.168.102.21:3000'
       "
