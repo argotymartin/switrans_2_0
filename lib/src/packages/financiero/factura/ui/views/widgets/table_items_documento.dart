@@ -1,3 +1,4 @@
+import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,9 +46,8 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
     return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (BuildContext context, FacturaState state) {
         const List<DataColumn> columns = <DataColumn>[
-          DataColumn(label: _CellTitleSpacing(size: 0.05)),
           DataColumn(label: _CellTitleSpacing(size: 0.1)),
-          DataColumn(label: _CellTitleSpacing(size: 0.35)),
+          DataColumn(label: _CellTitleSpacing(size: 0.40)),
           DataColumn(label: _CellTitleSpacing(size: 0.1)),
           DataColumn(label: _CellTitleSpacing(size: 0.3)),
           DataColumn(label: _CellTitleSpacing(size: 0.1)),
@@ -62,8 +62,7 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
                 index++;
                 return DataRow(
                   cells: <DataCell>[
-                    DataCell(_CellContent(child: _BuildFieldItem(index))),
-                    DataCell(_CellContent(child: _BuildFiledDocumento(item: documento.documento))),
+                    DataCell(_CellContent(child: _BuildFiledDocumento(documento: documento, index: index))),
                     DataCell(
                       _CellContent(child: _BuildFieldDescription(itemDocumento: item, descripcion: documento.descripcion)),
                     ),
@@ -96,12 +95,11 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: <Widget>[
-                          _CellTitle(size: 0.05, title: "Item"),
                           _CellTitle(size: 0.1, title: "Documento"),
-                          _CellTitle(size: 0.35, title: "Descripcion"),
+                          _CellTitle(size: 0.40, title: "Descripcion"),
                           _CellTitle(size: 0.1, title: "SubTotal"),
                           _CellTitle(size: 0.3, title: "Impuestos"),
-                          _CellTitle(size: 0.1, title: "Total Valor a Pagar"),
+                          _CellTitle(size: 0.1, title: "Total a Pagar"),
                         ],
                       ),
                     ),
@@ -145,51 +143,71 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
   }
 }
 
-class _BuildFieldItem extends StatelessWidget {
-  final int index;
-  const _BuildFieldItem(this.index);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 32,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      child: Center(
-        child: Text(
-          index.toString(),
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
 class _BuildFiledDocumento extends StatelessWidget {
-  final int item;
+  final Documento documento;
+  final int index;
 
-  const _BuildFiledDocumento({required this.item});
+  const _BuildFiledDocumento({required this.documento, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Chip(
-        clipBehavior: Clip.antiAlias,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-        padding: EdgeInsets.zero,
-        shape: const StadiumBorder(),
-        side: BorderSide.none,
-        elevation: 4,
-        label: Text(
-          item.toString(),
-          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Container(
+          width: 32,
+          height: 32,
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          child: Center(
+            child: Text(
+              index.toString(),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4),
+                ),
+                child: Text(
+                  documento.documento.toString(),
+                  style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: <Widget>[
+                  documento.valorEgreso > documento.valorIngreso
+                      ? AnimateIcon(
+                          onTap: () {},
+                          iconType: IconType.continueAnimation,
+                          height: 70,
+                          width: 70,
+                          color: Colors.orangeAccent,
+                          animateIcon: AnimateIcons.expensive,
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -322,7 +340,7 @@ class _BuildTotal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CurrencyLabel(color: Colors.green.shade900, text: '${total.toInt()}');
+    return Padding(padding: const EdgeInsets.all(16), child: CurrencyLabel(color: Colors.green.shade900, text: '${total.toInt()}'));
   }
 }
 
