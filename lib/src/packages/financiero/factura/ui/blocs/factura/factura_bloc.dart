@@ -12,7 +12,7 @@ part 'factura_state.dart';
 class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
   final AbstractFacturaRepository _repository;
 
-  FormFacturaRequest _request = FormFacturaRequest(empresa: 1, documentoCodigo: 11, cliente: 1228, documentos: "738544,738548,738551");
+  FormFacturaRequest _request = FormFacturaRequest(empresa: 1, documentoCodigo: 11, cliente: 2214, documentos: "738354");
 
   FacturaBloc(this._repository) : super(const FacturaState().initial()) {
     on<GetInitialFormFacturaEvent>(_onGetDataFactura);
