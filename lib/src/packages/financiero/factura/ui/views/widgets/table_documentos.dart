@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/documentos_table_data_builder.dart';
+import 'package:switrans_2_0/src/util/shared/widgets/labels/currency_label.dart';
 
 class TableDocumentos extends StatelessWidget {
   final List<Documento> documentos;
@@ -97,8 +98,7 @@ class TableDocumentos extends StatelessWidget {
       facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
     } else {
       if (documento.valorEgreso > documento.valorIngreso) {
-        //stateManager.setRowChecked(event.row, false);
-        showErrorIngresoVSEgresoDialog(context, documento);
+        showErrorIngresoVSEgresoDialog(context, <Documento>[documento]);
         facturaBloc.add(AddDocumentoFacturaEvent(documento));
       } else if (documento.isAnulacion) {
         stateManager.setRowChecked(event.row, false);
@@ -117,11 +117,12 @@ class TableDocumentos extends StatelessWidget {
     required PlutoGridStateManager stateManager,
     required BuildContext context,
   }) {
+    final List<Documento> documentosEgresoVsIngreso = <Documento>[];
     if (event.isAll) {
       for (final Documento documento in documentos) {
         if (event.isChecked!) {
           if (documento.valorEgreso > documento.valorIngreso) {
-            //showErrorIngresoVSEgresoDialog(context, documento);
+            documentosEgresoVsIngreso.add(documento);
             facturaBloc.add(AddDocumentoFacturaEvent(documento));
           } else if (documento.isAnulacion) {
             showErrorAnulacionDialog(context, documento);
@@ -136,8 +137,7 @@ class TableDocumentos extends StatelessWidget {
       final Documento documento = documentos[event.rowIdx!];
       if (event.isChecked!) {
         if (documento.valorEgreso > documento.valorIngreso) {
-          //stateManager.setRowChecked(event.row!, false);
-          //showErrorIngresoVSEgresoDialog(context, documento);
+          documentosEgresoVsIngreso.add(documento);
           facturaBloc.add(AddDocumentoFacturaEvent(documento));
         } else if (documento.isAnulacion) {
           stateManager.setRowChecked(event.row!, false);
@@ -149,27 +149,74 @@ class TableDocumentos extends StatelessWidget {
         facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
       }
     }
+
+    if (documentosEgresoVsIngreso.isNotEmpty) {
+      showErrorIngresoVSEgresoDialog(context, documentosEgresoVsIngreso);
+    }
   }
 }
 
-void showErrorIngresoVSEgresoDialog(BuildContext context, Documento documento) {
+void showErrorIngresoVSEgresoDialog(BuildContext context, List<Documento> documentos) {
   final Size size = MediaQuery.of(context).size;
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.errorContainer,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       content: SizedBox(
         width: size.width * 0.3,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(Icons.info_outline_rounded, size: size.height * 0.1, color: Theme.of(context).colorScheme.error),
-              const SizedBox(height: 16),
-              Text(
-                "El documento ${documento.documento}, presenta inconcistencias en los valores de egresos VS ingresos, No es posible facturar este documento",
-                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 24),
+              Center(
+                child: Lottie.asset(
+                  'assets/animations/alert-orange.json',
+                  height: 96,
+                  width: 96,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(height: 16),
+              Text(
+                "Se encontraron documentos con valores de egreso mayores a los valores de ingreso",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 24),
+              ),
+              const SizedBox(height: 32),
+              Text(
+                "Los documentos que presentan esta novedad son los siguientes: ",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 18),
+              ),
+              const SizedBox(height: 32),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Column(
+                    children: <Widget>[
+                      const Row(
+                        children: <Widget>[
+                          Expanded(child: _DataCell(isTitle: true, text: "Documento")),
+                          Expanded(child: _DataCell(isTitle: true, text: "Ingreso")),
+                          Expanded(child: _DataCell(isTitle: true, text: "Egreso")),
+                        ],
+                      ),
+                      ...documentos.map((Documento element) {
+                        return Row(
+                          children: <Widget>[
+                            Expanded(child: _DataCell(text: "${element.documento}")),
+                            Expanded(child: _DataCell(text: "${element.valorIngreso.toInt()}", isCurrency: true)),
+                            Expanded(child: _DataCell(text: "${element.valorEgreso.toInt()}", isCurrency: true)),
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -179,6 +226,31 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, Documento documento) {
       ],
     ),
   );
+}
+
+class _DataCell extends StatelessWidget {
+  final String text;
+  final bool isTitle;
+  final bool isCurrency;
+  const _DataCell({
+    required this.text,
+    this.isTitle = false,
+    this.isCurrency = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isTitle ? const Color(0xffF8CE12) : Colors.transparent,
+        border: Border.all(color: Colors.grey),
+      ),
+      child: isCurrency
+          ? CurrencyLabel(color: Colors.black, text: text)
+          : Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+    );
+  }
 }
 
 void showErrorAnulacionDialog(BuildContext context, Documento documento) {
