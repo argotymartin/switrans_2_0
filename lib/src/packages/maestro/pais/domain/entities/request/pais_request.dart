@@ -14,7 +14,7 @@ class PaisRequest {
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || isActivo != null || codigoUsuario != null || fechaCreacion != null;
+    return codigo != null || nombre != null || isActivo != null ;
   }
 
   void clean() {

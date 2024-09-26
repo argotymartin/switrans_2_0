@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildFormFields(
             children: <Widget>[
               NumberInputForm(
-                title: "Codigo",
+                title: "Código",
                 value: request.codigo,
                 autofocus: true,
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,

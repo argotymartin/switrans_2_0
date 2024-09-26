@@ -56,10 +56,22 @@ class _SegmentedInputState extends State<SegmentedInput> {
             height: 20,
             child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text('No')),
           ),
-          icon: Icon(Icons.not_interested_sharp),
+          icon: Icon(Icons.cancel),
         ),
       ],
       selected: <Options>{optionSelected},
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+          if (states.contains(WidgetState.selected)) {
+            if (optionSelected == Options.si) {
+              return Color(0xFFB2EBAF);
+            } else if (optionSelected == Options.no) {
+              return Color(0xFFFFC0CB);
+            }
+          }
+          return null;
+        }),
+      ),
       onSelectionChanged: (Set<Options> newSelection) {
         setState(() {
           optionSelected = newSelection.first;

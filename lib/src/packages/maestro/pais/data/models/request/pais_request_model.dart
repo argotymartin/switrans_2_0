@@ -9,24 +9,6 @@ class PaisRequestModel extends PaisRequest {
     required super.codigoUsuario,
   });
 
-  factory PaisRequestModel.fromRequestPB(PaisRequest request) {
-    return PaisRequestModel(
-      codigo: request.codigo,
-      nombre: request.nombre,
-      isActivo: request.isActivo,
-      fechaCreacion: request.fechaCreacion,
-      codigoUsuario: request.codigoUsuario,
-    );
-  }
-
-  Map<String, dynamic> toJsonPB() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'nombre': nombre,
-      'activo': isActivo,
-    };
-  }
-
   factory PaisRequestModel.fromTable(Map<String, dynamic> map) {
     return PaisRequestModel(
       codigo: map['codigo'],
@@ -37,7 +19,7 @@ class PaisRequestModel extends PaisRequest {
     );
   }
 
-  factory PaisRequestModel.fromRequestAPI(PaisRequest request) {
+  factory PaisRequestModel.fromRequest(PaisRequest request) {
     return PaisRequestModel(
       codigo: request.codigo,
       nombre: request.nombre,
@@ -47,7 +29,7 @@ class PaisRequestModel extends PaisRequest {
     );
   }
 
-  Map<String, dynamic> toJsonAPI() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'codigo': codigo,
       'nombre': nombre,

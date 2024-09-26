@@ -9,8 +9,8 @@ class PaisApiPocketBase {
   PaisApiPocketBase(this._dio);
 
   Future<Response<dynamic>> getPaisesApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
 
     final String filter = toPocketBaseFilter(requestMap);
     final String url = '$kPocketBaseUrl/api/collections/Pais/records';
@@ -20,8 +20,8 @@ class PaisApiPocketBase {
   }
 
   Future<Response<dynamic>> setPaisApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
     requestMap["codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "pais", field: "codigo");
 
     final String url = '$kPocketBaseUrl/api/collections/pais/records';
@@ -30,8 +30,8 @@ class PaisApiPocketBase {
   }
 
   Future<Response<dynamic>> updatePaisApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
 
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,

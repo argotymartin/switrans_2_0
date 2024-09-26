@@ -69,7 +69,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Nombre",
                 value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
-                minLength: 5,
+                minLength: 3,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
             ],
