@@ -195,7 +195,7 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, List<Documento> docume
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       const Row(
                         children: <Widget>[
                           Expanded(child: _DataCell(isTitle: true, text: "Documento")),
@@ -205,7 +205,7 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, List<Documento> docume
                       ),
                       ...documentos.map((Documento element) {
                         return Row(
-                          children: [
+                          children: <Widget>[
                             Expanded(child: _DataCell(text: "${element.documento}")),
                             Expanded(child: _DataCell(text: "${element.valorIngreso.toInt()}", isCurrency: true)),
                             Expanded(child: _DataCell(text: "${element.valorEgreso.toInt()}", isCurrency: true)),
