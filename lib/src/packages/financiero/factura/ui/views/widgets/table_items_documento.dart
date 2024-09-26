@@ -22,36 +22,41 @@ class TableItemsDocumento extends StatefulWidget {
 }
 
 class _TableItemsDocumentoState extends State<TableItemsDocumento> {
-  final ScrollController _firstController = ScrollController();
+  late ScrollController _firstController;
+  late ScrollController _secondController;
+
+  @override
+  void initState() {
+    _firstController = ScrollController();
+    _secondController = ScrollController();
+    super.initState();
+  }
 
   @override
   void dispose() {
     _firstController.dispose();
+    _secondController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return BlocBuilder<FacturaBloc, FacturaState>(
       builder: (BuildContext context, FacturaState state) {
-        final List<Widget> acciones = <Widget>[];
-
         const List<DataColumn> columns = <DataColumn>[
-          DataColumn(label: _CellTitle(size: 0.05, title: "Item")),
-          DataColumn(label: _CellTitle(size: 0.1, title: "Documento")),
-          DataColumn(label: _CellTitle(size: 0.35, title: "Descripcion")),
-          DataColumn(label: _CellTitle(size: 0.1, title: "SubTotal")),
-          DataColumn(label: _CellTitle(size: 0.3, title: "Impuestos")),
-          DataColumn(label: _CellTitle(size: 0.1, title: "Total Valor a Pagar")),
+          DataColumn(label: _CellTitleSpacing(size: 0.05)),
+          DataColumn(label: _CellTitleSpacing(size: 0.1)),
+          DataColumn(label: _CellTitleSpacing(size: 0.35)),
+          DataColumn(label: _CellTitleSpacing(size: 0.1)),
+          DataColumn(label: _CellTitleSpacing(size: 0.3)),
+          DataColumn(label: _CellTitleSpacing(size: 0.1)),
         ];
 
         int index = 0;
-        int cantidadDocumnetos = 1;
+
         final List<DataRow> buildTableRows = state.documentosSelected.expand(
           (Documento documento) {
-            final bool sDocumentoFinal = cantidadDocumnetos == state.documentosSelected.length;
-            acciones.add(_BuildButtonClear(documento: documento, isDocumentoFinal: sDocumentoFinal));
-            cantidadDocumnetos++;
             return documento.itemDocumentos.map(
               (ItemDocumento item) {
                 index++;
@@ -71,91 +76,71 @@ class _TableItemsDocumentoState extends State<TableItemsDocumento> {
             ).toList();
           },
         ).toList();
-
+        final int heightTable = index <= 3 ? index : 3;
         return SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  controller: _firstController,
-                  child: SingleChildScrollView(
-                    controller: _firstController,
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      clipBehavior: Clip.hardEdge,
-                      headingRowColor: WidgetStatePropertyAll<Color>(Theme.of(context).colorScheme.primaryContainer),
-                      dataRowMaxHeight: 170,
-                      dataRowMinHeight: 170,
-                      columnSpacing: 0,
-                      horizontalMargin: 0,
-                      border: TableBorder.all(
-                        color: Theme.of(context).colorScheme.primaryFixedDim,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          topLeft: Radius.circular(16),
-                        ),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).colorScheme.primaryFixed),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+            ),
+            height: heightTable * 200 + 60,
+            child: Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                  child: Container(
+                    width: size.width - 80,
+                    height: 60,
+                    color: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.4),
+                    child: const SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          _CellTitle(size: 0.05, title: "Item"),
+                          _CellTitle(size: 0.1, title: "Documento"),
+                          _CellTitle(size: 0.35, title: "Descripcion"),
+                          _CellTitle(size: 0.1, title: "SubTotal"),
+                          _CellTitle(size: 0.3, title: "Impuestos"),
+                          _CellTitle(size: 0.1, title: "Total Valor a Pagar"),
+                        ],
                       ),
-                      columns: columns,
-                      rows: buildTableRows,
                     ),
                   ),
                 ),
-              ),
-              Column(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(16),
+                SizedBox(
+                  height: heightTable * 200 - 2,
+                  child: SingleChildScrollView(
+                    controller: _secondController,
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      controller: _firstController,
+                      child: SingleChildScrollView(
+                        controller: _firstController,
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          clipBehavior: Clip.hardEdge,
+                          headingRowColor: WidgetStatePropertyAll<Color>(Theme.of(context).colorScheme.primaryContainer),
+                          dataRowMaxHeight: 200,
+                          dataRowMinHeight: 170,
+                          headingRowHeight: 0,
+                          columnSpacing: 0,
+                          horizontalMargin: 0,
+                          border: TableBorder.all(
+                            color: Theme.of(context).colorScheme.primaryFixedDim,
+                            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+                          ),
+                          columns: columns,
+                          rows: buildTableRows,
+                        ),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-                    width: 80,
-                    child: Text(
-                      "Borrar",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16),
-                    ),
                   ),
-                  ...acciones,
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },
-    );
-  }
-}
-
-class _BuildButtonClear extends StatelessWidget {
-  final Documento documento;
-  final bool isDocumentoFinal;
-  const _BuildButtonClear({required this.documento, required this.isDocumentoFinal});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.primaryFixedDim),
-        borderRadius: BorderRadius.only(
-          bottomRight: isDocumentoFinal ? const Radius.circular(16) : Radius.zero,
-        ),
-      ),
-      width: 80,
-      height: 170 * documento.itemDocumentos.length.toDouble(),
-      child: CustomSizeButton(
-        onPressed: () {
-          context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento));
-        },
-        size: 32,
-        icon: Icons.delete_outlined,
-        color: Colors.red,
-        iconColor: Colors.white,
-      ),
     );
   }
 }
@@ -355,7 +340,7 @@ class _CellTitle extends StatelessWidget {
       builder: (BuildContext context, MenuState state) {
         final Size sizeM = MediaQuery.of(context).size;
         final double sizeC = sizeM.width < 1600 ? 1600 : sizeM.width;
-        final double width = state.isOpenMenu! ? sizeC - kWidthSidebar - 158 : sizeC - 158;
+        final double width = state.isOpenMenu! ? sizeC - kWidthSidebar - 80 : sizeC - 80;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -364,6 +349,29 @@ class _CellTitle extends StatelessWidget {
             title,
             style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 16),
           ),
+        );
+      },
+    );
+  }
+}
+
+class _CellTitleSpacing extends StatelessWidget {
+  final double size;
+  const _CellTitleSpacing({
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MenuBloc, MenuState>(
+      builder: (BuildContext context, MenuState state) {
+        final Size sizeM = MediaQuery.of(context).size;
+        final double sizeC = sizeM.width < 1600 ? 1600 : sizeM.width;
+        final double width = state.isOpenMenu! ? sizeC - kWidthSidebar - 80 : sizeC - 80;
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          width: width * size,
         );
       },
     );

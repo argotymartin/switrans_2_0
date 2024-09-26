@@ -12,7 +12,7 @@ class ImpuestoModel extends Impuesto {
 
   factory ImpuestoModel.fromJson(Map<String, dynamic> json) => ImpuestoModel(
         nombre: json['nombre'],
-        codigoTipoImpuesto: json['codigoTipoImpuesto'],
+        codigoTipoImpuesto: json['codigoTipoImpuesto'] ?? 0,
         codigoTransaccionContable: json['codigoTransaccionContable'],
         valor: json['valor'],
         factorConversion: json['factorConversion'] ?? 0,
