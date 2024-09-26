@@ -97,8 +97,9 @@ class TableDocumentos extends StatelessWidget {
       facturaBloc.add(RemoveDocumentoFacturaEvent(documento));
     } else {
       if (documento.valorEgreso > documento.valorIngreso) {
-        stateManager.setRowChecked(event.row, false);
+        //stateManager.setRowChecked(event.row, false);
         showErrorIngresoVSEgresoDialog(context, documento);
+        facturaBloc.add(AddDocumentoFacturaEvent(documento));
       } else if (documento.isAnulacion) {
         stateManager.setRowChecked(event.row, false);
         showErrorAnulacionDialog(context, documento);
@@ -120,7 +121,8 @@ class TableDocumentos extends StatelessWidget {
       for (final Documento documento in documentos) {
         if (event.isChecked!) {
           if (documento.valorEgreso > documento.valorIngreso) {
-            showErrorIngresoVSEgresoDialog(context, documento);
+            //showErrorIngresoVSEgresoDialog(context, documento);
+            facturaBloc.add(AddDocumentoFacturaEvent(documento));
           } else if (documento.isAnulacion) {
             showErrorAnulacionDialog(context, documento);
           } else {
@@ -134,8 +136,9 @@ class TableDocumentos extends StatelessWidget {
       final Documento documento = documentos[event.rowIdx!];
       if (event.isChecked!) {
         if (documento.valorEgreso > documento.valorIngreso) {
-          stateManager.setRowChecked(event.row!, false);
-          showErrorIngresoVSEgresoDialog(context, documento);
+          //stateManager.setRowChecked(event.row!, false);
+          //showErrorIngresoVSEgresoDialog(context, documento);
+          facturaBloc.add(AddDocumentoFacturaEvent(documento));
         } else if (documento.isAnulacion) {
           stateManager.setRowChecked(event.row!, false);
           showErrorAnulacionDialog(context, documento);
