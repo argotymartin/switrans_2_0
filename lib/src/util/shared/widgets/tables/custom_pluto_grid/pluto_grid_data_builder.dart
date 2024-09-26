@@ -31,7 +31,8 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       widget.plutoData.first.forEach((String key, DataItemGrid v) {
         final Tipo tipo = v.type;
         final bool isEdit = v.edit;
-        final String tilte = key.toUpperCase().replaceAll("_", " ");
+        String tilte = key.toUpperCase().replaceAll("_", " ");
+        tilte = toCapitalCase(tilte);
 
         if (tipo == Tipo.item) {
           columns.add(
@@ -44,7 +45,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               title: tilte,
               field: key,
               type: PlutoColumnType.text(),
-              width: 80,
+              width: 20,
               renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldItem(renderContext: renderContext),
             ),
           );
@@ -103,6 +104,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
       });
+
       columns.add(
         PlutoColumn(
           enableRowChecked: true,
@@ -110,9 +112,12 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           title: 'Guardar Cambios',
           field: 'cambios',
           type: PlutoColumnType.text(),
-          renderer: (PlutoColumnRendererContext renderContext) => _BuildFieldText(renderContext: renderContext),
+          renderer: (PlutoColumnRendererContext renderContext) => Center(
+            child: _BuildFieldText(renderContext: renderContext),
+          ),
         ),
       );
+
       return columns;
     }
 
@@ -339,4 +344,15 @@ class _BuildFieldItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String toCapitalCase(String text) {
+  return text
+      .split(' ')
+      .map(
+        (word) => word.isNotEmpty
+            ? word[0].toUpperCase() + word.substring(1).toLowerCase() //
+            : '',
+      )
+      .join(' ');
 }

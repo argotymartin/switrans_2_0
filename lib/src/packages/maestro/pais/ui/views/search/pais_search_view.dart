@@ -129,6 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
+              'usuario_nombre': DataItemGrid(type: Tipo.text, value: pais.usuarioNombre, edit: true),
               'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
             };
           }

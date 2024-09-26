@@ -63,17 +63,19 @@ class _BuildFieldsForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildFormFields(
-            children: <Widget>[
-              TextInputForm(
-                title: "Nombre",
-                value: request.nombre,
-                typeInput: TypeInput.lettersAndNumbers,
-                minLength: 3,
-                onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
-              ),
-            ],
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.4,
+            child: TextInputForm(
+              title: "Nombre",
+              value: request.nombre,
+              typeInput: TypeInput.lettersAndCaracteres,
+              minLength: 3,
+              onChanged: (String result) {
+                request.nombre = result.isNotEmpty ? result.trim().replaceAll(RegExp(r'\s+'), ' ').toUpperCase() : null;
+              },
+            ),
           ),
+          const SizedBox(height: 16),
           FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();

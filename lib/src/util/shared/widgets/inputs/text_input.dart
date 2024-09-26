@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
-enum TypeInput { lettersAndNumbers }
+enum TypeInput { lettersAndNumbers, lettersAndCaracteres }
 
 class TextInput extends StatefulWidget {
   final String initialValue;
@@ -74,6 +74,13 @@ class _TextInputState extends State<TextInput> {
         if (!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
           isError = true;
           return "El campo solo permite letras y numeros (ABC123)";
+        }
+      }
+
+      if (widget.typeInput == TypeInput.lettersAndCaracteres && value.isNotEmpty) {
+        if (!RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]+$').hasMatch(value)) {
+          isError = true;
+          return "El campo solo permite letras, caracteres especiales y el punto.";
         }
       }
     }

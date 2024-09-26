@@ -7,6 +7,7 @@ class PaisModel extends Pais {
     required super.isActivo,
     required super.fechaCreacion,
     required super.codigoUsuario,
+    required super.usuarioNombre,
   });
 
   factory PaisModel.fromApi(Map<String, dynamic> map) => PaisModel(
@@ -15,5 +16,6 @@ class PaisModel extends Pais {
         isActivo: map['estado'],
         fechaCreacion: map['fechaCreacion'].toString(),
         codigoUsuario: map['codigoUsuario'],
+        usuarioNombre: map['usuarioNombre'],
       );
 }

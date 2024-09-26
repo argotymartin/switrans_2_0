@@ -25,20 +25,22 @@ class _SwitchBoxInputState extends State<SwitchBoxInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      value: _value,
-      onChanged: (bool value) {
-        setState(() => _value = value);
-        widget.onChanged?.call(value);
-      },
-      thumbIcon: WidgetStateProperty.resolveWith<Icon>(
-        (Set<WidgetState> states) {
-          if (_value) {
-            return const Icon(Icons.check, color: Colors.black);
-          } else {
-            return const Icon(Icons.close, color: Colors.white);
-          }
+    return Center(
+      child: Switch(
+        value: _value,
+        onChanged: (bool value) {
+          setState(() => _value = value);
+          widget.onChanged?.call(value);
         },
+        thumbIcon: WidgetStateProperty.resolveWith<Icon>(
+          (Set<WidgetState> states) {
+            if (_value) {
+              return const Icon(Icons.check, color: Colors.black);
+            } else {
+              return const Icon(Icons.close, color: Colors.white);
+            }
+          },
+        ),
       ),
     );
   }
