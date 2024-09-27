@@ -17,7 +17,7 @@ void initializeConfig() {
       //erick     172.17.106.99:8084 wifi
       //jordan    172.17.106.21:8084 wifi
 
-      kBackendBaseUrl = 'http://172.17.106.21:8084';
+      kBackendBaseUrl = 'http://192.168.24.148:8084';
       break;
     case 'develop':
       kPocketBaseUrl = 'http://192.168.102.34:8090';
