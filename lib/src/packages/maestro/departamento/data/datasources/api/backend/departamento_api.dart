@@ -42,7 +42,7 @@ class DepartamentoApi {
   }
 
   Future<Response<dynamic>> getPaisesApi() async {
-    const String url = 'http://192.168.24.163:8084/api/v1/maestro/paises';
+    const String url = 'http://172.17.106.99:8084/api/v1/maestro/paises';
     final Map<String, dynamic> params = <String, dynamic>{"filter": "(activo = true)"};
     final Response<String> response = await _dio.get('$url', data: params);
     return response;
