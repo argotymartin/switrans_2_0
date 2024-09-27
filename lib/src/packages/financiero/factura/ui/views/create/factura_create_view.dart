@@ -195,6 +195,25 @@ class _BuildItemFactura extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Wrap(
+                spacing: 8.0,
+                children: <Widget>[
+                  ...state.documentosSelected.map(
+                    (Documento documento) => Chip(
+                      labelPadding: const EdgeInsets.all(4),
+                      deleteButtonTooltipMessage: "Eliminar",
+                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                      avatar: const Icon(Icons.article_outlined),
+                      onDeleted: () => context.read<FacturaBloc>().add(RemoveDocumentoFacturaEvent(documento)),
+                      label: Text(
+                        "${documento.documento}",
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
               _BuildTableItemsDocumento(state),
               const _BuildPrefacturarDocumento(),
             ],

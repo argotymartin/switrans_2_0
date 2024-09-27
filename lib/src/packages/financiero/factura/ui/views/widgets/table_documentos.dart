@@ -177,9 +177,19 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, List<Documento> docume
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                "Se encontraron documentos con valores de egreso mayores a los valores de ingreso",
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 24),
+              RichText(
+                text: TextSpan(
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: 'Novedad: ',
+                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: "Se encontraron documentos con valores de egreso mayores a los valores del ingreso",
+                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 24),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 32),
               Text(
