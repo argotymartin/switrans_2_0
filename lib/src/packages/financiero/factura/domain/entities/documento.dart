@@ -47,7 +47,6 @@ class Documento {
         "descripcion": descripcion,
         "subtotal": valorIngreso,
         "total": valorTotal,
-        "impuestos":
-            List<dynamic>.from(impuestos.map((Impuesto x) => (x.toJson()))),
+        "impuestos": List<dynamic>.from(impuestos.map((Impuesto x) => (x.toJson()))),
       };
 }
