@@ -43,7 +43,7 @@ build:
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker compose -f docker-compose-production.yml up -d --build
+    - docker compose up -d --build
     - echo consultar en http://192.168.102.18:3000
     - echo "Finalizó con Éxito!!"
   rules:
