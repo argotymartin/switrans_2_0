@@ -179,7 +179,7 @@ void showErrorIngresoVSEgresoDialog(BuildContext context, List<Documento> docume
               const SizedBox(height: 16),
               RichText(
                 text: TextSpan(
-                  children: [
+                  children: <InlineSpan>[
                     TextSpan(
                       text: 'Novedad: ',
                       style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 24, fontWeight: FontWeight.bold),
