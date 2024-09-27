@@ -1,12 +1,26 @@
 FROM ubuntu:22.04
 
-RUN apt update -y && apt upgrade -y &&  \
+RUN apt update -y && apt upgrade -y && \
     apt install -y curl git unzip openjdk-8-jdk wget clang cmake ninja-build pkg-config libgtk-3-dev \
-    xz-utils zip libglu1-mesa iputils-ping vim
+    xz-utils zip libglu1-mesa iputils-ping vim sudo
 
-ARG USER=root
-USER $USER
-WORKDIR /home/$USER
+ARG FLUTTER_VERSION=3.22.3
 
-RUN git clone -b 3.22.3 https://github.com/flutter/flutter.git
-ENV PATH="/home/root/flutter/bin:${PATH}"
+ARG USERNAME=flutteruser
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+RUN git clone -b ${FLUTTER_VERSION} https://github.com/flutter/flutter.git /opt/flutter
+ENV PATH="/opt/flutter/bin:${PATH}"
+
+RUN chown -R $USERNAME:$USERNAME /opt/flutter
+USER $USERNAME
+WORKDIR /home/$USERNAME
+
+RUN flutter doctor

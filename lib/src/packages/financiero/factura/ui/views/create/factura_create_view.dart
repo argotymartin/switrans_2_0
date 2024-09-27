@@ -81,19 +81,28 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Tipo Documento",
                 value: request.documentoCodigo,
                 isRequired: true,
-                onChanged: (EntryAutocomplete result) => request.documentoCodigo = result.codigo,
+                onChanged: (EntryAutocomplete result) {
+                  request.documentoCodigo = result.codigo;
+                  facturaBloc.add(const CleanFormFacturaEvent());
+                },
               ),
               AutocompleteInputForm(
                 entries: state.entriesClientes,
                 title: "Cliente",
                 value: request.cliente,
                 isRequired: true,
-                onChanged: (EntryAutocomplete result) => request.cliente = result.codigo,
+                onChanged: (EntryAutocomplete result) {
+                  request.cliente = result.codigo;
+                  facturaBloc.add(const CleanFormFacturaEvent());
+                },
               ),
               FieldFacturaEmpresa(
                 title: "Empresa",
                 value: request.empresa!,
-                onChanged: (int result) => request.empresa = result,
+                onChanged: (int result) {
+                  request.empresa = result;
+                  facturaBloc.add(const CleanFormFacturaEvent());
+                },
               ),
               DatePickerInputForm(
                 title: "Fecha Inicio - Fecha Fin",
