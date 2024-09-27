@@ -20,15 +20,16 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
   );
 
   FacturaBloc(this._repository) : super(const FacturaState().initial()) {
-    on<GetInitialFormFacturaEvent>(_onGetDataFactura);
-    on<GetDocumentosFacturaEvent>(_onSuccesDocumentos);
-    on<ErrorFacturaEvent>(_onErrorFormFacturaEvent);
+    on<GetInitialFormFacturaEvent>(_onGetInitialFormFactura);
+    on<GetDocumentosFacturaEvent>(_onGetDocumentosFactura);
+    on<ErrorFacturaEvent>(_onErrorFormFactura);
     on<SuccesFacturaEvent>(_onSuccesChanged);
-    on<AddDocumentoFacturaEvent>(_onAddDocumentoFormFacturaEvent);
-    on<RemoveDocumentoFacturaEvent>(_onRemoveDocumentoFormFacturaEvent);
+    on<AddDocumentoFacturaEvent>(_onAddDocumentoFactura);
+    on<RemoveDocumentoFacturaEvent>(_onRemoveDocumentoEvent);
+    on<CleanFormFacturaEvent>(_onCleanFormFactura);
   }
 
-  Future<void> _onGetDataFactura(GetInitialFormFacturaEvent event, Emitter<FacturaState> emit) async {
+  Future<void> _onGetInitialFormFactura(GetInitialFormFacturaEvent event, Emitter<FacturaState> emit) async {
     emit(state.copyWith(status: FacturaStatus.loading));
     final DataState<List<Cliente>> dataStateClientes = await _repository.getClientes();
     final DataState<List<Empresa>> dataStateEmpresas = await _repository.getEmpresasService();
@@ -54,7 +55,7 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     }
   }
 
-  Future<void> _onSuccesDocumentos(GetDocumentosFacturaEvent event, Emitter<FacturaState> emit) async {
+  Future<void> _onGetDocumentosFactura(GetDocumentosFacturaEvent event, Emitter<FacturaState> emit) async {
     emit(state.copyWith(status: FacturaStatus.loading));
     final DataState<List<Documento>> resp = await _repository.getDocumentosService(event.request);
     if (resp.data != null) {
@@ -65,7 +66,7 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     }
   }
 
-  Future<void> _onErrorFormFacturaEvent(ErrorFacturaEvent event, Emitter<FacturaState> emit) async {
+  Future<void> _onErrorFormFactura(ErrorFacturaEvent event, Emitter<FacturaState> emit) async {
     emit(state.copyWith(status: FacturaStatus.error, error: event.error));
   }
 
@@ -73,7 +74,7 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     emit(state.copyWith(status: FacturaStatus.loading));
   }
 
-  Future<void> _onAddDocumentoFormFacturaEvent(AddDocumentoFacturaEvent event, Emitter<FacturaState> emit) async {
+  Future<void> _onAddDocumentoFactura(AddDocumentoFacturaEvent event, Emitter<FacturaState> emit) async {
     emit(state.copyWith(status: FacturaStatus.loading));
     final List<Documento> documentos = <Documento>[...state.documentosSelected];
     if (!documentos.contains(event.documento)) {
@@ -82,11 +83,16 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     emit(state.copyWith(status: FacturaStatus.succes, documentosSelected: documentos));
   }
 
-  Future<void> _onRemoveDocumentoFormFacturaEvent(RemoveDocumentoFacturaEvent event, Emitter<FacturaState> emit) async {
+  Future<void> _onRemoveDocumentoEvent(RemoveDocumentoFacturaEvent event, Emitter<FacturaState> emit) async {
     emit(state.copyWith(status: FacturaStatus.loading));
     final List<Documento> documentos = <Documento>[...state.documentosSelected];
     final List<Documento> newDocumentos = documentos..removeWhere((Documento element) => element.documento == event.documento.documento);
     emit(state.copyWith(status: FacturaStatus.succes, documentosSelected: newDocumentos));
+  }
+
+  Future<void> _onCleanFormFactura(CleanFormFacturaEvent event, Emitter<FacturaState> emit) async {
+    emit(state.copyWith(status: FacturaStatus.loading));
+    emit(state.copyWith(status: FacturaStatus.succes, documentosSelected: const <Documento>[], documentos: <Documento>[]));
   }
 
   List<MapEntry<int, String>> getCentosCosto() {
