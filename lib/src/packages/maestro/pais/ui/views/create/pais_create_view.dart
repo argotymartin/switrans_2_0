@@ -36,7 +36,7 @@ class PaisCreateView extends StatelessWidget {
               children: const <Widget>[
                 BuildViewDetail(),
                 CardExpansionPanel(
-                  title: "Registrar Nuevo",
+                  title: "Crear Registro",
                   icon: Icons.storage_outlined,
                   child: _BuildFieldsForm(),
                 ),

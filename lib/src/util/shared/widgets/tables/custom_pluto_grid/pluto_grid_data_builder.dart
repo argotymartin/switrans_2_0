@@ -109,7 +109,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
         PlutoColumn(
           enableRowChecked: true,
           enableEditingMode: false,
-          title: 'Guardar Cambios',
+          title: 'Guardar',
           field: 'cambios',
           type: PlutoColumnType.text(),
           renderer: (PlutoColumnRendererContext renderContext) => Center(
