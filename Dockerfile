@@ -19,7 +19,8 @@ WORKDIR /app
 COPY --from=deps /app /app
 COPY --from=deps /home/flutteruser/.pub-cache /home/flutteruser/.pub-cache
 COPY . .
-RUN flutter build web --wasm --no-tree-shake-icons --dart-define=ENV=${ENV}
+RUN export $(cat .env | xargs) && flutter clean && flutter pub get && flutter build web --wasm --no-tree-shake-icons --dart-define=ENV=${ENV}
+
 
 # Etapa de ejecución
 FROM node:slim AS runner
