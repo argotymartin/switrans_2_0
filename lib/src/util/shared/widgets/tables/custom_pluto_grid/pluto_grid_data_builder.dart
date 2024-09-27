@@ -70,8 +70,8 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               //enableAutoEditing: isEdit,
               title: tilte,
               field: key,
-              width: 300,
-              minWidth: 200,
+              width: 150,
+              minWidth: 100,
               type: PlutoColumnType.text(),
               renderer: (PlutoColumnRendererContext rendererContext) => _BuildFieldAutoComplete(
                 renderContext: rendererContext,

@@ -22,7 +22,7 @@ class PaisCreateView extends StatelessWidget {
 
         if (state.status == PaisStatus.succes) {
           context.read<PaisBloc>().request = PaisRequest(codigo: state.pais!.codigo);
-          context.read<PaisBloc>().add(const GetPaisEvent());
+          context.read<PaisBloc>().add(const GetPaisesEvent());
           context.go('/maestros/pais/buscar');
           Preferences.isResetForm = false;
         }

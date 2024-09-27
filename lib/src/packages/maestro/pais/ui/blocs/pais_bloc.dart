@@ -15,7 +15,7 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
 
   PaisBloc(this._repository) : super(const PaisState().initial()) {
     on<InitialPaisEvent>(_onInitialPais);
-    on<GetPaisEvent>(_onGetPais);
+    on<GetPaisesEvent>(_onGetPais);
     on<SetPaisEvent>(_onSetPais);
     on<UpdatePaisEvent>(_onUpdatePais);
     on<ErrorFormPaisEvent>(_onErrorFormPais);
@@ -27,7 +27,7 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
     emit(state.copyWith(status: PaisStatus.initial));
   }
 
-  Future<void> _onGetPais(GetPaisEvent event, Emitter<PaisState> emit) async {
+  Future<void> _onGetPais(GetPaisesEvent event, Emitter<PaisState> emit) async {
     emit(state.copyWith(status: PaisStatus.loading));
     final DataState<List<Pais>> response = await _repository.getPaisesService(request);
     if (response.data != null) {

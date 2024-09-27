@@ -12,7 +12,7 @@ class PaisApi {
   Future<Response<dynamic>> getPaisesApi(PaisRequest request) async {
     final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrl/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJson();
+    final Map<String, dynamic> params = requestModel.toJsonGet();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }

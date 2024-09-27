@@ -52,7 +52,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        paisBloc.add(const GetPaisEvent());
+        paisBloc.add(const GetPaisesEvent());
       } else {
         paisBloc.add(const ErrorFormPaisEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
