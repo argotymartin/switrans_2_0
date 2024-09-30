@@ -1,3 +1,5 @@
+import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
+
 late String kPocketBaseUrl;
 late String kBackendBaseUrlERP;
 late String kBackendBaseUrlMaestro;
@@ -5,6 +7,7 @@ late String kBackendBaseUrlMaestro;
 const String configParam = String.fromEnvironment('ENV', defaultValue: 'local');
 
 void initializeConfig() {
+  Preferences.env = configParam;
   // ignore: avoid_print
   print("Configuracion: $configParam");
   switch (configParam) {

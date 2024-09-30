@@ -471,14 +471,44 @@ class DocumentosTableDataBuilder {
 }
 
 Widget buildRenderSumFooter(PlutoColumnFooterRendererContext rendererContext, Color color) {
-  return PlutoAggregateColumnFooter(
-    rendererContext: rendererContext,
-    type: PlutoAggregateColumnType.sum,
-    alignment: Alignment.centerRight,
-    titleSpanBuilder: (String text) {
-      return <InlineSpan>[
-        TextSpan(text: '\$ $text', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color)),
-      ];
+  return BlocBuilder<FacturaBloc, FacturaState>(
+    builder: (BuildContext context, FacturaState state) {
+      final List<Documento> documentos = state.documentosSelected;
+      double totalSelected = 0.0;
+      if (rendererContext.column.field == "egreso") {
+        totalSelected = documentos.fold(0.0, (double total, Documento documento) => total + documento.valorEgreso);
+      }
+
+      if (rendererContext.column.field == "ingreso") {
+        totalSelected = documentos.fold(0.0, (double total, Documento documento) => total + documento.valorIngreso);
+      }
+
+      if (rendererContext.column.field == "total") {
+        totalSelected = documentos.fold(0.0, (double total, Documento documento) => total + documento.valorTotal);
+      }
+
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CurrencyLabel(
+              fontSize: 14,
+              text: '${totalSelected.toInt()}',
+              color: color,
+            ),
+          ),
+          PlutoAggregateColumnFooter(
+            rendererContext: rendererContext,
+            type: PlutoAggregateColumnType.sum,
+            alignment: Alignment.centerRight,
+            titleSpanBuilder: (String text) {
+              return <InlineSpan>[
+                TextSpan(text: '\$ $text', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color)),
+              ];
+            },
+          ),
+        ],
+      );
     },
   );
 }
@@ -489,13 +519,29 @@ Widget buildRenderSumAdicionesFooter(PlutoColumnFooterRendererContext rendererCo
       final double totalAdiciones = state.documentos.fold(0.0, (double total, Documento documento) {
         return total + documento.adiciones.fold(0.0, (num totalAdicion, Adicion adicion) => totalAdicion + (adicion.valor));
       });
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CurrencyLabel(
-          text: '${totalAdiciones.toInt()}',
-          color: Colors.green.shade800,
-          fontWeight: FontWeight.bold,
-        ),
+
+      final double totalAdicionesSelected = state.documentosSelected.fold(0.0, (double total, Documento documento) {
+        return total + documento.adiciones.fold(0.0, (num totalAdicion, Adicion adicion) => totalAdicion + (adicion.valor));
+      });
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CurrencyLabel(
+              fontSize: 14,
+              text: '${totalAdicionesSelected.toInt()}',
+              color: Colors.green.shade800,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CurrencyLabel(
+              text: '${totalAdiciones.toInt()}',
+              color: Colors.green.shade800,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       );
     },
   );
@@ -507,13 +553,29 @@ Widget buildRenderSumDescuentosFooter(PlutoColumnFooterRendererContext rendererC
       final double totalDescuentos = state.documentos.fold(0.0, (double total, Documento documento) {
         return total + documento.descuentos.fold(0.0, (num totalDescuento, Descuento descuento) => totalDescuento + (descuento.valor));
       });
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CurrencyLabel(
-          text: '${totalDescuentos.toInt()}',
-          color: Colors.red.shade800,
-          fontWeight: FontWeight.bold,
-        ),
+
+      final double totalDescuentosSelected = state.documentosSelected.fold(0.0, (double total, Documento documento) {
+        return total + documento.descuentos.fold(0.0, (num totalDescuento, Descuento descuento) => totalDescuento + (descuento.valor));
+      });
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CurrencyLabel(
+              fontSize: 14,
+              text: '${totalDescuentosSelected.toInt()}',
+              color: Colors.red.shade800,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CurrencyLabel(
+              text: '${totalDescuentos.toInt()}',
+              color: Colors.red.shade800,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       );
     },
   );
