@@ -4,7 +4,7 @@ late String kPocketBaseUrl;
 late String kBackendBaseUrlERP;
 late String kBackendBaseUrlMaestro;
 
-const String configParam = String.fromEnvironment('ENVIRONMENT', defaultValue: 'local');
+const String configParam = String.fromEnvironment('ENV', defaultValue: 'local');
 
 void initializeConfig() {
   Preferences.env = configParam;
