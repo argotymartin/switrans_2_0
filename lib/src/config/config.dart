@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 late String kPocketBaseUrl;
-late String kBackendBaseUrl;
+late String kBackendBaseUrlERP;
+late String kBackendBaseUrlMaestro;
 
 const String configParam = String.fromEnvironment('ENVIRONMENT', defaultValue: 'local');
 
@@ -10,16 +11,18 @@ void initializeConfig() {
   switch (configParam) {
     case 'local':
       kPocketBaseUrl = 'http://localhost:8090';
-      kBackendBaseUrl = 'http://192.168.24.163:8084'; //cable erick
-      //kBackendBaseUrl = 'http://172.17.106.99:8084'; //vpn erick accesos
+      kBackendBaseUrlERP = 'http://192.168.24.158:8085';
+      kBackendBaseUrlMaestro = 'http://192.168.24.158:8084';
       break;
     case 'develop':
       kPocketBaseUrl = 'http://192.168.102.34:8090';
-      kBackendBaseUrl = 'http://192.168.102.18:10000';
+      kBackendBaseUrlERP = 'http://192.168.102.18:10000';
+      kBackendBaseUrlMaestro = 'http://192.168.102.18:10000';
       break;
     case 'release':
       kPocketBaseUrl = 'http://192.168.102.21:8090';
-      kBackendBaseUrl = 'http://192.168.102.18:8082';
+      kBackendBaseUrlERP = 'http://192.168.102.18:8082';
+      kBackendBaseUrlMaestro = 'http://192.168.102.18:8082';
       break;
   }
 }

@@ -3,6 +3,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/ite
 class ItemDocumento {
   final int servicioCodigo;
   final String servicioNombre;
+  final int tipoItemFactura;
   final double subtotal;
   final double total;
   final ItemImpuesto impuestos;
@@ -10,6 +11,7 @@ class ItemDocumento {
   ItemDocumento({
     required this.servicioCodigo,
     required this.servicioNombre,
+    required this.tipoItemFactura,
     required this.subtotal,
     required this.total,
     required this.impuestos,

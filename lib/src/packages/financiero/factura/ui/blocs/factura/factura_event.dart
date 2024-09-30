@@ -34,3 +34,7 @@ class RemoveDocumentoFacturaEvent extends FacturaEvent {
   final Documento documento;
   const RemoveDocumentoFacturaEvent(this.documento);
 }
+
+class CleanFormFacturaEvent extends FacturaEvent {
+  const CleanFormFacturaEvent();
+}

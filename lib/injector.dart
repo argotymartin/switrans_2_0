@@ -27,14 +27,14 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/data/datasources/api/pa
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/repositories/pagina_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/pagina_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/data/datasources/api/backend/pais_api.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/data/repositories/pais_repository_impl.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/pais_domain.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/datasources/api/paquete_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/repositories/paquete_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/data/datasources/api/resolucion_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/data/repositories/resolucion_respository_api_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
@@ -51,6 +51,10 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasource
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/data/datasources/api/backend/pais_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/data/repositories/pais_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/domain/pais_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
 
 final GetIt injector = GetIt.instance;
 
@@ -72,6 +76,7 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
+  //injector.registerSingleton<DocumentoBloc>(DocumentoBloc(injector()));
   injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
 
   injector.registerSingleton<TipoImpuestoApi>(TipoImpuestoApi(injector()));
@@ -94,6 +99,14 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractModuloRepository>(ModuloRepositoryImpl(injector()));
   injector.registerSingleton<ModuloBloc>(ModuloBloc(injector()));
 
+  injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
+  injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
+  injector.registerSingleton<PaqueteBloc>(PaqueteBloc(injector()));
+
+  injector.registerSingleton<TransaccionContableDB>(TransaccionContableDB());
+  injector.registerSingleton<AbstractTransaccionContableRepository>(TransaccionContableRepositoryDBImpl(injector()));
+  injector.registerSingleton<TransaccionContableBloc>(TransaccionContableBloc(injector()));
+
   injector.registerSingleton<PaginaApiPocketBase>(PaginaApiPocketBase(injector()));
   injector.registerSingleton<AbstractPaginaRepository>(PaginaRepositoryImpl(injector()));
   injector.registerSingleton<PaginaBloc>(PaginaBloc(injector()));
@@ -102,11 +115,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractPaisRepository>(PaisRepositoryImpl(injector()));
   injector.registerSingleton<PaisBloc>(PaisBloc(injector()));
 
-  injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
-  injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
-  injector.registerSingleton<PaqueteBloc>(PaqueteBloc(injector()));
-
-  injector.registerSingleton<TransaccionContableDB>(TransaccionContableDB());
-  injector.registerSingleton<AbstractTransaccionContableRepository>(TransaccionContableRepositoryDBImpl(injector()));
-  injector.registerSingleton<TransaccionContableBloc>(TransaccionContableBloc(injector()));
+  injector.registerSingleton<ResolucionApi>(ResolucionApi(injector()));
+  injector.registerSingleton<AbstractResolucionRepository>(ResolucionRespositoryApiImpl(injector()));
+  injector.registerSingleton<ResolucionBloc>(ResolucionBloc(injector()));
 }

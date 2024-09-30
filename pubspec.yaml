@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animate_do: ^3.3.4
+  animated_icon: ^0.0.9
   awesome_dialog: ^3.2.0
   bloc: ^8.1.4
   calendar_date_picker2: ^1.0.3
@@ -58,6 +59,7 @@ dependencies:
   shared_preferences: ^2.3.1
   stream_disposable: ^2.0.0
   syncfusion_flutter_pdf: ^26.1.41
+  syncfusion_flutter_sliders: ^26.2.14
   toastification: ^2.0.0
 
 dev_dependencies:
