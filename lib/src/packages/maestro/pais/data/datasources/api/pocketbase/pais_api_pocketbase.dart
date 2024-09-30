@@ -8,11 +8,11 @@ class PaisApiPocketBase {
   final Dio _dio;
   PaisApiPocketBase(this._dio);
 
-  Future<Response<dynamic>> getPaisesApi1(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+  Future<Response<dynamic>> getPaisesApi(PaisRequest request) async {
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
 
-    final String filter = PaisRequestModel.toPocketBaseFilter(requestMap);
+    final String filter = toPocketBaseFilter(requestMap);
     final String url = '$kPocketBaseUrl/api/collections/Pais/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter, "expand": "modulo"};
     final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
@@ -20,8 +20,8 @@ class PaisApiPocketBase {
   }
 
   Future<Response<dynamic>> setPaisApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
     requestMap["codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "pais", field: "codigo");
 
     final String url = '$kPocketBaseUrl/api/collections/pais/records';
@@ -30,8 +30,8 @@ class PaisApiPocketBase {
   }
 
   Future<Response<dynamic>> updatePaisApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
 
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,
@@ -44,5 +44,24 @@ class PaisApiPocketBase {
     final Response<dynamic> response = await _dio.patch(url, data: requestMap, queryParameters: <String, dynamic>{"expand": "modulo"});
 
     return response;
+  }
+
+  static String toPocketBaseFilter(Map<String, dynamic> map) {
+    final List<String> conditions = <String>[];
+    if (map["nombre"] != null) {
+      conditions.add('nombre ~ "${map["nombre"]}"');
+    }
+    if (map["codigo"] != null) {
+      conditions.add('codigo = ${map["codigo"]}');
+    }
+    if (map["activo"] != null) {
+      conditions.add('activo = ${map["activo"]}');
+    }
+    if (map["modulo"] != null) {
+      conditions.add('modulo = "${map["modulo"]}"');
+    }
+    final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
+    final String data = queryString.isNotEmpty ? '($queryString)' : '';
+    return data;
   }
 }

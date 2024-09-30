@@ -18,7 +18,7 @@ class AvatarNavbar extends StatelessWidget {
         return ClipOval(
           child: state.auth?.usuario.avatar != null && name.contains('.jpg') || name.contains('.png') || name.contains('.gif')
               ? Image.network(state.auth!.usuario.avatar, width: size, height: size, fit: BoxFit.cover)
-              : ColoredBox(color: Colors.white, child: Lottie.asset('assets/animations/sin_imagen.json', fit: BoxFit.cover, width: 40)),
+              : ColoredBox(color: Colors.white, child: Lottie.asset('assets/animations/sin_imagen.json', fit: BoxFit.cover, width: size)),
         );
       },
     );

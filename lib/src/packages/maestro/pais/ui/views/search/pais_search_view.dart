@@ -52,7 +52,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        paisBloc.add(const GetPaisEvent());
+        paisBloc.add(const GetPaisesEvent());
       } else {
         paisBloc.add(const ErrorFormPaisEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
           BuildFormFields(
             children: <Widget>[
               NumberInputForm(
-                title: "Codigo",
+                title: "Código",
                 value: request.codigo,
                 autofocus: true,
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
@@ -118,11 +118,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             for (final Map<String, dynamic> map in listUpdate) {
               final PaisRequest request = PaisRequestModel.fromTable(map);
               paisBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<PaisBloc>().add(SetPaisEvent(paisBloc.request));
+              context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(request);
             }
-            context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Pais pais) {
@@ -130,6 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
+              'usuario_nombre': DataItemGrid(type: Tipo.text, value: pais.usuarioNombre, edit: true),
               'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
             };
           }

@@ -1,51 +1,48 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class WebDatePicker extends StatefulWidget {
-  final DateTime? initialDate;
-  final String initialValue;
-  final TextEditingController? controller;
-  final ValueChanged<String> onChange;
-  final bool isRequired;
+class DateInputPicker extends StatefulWidget {
+  final String? dateInitialValue;
+  final ValueChanged<String> onDateSelected;
   final bool autofocus;
-  const WebDatePicker({
-    required this.onChange,
-    required this.autofocus,
-    required this.isRequired,
-    required this.initialValue,
-    this.controller,
-    this.initialDate,
+
+  const DateInputPicker({
+    required this.onDateSelected,
+    this.dateInitialValue,
+    this.autofocus = false,
     super.key,
   });
 
   @override
-  State<StatefulWidget> createState() => _WebDatePickerState();
+  State<DateInputPicker> createState() => _DateInputPickerState();
 }
 
-class _WebDatePickerState extends State<WebDatePicker> {
+class _DateInputPickerState extends State<DateInputPicker> {
   late List<DateTime?> dialogCalendarPickerValue;
-  late TextEditingController controller;
+  late TextEditingController _controller;
+  DateTime? _initialDate;
+
   @override
   void initState() {
-    DateTime dateStar = DateTime.now();
-    DateTime dateEnd = dateStar.subtract(const Duration(days: 1));
-    if (widget.controller != null) {
-      controller = widget.controller!;
-    } else {
-      controller = TextEditingController();
-    }
+    _controller = TextEditingController(
+      text: widget.dateInitialValue ?? '',
+    );
 
-    if (widget.initialValue.isNotEmpty) {
-      controller.text = widget.initialValue;
-      final List<String> fechas = widget.initialValue.split(" - ");
-      dateStar = DateTime.parse(fechas[0]);
-      dateEnd = DateTime.parse(fechas[1]);
+    if (widget.dateInitialValue != null) {
+      try {
+        _initialDate = DateTime.parse(widget.dateInitialValue!);
+        dialogCalendarPickerValue = <DateTime?>[_initialDate];
+      } on FormatException catch (e) {
+        if (kDebugMode) {
+          print('Error parsing initial date: $e');
+        }
+        _initialDate = null;
+      }
     }
-
-    dialogCalendarPickerValue = <DateTime?>[
-      dateStar,
-      dateEnd,
-    ];
+    if (widget.dateInitialValue == null) {
+      dialogCalendarPickerValue = <DateTime?>[DateTime.now()];
+    }
     super.initState();
   }
 
@@ -61,7 +58,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     final CalendarDatePicker2WithActionButtonsConfig config = CalendarDatePicker2WithActionButtonsConfig(
       calendarViewScrollPhysics: const NeverScrollableScrollPhysics(),
       dayTextStyle: dayTextStyle,
-      calendarType: CalendarDatePicker2Type.range,
+      calendarType: CalendarDatePicker2Type.single,
       closeDialogOnCancelTapped: true,
       firstDayOfWeek: 1,
       controlsTextStyle: const TextStyle(
@@ -70,6 +67,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
       ),
       centerAlignModePicker: true,
       customModePickerIcon: const SizedBox(),
+      animateToDisplayedMonthDate: true,
       dayTextStylePredicate: ({required DateTime date}) {
         TextStyle? textStyle;
         if (date.weekday == DateTime.saturday || date.weekday == DateTime.sunday) {
@@ -160,8 +158,9 @@ class _WebDatePickerState extends State<WebDatePicker> {
       },
     );
     return TextFormField(
+      controller: _controller,
+      autofocus: widget.autofocus,
       style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
-      controller: controller,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         prefixIcon: const Icon(Icons.calendar_month_outlined),
@@ -194,7 +193,6 @@ class _WebDatePickerState extends State<WebDatePicker> {
           config: config.copyWith(
             dayMaxWidth: 32,
             controlsHeight: 40,
-            disableMonthPicker: true,
             hideYearPickerDividers: true,
           ),
           dialogSize: const Size(450, 350),
@@ -204,30 +202,29 @@ class _WebDatePickerState extends State<WebDatePicker> {
         );
         if (values != null) {
           setState(() {
+            _controller.text = _getValueText(config.calendarType, values);
+            widget.onDateSelected(_getValueText(config.calendarType, values));
             dialogCalendarPickerValue = values;
-            controller.text = _getValueText(config.calendarType, values);
-            widget.onChange(_getValueText(config.calendarType, values));
           });
         }
       },
     );
   }
-}
 
-String _getValueText(CalendarDatePicker2Type datePickerType, List<DateTime?> values) {
-  final List<DateTime?> valuesValidate = values.map((DateTime? e) => e != null ? DateUtils.dateOnly(e) : null).toList();
+  String _getValueText(CalendarDatePicker2Type datePickerType, List<DateTime?> values) {
+    final List<DateTime?> valuesValidate = values.map((DateTime? e) => e != null ? DateUtils.dateOnly(e) : null).toList();
 
-  String valueText = (valuesValidate.isNotEmpty ? valuesValidate[0] : null).toString().replaceAll('00:00:00.000', '');
+    String valueText = (valuesValidate.isNotEmpty ? valuesValidate[0] : null).toString().replaceAll('00:00:00.000', '');
 
-  if (datePickerType == CalendarDatePicker2Type.range) {
-    if (valuesValidate.isNotEmpty) {
-      final String startDate = valuesValidate[0].toString().replaceAll('00:00:00.000', '').trim();
-      final String endDate = valuesValidate.length > 1 ? valuesValidate[1].toString().replaceAll('00:00:00.000', '').trim() : startDate;
-      valueText = '$startDate - $endDate';
-    } else {
-      return 'null';
+    if (datePickerType == CalendarDatePicker2Type.range) {
+      if (valuesValidate.isNotEmpty) {
+        final String startDate = valuesValidate[0].toString().replaceAll('00:00:00.000', '').trim();
+        valueText = '$startDate';
+      } else {
+        return 'null';
+      }
     }
-  }
 
-  return valueText;
+    return valueText;
+  }
 }

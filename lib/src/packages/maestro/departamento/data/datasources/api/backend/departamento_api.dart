@@ -4,7 +4,6 @@ import 'package:switrans_2_0/src/packages/maestro/departamento/data/models/reque
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
 
 const String endPoint = "api/v1/maestro/departamentos";
-const String endPoint1 = "api/v1/maestro/paises";
 
 class DepartamentoApi {
   final Dio _dio;
@@ -12,7 +11,8 @@ class DepartamentoApi {
 
   Future<Response<dynamic>> getDepartamentosApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
-    final String url = '$kBackendBaseUrl/$endPoint';
+
+    final String url = '$kBackendBaseUrlMaestro/$endPoint';
     final Map<String, dynamic> params = requestModel.toJsonConsultarAPI();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
@@ -20,7 +20,7 @@ class DepartamentoApi {
 
   Future<Response<dynamic>> setDepartamentoApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
-    final String url = '$kBackendBaseUrl/$endPoint/crear';
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/crear';
     final Map<String, dynamic> params = requestModel.toJsonCrearAPI();
     final Response<dynamic> response = await _dio.post(url, data: params);
     return response;
@@ -28,7 +28,7 @@ class DepartamentoApi {
 
   Future<Response<dynamic>> updateDepartamentoApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
-    final String url = '$kBackendBaseUrl/$endPoint/actualizar/${request.codigo}';
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.codigo}';
     final Map<String, dynamic> params = requestModel.toJsonUpdateAPI();
     final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
     final Response<dynamic> response;
@@ -42,7 +42,7 @@ class DepartamentoApi {
   }
 
   Future<Response<dynamic>> getPaisesApi() async {
-    const String url = 'http://192.168.24.163:8084/api/v1/maestro/paises';
+    final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/paises';
     final Map<String, dynamic> params = <String, dynamic>{"filter": "(activo = true)"};
     final Response<String> response = await _dio.get('$url', data: params);
     return response;

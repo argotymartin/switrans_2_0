@@ -44,5 +44,9 @@ class Documento {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         "documento": documento,
+        "descripcion": descripcion,
+        "subtotal": valorIngreso,
+        "total": valorTotal,
+        "impuestos": List<dynamic>.from(impuestos.map((Impuesto x) => (x.toJson()))),
       };
 }

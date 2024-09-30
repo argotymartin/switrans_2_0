@@ -22,7 +22,7 @@ class PaisCreateView extends StatelessWidget {
 
         if (state.status == PaisStatus.succes) {
           context.read<PaisBloc>().request = PaisRequest(codigo: state.pais!.codigo);
-          context.read<PaisBloc>().add(const GetPaisEvent());
+          context.read<PaisBloc>().add(const GetPaisesEvent());
           context.go('/maestros/pais/buscar');
           Preferences.isResetForm = false;
         }
@@ -36,7 +36,7 @@ class PaisCreateView extends StatelessWidget {
               children: const <Widget>[
                 BuildViewDetail(),
                 CardExpansionPanel(
-                  title: "Registrar Nuevo",
+                  title: "Crear Registro",
                   icon: Icons.storage_outlined,
                   child: _BuildFieldsForm(),
                 ),
@@ -63,17 +63,19 @@ class _BuildFieldsForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BuildFormFields(
-            children: <Widget>[
-              TextInputForm(
-                title: "Nombre",
-                value: request.nombre,
-                typeInput: TypeInput.lettersAndNumbers,
-                minLength: 5,
-                onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
-              ),
-            ],
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.4,
+            child: TextInputForm(
+              title: "Nombre",
+              value: request.nombre,
+              typeInput: TypeInput.lettersAndCaracteres,
+              minLength: 3,
+              onChanged: (String result) {
+                request.nombre = result.isNotEmpty ? result.trim().replaceAll(RegExp(r'\s+'), ' ').toUpperCase() : null;
+              },
+            ),
           ),
+          const SizedBox(height: 16),
           FormButton(
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();

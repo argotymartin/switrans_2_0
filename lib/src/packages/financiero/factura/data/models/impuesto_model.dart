@@ -2,16 +2,18 @@ import 'package:switrans_2_0/src/packages/financiero/factura/domain/entities/imp
 
 class ImpuestoModel extends Impuesto {
   ImpuestoModel({
-    required super.codigo,
     required super.nombre,
+    required super.codigoTipoImpuesto,
+    required super.codigoTransaccionContable,
     required super.valor,
     super.factorConversion,
     super.porcentaje,
   });
 
   factory ImpuestoModel.fromJson(Map<String, dynamic> json) => ImpuestoModel(
-        codigo: json['codigo'],
         nombre: json['nombre'],
+        codigoTipoImpuesto: json['codigoTipoImpuesto'] ?? 0,
+        codigoTransaccionContable: json['codigoTransaccionContable'],
         valor: json['valor'],
         factorConversion: json['factorConversion'] ?? 0,
         porcentaje: json['porcentaje'] ?? 0,

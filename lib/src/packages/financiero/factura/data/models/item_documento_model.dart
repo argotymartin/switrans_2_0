@@ -5,6 +5,7 @@ class ItemDocumentoModel extends ItemDocumento {
   ItemDocumentoModel({
     required super.servicioCodigo,
     required super.servicioNombre,
+    required super.tipoItemFactura,
     required super.subtotal,
     required super.total,
     required super.impuestos,
@@ -14,6 +15,7 @@ class ItemDocumentoModel extends ItemDocumento {
     return ItemDocumentoModel(
       servicioNombre: json["servicioNombre"],
       servicioCodigo: json["servicioCodigo"],
+      tipoItemFactura: json["tipoItemFactura"],
       total: json["total"],
       impuestos: ItemImpuestoModel.fromJson(json['impuestos']),
       subtotal: json["subtotal"],

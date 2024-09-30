@@ -93,7 +93,10 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                   ),
                   Text(
                     usuarioAuth!.nombre,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -118,7 +121,9 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                   ),
                   style: ButtonStyle(
                     padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-                    shape: WidgetStateProperty.all<OutlinedBorder>(const StadiumBorder()),
+                    shape: WidgetStateProperty.all<OutlinedBorder>(
+                      const StadiumBorder(),
+                    ),
                   ),
                   onSelected: (ColorOption selectedOption) {
                     setState(() {
@@ -151,7 +156,13 @@ class CustomEndDrawerState extends State<CustomEndDrawer> {
                                         context.read<ThemeCubit>().onChangeColorTheme(option.color);
                                       });
                                       Navigator.pop(context);
-                                      Future<void>.delayed(const Duration(milliseconds: 1200)).then(( dynamic value) => Scaffold.of(context).closeEndDrawer());
+                                      Future<void>.delayed(const Duration(milliseconds: 1200)).then(
+                                        (dynamic value) {
+                                          if (context.mounted) {
+                                            Scaffold.of(context).closeEndDrawer();
+                                          }
+                                        },
+                                      );
                                     },
                                   ),
                                 ),

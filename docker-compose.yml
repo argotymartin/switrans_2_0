@@ -1,17 +1,21 @@
 services:
-  flutter:
-    image: flutter-image:3.22.3
-    container_name: switrans2-flutter
-    restart: unless-stopped
-    volumes:
-      - .:/app
+
+  switrans2-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${STAGE}
+    container_name: switrans2-server
     working_dir: /app
-    command: >
-      sh -c "tail -f /dev/null"
+    restart: unless-stopped
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - pocketbase
     healthcheck:
-      test: echo "Flutter container is running"
-      interval: 30s
-      timeout: 10s
+      test: curl -f http://localhost:${PORT} || exit 1
+      interval: 10s
+      timeout: 5s
       retries: 3
 
   pocketbase:
@@ -19,37 +23,14 @@ services:
     container_name: switrans2-pocketbase
     restart: unless-stopped
     ports:
-      - "8090:8090"
+      - "${PORT_PB}:8090"
     volumes:
-      - ${PWD}/../db/pocketbase/pb_data:/pb/pb_data
+      - ./../db/pocketbase/pb_data:/pb/pb_data
     healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      test: wget --no-verbose --tries=1 --spider http://localhost:${PORT_PB}/api/health || exit 1
       interval: 5s
       timeout: 5s
       retries: 5
-
-  node:
-    image: node:18
-    container_name: switrans2-node
-    volumes:
-      - ${PWD}/../:/app
-    working_dir: /app/server
-    restart: unless-stopped
-    command: >
-      sh -c "cp -r ../switrans_2_0/build/web/ ./ && cp -r ../switrans_2_0/web/node_server/. ./ && npm install && npm start" 
-    ports:
-      - "3000:3000"
-    extra_hosts:
-      pocketbase.mct.com.co: "192.168.102.18"
-      backend.mct.com.co: "192.168.102.18"
-
-    depends_on:
-      - pocketbase
-    healthcheck:
-      test: curl -f http://localhost:3000 || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
 networks:
   default:

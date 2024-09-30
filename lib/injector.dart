@@ -39,6 +39,10 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/data/datasources/api/p
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/repositories/paquete_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/data/datasources/api/resolucion_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/data/repositories/resolucion_respository_api_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/datasources/db/servicio_empresarial_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/repositories/servicio_empresarial_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
@@ -76,6 +80,7 @@ Future<void> initializeDependencies() async {
 
   injector.registerSingleton<FacturaAPI>(FacturaAPI(injector()));
   injector.registerSingleton<AbstractFacturaRepository>(FacturaRepositoryImpl(injector()));
+  //injector.registerSingleton<DocumentoBloc>(DocumentoBloc(injector()));
   injector.registerSingleton<FacturaBloc>(FacturaBloc(injector()));
 
   injector.registerSingleton<TipoImpuestoApi>(TipoImpuestoApi(injector()));
@@ -90,6 +95,10 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractServicioEmpresarialRepository>(ServicioEmpresarialDBImpl(injector()));
   injector.registerSingleton<ServicioEmpresarialBloc>(ServicioEmpresarialBloc(injector()));
 
+  injector.registerSingleton<DepartamentoApi>(DepartamentoApi(injector()));
+  injector.registerSingleton<AbstractDepartamentoRepository>(DepartamentoRepositoryImpl(injector()));
+  injector.registerSingleton<DepartamentoBloc>(DepartamentoBloc(injector()));
+
   injector.registerSingleton<UnidadNegocioDB>(UnidadNegocioDB());
   injector.registerSingleton<AbstractUnidadNegocioRepository>(UnidadNegocioRepositoryDBImpl(injector()));
   injector.registerSingleton<UnidadNegocioBloc>(UnidadNegocioBloc(injector()));
@@ -97,6 +106,14 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<ModuloApiPocketBase>(ModuloApiPocketBase(injector()));
   injector.registerSingleton<AbstractModuloRepository>(ModuloRepositoryImpl(injector()));
   injector.registerSingleton<ModuloBloc>(ModuloBloc(injector()));
+
+  injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
+  injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
+  injector.registerSingleton<PaqueteBloc>(PaqueteBloc(injector()));
+
+  injector.registerSingleton<TransaccionContableDB>(TransaccionContableDB());
+  injector.registerSingleton<AbstractTransaccionContableRepository>(TransaccionContableRepositoryDBImpl(injector()));
+  injector.registerSingleton<TransaccionContableBloc>(TransaccionContableBloc(injector()));
 
   injector.registerSingleton<PaginaApiPocketBase>(PaginaApiPocketBase(injector()));
   injector.registerSingleton<AbstractPaginaRepository>(PaginaRepositoryImpl(injector()));
@@ -106,15 +123,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractPaisRepository>(PaisRepositoryImpl(injector()));
   injector.registerSingleton<PaisBloc>(PaisBloc(injector()));
 
-  injector.registerSingleton<DepartamentoApi>(DepartamentoApi(injector()));
-  injector.registerSingleton<AbstractDepartamentoRepository>(DepartamentoRepositoryImpl(injector()));
-  injector.registerSingleton<DepartamentoBloc>(DepartamentoBloc(injector()));
-
-  injector.registerSingleton<PaqueteApiPocketBase>(PaqueteApiPocketBase(injector()));
-  injector.registerSingleton<AbstractPaqueteRepository>(PaqueteRepositoryImpl(injector()));
-  injector.registerSingleton<PaqueteBloc>(PaqueteBloc(injector()));
-
-  injector.registerSingleton<TransaccionContableDB>(TransaccionContableDB());
-  injector.registerSingleton<AbstractTransaccionContableRepository>(TransaccionContableRepositoryDBImpl(injector()));
-  injector.registerSingleton<TransaccionContableBloc>(TransaccionContableBloc(injector()));
+  injector.registerSingleton<ResolucionApi>(ResolucionApi(injector()));
+  injector.registerSingleton<AbstractResolucionRepository>(ResolucionRespositoryApiImpl(injector()));
+  injector.registerSingleton<ResolucionBloc>(ResolucionBloc(injector()));
 }

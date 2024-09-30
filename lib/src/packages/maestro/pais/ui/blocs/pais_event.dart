@@ -1,6 +1,6 @@
 part of 'pais_bloc.dart';
 
-sealed class PaisEvent extends Equatable {
+abstract class PaisEvent extends Equatable {
   const PaisEvent();
   @override
   List<Object> get props => <Object>[];
@@ -8,6 +8,10 @@ sealed class PaisEvent extends Equatable {
 
 class InitialPaisEvent extends PaisEvent {
   const InitialPaisEvent();
+}
+
+class GetPaisesEvent extends PaisEvent {
+  const GetPaisesEvent();
 }
 
 class SetPaisEvent extends PaisEvent {
@@ -18,10 +22,6 @@ class SetPaisEvent extends PaisEvent {
 class UpdatePaisEvent extends PaisEvent {
   final List<PaisRequest> requestList;
   const UpdatePaisEvent(this.requestList);
-}
-
-class GetPaisEvent extends PaisEvent {
-  const GetPaisEvent();
 }
 
 class ActivetePaisEvent extends PaisEvent {

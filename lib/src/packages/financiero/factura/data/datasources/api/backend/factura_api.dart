@@ -11,26 +11,26 @@ class FacturaAPI {
   FacturaAPI(this._dio);
 
   Future<Response<dynamic>> getTipoDocumentoApi() async {
-    final String url = '$kBackendBaseUrl/$endPoint/documentos/tipos';
+    final String url = '$kBackendBaseUrlERP/$endPoint/documentos/tipos';
     final Response<dynamic> response = await _dio.get(url);
     return response;
   }
 
   Future<Response<dynamic>> getEmpresasApi() async {
-    final String url = '$kBackendBaseUrl/$endPoint/empresas';
+    final String url = '$kBackendBaseUrlERP/$endPoint/empresas';
     final Response<dynamic> response = await _dio.get(url);
     return response;
   }
 
   Future<Response<dynamic>> getClienteApi() async {
-    final String url = '$kBackendBaseUrl/$endPoint/clientes';
+    final String url = '$kBackendBaseUrlERP/$endPoint/clientes';
     final Response<dynamic> response = await _dio.get(url);
     return response;
   }
 
   Future<Response<dynamic>> getDocumentosApi(FormFacturaRequest request) async {
     final FormFacturaRequestModel requestModel = FormFacturaRequestModel.fromRequest(request);
-    final String url = '$kBackendBaseUrl/$endPoint/documentos';
+    final String url = '$kBackendBaseUrlERP/$endPoint/documentos';
 
     final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
