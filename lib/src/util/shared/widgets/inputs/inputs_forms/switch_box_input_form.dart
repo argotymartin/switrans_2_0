@@ -23,4 +23,5 @@ class SwitchBoxInputForm extends StatelessWidget {
       ],
     );
   }
+
 }

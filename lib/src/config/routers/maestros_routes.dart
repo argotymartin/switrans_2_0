@@ -5,30 +5,43 @@ import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/create/accion_documento_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/views/search/accion_documento_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
+
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/views/create/pais_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/ui/views/search/pais_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/create/paquete_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/views/search/paquete_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/views/create/resolucion_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/views/search/resolucion_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/create/servicio_empresarial_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/views/search/servicio_empresarial_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/create/transaccion_contable_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/search/transaccion_contable_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
@@ -47,6 +60,7 @@ class MaestrosRoutes {
     routes.add(routerTransaccionContable());
     routes.add(routerPagina());
     routes.add(routerResolucion());
+    routes.add(routerPais());
     return routes;
   }
 
@@ -223,6 +237,35 @@ class MaestrosRoutes {
     );
   }
 
+  static ShellRoute routerPais() {
+    const String modulePath = "pais";
+    return ShellRoute(
+      builder: (BuildContext context, GoRouterState state, Widget child) {
+        return BlocProvider<PaisBloc>(
+          create: (_) => PaisBloc(injector())..add(const InitialPaisEvent()),
+          child: MenuLayout(child: child),
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: "$packagePath/$modulePath/registrar",
+          builder: (BuildContext context, GoRouterState state) {
+            if (Preferences.isResetForm) {
+              context.read<PaisBloc>().add(const InitialPaisEvent());
+            }
+            return const PaisCreateView();
+          },
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+        GoRoute(
+          path: "$packagePath/$modulePath/buscar",
+          builder: (_, __) => const PaisSearchView(),
+          redirect: ValidateRoutes.onValidateAuth,
+        ),
+      ],
+    );
+  }
+
   static ShellRoute routerPaquete() {
     const String modulePath = "paquete";
     return ShellRoute(
@@ -351,7 +394,7 @@ class MaestrosRoutes {
             return const ResolucionSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
-              ),
+        ),
       ],
     );
   }
