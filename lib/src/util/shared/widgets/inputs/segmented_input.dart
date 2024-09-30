@@ -61,12 +61,12 @@ class _SegmentedInputState extends State<SegmentedInput> {
       ],
       selected: <Options>{optionSelected},
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.selected)) {
             if (optionSelected == Options.si) {
-              return Color(0xFFB2EBAF);
+              return const Color(0xFFB2EBAF);
             } else if (optionSelected == Options.no) {
-              return Color(0xFFFFC0CB);
+              return const Color(0xFFFFC0CB);
             }
           }
           return null;

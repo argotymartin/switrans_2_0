@@ -1,11 +1,7 @@
 part of 'pais_bloc.dart';
 
 abstract class PaisEvent extends Equatable {
-  final PaisRequest? request;
-  final String? error;
-  final List<PaisRequest>? requestList;
-
-  const PaisEvent({this.request, this.error, this.requestList});
+  const PaisEvent();
   @override
   List<Object> get props => <Object>[];
 }
