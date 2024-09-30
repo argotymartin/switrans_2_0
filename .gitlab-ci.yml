@@ -17,6 +17,7 @@ lints:
     - git remote set-url origin $REPO_URL
     - git fetch --all
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - git pull origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - docker build --target analyze -t switrans-flutter-analyze .
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
@@ -30,7 +31,7 @@ build-merge-request:
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git log --oneline -n 5
-    - docker compose up -d --build
+    - docker compose -f docker-compose-production.yml up -d --build
     - echo consultar en http://192.168.102.18:3000
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
@@ -43,7 +44,8 @@ build:
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker compose up -d --build
+    - docker compose up -d --build 
+    - docker compose -f docker-compose-production.yml up -d --build
     - echo consultar en http://192.168.102.18:3000
     - echo "Finalizó con Éxito!!"
   rules:
