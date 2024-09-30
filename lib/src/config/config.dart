@@ -17,7 +17,7 @@ void initializeConfig() {
       kBackendBaseUrlMaestro = 'http://192.168.24.158:8084';
       break;
     case 'develop':
-      kPocketBaseUrl = 'http://192.168.102.34:8090';
+      kPocketBaseUrl = 'http://192.168.102.18:8090';
       kBackendBaseUrlERP = 'http://192.168.102.18:10000';
       kBackendBaseUrlMaestro = 'http://192.168.102.18:10000';
       break;
