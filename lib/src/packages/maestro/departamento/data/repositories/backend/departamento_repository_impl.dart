@@ -1,12 +1,6 @@
 import 'dart:convert';
-
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/datasources/api/backend/departamento_api.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/models/departamento_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/models/departamento_pais_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/departamento.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/departamento_pais.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/repositories/abstract_departamento_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';

@@ -1,82 +1,41 @@
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 
 class DepartamentoRequestModel extends DepartamentoRequest {
   DepartamentoRequestModel({
     required super.codigo,
-    required super.codigoUsuario,
-    required super.codigoDane,
-    required super.fechaCreacion,
     required super.nombre,
-    required super.pais,
     required super.estado,
+    required super.fechaCreacion,
+    required super.codigoDane,
+    required super.codigoUsuario,
+    required super.pais,
   });
-
-  factory DepartamentoRequestModel.fromRequestPB(DepartamentoRequest request) {
-    return DepartamentoRequestModel(
-      codigo: request.codigo,
-      codigoUsuario: request.codigoUsuario,
-      codigoDane: request.codigoDane,
-      fechaCreacion: request.fechaCreacion,
-      nombre: request.nombre,
-      pais: request.pais,
-      estado: request.estado,
-    );
-  }
-
-  Map<String, dynamic> toJsonPB() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'nombre': nombre,
-      'activo': estado,
-    };
-  }
 
   factory DepartamentoRequestModel.fromTable(Map<String, dynamic> map) {
     return DepartamentoRequestModel(
       codigo: map['codigo'],
-      codigoUsuario: map['codigoUsuario'],
+      nombre: map['nombre'],
+      estado: map['activo'],
       codigoDane: map['codigoDane'],
       fechaCreacion: map['fechaCreacion'],
-      nombre: map['nombre'],
+      codigoUsuario: map['codigoUsuario'],
       pais: map['pais'],
-      estado: map['activo'],
     );
   }
 
-  factory DepartamentoRequestModel.fromRequestAPI(DepartamentoRequest request) {
+  factory DepartamentoRequestModel.fromRequest(DepartamentoRequest request) {
     return DepartamentoRequestModel(
       codigo: request.codigo,
-      codigoUsuario: request.codigoUsuario,
+      nombre: request.nombre,
+      estado: request.estado,
       codigoDane: request.codigoDane,
       fechaCreacion: request.fechaCreacion,
-      nombre: request.nombre,
+      codigoUsuario: request.codigoUsuario,
       pais: request.pais,
-      estado: request.estado,
     );
   }
 
-  Map<String, dynamic> toJsonAPI() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'codigoUsuario': codigoUsuario,
-      'codigoDane': codigoDane,
-      'fechaCreacion': fechaCreacion,
-      'nombre': nombre,
-      'codigoPais': pais,
-      'estado': estado,
-    }..removeWhere((String key, dynamic value) => value == null);
-  }
-
-  Map<String, dynamic> toJsonConsultarAPI() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'nombre': nombre,
-      'codigoPais': pais,
-      'estado': estado,
-    }..removeWhere((String key, dynamic value) => value == null);
-  }
-
-  Map<String, dynamic> toJsonCrearAPI() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'codigoUsuario': codigoUsuario,
       'codigoDane': codigoDane,
@@ -92,35 +51,12 @@ class DepartamentoRequestModel extends DepartamentoRequest {
     }..removeWhere((String key, dynamic value) => value == null);
   }
 
-  static String toPocketBaseFilter(Map<String, dynamic> map) {
-    final List<String> conditions = <String>[];
-    if (map["nombre"] != null) {
-      conditions.add('nombre ~ "${map["nombre"]}"');
-    }
-    if (map["codigo"] != null) {
-      conditions.add('codigo = ${map["codigo"]}');
-    }
-    if (map["activo"] != null) {
-      conditions.add('activo = ${map["activo"]}');
-    }
-    final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
-    final String data = queryString.isNotEmpty ? '($queryString)' : '';
-    return data;
-  }
-
-  static String toBaseFilter(Map<String, dynamic> map) {
-    final List<String> conditions = <String>[];
-    if (map["nombre"] != null) {
-      conditions.add('nombre ~ "${map["nombre"]}"');
-    }
-    if (map["codigo"] != null) {
-      conditions.add('codigo = ${map["codigo"]}');
-    }
-    if (map["activo"] != null) {
-      conditions.add('activo = ${map["activo"]}');
-    }
-    final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
-    final String data = queryString.isNotEmpty ? '($queryString)' : '';
-    return data;
+  Map<String, dynamic> toJsonGet() {
+    return <String, dynamic>{
+      'codigo': codigo,
+      'nombre': nombre,
+      'codigoPais': pais,
+      'estado': estado,
+    }..removeWhere((String key, dynamic value) => value == null);
   }
 }

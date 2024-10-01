@@ -1,10 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/departamento.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/departamento_pais.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/repositories/abstract_departamento_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
@@ -25,14 +22,14 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
   }
 
   Future<void> _onInitialDepartamento(
-      InitialDepartamentoEvent event,
-      Emitter<DepartamentoState> emit,
-      ) async {
+    InitialDepartamentoEvent event,
+    Emitter<DepartamentoState> emit,
+  ) async {
     emit(state.copyWith(status: DepartamentoStatus.loading));
     final DataState<List<DepartamentoPais>> resp = await _repository.getPaisesService();
     if (resp.data != null) {
       final List<EntryAutocomplete> entriesPaises =
-      resp.data!.map((DepartamentoPais e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+          resp.data!.map((DepartamentoPais e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
       emit(state.copyWith(status: DepartamentoStatus.initial, entriesPaises: entriesPaises));
     } else {
       emit(state.copyWith(status: DepartamentoStatus.exception, exception: resp.error));

@@ -11,6 +11,9 @@ class Departamento {
     required this.codigo,
     required this.nombre,
     required this.codigoUsuario,
-    required this.pais, required this.estado, required this.fechaCreacion, this.codigoDane,
+    required this.pais,
+    required this.estado,
+    required this.fechaCreacion,
+    this.codigoDane,
   });
 }

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/models/request/departamento_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 
 const String endPoint = "api/v1/maestro/departamentos";
 
@@ -10,24 +10,23 @@ class DepartamentoApi {
   DepartamentoApi(this._dio);
 
   Future<Response<dynamic>> getDepartamentosApi(DepartamentoRequest request) async {
-    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
-
+    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJsonConsultarAPI();
+    final Map<String, dynamic> params = requestModel.toJsonGet();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
 
   Future<Response<dynamic>> setDepartamentoApi(DepartamentoRequest request) async {
-    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
+    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/crear';
-    final Map<String, dynamic> params = requestModel.toJsonCrearAPI();
+    final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> response = await _dio.post(url, data: params);
     return response;
   }
 
   Future<Response<dynamic>> updateDepartamentoApi(DepartamentoRequest request) async {
-    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequestAPI(request);
+    final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.codigo}';
     final Map<String, dynamic> params = requestModel.toJsonUpdateAPI();
     final Response<dynamic> responseUpdate = await _dio.put(url, data: params);

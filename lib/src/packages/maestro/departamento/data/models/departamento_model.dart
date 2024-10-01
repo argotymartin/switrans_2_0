@@ -20,39 +20,4 @@ class DepartamentoModel extends Departamento {
         estado: json['estado'],
         fechaCreacion: json['fechaCreacion'].toString(),
       );
-
-  factory DepartamentoModel.fromRequestAPI(Departamento departamento) {
-    return DepartamentoModel(
-      codigo: departamento.codigo,
-      nombre: departamento.nombre,
-      pais: departamento.pais,
-      codigoUsuario: departamento.codigoUsuario,
-      codigoDane: departamento.codigoDane,
-      estado: departamento.estado,
-      fechaCreacion: '',
-    );
-  }
-
-  factory DepartamentoModel.fromAPIResponse(Map<String, dynamic> map) {
-    return DepartamentoModel(
-      codigo: map['codigo'],
-      nombre: map['nombre'],
-      pais: map['pais'],
-      codigoUsuario: map['codigoUsuario'],
-      codigoDane: map['codigoDane'],
-      estado: map['activo'],
-      fechaCreacion: '',
-    );
-  }
-
-  Map<String, dynamic> toJsonAPI() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'nombre': nombre,
-      'pais': pais,
-      'codigoUsuario': codigoUsuario,
-      'codigoDane': codigoDane,
-      'estado': estado,
-    };
-  }
 }

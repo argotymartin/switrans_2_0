@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/data/models/request/departamento_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/departamento.dart';
-import 'package:switrans_2_0/src/packages/maestro/departamento/domain/entities/request/departamento_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';

@@ -6,13 +6,17 @@ abstract class DepartamentoEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class InitialDepartamentoEvent extends DepartamentoEvent {
+  const InitialDepartamentoEvent();
+}
+
+class GetDepartamentoEvent extends DepartamentoEvent {
+  const GetDepartamentoEvent();
+}
+
 class SetDepartamentoEvent extends DepartamentoEvent {
   final DepartamentoRequest request;
   const SetDepartamentoEvent(this.request);
-}
-
-class InitialDepartamentoEvent extends DepartamentoEvent {
-  const InitialDepartamentoEvent();
 }
 
 class UpdateDepartamentoEvent extends DepartamentoEvent {
@@ -20,8 +24,8 @@ class UpdateDepartamentoEvent extends DepartamentoEvent {
   const UpdateDepartamentoEvent(this.requestList);
 }
 
-class GetDepartamentoEvent extends DepartamentoEvent {
-  const GetDepartamentoEvent();
+class ActiveteDepartamentoEvent extends DepartamentoEvent {
+  const ActiveteDepartamentoEvent();
 }
 
 class ErrorFormDepartamentoEvent extends DepartamentoEvent {
