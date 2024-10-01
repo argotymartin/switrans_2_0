@@ -48,6 +48,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
     return <String, dynamic>{
       'estado': estado,
       'nombre': nombre,
+      'codigoPais': pais,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 
