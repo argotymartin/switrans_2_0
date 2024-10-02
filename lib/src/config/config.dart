@@ -4,7 +4,7 @@ late String kPocketBaseUrl;
 late String kBackendBaseUrlERP;
 late String kBackendBaseUrlMaestro;
 
-const String configParam = String.fromEnvironment('ENVIRONMENT', defaultValue: 'local');
+const String configParam = String.fromEnvironment('ENV', defaultValue: 'local');
 
 void initializeConfig() {
   Preferences.env = configParam;
@@ -17,7 +17,7 @@ void initializeConfig() {
       kBackendBaseUrlMaestro = 'http://192.168.24.158:8084';
       break;
     case 'develop':
-      kPocketBaseUrl = 'http://192.168.102.34:8090';
+      kPocketBaseUrl = 'http://192.168.102.18:8090';
       kBackendBaseUrlERP = 'http://192.168.102.18:10000';
       kBackendBaseUrlMaestro = 'http://192.168.102.18:10000';
       break;
