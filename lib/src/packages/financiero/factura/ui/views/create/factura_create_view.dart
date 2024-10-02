@@ -264,10 +264,6 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
         if (state.status == FacturaStatus.succes) {
           if (state.documentosSelected.isNotEmpty) {
             final FacturaBloc facturaBloc = context.read<FacturaBloc>();
-            final FormFacturaRequest request = facturaBloc.request;
-            final Empresa empresaSelect = state.empresas.firstWhere((Empresa element) => element.codigo == state.empresa);
-            final EntryAutocomplete cliente =
-                state.entriesClientes.firstWhere((EntryAutocomplete element) => element.codigo == request.cliente);
 
             final List<MapEntry<int, String>> centrosCosto = context.read<FacturaBloc>().getCentosCosto();
             final List<EntryAutocomplete> entriesCentroCosto = centrosCosto.map((MapEntry<int, String> centro) {
@@ -287,38 +283,15 @@ class _BuildPrefacturarDocumento extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 24),
               child: BuildFormFields(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                spaces: 2,
                 children: <Widget>[
                   const TableTotalDocumento(),
                   Wrap(
-                    alignment: WrapAlignment.spaceEvenly,
+                    alignment: WrapAlignment.end,
                     spacing: 16,
                     runSpacing: 16,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     runAlignment: WrapAlignment.spaceEvenly,
                     children: <Widget>[
-                      SizedBox(
-                        width: 300,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                const Icon(Icons.work_outline_outlined),
-                                const SizedBox(width: 8),
-                                Text(empresaSelect.nombre),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                const Icon(Icons.contact_emergency_outlined),
-                                const SizedBox(width: 8),
-                                Text(cliente.title),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                       SizedBox(
                         width: 300,
                         child: AutocompleteInput(
