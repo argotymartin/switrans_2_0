@@ -54,19 +54,19 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
       event.requestList.map((PaisRequest request) => _repository.updatePaisService(request)),
     );
 
-    final List<Pais> paiss = <Pais>[];
+    final List<Pais> paises = <Pais>[];
     final List<DioException> exceptions = <DioException>[];
 
     for (final DataState<Pais> dataState in dataStateList) {
       if (dataState.data != null) {
-        paiss.add(dataState.data!);
+        paises.add(dataState.data!);
       } else if (dataState.error != null) {
         exceptions.add(dataState.error!);
       }
     }
 
-    if (paiss.isNotEmpty) {
-      emit(state.copyWith(status: PaisStatus.consulted, paises: paiss));
+    if (paises.isNotEmpty) {
+      emit(state.copyWith(status: PaisStatus.consulted, paises: paises));
     }
 
     if (exceptions.isNotEmpty) {
