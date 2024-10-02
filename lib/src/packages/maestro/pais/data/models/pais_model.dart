@@ -10,7 +10,7 @@ class PaisModel extends Pais {
     required super.usuarioNombre,
   });
 
-  factory PaisModel.fromApi(Map<String, dynamic> map) => PaisModel(
+  factory PaisModel.fromJson(Map<String, dynamic> map) => PaisModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
         isActivo: map['estado'],

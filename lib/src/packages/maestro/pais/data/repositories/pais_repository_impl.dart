@@ -1,8 +1,5 @@
-import 'package:switrans_2_0/src/packages/maestro/pais/data/datasources/api/backend/pais_api.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/data/models/pais_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/pais.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/repositories/abstract_pais_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
@@ -14,10 +11,10 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
   @override
   Future<DataState<List<Pais>>> getPaisesService(PaisRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaisesApi(request));
-    if (httpResponse.data != null) {
-      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
-      final List<Pais> response = List<Pais>.from(resp.data.map((dynamic x) => PaisModel.fromApi(x)));
-      return DataSuccess<List<Pais>>(response);
+    if (httpResponse.data != null && httpResponse is DataSuccess) {
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      final List<Pais> paises = List<Pais>.from(backendResponse.data.map((dynamic x) => PaisModel.fromJson(x)));
+      return DataSuccess<List<Pais>>(paises);
     }
     return DataFailed<List<Pais>>(httpResponse.error!);
   }
@@ -27,8 +24,8 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setPaisApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final dynamic responseData = httpResponse.data['data'];
-      final Pais response = PaisModel.fromApi(responseData);
-      return DataSuccess<Pais>(response);
+      final Pais pais = PaisModel.fromJson(responseData);
+      return DataSuccess<Pais>(pais);
     }
     return DataFailed<Pais>(httpResponse.error!);
   }
@@ -36,15 +33,14 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
   @override
   Future<DataState<Pais>> updatePaisService(PaisRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updatePaisApi(request));
-
     if (httpResponse.data != null && httpResponse is DataSuccess) {
-      final BackendResponse resp = BackendResponse.fromJson(httpResponse.data);
-      if (resp.success) {
-        final dynamic responseData = resp.data;
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      if (backendResponse.success) {
+        final dynamic responseData = backendResponse.data;
         if (responseData is List && responseData.isNotEmpty) {
           final Map<String, dynamic> firstItem = responseData.first as Map<String, dynamic>;
-          final Pais response = PaisModel.fromApi(firstItem);
-          return DataSuccess<Pais>(response);
+          final Pais pais = PaisModel.fromJson(firstItem);
+          return DataSuccess<Pais>(pais);
         }
       }
     }
