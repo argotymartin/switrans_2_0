@@ -1,5 +1,4 @@
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/pais.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
 
 abstract class AbstractPaisRepository {

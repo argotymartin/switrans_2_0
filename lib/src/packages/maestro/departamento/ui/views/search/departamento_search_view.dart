@@ -133,7 +133,6 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(request);
             }
-            //context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Departamento departamento) {

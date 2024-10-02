@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/data/models/request/pais_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/pais/domain/domain.dart';
 
 const String endPoint = "api/v1/maestro/paises";
 

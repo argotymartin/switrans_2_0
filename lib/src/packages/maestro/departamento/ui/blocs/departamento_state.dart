@@ -12,9 +12,9 @@ class DepartamentoState extends Equatable {
   const DepartamentoState({
     this.status,
     this.departamento,
-    this.exception,
     this.departamentos = const <Departamento>[],
     this.entriesPaises = const <EntryAutocomplete>[],
+    this.exception,
     this.error = "",
   });
   DepartamentoState initial() => const DepartamentoState(status: DepartamentoStatus.initial);
@@ -30,12 +30,12 @@ class DepartamentoState extends Equatable {
       DepartamentoState(
         status: status ?? this.status,
         departamento: departamento ?? this.departamento,
-        exception: exception ?? this.exception,
         departamentos: departamentos ?? this.departamentos,
         entriesPaises: entriesPaises ?? this.entriesPaises,
+        exception: exception ?? this.exception,
         error: error ?? this.error,
       );
 
   @override
-  List<Object?> get props => <Object?>[departamento, departamentos, departamentos, entriesPaises, exception, error, status];
+  List<Object?> get props => <Object?>[status, departamento, departamentos, entriesPaises, exception, error];
 }

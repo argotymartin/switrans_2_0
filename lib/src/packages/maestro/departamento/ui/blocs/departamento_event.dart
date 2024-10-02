@@ -24,10 +24,6 @@ class UpdateDepartamentoEvent extends DepartamentoEvent {
   const UpdateDepartamentoEvent(this.requestList);
 }
 
-class ActiveteDepartamentoEvent extends DepartamentoEvent {
-  const ActiveteDepartamentoEvent();
-}
-
 class ErrorFormDepartamentoEvent extends DepartamentoEvent {
   final String error;
   const ErrorFormDepartamentoEvent(this.error);
