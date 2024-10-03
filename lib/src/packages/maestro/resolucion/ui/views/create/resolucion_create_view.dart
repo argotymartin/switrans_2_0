@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
@@ -23,10 +22,9 @@ class ResolucionCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == ResolucionStatus.success) {
-          context.read<ResolucionBloc>().request = ResolucionRequest(codigo: state.resolucion!.codigo);
-          context.read<ResolucionBloc>().add(const GetResolucionesEvent());
+          final ResolucionRequest request = ResolucionRequest(codigo: state.resolucion!.codigo);
+          context.read<ResolucionBloc>().add(GetResolucionesEvent(request));
           context.go('/maestros/resolucion/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, ResolucionState state) {
@@ -59,7 +57,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final ResolucionBloc resolucionBloc = context.read<ResolucionBloc>();
+    final ResolucionBloc resolucionBloc = context.watch<ResolucionBloc>();
     final ResolucionRequest request = resolucionBloc.request;
 
     return Form(
@@ -139,7 +137,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 final bool isValid = formKey.currentState!.validate();
                 if (isValid) {
                   resolucionBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-                  context.read<ResolucionBloc>().add(SetResolucionEvent(request: resolucionBloc.request));
+                  context.read<ResolucionBloc>().add(SetResolucionEvent(request));
                 }
               },
               icon: Icons.save,

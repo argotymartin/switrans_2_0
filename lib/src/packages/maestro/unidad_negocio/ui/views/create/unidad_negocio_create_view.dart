@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
@@ -21,10 +20,9 @@ class UnidadNegocioCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == UnidadNegocioStatus.succes) {
-          context.read<UnidadNegocioBloc>().request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
-          context.read<UnidadNegocioBloc>().add(const GetUnidadNegocioEvent());
+          final UnidadNegocioRequest request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
+          context.read<UnidadNegocioBloc>().add(GetUnidadNegocioEvent(request));
           context.go('/maestros/unidad_negocio/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, UnidadNegocioState state) {
@@ -57,7 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UnidadNegocioBloc unidadNegocioBloc = context.read<UnidadNegocioBloc>();
+    final UnidadNegocioBloc unidadNegocioBloc = context.watch<UnidadNegocioBloc>();
     final UnidadNegocioRequest request = unidadNegocioBloc.request;
 
     return Form(

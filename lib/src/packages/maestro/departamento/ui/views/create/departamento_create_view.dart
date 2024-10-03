@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
@@ -21,10 +20,9 @@ class DepartamentoCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == DepartamentoStatus.succes) {
-          context.read<DepartamentoBloc>().request = DepartamentoRequest(codigo: state.departamento!.codigo);
-          context.read<DepartamentoBloc>().add(const GetDepartamentoEvent());
+          final DepartamentoRequest request = DepartamentoRequest(codigo: state.departamento!.codigo);
+          context.read<DepartamentoBloc>().add(GetDepartamentoEvent(request));
           context.go('/maestros/departamento/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, DepartamentoState state) {
@@ -57,7 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final DepartamentoBloc departamentoBloc = context.read<DepartamentoBloc>();
+    final DepartamentoBloc departamentoBloc = context.watch<DepartamentoBloc>();
     final DepartamentoRequest request = departamentoBloc.request;
     return Form(
       key: formKey,

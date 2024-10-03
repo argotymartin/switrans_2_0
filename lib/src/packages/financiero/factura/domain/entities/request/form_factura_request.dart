@@ -13,4 +13,13 @@ class FormFacturaRequest {
     this.documentos,
     this.rangoFechas,
   });
+
+  void clean() {
+    empresa = null;
+    cliente = null;
+    documentoCodigo = null;
+    centroCostoCodigo = null;
+    documentos = null;
+    rangoFechas = null;
+  }
 }

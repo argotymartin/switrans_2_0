@@ -1,12 +1,7 @@
 part of 'resolucion_bloc.dart';
 
 abstract class ResolucionEvent extends Equatable {
-  final ResolucionEmpresa? requestEmpresa;
-  final ResolucionRequest? request;
-  final List<ResolucionRequest>? requestList;
-  final String? error;
-
-  const ResolucionEvent({this.request, this.error, this.requestList, this.requestEmpresa});
+  const ResolucionEvent();
   @override
   List<Object> get props => <Object>[];
 }
@@ -16,19 +11,23 @@ class InitializationResolucionEvent extends ResolucionEvent {
 }
 
 class GetResolucionesEvent extends ResolucionEvent {
-  const GetResolucionesEvent({super.request});
+  final ResolucionRequest request;
+  const GetResolucionesEvent(this.request);
 }
 
 class SetResolucionEvent extends ResolucionEvent {
-  const SetResolucionEvent({super.request});
+  final ResolucionRequest request;
+  const SetResolucionEvent(this.request);
 }
 
 class UpdateResolucionesEvent extends ResolucionEvent {
-  const UpdateResolucionesEvent({super.requestList});
+  final List<ResolucionRequest> requestList;
+  const UpdateResolucionesEvent(this.requestList);
 }
 
 class ErrorFormResolucionEvent extends ResolucionEvent {
-  const ErrorFormResolucionEvent({super.error});
+  final String error;
+  const ErrorFormResolucionEvent(this.error);
 }
 
 class CleanFormResolucionEvent extends ResolucionEvent {
@@ -36,7 +35,8 @@ class CleanFormResolucionEvent extends ResolucionEvent {
 }
 
 class SelectResolucionEmpresaEvent extends ResolucionEvent {
-  const SelectResolucionEmpresaEvent({super.requestEmpresa});
+  final ResolucionEmpresa resolucionEmpresa;
+  const SelectResolucionEmpresaEvent(this.resolucionEmpresa);
 }
 
 class CleanSelectResolucionEmpresaEvent extends ResolucionEvent {

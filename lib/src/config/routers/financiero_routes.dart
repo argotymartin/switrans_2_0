@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
-import 'package:switrans_2_0/src/globals/menu/ui/layouts/views/menu_view.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/search/factura_search_view.dart';
 
@@ -28,22 +27,19 @@ class FinancieroRoutes {
       },
       routes: <RouteBase>[
         GoRoute(
-          path: "/",
-          builder: (_, GoRouterState state) => const MenuView(),
-          redirect: ValidateRoutes.onValidateAuth,
-        ),
-        GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            context.read<FacturaBloc>().add(const GetInitialFormFacturaEvent());
+            //context.read<FacturaBloc>().request.clean();
             return const FacturaCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const FacturaSearchView(),
-          //builder: (_, __) => const PdfView(),
+          builder: (BuildContext context, GoRouterState state) {
+            //context.read<FacturaBloc>().request.clean();
+            return const FacturaSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],

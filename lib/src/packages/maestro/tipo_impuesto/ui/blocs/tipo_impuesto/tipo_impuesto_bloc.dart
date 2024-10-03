@@ -28,7 +28,7 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
 
   Future<void> _onGetImpuesto(GetImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
     emit(state.copyWith(status: TipoImpuestoStatus.loading));
-    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(request);
+    final DataState<List<TipoImpuesto>> resp = await _repository.getTipoImpuestosService(event.request);
     if (resp.data != null) {
       emit(state.copyWith(status: TipoImpuestoStatus.consulted, tipoImpuestos: resp.data!));
     } else {

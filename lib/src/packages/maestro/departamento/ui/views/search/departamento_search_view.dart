@@ -19,9 +19,6 @@ class DepartamentoSearchView extends StatelessWidget {
         if (state.status == DepartamentoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state.status == DepartamentoStatus.succes) {
-          context.read<DepartamentoBloc>().add(const GetDepartamentoEvent());
-        }
       },
       builder: (BuildContext context, DepartamentoState state) {
         return Stack(
@@ -57,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        departamentoBloc.add(const GetDepartamentoEvent());
+        departamentoBloc.add(GetDepartamentoEvent(request));
       } else {
         departamentoBloc.add(const ErrorFormDepartamentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -115,7 +112,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    final DepartamentoBloc departamentoBloc = context.read<DepartamentoBloc>();
+    final DepartamentoBloc departamentoBloc = context.watch<DepartamentoBloc>();
     return BlocBuilder<DepartamentoBloc, DepartamentoState>(
       builder: (BuildContext context, DepartamentoState state) {
         if (state.status == DepartamentoStatus.consulted) {

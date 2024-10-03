@@ -49,7 +49,7 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
 
   Future<void> _onGetResoluciones(GetResolucionesEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
-    final DataState<List<Resolucion>> response = await _resolucionRepository.getResolucionesService(request);
+    final DataState<List<Resolucion>> response = await _resolucionRepository.getResolucionesService(event.request);
     if (response.data != null) {
       emit(state.copyWith(resoluciones: response.data, status: ResolucionStatus.consulted));
     } else {
@@ -70,7 +70,7 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
   Future<void> _onUpdateResoluciones(UpdateResolucionesEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
     final List<DataState<Resolucion>> dataStateList = await Future.wait(
-      event.requestList!.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
+      event.requestList.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
     );
     final List<Resolucion> resoluciones = <Resolucion>[];
     final List<DioException> exceptions = <DioException>[];
@@ -109,7 +109,7 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
   Future<void> _onSelectResolucionEmpresa(SelectResolucionEmpresaEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
     final DataState<List<ResolucionCentroCosto>> centroCostosResponse =
-        await _resolucionRepository.getCentroCostoService(event.requestEmpresa!);
+        await _resolucionRepository.getCentroCostoService(event.resolucionEmpresa);
     if (centroCostosResponse.data != null) {
       final List<EntryAutocomplete> entriesCentroCostos =
           centroCostosResponse.data!.map((ResolucionCentroCosto t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();

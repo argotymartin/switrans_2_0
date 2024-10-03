@@ -11,7 +11,8 @@ class InitialDepartamentoEvent extends DepartamentoEvent {
 }
 
 class GetDepartamentoEvent extends DepartamentoEvent {
-  const GetDepartamentoEvent();
+  final DepartamentoRequest request;
+  const GetDepartamentoEvent(this.request);
 }
 
 class SetDepartamentoEvent extends DepartamentoEvent {

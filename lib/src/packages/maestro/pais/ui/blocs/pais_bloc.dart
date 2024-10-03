@@ -29,7 +29,7 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
 
   Future<void> _onGetPais(GetPaisesEvent event, Emitter<PaisState> emit) async {
     emit(state.copyWith(status: PaisStatus.loading));
-    final DataState<List<Pais>> response = await _repository.getPaisesService(request);
+    final DataState<List<Pais>> response = await _repository.getPaisesService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: PaisStatus.consulted, paises: response.data));
     } else {

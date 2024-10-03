@@ -25,5 +25,6 @@ class PaqueteRequest {
     path = null;
     isVisible = null;
     isActivo = null;
+    icono = null;
   }
 }

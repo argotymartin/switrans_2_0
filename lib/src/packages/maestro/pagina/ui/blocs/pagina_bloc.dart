@@ -37,7 +37,7 @@ class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
 
   Future<void> _onGetPagina(GetPaginaEvent event, Emitter<PaginaState> emit) async {
     emit(state.copyWith(status: PaginaStatus.loading));
-    final DataState<List<Pagina>> response = await _repository.getPaginasService(request);
+    final DataState<List<Pagina>> response = await _repository.getPaginasService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: PaginaStatus.consulted, paginas: response.data));
     } else {

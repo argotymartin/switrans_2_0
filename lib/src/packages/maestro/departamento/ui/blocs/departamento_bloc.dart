@@ -35,7 +35,7 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
 
   Future<void> _onGetDepartamento(GetDepartamentoEvent event, Emitter<DepartamentoState> emit) async {
     emit(state.copyWith(status: DepartamentoStatus.loading));
-    final DataState<List<Departamento>> response = await _repository.getDepartamentosService(request);
+    final DataState<List<Departamento>> response = await _repository.getDepartamentosService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: DepartamentoStatus.consulted, departamentos: response.data));
     } else {

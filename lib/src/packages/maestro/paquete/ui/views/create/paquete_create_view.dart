@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/util/resources/custom_functions.dart';
@@ -21,10 +20,9 @@ class PaqueteCreateView extends StatelessWidget {
         }
 
         if (state.status == PaqueteStatus.succes) {
-          context.read<PaqueteBloc>().request = PaqueteRequest(codigo: state.paquete!.codigo);
-          context.read<PaqueteBloc>().add(const GetPaqueteEvent());
-          context.go('/maestros/paquete/buscar');
-          Preferences.isResetForm = false;
+          final PaqueteRequest request = PaqueteRequest(codigo: state.paquete!.codigo);
+          context.read<PaqueteBloc>().add(GetPaqueteEvent(request));
+          context.go('/maestros/paquete/buscar?id=');
         }
       },
       builder: (BuildContext context, PaqueteState state) {
@@ -56,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final PaqueteBloc paqueteBloc = context.read<PaqueteBloc>();
+    final PaqueteBloc paqueteBloc = context.watch<PaqueteBloc>();
     final PaqueteRequest request = paqueteBloc.request;
     return Form(
       key: formKey,

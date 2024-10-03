@@ -19,9 +19,6 @@ class ResolucionSearchView extends StatelessWidget {
         if (state.status == ResolucionStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state.status == ResolucionStatus.success) {
-          context.read<ResolucionBloc>().add(const GetResolucionesEvent());
-        }
       },
       builder: (BuildContext context, ResolucionState state) {
         return Stack(
@@ -55,9 +52,9 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        resolucionBloc.add(const GetResolucionesEvent());
+        resolucionBloc.add(GetResolucionesEvent(request));
       } else {
-        resolucionBloc.add(const ErrorFormResolucionEvent(error: "Por favor diligenciar por lo menos un campo del formulario"));
+        resolucionBloc.add(const ErrorFormResolucionEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
     }
 
@@ -99,7 +96,7 @@ class _BuildFieldsForm extends StatelessWidget {
                   if (result.codigo != null) {
                     final ResolucionEmpresa resultEmpresa =
                         ResolucionEmpresa(codigo: result.codigo!, nombre: result.title, nit: result.subTitle!);
-                    resolucionBloc.add(SelectResolucionEmpresaEvent(requestEmpresa: resultEmpresa));
+                    resolucionBloc.add(SelectResolucionEmpresaEvent(resultEmpresa));
                   }
                   if (result.codigo == null) {
                     resolucionBloc.add(const CleanSelectResolucionEmpresaEvent());
@@ -165,7 +162,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               final ResolucionRequestModel request = ResolucionRequestModel.fromTable(map);
               requestList.add(request);
             }
-            context.read<ResolucionBloc>().add(UpdateResolucionesEvent(requestList: requestList));
+            context.read<ResolucionBloc>().add(UpdateResolucionesEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Resolucion resolucion) {

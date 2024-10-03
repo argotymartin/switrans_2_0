@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
@@ -20,10 +19,9 @@ class ModuloCreateView extends StatelessWidget {
         }
 
         if (state.status == ModuloStatus.succes) {
-          context.read<ModuloBloc>().request = ModuloRequest(codigo: state.modulo!.codigo);
-          context.read<ModuloBloc>().add(const GetModuloEvent());
+          final ModuloRequest request = ModuloRequest(codigo: state.modulo!.codigo);
+          context.read<ModuloBloc>().add(GetModuloEvent(request));
           context.go('/maestros/modulo/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, ModuloState state) {
@@ -56,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final ModuloBloc moduloBloc = context.read<ModuloBloc>();
+    final ModuloBloc moduloBloc = context.watch<ModuloBloc>();
     final ModuloRequest request = moduloBloc.request;
 
     return Form(
