@@ -131,7 +131,7 @@ class BuildTitle extends StatelessWidget {
               width: width,
               child: const FittedBox(
                 child: const Text(
-                  "Switrans 2.0!!",
+                  "Switrans 2.0",
                   style: TextStyle(fontSize: 36, color: Colors.white),
                 ),
               ),
