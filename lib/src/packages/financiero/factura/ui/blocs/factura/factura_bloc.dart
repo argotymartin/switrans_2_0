@@ -16,7 +16,8 @@ class FacturaBloc extends Bloc<FacturaEvent, FacturaState> {
     empresa: 1,
     documentoCodigo: 11,
     cliente: 2214,
-    documentos: "738354,738389,738400,738442,738370,738387,738388,738443",
+    //documentos: "738354,738389,738400,738442,738370,738387,738388,738443",
+    documentos: "738354",
   );
 
   FacturaBloc(this._repository) : super(const FacturaState().initial()) {
