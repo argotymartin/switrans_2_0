@@ -20,11 +20,11 @@ class PaisRequest {
   }
 
   void clean() {
-    codigo ??= null;
-    nombre ??= null;
-    isActivo ??= null;
-    codigoUsuario ??= null;
-    usuarioNombre ??= null;
-    fechaCreacion ??= null;
+    codigo = null;
+    nombre = null;
+    isActivo = null;
+    codigoUsuario = null;
+    usuarioNombre = null;
+    fechaCreacion = null;
   }
 }
