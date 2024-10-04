@@ -3,6 +3,9 @@ variables:
   REPO_URL: "http://$GIT_USER:$GIT_USER_CLAVE@git.mct.com.co/frontend/switrans_2_0.git"
   WORK_DIR: "/home/docker/front-end/proyecto-switrans-2/switrans_2_0"
 
+before_script:
+  - DEVELOPER=$(echo $GITLAB_USER_LOGIN | tr '.' '-')
+
 stages:
   - lints
   - review
@@ -18,7 +21,7 @@ lints:
     - git fetch --all
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git pull origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-    - docker build --target analyze -t switrans-flutter-analyze .
+    - STAGE=analyze docker compose -f docker-compose-$DEVELOPER.yml build
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
 
@@ -31,8 +34,8 @@ build-merge-request:
     - git fetch origin $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - git log --oneline -n 5
-    - docker compose -f docker-compose-production.yml up -d --build
-    - echo consultar en http://192.168.102.18:3000
+    - STAGE=build docker compose -f docker-compose-$DEVELOPER.yml build
+    - STAGE=runner docker compose -f docker-compose-$DEVELOPER.yml up -d --build
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
 
@@ -44,7 +47,6 @@ build:
     - git pull origin develop
     - git status
     - git log --oneline -n 15
-    - docker compose up -d --build 
     - docker compose -f docker-compose-production.yml up -d --build
     - echo consultar en http://192.168.102.18:3000
     - echo "Finalizó con Éxito!!"
