@@ -9,6 +9,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart'
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_documentos.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/field_factura_empresa.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/views/widgets/table_total_documento.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/remove_trialing_comma.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/date_picker_input_form.dart';
@@ -112,7 +113,7 @@ class _BuildFieldsForm extends StatelessWidget {
               FieldFacturaDocumentos(
                 title: "Documentos",
                 value: request.documentos,
-                onChanged: (String result) => request.documentos = result,
+                onChanged: (String result) => request.documentos = removeTrailingComma(result),
               ),
             ],
           ),

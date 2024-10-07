@@ -28,7 +28,7 @@ class FieldFacturaDocumentos extends StatelessWidget {
   }
 }
 
-class _TextAreaDocumentos extends StatelessWidget {
+class _TextAreaDocumentos extends StatefulWidget {
   final String? value;
   final Function(String result) onChanged;
   const _TextAreaDocumentos({
@@ -37,11 +37,34 @@ class _TextAreaDocumentos extends StatelessWidget {
   });
 
   @override
+  State<_TextAreaDocumentos> createState() => _TextAreaDocumentosState();
+}
+
+class _TextAreaDocumentosState extends State<_TextAreaDocumentos> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.value!);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: onChanged,
+      onChanged: (String value) {
+        setState(() {
+          controller.text = value
+              .split('\n')
+              .map((String line) => line.trim())
+              .where((String line) => line.isNotEmpty)
+              .join(',')
+              .replaceAll(RegExp(r',+'), ',');
+          widget.onChanged(value);
+        });
+      },
+      controller: controller,
       autovalidateMode: AutovalidateMode.always,
-      initialValue: value,
       validator: onValidator,
       minLines: 4,
       style: TextStyle(fontSize: 12, color: AppTheme.colorTextTheme),
