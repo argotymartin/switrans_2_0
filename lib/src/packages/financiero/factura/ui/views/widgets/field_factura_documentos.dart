@@ -60,7 +60,7 @@ class _TextAreaDocumentosState extends State<_TextAreaDocumentos> {
               .where((String line) => line.isNotEmpty)
               .join(',')
               .replaceAll(RegExp(r',+'), ',');
-          widget.onChanged(value);
+          widget.onChanged(controller.text);
         });
       },
       controller: controller,

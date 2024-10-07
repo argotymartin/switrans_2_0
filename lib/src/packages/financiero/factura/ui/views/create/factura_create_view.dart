@@ -112,7 +112,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               FieldFacturaDocumentos(
                 title: "Documentos",
-                value: request.documentos,
+                value: removeTrailingComma(request.documentos!),
                 onChanged: (String result) => request.documentos = removeTrailingComma(result),
               ),
             ],

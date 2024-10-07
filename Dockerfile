@@ -1,12 +1,12 @@
 # Etapa de dependencias
-FROM harbor.mct.com.co/front-end/flutter:3.22.3 AS deps
+FROM harbor.mct.com.co/front-end/flutter:3.24.3 AS deps
 WORKDIR /app
 COPY pubspec.yaml pubspec.lock ./
 RUN flutter pub get
 RUN flutter precache
 
 # Etapa de análisis
-FROM harbor.mct.com.co/front-end/flutter:3.22.3 AS analyze
+FROM harbor.mct.com.co/front-end/flutter:3.24.3 AS analyze
 WORKDIR /app
 COPY --from=deps /app /app
 COPY --from=deps /home/flutteruser/.pub-cache /home/flutteruser/.pub-cache
@@ -16,15 +16,17 @@ COPY assets assets
 RUN flutter analyze
 
 # Etapa de construcción
-FROM harbor.mct.com.co/front-end/flutter:3.22.3 AS build
+FROM harbor.mct.com.co/front-end/flutter:3.24.3 AS build
+ARG ENV
+ENV ENV=${ENV}
 WORKDIR /app
+COPY assets assets
 COPY --from=deps /app /app
 COPY --from=deps /home/flutteruser/.pub-cache /home/flutteruser/.pub-cache
 COPY lib lib
-COPY .env .env
 COPY web web
 COPY assets assets
-RUN export $(cat .env | xargs) && flutter build web --wasm --no-tree-shake-icons --dart-define=ENV=${ENV}
+RUN flutter build web --wasm --no-tree-shake-icons --dart-define=ENV=${ENV}
 
 
 # Etapa de ejecución
