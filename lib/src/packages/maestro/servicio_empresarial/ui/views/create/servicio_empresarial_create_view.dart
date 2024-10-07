@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
@@ -20,10 +19,9 @@ class ServicioEmpresarialCreateView extends StatelessWidget {
         }
 
         if (state.status == ServicioEmpresarialStatus.succes) {
-          context.read<ServicioEmpresarialBloc>().request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
-          context.read<ServicioEmpresarialBloc>().add(const GetServicioEmpresarialEvent());
+          final ServicioEmpresarialRequest request = ServicioEmpresarialRequest(nombre: state.servicioEmpresarial!.nombre);
+          context.read<ServicioEmpresarialBloc>().add(GetServicioEmpresarialEvent(request));
           context.go('/maestros/servicio_empresarial/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, ServicioEmpresarialState state) {
@@ -55,7 +53,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final ServicioEmpresarialBloc servicioEmpresarialBloc = context.read<ServicioEmpresarialBloc>();
+    final ServicioEmpresarialBloc servicioEmpresarialBloc = context.watch<ServicioEmpresarialBloc>();
     final ServicioEmpresarialRequest request = servicioEmpresarialBloc.request;
 
     return Form(

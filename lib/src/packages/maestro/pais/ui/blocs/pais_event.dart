@@ -11,7 +11,8 @@ class InitialPaisEvent extends PaisEvent {
 }
 
 class GetPaisesEvent extends PaisEvent {
-  const GetPaisesEvent();
+  final PaisRequest request;
+  const GetPaisesEvent(this.request);
 }
 
 class SetPaisEvent extends PaisEvent {

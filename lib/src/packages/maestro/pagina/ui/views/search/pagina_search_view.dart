@@ -53,7 +53,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        paginaBloc.add(const GetPaginaEvent());
+        paginaBloc.add(GetPaginaEvent(request));
       } else {
         paginaBloc.add(const ErrorFormPaginaEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

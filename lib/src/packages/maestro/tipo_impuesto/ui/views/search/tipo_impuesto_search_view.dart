@@ -18,9 +18,6 @@ class TipoImpuestoSearchView extends StatelessWidget {
         if (state.status == TipoImpuestoStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state.status == TipoImpuestoStatus.succes) {
-          context.read<TipoImpuestoBloc>().add(const GetImpuestoEvent());
-        }
       },
       builder: (BuildContext context, TipoImpuestoState state) {
         return Stack(
@@ -51,12 +48,12 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TipoImpuestoBloc tipoImpuestoBloc = context.read<TipoImpuestoBloc>();
+    final TipoImpuestoBloc tipoImpuestoBloc = context.watch<TipoImpuestoBloc>();
     final TipoImpuestoRequest request = tipoImpuestoBloc.request;
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        tipoImpuestoBloc.add(const GetImpuestoEvent());
+        tipoImpuestoBloc.add(GetImpuestoEvent(request));
       } else {
         tipoImpuestoBloc.add(const ErrorFormTipoImpuestoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

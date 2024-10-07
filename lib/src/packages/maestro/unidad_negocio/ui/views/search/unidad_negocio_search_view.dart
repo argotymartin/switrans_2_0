@@ -46,12 +46,12 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UnidadNegocioBloc unidadNegocioBloc = context.read<UnidadNegocioBloc>();
+    final UnidadNegocioBloc unidadNegocioBloc = context.watch<UnidadNegocioBloc>();
     final UnidadNegocioRequest request = unidadNegocioBloc.request;
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        unidadNegocioBloc.add(const GetUnidadNegocioEvent());
+        unidadNegocioBloc.add(GetUnidadNegocioEvent(request));
       } else {
         unidadNegocioBloc.add(const ErrorFormUnidadNegocioEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

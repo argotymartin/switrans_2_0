@@ -38,7 +38,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
 
   Future<void> _onGetUnidadNegocio(GetUnidadNegocioEvent event, Emitter<UnidadNegocioState> emit) async {
     emit(state.copyWith(status: UnidadNegocioStatus.loading));
-    final DataState<List<UnidadNegocio>> response = await _repository.getUnidadNegociosService(request);
+    final DataState<List<UnidadNegocio>> response = await _repository.getUnidadNegociosService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: UnidadNegocioStatus.consulted, unidadNegocios: response.data));
     } else {

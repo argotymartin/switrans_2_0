@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/injector.dart';
 import 'package:switrans_2_0/src/config/routers/validate_routes.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/layouts/menu_layout.dart';
 
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
@@ -69,7 +68,6 @@ class MaestrosRoutes {
     return routes;
   }
 
-  //  context.read<AccionDocumentoBloc>().onGetTipoDocumento(),
   static ShellRoute accionDocumentos() {
     const String modulePath = "accion_documentos";
 
@@ -84,9 +82,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
-            }
+            context.read<AccionDocumentoBloc>().request.clean();
             return const AccionDocumentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -94,10 +90,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<AccionDocumentoBloc>().add(const CleanFormAccionDocumentoEvent());
-            }
-
+            context.read<AccionDocumentoBloc>().request.clean();
             return const AccionDocumentoSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -119,16 +112,17 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<DepartamentoBloc>().add(const InitialDepartamentoEvent());
-            }
+            context.read<DepartamentoBloc>().request.clean();
             return const DepartamentoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const DepartamentoSearchView(),
+          builder: (BuildContext context, GoRouterState state) {
+            context.read<DepartamentoBloc>().request.clean();
+            return const DepartamentoSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
@@ -148,9 +142,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
-            }
+            context.read<ModuloBloc>().request.clean();
             return const ModuloCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -158,9 +150,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<ModuloBloc>().add(const CleanFormModuloEvent());
-            }
+            context.read<ModuloBloc>().request.clean();
             return const ModuloSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -182,9 +172,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<TipoImpuestoBloc>().add(const CleanFormTipoImpuestoEvent());
-            }
+            context.read<TipoImpuestoBloc>().request.clean();
             return const TipoImpuestoCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -192,9 +180,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<TipoImpuestoBloc>().add(const CleanFormTipoImpuestoEvent());
-            }
+            context.read<TipoImpuestoBloc>().request.clean();
             return const TipoImpuestoSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -216,9 +202,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<ServicioEmpresarialBloc>().add(const CleanFormServicioEmpresarialEvent());
-            }
+            context.read<ServicioEmpresarialBloc>().request.clean();
             return const ServicioEmpresarialCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -226,9 +210,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<ServicioEmpresarialBloc>().add(const CleanFormServicioEmpresarialEvent());
-            }
+            context.read<ServicioEmpresarialBloc>().request.clean();
             return const ServicoEmpresarialSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -250,9 +232,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<UnidadNegocioBloc>().add(const CleanFormUnidadNegocioEvent());
-            }
+            context.read<UnidadNegocioBloc>().request.clean();
             return const UnidadNegocioCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -260,9 +240,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<UnidadNegocioBloc>().add(const CleanFormUnidadNegocioEvent());
-            }
+            context.read<UnidadNegocioBloc>().request.clean();
             return const UnidadNegocioSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -284,16 +262,17 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<PaisBloc>().add(const InitialPaisEvent());
-            }
+            context.read<PaisBloc>().request.clean();
             return const PaisCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const PaisSearchView(),
+          builder: (BuildContext context, GoRouterState state) {
+            context.read<PaisBloc>().request.clean();
+            return const PaisSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
@@ -313,16 +292,17 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<PaqueteBloc>().add(const InitialPaqueteEvent());
-            }
+            context.read<PaqueteBloc>().request.clean();
             return const PaqueteCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
         ),
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
-          builder: (_, __) => const PaqueteSearchView(),
+          builder: (BuildContext context, GoRouterState state) {
+            context.read<PaqueteBloc>().request.clean();
+            return const PaqueteSearchView();
+          },
           redirect: ValidateRoutes.onValidateAuth,
         ),
       ],
@@ -342,9 +322,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<TransaccionContableBloc>().add(const CleanFormTransaccionContableEvent());
-            }
+            context.read<TransaccionContableBloc>().request.clean();
             return const TransaccionContableCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -352,10 +330,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<TransaccionContableBloc>().add(const CleanFormTransaccionContableEvent());
-            }
-
+            context.read<TransaccionContableBloc>().request.clean();
             return const TransaccionContableSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -378,9 +353,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<PaginaBloc>().add(const CleanFormPaginaEvent());
-            }
+            context.read<PaginaBloc>().request.clean();
             return const PaginaCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -388,9 +361,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<PaginaBloc>().add(const CleanFormPaginaEvent());
-            }
+            context.read<PaginaBloc>().request.clean();
             return const PaginaSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -412,9 +383,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/registrar",
           builder: (BuildContext context, GoRouterState state) {
-            if (Preferences.isResetForm) {
-              context.read<ResolucionBloc>().add(const CleanFormResolucionEvent());
-            }
+            context.read<ResolucionBloc>().request.clean();
             return const ResolucionCreateView();
           },
           redirect: ValidateRoutes.onValidateAuth,
@@ -422,9 +391,7 @@ class MaestrosRoutes {
         GoRoute(
           path: "$packagePath/$modulePath/buscar",
           builder: (BuildContext context, __) {
-            if (Preferences.isResetForm) {
-              context.read<ResolucionBloc>().add(const CleanFormResolucionEvent());
-            }
+            context.read<ResolucionBloc>().request.clean();
             return const ResolucionSearchView();
           },
           redirect: ValidateRoutes.onValidateAuth,

@@ -66,7 +66,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final FacturaBloc facturaBloc = context.read<FacturaBloc>();
+    final FacturaBloc facturaBloc = context.watch<FacturaBloc>();
     final FormFacturaRequest request = facturaBloc.request;
     return Form(
       key: formKey,
