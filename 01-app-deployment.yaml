@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: switrans2-deployment
+  labels:
+    role: switrans2-role
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      role: switrans2-role
+      tier: web
+  template:
+    metadata:
+      labels:
+        role: switrans2-role
+        tier: web
+    spec:
+      imagePullSecrets:
+      - name: docker-login 
+      containers:
+      - name: switrans2-app
+        image: harbor.mct.com.co/front-end/switrans2:1.0.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: switrans2-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30000
+  selector:
+    role: switrans2-role
