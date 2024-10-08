@@ -20,7 +20,7 @@ spec:
       - name: docker-login 
       containers:
       - name: switrans2-app
-        image: harbor.mct.com.co/front-end/switrans2:1.0.0
+        image: harbor.mct.com.co/front-end/switrans2:1.0.1
         ports:
         - containerPort: 80
 ---
