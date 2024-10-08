@@ -17,6 +17,7 @@ lints:
   script:
     - cd $WORK_DIR && echo $WORK_DIR
     - echo $CI_COMMIT_BRANCH
+    - chmod 777 pubspec.lock
     - git remote set-url origin $REPO_URL
     - git fetch --all
     - git checkout $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
