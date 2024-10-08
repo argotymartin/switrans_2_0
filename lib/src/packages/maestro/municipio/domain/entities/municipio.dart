@@ -4,7 +4,7 @@ class Municipio {
   final bool isActivo;
   final String fechaCreacion;
   final int departamento;
-  final int ? codigoUsuario;
+  final int? codigoUsuario;
   final String nombreUsuario;
 
   Municipio({
@@ -13,7 +13,7 @@ class Municipio {
     required this.isActivo,
     required this.fechaCreacion,
     required this.departamento,
-    this.codigoUsuario,
     required this.nombreUsuario,
+    this.codigoUsuario,
   });
 }

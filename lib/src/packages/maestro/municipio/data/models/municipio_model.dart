@@ -17,7 +17,7 @@ class MunicipioModel extends Municipio {
         isActivo: json["estado"],
         departamento: json["codigoDepartamento"],
         fechaCreacion: json["fechaCreacion"],
-        codigoUsuario: json["codigoUsuario"] != null ? json["codigoUsuario"] : null,
+        codigoUsuario: json["codigoUsuario"],
         nombreUsuario: json["nombreUsuario"],
       );
 }
