@@ -21,7 +21,8 @@ class UpdateModuloEvent extends ModuloEvent {
 }
 
 class GetModuloEvent extends ModuloEvent {
-  const GetModuloEvent();
+  final ModuloRequest request;
+  const GetModuloEvent(this.request);
 }
 
 class ErrorFormModuloEvent extends ModuloEvent {

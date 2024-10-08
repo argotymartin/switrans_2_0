@@ -38,7 +38,7 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
 
   Future<void> _onGetModulo(GetModuloEvent event, Emitter<ModuloState> emit) async {
     emit(state.copyWith(status: ModuloStatus.loading));
-    final DataState<List<Modulo>> response = await _repository.getModulosService(request);
+    final DataState<List<Modulo>> response = await _repository.getModulosService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: ModuloStatus.consulted, modulos: response.data));
     } else {

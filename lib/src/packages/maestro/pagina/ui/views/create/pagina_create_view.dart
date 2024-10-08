@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
@@ -20,10 +19,9 @@ class PaginaCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == PaginaStatus.succes) {
-          context.read<PaginaBloc>().request = PaginaRequest(codigo: state.pagina!.codigo);
-          context.read<PaginaBloc>().add(const GetPaginaEvent());
+          final PaginaRequest request = PaginaRequest(codigo: state.pagina!.codigo);
+          context.read<PaginaBloc>().add(GetPaginaEvent(request));
           context.go('/maestros/pagina/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, PaginaState state) {
@@ -56,7 +54,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final PaginaBloc paginaBloc = context.read<PaginaBloc>();
+    final PaginaBloc paginaBloc = context.watch<PaginaBloc>();
     final PaginaRequest request = paginaBloc.request;
     return Form(
       key: formKey,

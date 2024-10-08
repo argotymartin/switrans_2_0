@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
@@ -21,10 +20,9 @@ class AccionDocumentoCreateView extends StatelessWidget {
           CustomToast.showError(context, state.exception!);
         }
         if (state.status == AccionDocumentoStatus.succes) {
-          context.read<AccionDocumentoBloc>().request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
-          context.read<AccionDocumentoBloc>().add(const GetAccionDocumentoEvent());
+          final AccionDocumentoRequest request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
+          context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
           context.go('/maestros/accion_documentos/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, AccionDocumentoState state) {
@@ -55,7 +53,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AccionDocumentoBloc accionDocumentoBloc = context.read<AccionDocumentoBloc>();
+    final AccionDocumentoBloc accionDocumentoBloc = context.watch<AccionDocumentoBloc>();
     final AccionDocumentoRequest request = accionDocumentoBloc.request;
     bool isNaturalezaInversa = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

@@ -21,7 +21,8 @@ class UpdateTransaccionContableEvent extends TransaccionContableEvent {
 }
 
 class GetTransaccionContableEvent extends TransaccionContableEvent {
-  const GetTransaccionContableEvent();
+  final TransaccionContableRequest request;
+  const GetTransaccionContableEvent(this.request);
 }
 
 class ErrorFormTransaccionContableEvent extends TransaccionContableEvent {

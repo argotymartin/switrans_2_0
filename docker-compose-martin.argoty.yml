@@ -1,0 +1,11 @@
+services:
+
+  switrans2-app-martin-argoty:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${STAGE}
+    container_name: switrans2-app-martin-argoty
+    ports:
+      - "3003:80"
+

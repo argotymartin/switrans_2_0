@@ -6,7 +6,6 @@ class Preferences {
   static String _usuarioNombre = "";
   static int _themeMode = 1;
   static int _colorValue = 4282339765;
-  static bool _isResetForm = true;
   static String _paquetes = "";
   static String _env = "";
 
@@ -44,13 +43,6 @@ class Preferences {
   static set color(int value) {
     _colorValue = value;
     _prefs.setInt("color", value);
-  }
-
-  static bool get isResetForm => _prefs.getBool("isResetForm") ?? _isResetForm;
-
-  static set isResetForm(bool value) {
-    _isResetForm = value;
-    _prefs.setBool("isResetForm", value);
   }
 
   static String get paquetes => _prefs.getString("paquetes") ?? _paquetes;

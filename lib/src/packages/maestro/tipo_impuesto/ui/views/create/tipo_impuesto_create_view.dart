@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
@@ -20,10 +19,9 @@ class TipoImpuestoCreateView extends StatelessWidget {
         }
 
         if (state.status == TipoImpuestoStatus.succes) {
-          context.read<TipoImpuestoBloc>().request = TipoImpuestoRequest(codigo: state.tipoImpuesto!.codigo);
-          context.read<TipoImpuestoBloc>().add(const GetImpuestoEvent());
+          final TipoImpuestoRequest request = TipoImpuestoRequest(codigo: state.tipoImpuesto!.codigo);
+          context.read<TipoImpuestoBloc>().add(GetImpuestoEvent(request));
           context.go('/maestros/tipo_impuesto/buscar');
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, TipoImpuestoState state) {
@@ -51,7 +49,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TipoImpuestoBloc tipoImpuestoBloc = context.read<TipoImpuestoBloc>();
+    final TipoImpuestoBloc tipoImpuestoBloc = context.watch<TipoImpuestoBloc>();
     final TipoImpuestoRequest request = tipoImpuestoBloc.request;
 
     return Form(

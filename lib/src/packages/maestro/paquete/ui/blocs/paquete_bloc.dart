@@ -28,7 +28,8 @@ class PaqueteBloc extends Bloc<PaqueteEvent, PaqueteState> {
 
   Future<void> _onGetPaquete(GetPaqueteEvent event, Emitter<PaqueteState> emit) async {
     emit(state.copyWith(status: PaqueteStatus.loading));
-    final DataState<List<Paquete>> response = await _repository.getPaquetesService(request);
+    request = event.request;
+    final DataState<List<Paquete>> response = await _repository.getPaquetesService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: PaqueteStatus.consulted, paquetes: response.data));
     } else {

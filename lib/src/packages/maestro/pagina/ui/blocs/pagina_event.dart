@@ -11,7 +11,8 @@ class InitialPaginaEvent extends PaginaEvent {
 }
 
 class GetPaginaEvent extends PaginaEvent {
-  const GetPaginaEvent();
+  final PaginaRequest request;
+  const GetPaginaEvent(this.request);
 }
 
 class SetPaginaEvent extends PaginaEvent {

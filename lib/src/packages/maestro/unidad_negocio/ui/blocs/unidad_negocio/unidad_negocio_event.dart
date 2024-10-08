@@ -21,7 +21,8 @@ class UpdateUnidadNegocioEvent extends UnidadNegocioEvent {
 }
 
 class GetUnidadNegocioEvent extends UnidadNegocioEvent {
-  const GetUnidadNegocioEvent();
+  final UnidadNegocioRequest request;
+  const GetUnidadNegocioEvent(this.request);
 }
 
 class ErrorFormUnidadNegocioEvent extends UnidadNegocioEvent {

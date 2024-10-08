@@ -22,7 +22,8 @@ class UpdateAccionDocumentoEvent extends AccionDocumentoEvent {
 }
 
 class GetAccionDocumentoEvent extends AccionDocumentoEvent {
-  const GetAccionDocumentoEvent();
+  final AccionDocumentoRequest request;
+  const GetAccionDocumentoEvent(this.request);
 }
 
 class ErrorFormAccionDocumentoEvent extends AccionDocumentoEvent {

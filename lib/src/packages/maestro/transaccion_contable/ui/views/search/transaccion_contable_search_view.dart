@@ -19,9 +19,6 @@ class TransaccionContableSearchView extends StatelessWidget {
         if (state.status == TransaccionContableStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state.status == TransaccionContableStatus.succes) {
-          context.read<TransaccionContableBloc>().add(const GetTransaccionContableEvent());
-        }
       },
       builder: (BuildContext context, TransaccionContableState state) {
         return Stack(
@@ -52,12 +49,12 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TransaccionContableBloc transaccionContableBloc = context.read<TransaccionContableBloc>();
+    final TransaccionContableBloc transaccionContableBloc = context.watch<TransaccionContableBloc>();
     final TransaccionContableRequest request = transaccionContableBloc.request;
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        transaccionContableBloc.add(const GetTransaccionContableEvent());
+        transaccionContableBloc.add(GetTransaccionContableEvent(request));
       } else {
         transaccionContableBloc.add(const ErrorFormTransaccionContableEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

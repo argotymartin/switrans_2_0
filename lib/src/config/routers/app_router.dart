@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/config/routers/financiero_routes.dart';
 import 'package:switrans_2_0/src/config/routers/maestros_routes.dart';
+import 'package:switrans_2_0/src/config/routers/menu_routes.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/auth_layout.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/error_connection_view.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/token_expired_view.dart';
@@ -32,6 +33,7 @@ class AppRouter {
         path: "/loading",
         builder: (_, __) => const LoadingView(),
       ),
+      ...MenuRoutes.getRoutesMenu(),
       ...FinancieroRoutes.getRoutesFinaciero(),
       ...MaestrosRoutes.getRoutesMaestros(),
     ],

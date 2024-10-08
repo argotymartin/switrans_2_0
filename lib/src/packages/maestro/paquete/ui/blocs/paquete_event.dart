@@ -21,7 +21,8 @@ class UpdatePaqueteEvent extends PaqueteEvent {
 }
 
 class GetPaqueteEvent extends PaqueteEvent {
-  const GetPaqueteEvent();
+  final PaqueteRequest request;
+  const GetPaqueteEvent(this.request);
 }
 
 class ActivetePaqueteEvent extends PaqueteEvent {

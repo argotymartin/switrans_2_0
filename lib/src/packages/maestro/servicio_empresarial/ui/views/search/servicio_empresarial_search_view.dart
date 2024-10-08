@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/models/request/servicio_empresarial_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
@@ -18,11 +17,6 @@ class ServicoEmpresarialSearchView extends StatelessWidget {
       listener: (BuildContext context, ServicioEmpresarialState state) {
         if (state.status == ServicioEmpresarialStatus.exception) {
           CustomToast.showError(context, state.exception!);
-        }
-
-        if (state.status == ServicioEmpresarialStatus.succes) {
-          context.read<ServicioEmpresarialBloc>().add(const GetServicioEmpresarialEvent());
-          Preferences.isResetForm = false;
         }
       },
       builder: (BuildContext context, ServicioEmpresarialState state) {
@@ -57,7 +51,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        accionDocumentoBloc.add(const GetServicioEmpresarialEvent());
+        accionDocumentoBloc.add(GetServicioEmpresarialEvent(request));
       } else {
         accionDocumentoBloc.add(const ErrorFormServicioEmpresarialEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }

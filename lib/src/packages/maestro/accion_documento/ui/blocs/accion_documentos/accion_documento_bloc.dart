@@ -39,7 +39,7 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
 
   Future<void> _onGetAccionDocumento(GetAccionDocumentoEvent event, Emitter<AccionDocumentoState> emit) async {
     emit(state.copyWith(status: AccionDocumentoStatus.loading));
-    final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(request);
+    final DataState<List<AccionDocumento>> resp = await _repository.getAccionDocumentosService(event.request);
     if (resp.data != null) {
       emit(state.copyWith(status: AccionDocumentoStatus.consulted, accionDocumentos: resp.data));
     } else {

@@ -12,7 +12,8 @@ class InitializationServicioEmpresarialEvent extends ServicioEmpresarialEvent {
 }
 
 class GetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
-  const GetServicioEmpresarialEvent();
+  final ServicioEmpresarialRequest request;
+  const GetServicioEmpresarialEvent(this.request);
 }
 
 class UpdateServicioEmpresarialEvent extends ServicioEmpresarialEvent {
