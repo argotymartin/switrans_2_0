@@ -14,7 +14,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
 
   MunicipioBloc(this._repository) : super(const MunicipioState().initial()) {
     on<InitialMunicipioEvent>(_onInitialMunicipio);
-    on<GetMunicipioEvent>(_onGetMunicipio);
+    on<GetMunicipiosEvent>(_onGetMunicipio);
     on<SetMunicipioEvent>(_onSetMunicipio);
     on<UpdateMunicipioEvent>(_onUpdateMunicipio);
     on<ErrorFormMunicipioEvent>(_onErrorFormMunicipio);
@@ -33,7 +33,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
     }
   }
 
-  Future<void> _onGetMunicipio(GetMunicipioEvent event, Emitter<MunicipioState> emit) async {
+  Future<void> _onGetMunicipio(GetMunicipiosEvent event, Emitter<MunicipioState> emit) async {
     emit(state.copyWith(status: MunicipioStatus.loading));
     final DataState<List<Municipio>> response = await _repository.getMunicipiosService(request);
     if (response.data != null) {

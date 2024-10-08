@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
-class PaginaCreateView extends StatelessWidget {
-  const PaginaCreateView({super.key});
+class MunicipioCreateView extends StatelessWidget {
+  const MunicipioCreateView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PaginaBloc, PaginaState>(
-      listener: (BuildContext context, PaginaState state) {
-        if (state.status == PaginaStatus.exception) {
+    return BlocConsumer<MunicipioBloc, MunicipioState>(
+      listener: (BuildContext context, MunicipioState state) {
+        if (state.status == MunicipioStatus.exception) {
           CustomToast.showError(context, state.exception!);
         }
-        if (state.status == PaginaStatus.succes) {
-          context.read<PaginaBloc>().request = PaginaRequest(codigo: state.pagina!.codigo);
-          context.read<PaginaBloc>().add(const GetPaginaEvent());
-          context.go('/maestros/pagina/buscar');
-          Preferences.isResetForm = false;
+        if (state.status == MunicipioStatus.succes) {
+          final MunicipioRequest request = MunicipioRequest(codigo: state.municipio!.codigo);
+          context.read<MunicipioBloc>().add(GetMunicipiosEvent(request));
+          context.go('/maestros/municipio/buscar');
         }
       },
-      builder: (BuildContext context, PaginaState state) {
+      builder: (BuildContext context, MunicipioState state) {
         return Stack(
           children: <Widget>[
             ListView(
@@ -41,7 +40,7 @@ class PaginaCreateView extends StatelessWidget {
                 ),
               ],
             ),
-            if (state.status == PaginaStatus.loading) const LoadingModal(),
+            if (state.status == MunicipioStatus.loading) const LoadingModal(),
           ],
         );
       },
@@ -50,14 +49,14 @@ class PaginaCreateView extends StatelessWidget {
 }
 
 class _BuildFieldsForm extends StatelessWidget {
-  final PaginaState state;
+  final MunicipioState state;
   const _BuildFieldsForm(this.state);
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final PaginaBloc paginaBloc = context.read<PaginaBloc>();
-    final PaginaRequest request = paginaBloc.request;
+    final MunicipioBloc municipioBloc = context.watch<MunicipioBloc>();
+    final MunicipioRequest request = municipioBloc.request;
     return Form(
       key: formKey,
       child: Column(
@@ -69,15 +68,15 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Nombre",
                 value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
-                minLength: 3,
+                minLength: 5,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
               AutocompleteInputForm(
-                entries: state.entriesModulos,
-                title: "Modulos",
-                value: request.modulo,
+                entries: state.entriesDepartamentos,
+                title: "Departamentos",
+                value: request.departamento,
                 isRequired: true,
-                onChanged: (EntryAutocomplete result) => request.modulo = result.codigo,
+                onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
               ),
             ],
           ),
@@ -85,9 +84,9 @@ class _BuildFieldsForm extends StatelessWidget {
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                request.path = "/${request.nombre!.toLowerCase().replaceAll(' ', '-')}";
+                municipioBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
                 request.isActivo = true;
-                context.read<PaginaBloc>().add(SetPaginaEvent(request));
+                context.read<MunicipioBloc>().add(SetMunicipioEvent(request));
               }
             },
             icon: Icons.save,

@@ -4,7 +4,7 @@ class MunicipioDepartamentoModel extends MunicipioDepartamento {
   MunicipioDepartamentoModel({required super.codigo, required super.nombre});
 
   factory MunicipioDepartamentoModel.fromJson(Map<String, dynamic> json) => MunicipioDepartamentoModel(
-        codigo: json['departamento_codigo'],
-        nombre: json['departamento_nombre'],
+        codigo: json['codigo'],
+        nombre: json['nombre'],
       );
 }

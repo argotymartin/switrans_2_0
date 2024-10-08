@@ -10,8 +10,9 @@ class InitialMunicipioEvent extends MunicipioEvent {
   const InitialMunicipioEvent();
 }
 
-class GetMunicipioEvent extends MunicipioEvent {
-  const GetMunicipioEvent();
+class GetMunicipiosEvent extends MunicipioEvent {
+  final MunicipioRequest request;
+  const GetMunicipiosEvent(this.request);
 }
 
 class SetMunicipioEvent extends MunicipioEvent {

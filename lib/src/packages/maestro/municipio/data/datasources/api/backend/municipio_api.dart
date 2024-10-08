@@ -12,7 +12,7 @@ class MunicipioApi {
   Future<Response<dynamic>> getMunicipiosApi(MunicipioRequest request) async {
     final MunicipioRequestModel requestModel = MunicipioRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJsonGet();
+    final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
@@ -42,8 +42,8 @@ class MunicipioApi {
 
   Future<Response<dynamic>> getDepartamentosApi() async {
     final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/departamentos';
-    final Map<String, dynamic> params = <String, dynamic>{"filter": "(activo = true)"};
-    final Response<String> response = await _dio.get('$url', data: params);
+    final Map<String, dynamic> params = <String, dynamic>{'estado': true};
+    final Response<String> response = await _dio.get('$url', queryParameters: params);
     return response;
   }
 }

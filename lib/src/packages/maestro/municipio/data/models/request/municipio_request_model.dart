@@ -43,7 +43,7 @@ class MunicipioRequestModel extends MunicipioRequest {
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
       'usuarioNombre': usuarioNombre,
-      'departamento': departamento,
+      'codigoDepartamento': departamento,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 
