@@ -11,7 +11,6 @@ part 'municipio_state.dart';
 class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   final AbstractMunicipioRepository _repository;
   MunicipioRequest _request = MunicipioRequest();
-
   MunicipioBloc(this._repository) : super(const MunicipioState().initial()) {
     on<InitialMunicipioEvent>(_onInitialMunicipio);
     on<GetMunicipiosEvent>(_onGetMunicipio);

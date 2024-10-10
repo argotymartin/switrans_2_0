@@ -2,6 +2,7 @@ class MunicipioRequest {
   int? codigo;
   String? nombre;
   bool? isActivo;
+  String? codigoDane;
   String? fechaCreacion;
   int? codigoUsuario;
   String? usuarioNombre;
@@ -11,6 +12,7 @@ class MunicipioRequest {
     this.codigo,
     this.nombre,
     this.isActivo,
+    this.codigoDane,
     this.fechaCreacion,
     this.codigoUsuario,
     this.usuarioNombre,
@@ -25,6 +27,7 @@ class MunicipioRequest {
     codigo = null;
     nombre = null;
     isActivo = null;
+    codigoDane = null;
     fechaCreacion = null;
     codigoUsuario = null;
     usuarioNombre = null;

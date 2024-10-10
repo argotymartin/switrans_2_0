@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
-
 const String endPoint = "api/v1/maestro/municipios";
+
 
 class MunicipioApi {
   final Dio _dio;
@@ -42,6 +42,7 @@ class MunicipioApi {
 
   Future<Response<dynamic>> getDepartamentosApi() async {
     final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/departamentos';
+    //final String url = '$kBackendBaseUrlMaestro/$endPoint/departamentos';
     final Map<String, dynamic> params = <String, dynamic>{'estado': true};
     final Response<String> response = await _dio.get('$url', queryParameters: params);
     return response;

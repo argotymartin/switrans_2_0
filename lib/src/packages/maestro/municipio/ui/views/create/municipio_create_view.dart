@@ -71,9 +71,17 @@ class _BuildFieldsForm extends StatelessWidget {
                 minLength: 5,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
               ),
+              TextInputForm(
+                title: "Codigo Dane",
+                value: request.codigoDane,
+                typeInput: TypeInput.onlyNumbers,
+                minLength: 3,
+                maxLength: 3,
+                icon: const Icon(Icons.pin),
+              ),
               AutocompleteInputForm(
                 entries: state.entriesDepartamentos,
-                title: "Departamentos",
+                title: "Departamento",
                 value: request.departamento,
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
