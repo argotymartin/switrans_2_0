@@ -18,4 +18,13 @@ class UnidadNegocioModel extends UnidadNegocio {
         usuario: map['usuario'],
         empresa: map['empresa'],
       );
+
+  factory UnidadNegocioModel.fromJson(Map<String, dynamic> map) => UnidadNegocioModel(
+        codigo: map['codigo'],
+        nombre: map['nombre'],
+        isActivo: map['isActivo'],
+        fechaCreacion: map['fechaCreacion'].toString(),
+        usuario: map['usuario'],
+        empresa: map['empresa'],
+      );
 }

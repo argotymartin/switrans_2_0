@@ -7,4 +7,9 @@ class UnidadNegocioEmpresaModel extends UnidadNegocioEmpresa {
         codigo: json['empresa_codigo'],
         nombre: json['empresa_nombre'],
       );
+
+  factory UnidadNegocioEmpresaModel.fromJson(Map<String, dynamic> json) => UnidadNegocioEmpresaModel(
+        codigo: json['codigo'],
+        nombre: json['nombre'],
+      );
 }
