@@ -13,7 +13,7 @@ class PaisApi {
   Future<Response<dynamic>> getPaisesApi(PaisRequest request) async {
     final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJsonGet();
+    final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
@@ -29,8 +29,7 @@ class PaisApi {
   Future<Response<dynamic>> updatePaisApi(EntityUpdate<PaisRequest> request) async {
     final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request.entity);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.id}';
-    final Map<String, dynamic> params = requestModel.toJson();
-    final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
+    final Response<dynamic> responseUpdate = await _dio.put(url, data: requestModel.toJson());
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
       final PaisRequest paisRequest = PaisRequest(codigo: request.id);

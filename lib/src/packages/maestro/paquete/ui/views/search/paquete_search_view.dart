@@ -128,13 +128,48 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Paquete paquete) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: paquete.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: paquete.nombre, edit: true),
-              'path': DataItemGrid(type: Tipo.text, value: paquete.path, edit: false),
-              'icono': DataItemGrid(type: Tipo.text, value: paquete.icono, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
-              'isVisible': DataItemGrid(type: Tipo.boolean, value: paquete.isVisible, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: paquete.isActivo, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: paquete.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: paquete.nombre,
+                edit: true,
+              ),
+              'path': DataItemGrid(
+                title: "Ruta",
+                type: Tipo.text,
+                value: paquete.path,
+                edit: false,
+              ),
+              'icono': DataItemGrid(
+                title: "Icono",
+                type: Tipo.text,
+                value: paquete.icono,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: paquete.fechaCreacion,
+                edit: false,
+              ),
+              'isVisible': DataItemGrid(
+                title: "Visible",
+                type: Tipo.boolean,
+                value: paquete.isVisible,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: paquete.isActivo,
+                edit: true,
+              ),
             };
           }
 

@@ -31,7 +31,7 @@ class ResolucionRequestModel extends ResolucionRequest {
         codigoUsuario: request.codigoUsuario,
       );
 
-  factory ResolucionRequestModel.fromTable(Map<String, dynamic> map) => ResolucionRequestModel(
+  factory ResolucionRequestModel.fromMap(Map<String, dynamic> map) => ResolucionRequestModel(
         codigo: map['codigo'],
         numero: map['numero'],
         fecha: map['fecha'],

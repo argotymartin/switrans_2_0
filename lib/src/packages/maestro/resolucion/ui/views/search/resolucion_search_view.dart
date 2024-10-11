@@ -160,7 +160,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<ResolucionRequest>> requestList = <EntityUpdate<ResolucionRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final ResolucionRequestModel request = ResolucionRequestModel.fromTable(map["data"]);
+              final ResolucionRequestModel request = ResolucionRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<ResolucionRequest>(id: map["id"], entity: request));
             }
             context.read<ResolucionBloc>().add(UpdateResolucionesEvent(requestList));
@@ -168,20 +168,80 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Resolucion resolucion) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: resolucion.codigo, edit: false),
-              'numero': DataItemGrid(type: Tipo.text, value: resolucion.numero, edit: true),
-              'codigoDocumento':
-                  DataItemGrid(type: Tipo.select, value: resolucion.codigoDocumento, entryMenus: state.resolucionesDocumentos, edit: false),
-              'fecha': DataItemGrid(type: Tipo.date, value: resolucion.fecha, edit: true),
-              'fechaVigencia': DataItemGrid(type: Tipo.date, value: resolucion.fechaVigencia, edit: false),
-              'rangoInicial': DataItemGrid(type: Tipo.text, value: resolucion.rangoInicial, edit: false),
-              'rangoFinal': DataItemGrid(type: Tipo.text, value: resolucion.rangoFinal, edit: false),
-              'empresaPrefijo': DataItemGrid(type: Tipo.text, value: resolucion.empresaPrefijo, edit: false),
-              'codigoEmpresa':
-                  DataItemGrid(type: Tipo.select, value: resolucion.codigoEmpresa, entryMenus: state.resolucionesEmpresas, edit: false),
-              'version': DataItemGrid(type: Tipo.text, value: resolucion.version, edit: false),
-              'isActiva': DataItemGrid(type: Tipo.boolean, value: resolucion.isActiva, edit: true),
-              'nombreUsuario': DataItemGrid(type: Tipo.text, value: resolucion.nombreUsuario, edit: false),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: resolucion.codigo,
+                edit: false,
+              ),
+              'numero': DataItemGrid(
+                title: "Numero",
+                type: Tipo.text,
+                value: resolucion.numero,
+                edit: true,
+              ),
+              'codigoDocumento': DataItemGrid(
+                title: "Documento",
+                type: Tipo.select,
+                value: resolucion.codigoDocumento,
+                entryMenus: state.resolucionesDocumentos,
+                edit: false,
+              ),
+              'fecha': DataItemGrid(
+                title: "Fecha",
+                type: Tipo.date,
+                value: resolucion.fecha,
+                edit: true,
+              ),
+              'fechaVigencia': DataItemGrid(
+                title: "Vigencia",
+                type: Tipo.date,
+                value: resolucion.fechaVigencia,
+                edit: false,
+              ),
+              'rangoInicial': DataItemGrid(
+                title: "Rango Inicial",
+                type: Tipo.text,
+                value: resolucion.rangoInicial,
+                edit: false,
+              ),
+              'rangoFinal': DataItemGrid(
+                title: "Rango Final",
+                type: Tipo.text,
+                value: resolucion.rangoFinal,
+                edit: false,
+              ),
+              'empresaPrefijo': DataItemGrid(
+                title: "Prefijo",
+                type: Tipo.text,
+                value: resolucion.empresaPrefijo,
+                edit: false,
+              ),
+              'codigoEmpresa': DataItemGrid(
+                title: "Empresa",
+                type: Tipo.select,
+                value: resolucion.codigoEmpresa,
+                entryMenus: state.resolucionesEmpresas,
+                edit: false,
+              ),
+              'version': DataItemGrid(
+                title: "Version",
+                type: Tipo.text,
+                value: resolucion.version,
+                edit: false,
+              ),
+              'isActiva': DataItemGrid(
+                title: "Activa",
+                type: Tipo.boolean,
+                value: resolucion.isActiva,
+                edit: true,
+              ),
+              'nombreUsuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: resolucion.nombreUsuario,
+                edit: false,
+              ),
             };
           }
 

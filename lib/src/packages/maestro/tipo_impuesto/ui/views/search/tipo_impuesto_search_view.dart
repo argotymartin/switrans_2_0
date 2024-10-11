@@ -125,11 +125,36 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(TipoImpuesto tipoImpuesto) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: tipoImpuesto.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: tipoImpuesto.nombre, edit: true),
-              'usuario': DataItemGrid(type: Tipo.text, value: tipoImpuesto.usuario, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: tipoImpuesto.isActivo, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: tipoImpuesto.fechaCreacion, edit: false),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: tipoImpuesto.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: tipoImpuesto.nombre,
+                edit: true,
+              ),
+              'usuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: tipoImpuesto.usuario,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: tipoImpuesto.isActivo,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: tipoImpuesto.fechaCreacion,
+                edit: false,
+              ),
             };
           }
 

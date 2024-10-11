@@ -13,7 +13,8 @@ class DepartamentoApi {
   Future<Response<dynamic>> getDepartamentosApi(DepartamentoRequest request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint';
-    final Map<String, dynamic> params = requestModel.toJsonGet();
+    final Map<String, dynamic> params = requestModel.toJson();
+
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
@@ -22,6 +23,7 @@ class DepartamentoApi {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/crear';
     final Map<String, dynamic> params = requestModel.toJson();
+
     final Response<dynamic> response = await _dio.post(url, data: params);
     return response;
   }
@@ -29,8 +31,8 @@ class DepartamentoApi {
   Future<Response<dynamic>> updateDepartamentoApi(EntityUpdate<DepartamentoRequest> request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request.entity);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.id}';
-    final Map<String, dynamic> params = requestModel.toJsonUpdateAPI();
-    final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
+
+    final Response<dynamic> responseUpdate = await _dio.put(url, data: requestModel.toJson());
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
       final DepartamentoRequest departamentoRequest = DepartamentoRequest(codigo: request.id);
@@ -43,8 +45,7 @@ class DepartamentoApi {
 
   Future<Response<dynamic>> getPaisesApi() async {
     final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/paises';
-    final Map<String, dynamic> params = <String, dynamic>{"filter": "(activo = true)"};
-    final Response<String> response = await _dio.get('$url', data: params);
+    final Response<String> response = await _dio.get('$url');
     return response;
   }
 }
