@@ -4,7 +4,8 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/request/pa
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
-import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
+import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -117,10 +118,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<PaqueteRequest> requestList = <PaqueteRequest>[];
+            final List<EntityUpdate<PaqueteRequest>> requestList = <EntityUpdate<PaqueteRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final PaqueteRequest request = PaqueteRequestModel.fromMap(map);
-              requestList.add(request);
+              final PaqueteRequestModel request = PaqueteRequestModel.fromMap(map["data"]);
+              requestList.add(EntityUpdate<PaqueteRequest>(id: map["id"], entity: request));
             }
             context.read<PaqueteBloc>().add(UpdatePaqueteEvent(requestList));
           }
@@ -131,9 +132,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'nombre': DataItemGrid(type: Tipo.text, value: paquete.nombre, edit: true),
               'path': DataItemGrid(type: Tipo.text, value: paquete.path, edit: false),
               'icono': DataItemGrid(type: Tipo.text, value: paquete.icono, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
-              'visible': DataItemGrid(type: Tipo.boolean, value: paquete.isVisible, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: paquete.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: paquete.fechaCreacion, edit: false),
+              'isVisible': DataItemGrid(type: Tipo.boolean, value: paquete.isVisible, edit: true),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: paquete.isActivo, edit: true),
             };
           }
 

@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/pais/data/models/request/pais_
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/pais.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -104,7 +105,6 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    final PaisBloc paisBloc = context.read<PaisBloc>();
     return BlocBuilder<PaisBloc, PaisState>(
       builder: (BuildContext context, PaisState state) {
         if (state.status == PaisStatus.consulted) {
@@ -114,23 +114,22 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<PaisRequest> requestList = <PaisRequest>[];
+            final List<EntityUpdate<PaisRequest>> requestList = <EntityUpdate<PaisRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final PaisRequest request = PaisRequestModel.fromTable(map);
-              paisBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
+              final PaisRequest request = PaisRequestModel.fromTable(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              requestList.add(request);
+              requestList.add(EntityUpdate<PaisRequest>(id: map["id"], entity: request));
             }
+            context.read<PaisBloc>().add(UpdatePaisEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Pais pais) {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
-              'usuario_nombre': DataItemGrid(type: Tipo.text, value: pais.usuarioNombre, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
+              'usuarioNombre': DataItemGrid(type: Tipo.text, value: pais.usuarioNombre, edit: true),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
             };
           }
 

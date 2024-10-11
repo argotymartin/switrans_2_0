@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/tipo_impuesto.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 part 'tipo_impuesto_event.dart';
 part 'tipo_impuesto_state.dart';
@@ -49,7 +49,7 @@ class TipoImpuestoBloc extends Bloc<TipoImpuestoEvent, TipoImpuestoState> {
   Future<void> _onUpdateImpuesto(UpdateImpuestoEvent event, Emitter<TipoImpuestoState> emit) async {
     emit(state.copyWith(status: TipoImpuestoStatus.loading));
     final List<DataState<TipoImpuesto>> dataStateList = await Future.wait(
-      event.requestList.map((TipoImpuestoRequest request) => _repository.updateTipoImpuestoService(request)),
+      event.requestList.map((EntityUpdate<TipoImpuestoRequest> request) => _repository.updateTipoImpuestoService(request)),
     );
 
     final List<TipoImpuesto> tipoImpuestos = <TipoImpuesto>[];

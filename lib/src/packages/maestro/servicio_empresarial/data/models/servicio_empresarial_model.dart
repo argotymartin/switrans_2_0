@@ -5,7 +5,7 @@ class ServicioEmpresarialModel extends ServicioEmpresarial {
     required super.codigo,
     required super.nombre,
     required super.usuario,
-    required super.esActivo,
+    required super.isActivo,
     required super.fechaCreacion,
     required super.fechaModificacion,
   });
@@ -14,7 +14,7 @@ class ServicioEmpresarialModel extends ServicioEmpresarial {
         codigo: data['seremp_codigo'],
         nombre: data['seremp_nombre'],
         usuario: data['usuario_nombre'],
-        esActivo: data['seremp_es_activo'],
+        isActivo: data['seremp_es_activo'],
         fechaCreacion: data['seremp_fecha_creacion'].toString(),
         fechaModificacion: data['seremp_fecha_modificacion'].toString(),
       );

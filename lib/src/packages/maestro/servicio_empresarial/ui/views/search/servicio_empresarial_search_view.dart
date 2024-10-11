@@ -4,6 +4,7 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/mode
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -111,10 +112,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<ServicioEmpresarialRequest> requestList = <ServicioEmpresarialRequest>[];
+            final List<EntityUpdate<ServicioEmpresarialRequest>> requestList = <EntityUpdate<ServicioEmpresarialRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final ServicioEmpresarialRequest request = ServicioEmpresarialRequestModel.fromTable(map);
-              requestList.add(request);
+              final ServicioEmpresarialRequest request = ServicioEmpresarialRequestModel.fromTable(map["data"]);
+              requestList.add(EntityUpdate<ServicioEmpresarialRequest>(id: map["id"], entity: request));
             }
             context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(requestList));
           }
@@ -123,9 +124,9 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: servicio.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: servicio.nombre, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: servicio.esActivo, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: servicio.fechaCreacion, edit: false),
-              'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: servicio.fechaModificacion, edit: false),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: servicio.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: servicio.fechaCreacion, edit: false),
+              'fechaModificacion': DataItemGrid(type: Tipo.date, value: servicio.fechaModificacion, edit: false),
               'usuario': DataItemGrid(type: Tipo.text, value: servicio.usuario, edit: false),
             };
           }

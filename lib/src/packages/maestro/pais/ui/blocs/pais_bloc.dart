@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/pais.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/entities/request/pais_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/repositories/abstract_pais_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 part 'pais_event.dart';
 part 'pais_state.dart';
@@ -51,7 +51,7 @@ class PaisBloc extends Bloc<PaisEvent, PaisState> {
     emit(state.copyWith(status: PaisStatus.loading));
 
     final List<DataState<Pais>> dataStateList = await Future.wait(
-      event.requestList.map((PaisRequest request) => _repository.updatePaisService(request)),
+      event.requestList.map((EntityUpdate<PaisRequest> request) => _repository.updatePaisService(request)),
     );
 
     final List<Pais> paises = <Pais>[];

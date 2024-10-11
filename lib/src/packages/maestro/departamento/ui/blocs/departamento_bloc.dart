@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/entity_update.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'departamento_event.dart';
@@ -57,7 +58,7 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
     emit(state.copyWith(status: DepartamentoStatus.loading));
 
     final List<DataState<Departamento>> dataStateList = await Future.wait(
-      event.requestList.map((DepartamentoRequest request) => _repository.updateDepartamentoService(request)),
+      event.requestList.map((EntityUpdate<DepartamentoRequest> request) => _repository.updateDepartamentoService(request)),
     );
 
     final List<Departamento> departamentos = <Departamento>[];

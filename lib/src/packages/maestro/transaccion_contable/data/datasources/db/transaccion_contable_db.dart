@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/rendering.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/request/transaccion_contable_request.dart';
-import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class TransaccionContableDB {
   Future<Response<dynamic>> getTransaccionContableDB(TransaccionContableRequest request) async {
@@ -77,32 +77,32 @@ class TransaccionContableDB {
     return resp;
   }
 
-  Future<Response<dynamic>> updateTransaccionContableDB(TransaccionContableRequest request) async {
+  Future<Response<dynamic>> updateTransaccionContableDB(EntityUpdate<TransaccionContableRequest> request) async {
     try {
       final List<String> updateFields = <String>[];
 
-      if (request.nombre != null) {
-        updateFields.add("tracon_nombre = '${request.nombre}'");
+      if (request.entity.nombre != null) {
+        updateFields.add("tracon_nombre = '${request.entity.nombre}'");
       }
-      if (request.isActivo != null) {
-        updateFields.add("tracon_es_activo = ${request.isActivo}");
+      if (request.entity.isActivo != null) {
+        updateFields.add("tracon_es_activo = ${request.entity.isActivo}");
       }
-      if (request.tipoImpuesto != null) {
-        final Response<dynamic> tipoImpuesto = await getTipoImpuestoCodigoDB(request.tipoImpuesto!);
+      if (request.entity.tipoImpuesto != null) {
+        final Response<dynamic> tipoImpuesto = await getTipoImpuestoCodigoDB(request.entity.tipoImpuesto!);
         updateFields.add("tipimp_codigo = ${tipoImpuesto.data[0]['tipimp_codigo']}");
-        request.tipoImpuesto = tipoImpuesto.data[0]['tipimp_codigo'];
+        request.entity.tipoImpuesto = tipoImpuesto.data[0]['tipimp_codigo'];
       }
 
       final String updateFieldsStr = updateFields.join(', ');
       final String sql = """
       UPDATE public.tb_transacciones_contables
       SET  $updateFieldsStr
-      WHERE tracon_codigo = ${request.codigo};""";
+      WHERE tracon_codigo = ${request.entity.codigo};""";
 
       debugPrint("updateDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final Response<dynamic> resp = await getTransaccionContableDB(request);
+      final Response<dynamic> resp = await getTransaccionContableDB(request.entity);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateTransaccionContableDB: $e");

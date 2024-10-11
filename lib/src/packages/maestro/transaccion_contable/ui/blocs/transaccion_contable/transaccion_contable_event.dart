@@ -16,7 +16,7 @@ class InitializationTransaccionContableEvent extends TransaccionContableEvent {
 }
 
 class UpdateTransaccionContableEvent extends TransaccionContableEvent {
-  final List<TransaccionContableRequest> requestList;
+  final List<EntityUpdate<TransaccionContableRequest>> requestList;
   const UpdateTransaccionContableEvent(this.requestList);
 }
 

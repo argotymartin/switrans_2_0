@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 const String endPoint = "api/v1/erp/resoluciones";
 const String endPointEmpresas = "/api/v1/maestro";
@@ -26,14 +27,14 @@ class ResolucionApi {
     return response;
   }
 
-  Future<Response<dynamic>> updateResolucionesApi(ResolucionRequest request) async {
-    final ResolucionRequestModel requestModel = ResolucionRequestModel.fromRequest(request);
+  Future<Response<dynamic>> updateResolucionesApi(EntityUpdate<ResolucionRequest> request) async {
+    final ResolucionRequestModel requestModel = ResolucionRequestModel.fromRequest(request.entity);
     final String url = '$kBackendBaseUrlERP/$endPoint/actualizar/${requestModel.codigo}';
     final Map<String, dynamic> data = requestModel.toJson();
     final Response<dynamic> response = await _dio.put(url, data: data);
 
     if (response.statusCode == 204) {
-      return await getResolucionesApi(request);
+      return await getResolucionesApi(request.entity);
     }
     return response;
   }
@@ -56,5 +57,4 @@ class ResolucionApi {
     final Response<dynamic> response = await _dio.get(url, data: params);
     return response;
   }
-
 }
