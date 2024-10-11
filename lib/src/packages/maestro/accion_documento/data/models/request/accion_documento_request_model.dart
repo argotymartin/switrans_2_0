@@ -17,4 +17,12 @@ class AccionDocumentoRequestModel extends AccionDocumentoRequest {
         isNaturalezaInversa: map['naturaleza_inversa'],
         isActivo: map['activo'],
       );
+
+  factory AccionDocumentoRequestModel.fromMap(Map<String, dynamic> map) => AccionDocumentoRequestModel(
+        nombre: map['nombre'],
+        codigo: map['codigo'],
+        tipoDocumento: map['tipo_documento'],
+        isNaturalezaInversa: map['naturaleza_inversa'],
+        isActivo: map['activo'],
+      );
 }

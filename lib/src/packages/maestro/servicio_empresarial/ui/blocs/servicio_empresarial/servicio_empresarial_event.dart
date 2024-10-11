@@ -17,7 +17,7 @@ class GetServicioEmpresarialEvent extends ServicioEmpresarialEvent {
 }
 
 class UpdateServicioEmpresarialEvent extends ServicioEmpresarialEvent {
-  final List<ServicioEmpresarialRequest> requestList;
+  final List<EntityUpdate<ServicioEmpresarialRequest>> requestList;
   const UpdateServicioEmpresarialEvent(this.requestList);
 }
 

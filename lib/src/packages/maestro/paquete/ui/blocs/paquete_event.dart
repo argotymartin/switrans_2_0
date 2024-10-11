@@ -16,7 +16,7 @@ class SetPaqueteEvent extends PaqueteEvent {
 }
 
 class UpdatePaqueteEvent extends PaqueteEvent {
-  final List<PaqueteRequest> requestList;
+  final List<EntityUpdate<PaqueteRequest>> requestList;
   const UpdatePaqueteEvent(this.requestList);
 }
 

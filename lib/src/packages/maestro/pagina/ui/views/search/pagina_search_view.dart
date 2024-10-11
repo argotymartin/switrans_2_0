@@ -5,6 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pag
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -124,10 +125,10 @@ class _BuildDataTableState extends State<_BuildDataTable> {
           }
 
           void onPressedSave() {
-            final List<PaginaRequest> requestList = <PaginaRequest>[];
+            final List<EntityUpdate<PaginaRequest>> requestList = <EntityUpdate<PaginaRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final PaginaRequest request = PaginaRequestModel.fromTable(map);
-              requestList.add(request);
+              final PaginaRequest request = PaginaRequestModel.fromTable(map["data"]);
+              requestList.add(EntityUpdate<PaginaRequest>(id: map["id"], entity: request));
             }
             context.read<PaginaBloc>().add(UpdatePaginaEvent(requestList));
           }
@@ -135,12 +136,12 @@ class _BuildDataTableState extends State<_BuildDataTable> {
           Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: pagina.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
+              'texto': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
               'path': DataItemGrid(type: Tipo.text, value: pagina.path, edit: false),
               'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, entryMenus: state.entriesModulos),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
-              'visible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
+              'isVisible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
             };
           }
 

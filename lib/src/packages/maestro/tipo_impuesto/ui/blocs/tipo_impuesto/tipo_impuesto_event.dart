@@ -22,7 +22,7 @@ class GetImpuestoEvent extends TipoImpuestoEvent {
 }
 
 class UpdateImpuestoEvent extends TipoImpuestoEvent {
-  final List<TipoImpuestoRequest> requestList;
+  final List<EntityUpdate<TipoImpuestoRequest>> requestList;
   const UpdateImpuestoEvent(this.requestList);
 }
 

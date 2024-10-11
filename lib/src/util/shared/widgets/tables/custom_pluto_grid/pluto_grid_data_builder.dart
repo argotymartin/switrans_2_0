@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/util/resources/compare_json.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/date_input_picker.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_area_input.dart';
@@ -25,6 +26,7 @@ class PlutoGridDataBuilder extends StatefulWidget {
 
 class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
   List<Map<String, dynamic>> listValues = <Map<String, dynamic>>[];
+
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> buildColumns(BuildContext context) {
@@ -128,11 +130,11 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       return columns;
     }
 
+    final Map<String, dynamic> dataColumn = <String, dynamic>{};
     List<PlutoRow> buildDataRows(BuildContext context) {
       final List<PlutoRow> dataRows = <PlutoRow>[];
 
       widget.plutoData.asMap().forEach((int index, Map<String, DataItemGrid> dato) {
-        final Map<String, dynamic> dataColumn = <String, dynamic>{};
         dato.forEach((String key, DataItemGrid value) {
           dataColumn.addEntries(<String, dynamic>{key: value.value}.entries);
         });
@@ -143,7 +145,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       return dataRows;
     }
 
-    final Map<int, Map<String, dynamic>> selectedMap = <int, Map<String, dynamic>>{};
+    late int key;
     return Column(
       children: <Widget>[
         CustomPlutoGridTable(
@@ -153,23 +155,28 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             if (event.row == null || event.rowIdx == null || event.isChecked == null) {
               return;
             }
+
+            final Map<String, dynamic> mapRow = event.row!.cells.map((String cellKey, PlutoCell cell) {
+              if (cellKey == event.row!.cells.keys.first) {
+                key = cell.value;
+              }
+              return MapEntry<String, dynamic>(cellKey, cell.value);
+            });
+
             if (event.isChecked!) {
-              final Map<String, dynamic> mapRow = Map<String, dynamic>.fromEntries(
-                event.row!.cells.entries.map(
-                  (MapEntry<String, PlutoCell> entry) {
-                    if (entry.value.column.type.isSelect) {
-                      return MapEntry<String, String>(entry.key, entry.value.value.toString().split("-")[0]);
-                    }
-                    return MapEntry<String, dynamic>(entry.key, entry.value.value);
-                  },
-                ),
-              );
-              selectedMap.addEntries(<int, Map<String, dynamic>>{event.rowIdx!: mapRow}.entries);
+              final Map<String, dynamic> mapDiff = compareJson(dataColumn, mapRow);
+              setState(() {
+                listValues.add(<String, dynamic>{'id': key, 'data': mapDiff});
+              });
             } else {
-              selectedMap.remove(event.rowIdx);
+              setState(() {
+                listValues.removeWhere((Map<String, dynamic> element) => element['id'] == key);
+              });
             }
-            setState(() => listValues = selectedMap.values.toList());
-            widget.onRowChecked!.call(listValues);
+
+            if (listValues.isNotEmpty) {
+              widget.onRowChecked?.call(listValues);
+            }
           },
         ),
         BuildButtonFormSave(

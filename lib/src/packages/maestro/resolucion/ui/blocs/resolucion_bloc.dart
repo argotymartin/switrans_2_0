@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/entity_update.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
 part 'resolucion_event.dart';
@@ -70,7 +71,8 @@ class ResolucionBloc extends Bloc<ResolucionEvent, ResolucionState> {
   Future<void> _onUpdateResoluciones(UpdateResolucionesEvent event, Emitter<ResolucionState> emit) async {
     emit(state.copyWith(status: ResolucionStatus.loading));
     final List<DataState<Resolucion>> dataStateList = await Future.wait(
-      event.requestList.map((ResolucionRequest resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
+      event.requestList
+          .map((EntityUpdate<ResolucionRequest> resolucion) async => await _resolucionRepository.updateResolucionService(resolucion)),
     );
     final List<Resolucion> resoluciones = <Resolucion>[];
     final List<DioException> exceptions = <DioException>[];

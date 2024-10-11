@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/domain.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 const String endPoint = "api/v1/maestro/paises";
 
@@ -25,14 +26,14 @@ class PaisApi {
     return response;
   }
 
-  Future<Response<dynamic>> updatePaisApi(PaisRequest request) async {
-    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request);
-    final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.codigo}';
+  Future<Response<dynamic>> updatePaisApi(EntityUpdate<PaisRequest> request) async {
+    final PaisRequestModel requestModel = PaisRequestModel.fromRequest(request.entity);
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.id}';
     final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
-      final PaisRequest paisRequest = PaisRequest(codigo: request.codigo);
+      final PaisRequest paisRequest = PaisRequest(codigo: request.id);
       response = await getPaisesApi(paisRequest);
     } else {
       response = responseUpdate;

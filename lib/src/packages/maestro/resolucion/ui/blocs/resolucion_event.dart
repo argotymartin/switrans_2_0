@@ -21,7 +21,7 @@ class SetResolucionEvent extends ResolucionEvent {
 }
 
 class UpdateResolucionesEvent extends ResolucionEvent {
-  final List<ResolucionRequest> requestList;
+  final List<EntityUpdate<ResolucionRequest>> requestList;
   const UpdateResolucionesEvent(this.requestList);
 }
 

@@ -21,7 +21,7 @@ class SetPaginaEvent extends PaginaEvent {
 }
 
 class UpdatePaginaEvent extends PaginaEvent {
-  final List<PaginaRequest> requestList;
+  final List<EntityUpdate<PaginaRequest>> requestList;
   const UpdatePaginaEvent(this.requestList);
 }
 
