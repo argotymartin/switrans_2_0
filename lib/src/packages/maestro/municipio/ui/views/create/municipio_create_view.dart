@@ -77,7 +77,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.onlyNumbers,
                 minLength: 3,
                 maxLength: 3,
-                icon: const Icon(Icons.pin),
+                icon: const Icon(Icons.numbers),
               ),
               AutocompleteInputForm(
                 entries: state.entriesDepartamentos,

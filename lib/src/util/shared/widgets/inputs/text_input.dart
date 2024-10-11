@@ -44,9 +44,7 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.icon != null ) {
-
-    }
+    if (widget.icon != null) {}
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -133,11 +131,7 @@ class _TextInputState extends State<TextInput> {
           width: 2,
         ),
       ),
-
-
-      //prefixIcon: const Icon(Icons.abc),
-      prefixIcon: widget.icon != null ? widget.icon : const Icon(Icons.abc),
-
+      prefixIcon: widget.icon ?? const Icon(Icons.abc),
       hintText: widget.hintText.isNotEmpty ? "Ingrese el ${widget.hintText}" : "",
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
