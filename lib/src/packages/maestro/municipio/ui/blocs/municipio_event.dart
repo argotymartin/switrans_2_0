@@ -10,9 +10,9 @@ class InitialMunicipioEvent extends MunicipioEvent {
   const InitialMunicipioEvent();
 }
 
-class GetMunicipiosEvent extends MunicipioEvent {
+class GetMunicipioEvent extends MunicipioEvent {
   final MunicipioRequest request;
-  const GetMunicipiosEvent(this.request);
+  const GetMunicipioEvent(this.request);
 }
 
 class SetMunicipioEvent extends MunicipioEvent {
@@ -21,7 +21,7 @@ class SetMunicipioEvent extends MunicipioEvent {
 }
 
 class UpdateMunicipioEvent extends MunicipioEvent {
-  final List<MunicipioRequest> requestList;
+  final List<EntityUpdate<MunicipioRequest>> requestList;
   const UpdateMunicipioEvent(this.requestList);
 }
 

@@ -4,6 +4,7 @@ import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -54,7 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        municipioBloc.add(GetMunicipiosEvent(request));
+        municipioBloc.add(GetMunicipioEvent(request));
       } else {
         municipioBloc.add(const ErrorFormMunicipioEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -112,7 +113,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    final MunicipioBloc municipioBloc = context.watch<MunicipioBloc>();
+    context.watch<MunicipioBloc>();
     return BlocBuilder<MunicipioBloc, MunicipioState>(
       builder: (BuildContext context, MunicipioState state) {
         if (state.status == MunicipioStatus.consulted) {
@@ -122,22 +123,23 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<MunicipioRequest> requestList = <MunicipioRequest>[];
+            final List<EntityUpdate<MunicipioRequest>> requestList = <EntityUpdate<MunicipioRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final MunicipioRequest request = MunicipioRequestModel.fromTable(map);
-              municipioBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<MunicipioBloc>().add(UpdateMunicipioEvent(requestList));
+              final MunicipioRequest request = MunicipioRequestModel.fromTable(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              requestList.add(request);
+              requestList.add(EntityUpdate<MunicipioRequest>(id: map["id"], entity: request));
             }
+            context.read<MunicipioBloc>().add(UpdateMunicipioEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Municipio municipio) {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: municipio.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: municipio.nombre, edit: true),
+              'codigo_dane': DataItemGrid(type: Tipo.text, value: municipio.codigoDane, edit: false),
               'departamento':
                   DataItemGrid(type: Tipo.select, value: municipio.departamento, edit: true, entryMenus: state.entriesDepartamentos),
+              'usuario': DataItemGrid(type: Tipo.text, value: municipio.nombreUsuario, edit: true),
               'fecha_creacion': DataItemGrid(type: Tipo.text, value: municipio.fechaCreacion, edit: false),
               'activo': DataItemGrid(type: Tipo.boolean, value: municipio.isActivo, edit: true),
             };

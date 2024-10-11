@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/entity_update.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'municipio_event.dart';
@@ -13,7 +14,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   MunicipioRequest _request = MunicipioRequest();
   MunicipioBloc(this._repository) : super(const MunicipioState().initial()) {
     on<InitialMunicipioEvent>(_onInitialMunicipio);
-    on<GetMunicipiosEvent>(_onGetMunicipio);
+    on<GetMunicipioEvent>(_onGetMunicipio);
     on<SetMunicipioEvent>(_onSetMunicipio);
     on<UpdateMunicipioEvent>(_onUpdateMunicipio);
     on<ErrorFormMunicipioEvent>(_onErrorFormMunicipio);
@@ -32,9 +33,9 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
     }
   }
 
-  Future<void> _onGetMunicipio(GetMunicipiosEvent event, Emitter<MunicipioState> emit) async {
+  Future<void> _onGetMunicipio(GetMunicipioEvent event, Emitter<MunicipioState> emit) async {
     emit(state.copyWith(status: MunicipioStatus.loading));
-    final DataState<List<Municipio>> response = await _repository.getMunicipiosService(request);
+    final DataState<List<Municipio>> response = await _repository.getMunicipiosService(event.request);
     if (response.data != null) {
       emit(state.copyWith(status: MunicipioStatus.consulted, municipios: response.data));
     } else {
@@ -56,7 +57,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
     emit(state.copyWith(status: MunicipioStatus.loading));
 
     final List<DataState<Municipio>> dataStateList = await Future.wait(
-      event.requestList.map((MunicipioRequest request) => _repository.updateMunicipioService(request)),
+      event.requestList.map((EntityUpdate<MunicipioRequest> request) => _repository.updateMunicipioService(request)),
     );
 
     final List<Municipio> municipios = <Municipio>[];
