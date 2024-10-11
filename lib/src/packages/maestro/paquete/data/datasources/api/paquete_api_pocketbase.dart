@@ -16,7 +16,7 @@ class PaqueteApiPocketBase {
 
     final String url = '$kPocketBaseUrl/api/collections/paquete/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter};
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 

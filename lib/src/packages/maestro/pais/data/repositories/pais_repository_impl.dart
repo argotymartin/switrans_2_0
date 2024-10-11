@@ -21,8 +21,8 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
   Future<DataState<Pais>> setPaisService(PaisRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setPaisApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
-      final dynamic responseData = httpResponse.data['data'];
-      final Pais pais = PaisModel.fromJson(responseData);
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      final Pais pais = PaisModel.fromJson(backendResponse.data);
       return DataSuccess<Pais>(pais);
     }
     return DataFailed<Pais>(httpResponse.error!);

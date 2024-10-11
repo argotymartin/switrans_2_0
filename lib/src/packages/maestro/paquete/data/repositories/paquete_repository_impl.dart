@@ -14,8 +14,7 @@ class PaqueteRepositoryImpl extends BaseApiRepository implements AbstractPaquete
   Future<DataState<List<Paquete>>> getPaquetesService(PaqueteRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaquetesApi(request));
     if (httpResponse.data != null) {
-      final dynamic responseData = jsonDecode(httpResponse.data);
-      final List<dynamic> items = responseData['items'];
+      final List<dynamic> items = httpResponse.data['items'];
       final List<Paquete> response = items.map((dynamic item) => PaqueteModel.fromJson(item)).toList();
       return DataSuccess<List<Paquete>>(response);
     }

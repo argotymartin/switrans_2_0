@@ -17,7 +17,7 @@ class ModuloApiPocketBase {
     final String url = '$kPocketBaseUrl/api/collections/modulo/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter, "expand": "paquete"};
 
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 
@@ -27,7 +27,7 @@ class ModuloApiPocketBase {
     requestMap["modulo_codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "modulo", field: "modulo_codigo");
     requestMap["paquete"] = await getPaqueteId(request.paquete!);
     final String url = '$kPocketBaseUrl/api/collections/modulo/records';
-    final Response<String> response = await _dio.post('$url/', data: requestMap, queryParameters: <String, String>{"expand": "paquete"});
+    final Response<dynamic> response = await _dio.post('$url/', data: requestMap, queryParameters: <String, String>{"expand": "paquete"});
     return response;
   }
 
@@ -57,7 +57,7 @@ class ModuloApiPocketBase {
     final String url = '$kPocketBaseUrl/api/collections/paquete/records';
 
     final Map<String, dynamic> queryParameters = <String, dynamic>{"filter": "(visible = true && activo = true)"};
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 }
