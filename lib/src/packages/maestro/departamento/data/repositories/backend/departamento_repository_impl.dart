@@ -23,8 +23,8 @@ class DepartamentoRepositoryImpl extends BaseApiRepository implements AbstractDe
   Future<DataState<Departamento>> setDepartamentoService(DepartamentoRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setDepartamentoApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
-      final dynamic responseData = httpResponse.data['data'];
-      final Departamento departamento = DepartamentoModel.fromJson(responseData);
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      final Departamento departamento = DepartamentoModel.fromJson(backendResponse.data);
       return DataSuccess<Departamento>(departamento);
     }
     return DataFailed<Departamento>(httpResponse.error!);
