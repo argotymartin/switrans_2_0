@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
@@ -50,9 +49,8 @@ class DepartamentoRepositoryImpl extends BaseApiRepository implements AbstractDe
   @override
   Future<DataState<List<DepartamentoPais>>> getPaisesService() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaisesApi());
-    if (httpResponse.data != null) {
-      final dynamic responseData = jsonDecode(httpResponse.data);
-      final BackendResponse backendResponse = BackendResponse.fromJson(responseData);
+    if (httpResponse.data != null && httpResponse is DataSuccess) {
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
       final List<DepartamentoPais> departamentoPaises =
           List<DepartamentoPais>.from(backendResponse.data.map((dynamic x) => DepartamentoPaisModel.fromJson(x)));
       return DataSuccess<List<DepartamentoPais>>(departamentoPaises);

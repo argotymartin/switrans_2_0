@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 import 'package:switrans_2_0/src/config/config.dart';
@@ -11,7 +9,7 @@ class AuthPocketbaseApi {
 
   Future<Response<dynamic>> getinfoUser(UsuarioRequest params) async {
     const String url = '$kISPocketBaseUrl/api/collections/users/auth-with-password';
-    final String jsonRequest = jsonEncode(params.toJson());
+    final Map<String, dynamic> jsonRequest = params.toJson();
     final Response<dynamic> response = await _dio.post(url, data: jsonRequest);
     return response;
   }

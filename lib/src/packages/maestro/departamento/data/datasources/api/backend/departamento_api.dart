@@ -45,7 +45,7 @@ class DepartamentoApi {
 
   Future<Response<dynamic>> getPaisesApi() async {
     final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/paises';
-    final Response<String> response = await _dio.get('$url');
+    final Response<dynamic> response = await _dio.get('$url');
     return response;
   }
 }
