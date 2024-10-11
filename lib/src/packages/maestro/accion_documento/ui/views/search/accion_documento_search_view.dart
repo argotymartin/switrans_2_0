@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/request/accion_documento_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -111,10 +112,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<AccionDocumentoRequest> requestList = <AccionDocumentoRequest>[];
+            final List<EntityUpdate<AccionDocumentoRequestModel>> requestList = <EntityUpdate<AccionDocumentoRequestModel>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromTable(map);
-              requestList.add(request);
+              final AccionDocumentoRequestModel request = AccionDocumentoRequestModel.fromMap(map["data"]);
+              requestList.add(EntityUpdate<AccionDocumentoRequestModel>(id: map["id"], entity: request));
             }
             context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
           }
@@ -124,11 +125,11 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
-              'tipo_documento': DataItemGrid(type: Tipo.select, value: accionDocumento.tipoCodigo, edit: true, entryMenus: entryMenus),
-              'naturaleza_inversa': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esInverso, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.esActivo, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
-              'fecha_actualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
+              'tipoCodigo': DataItemGrid(type: Tipo.select, value: accionDocumento.tipoCodigo, edit: true, entryMenus: entryMenus),
+              'isInverso': DataItemGrid(type: Tipo.boolean, value: accionDocumento.isInverso, edit: true),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
+              'fechaActualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
               'usuario': DataItemGrid(type: Tipo.text, value: accionDocumento.usuario, edit: false),
             };
           }

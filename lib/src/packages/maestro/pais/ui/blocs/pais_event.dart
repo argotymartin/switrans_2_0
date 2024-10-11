@@ -21,7 +21,7 @@ class SetPaisEvent extends PaisEvent {
 }
 
 class UpdatePaisEvent extends PaisEvent {
-  final List<PaisRequest> requestList;
+  final List<EntityUpdate<PaisRequest>> requestList;
   const UpdatePaisEvent(this.requestList);
 }
 

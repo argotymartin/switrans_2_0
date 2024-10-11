@@ -21,7 +21,7 @@ class SetDepartamentoEvent extends DepartamentoEvent {
 }
 
 class UpdateDepartamentoEvent extends DepartamentoEvent {
-  final List<DepartamentoRequest> requestList;
+  final List<EntityUpdate<DepartamentoRequest>> requestList;
   const UpdateDepartamentoEvent(this.requestList);
 }
 

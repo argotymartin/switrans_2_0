@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/transaccion_contable.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/transaccion_contable_tipo_impuesto.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/repositories/abstract_transaccion_contable_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
 part 'transaccion_contable_event.dart';
@@ -63,7 +63,7 @@ class TransaccionContableBloc extends Bloc<TransaccionContableEvent, Transaccion
     emit(state.copyWith(status: TransaccionContableStatus.loading));
 
     final List<DataState<TransaccionContable>> dataStateList = await Future.wait(
-      event.requestList.map((TransaccionContableRequest request) => _repository.updateTransaccionContableService(request)),
+      event.requestList.map((EntityUpdate<TransaccionContableRequest> request) => _repository.updateTransaccionContableService(request)),
     );
 
     final List<TransaccionContable> transaccionContables = <TransaccionContable>[];

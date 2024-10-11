@@ -5,8 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entiti
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/repositories/abstract_accion_documento_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class AccionDocumentoRepositoryDBImpl extends BaseApiRepository implements AbstractAccionDocumentoRepository {
   final AccionDocumentoDB _accionDocumentoDB;
@@ -47,7 +46,7 @@ class AccionDocumentoRepositoryDBImpl extends BaseApiRepository implements Abstr
   }
 
   @override
-  Future<DataState<AccionDocumento>> updateAccionDocumentosService(AccionDocumentoRequest request) async {
+  Future<DataState<AccionDocumento>> updateAccionDocumentosService(EntityUpdate<AccionDocumentoRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _accionDocumentoDB.updateAccionDocumentosDB(request));
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data[0];

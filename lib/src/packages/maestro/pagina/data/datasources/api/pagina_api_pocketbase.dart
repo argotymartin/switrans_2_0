@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
-import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class PaginaApiPocketBase {
   final Dio _dio;
@@ -31,16 +31,18 @@ class PaginaApiPocketBase {
     return response;
   }
 
-  Future<Response<dynamic>> updatePaginaApi(PaginaRequest request) async {
-    final PaginaRequestModel requestModel = PaginaRequestModel.fromRequestPB(request);
+  Future<Response<dynamic>> updatePaginaApi(EntityUpdate<PaginaRequest> request) async {
+    final PaginaRequestModel requestModel = PaginaRequestModel.fromRequestPB(request.entity);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
-    requestMap["modulo"] = await getModuloId(request.modulo!);
+    if (requestMap.containsKey("modulo")) {
+      requestMap["modulo"] = await getModuloId(request.entity.modulo!);
+    }
 
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,
       collection: "pagina",
       field: "pagina_codigo",
-      value: request.codigo!,
+      value: request.id,
     );
 
     final String url = '$kPocketBaseUrl/api/collections/pagina/records/$id?';

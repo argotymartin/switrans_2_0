@@ -4,6 +4,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/mode
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/request/transaccion_contable_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/transaccion_contable.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -121,10 +122,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<TransaccionContableRequest> requestList = <TransaccionContableRequest>[];
+            final List<EntityUpdate<TransaccionContableRequest>> requestList = <EntityUpdate<TransaccionContableRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final TransaccionContableRequestModel request = TransaccionContableRequestModel.fromMapTable(map);
-              requestList.add(request);
+              final TransaccionContableRequestModel request = TransaccionContableRequestModel.fromMapTable(map["data"]);
+              requestList.add(EntityUpdate<TransaccionContableRequest>(id: map["id"], entity: request));
             }
             context.read<TransaccionContableBloc>().add(UpdateTransaccionContableEvent(requestList));
           }
@@ -134,10 +135,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: transaccionContable.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: transaccionContable.nombre, edit: true),
               'sigla': DataItemGrid(type: Tipo.text, value: transaccionContable.sigla, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: transaccionContable.isActivo, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: transaccionContable.fechaCreacion, edit: false),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: transaccionContable.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: transaccionContable.fechaCreacion, edit: false),
               'usuario': DataItemGrid(type: Tipo.text, value: transaccionContable.usuario, edit: false),
-              'tipo_impuesto': DataItemGrid(
+              'tipoimpuesto': DataItemGrid(
                 type: Tipo.select,
                 value: transaccionContable.tipoimpuesto,
                 edit: false,

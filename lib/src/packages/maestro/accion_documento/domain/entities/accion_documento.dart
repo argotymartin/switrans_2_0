@@ -3,8 +3,8 @@ class AccionDocumento {
   final String nombre;
   final String tipoNombre;
   final int tipoCodigo;
-  final bool esActivo;
-  final bool esInverso;
+  final bool isActivo;
+  final bool isInverso;
   final String usuario;
   final String fechaCreacion;
   final String fechaActualizacion;
@@ -13,8 +13,8 @@ class AccionDocumento {
     required this.nombre,
     required this.tipoNombre,
     required this.tipoCodigo,
-    required this.esActivo,
-    required this.esInverso,
+    required this.isActivo,
+    required this.isInverso,
     required this.usuario,
     required this.fechaCreacion,
     required this.fechaActualizacion,

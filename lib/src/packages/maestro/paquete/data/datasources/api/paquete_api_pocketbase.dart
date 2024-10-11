@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/request/paquete_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
-import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class PaqueteApiPocketBase {
   final Dio _dio;
@@ -30,15 +30,15 @@ class PaqueteApiPocketBase {
     return response;
   }
 
-  Future<Response<dynamic>> updatePaqueteApi(PaqueteRequest request) async {
-    final PaqueteRequestModel requestModel = PaqueteRequestModel.fromRequestPB(request);
-    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
+  Future<Response<dynamic>> updatePaqueteApi(EntityUpdate<PaqueteRequest> request) async {
+    final PaqueteRequestModel requestModel = PaqueteRequestModel.fromRequestPB(request.entity);
+    final Map<String, dynamic> requestMap = requestModel.toJson();
 
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,
       collection: "paquete",
       field: "codigo",
-      value: request.codigo!,
+      value: request.id,
     );
 
     final String url = '$kPocketBaseUrl/api/collections/paquete/records/$id?';

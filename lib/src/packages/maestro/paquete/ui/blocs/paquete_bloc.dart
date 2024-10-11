@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 part 'paquete_event.dart';
 part 'paquete_state.dart';
@@ -50,7 +50,7 @@ class PaqueteBloc extends Bloc<PaqueteEvent, PaqueteState> {
   Future<void> _onUpdatePaquete(UpdatePaqueteEvent event, Emitter<PaqueteState> emit) async {
     emit(state.copyWith(status: PaqueteStatus.loading));
     final List<DataState<Paquete>> dataStateList = await Future.wait(
-      event.requestList.map((PaqueteRequest request) => _repository.updatePaqueteService(request)),
+      event.requestList.map((EntityUpdate<PaqueteRequest> request) => _repository.updatePaqueteService(request)),
     );
 
     final List<Paquete> paquetes = <Paquete>[];

@@ -4,6 +4,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/models/requ
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/tipo_impuesto.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
@@ -66,17 +67,17 @@ class _BuildFieldsForm extends StatelessWidget {
         children: <Widget>[
           BuildFormFields(
             children: <Widget>[
-              TextInputForm(
-                title: "Nombre",
-                value: request.nombre != null ? request.nombre! : "",
-                typeInput: TypeInput.lettersAndNumbers,
-                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
-              ),
               NumberInputForm(
                 title: "Codigo",
                 value: request.codigo,
                 autofocus: true,
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
+              ),
+              TextInputForm(
+                title: "Nombre",
+                value: request.nombre != null ? request.nombre! : "",
+                typeInput: TypeInput.lettersAndNumbers,
+                onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               SegmentedInputForm(
                 title: "Activo",
@@ -114,10 +115,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<TipoImpuestoRequest> requestList = <TipoImpuestoRequest>[];
+            final List<EntityUpdate<TipoImpuestoRequest>> requestList = <EntityUpdate<TipoImpuestoRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final TipoImpuestoRequest request = TipoImpuestoRequestModel.fromTable(map);
-              requestList.add(request);
+              final TipoImpuestoRequest request = TipoImpuestoRequestModel.fromTable(map["data"]);
+              requestList.add(EntityUpdate<TipoImpuestoRequest>(id: map["id"], entity: request));
             }
             context.read<TipoImpuestoBloc>().add(UpdateImpuestoEvent(requestList));
           }
@@ -127,8 +128,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: tipoImpuesto.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: tipoImpuesto.nombre, edit: true),
               'usuario': DataItemGrid(type: Tipo.text, value: tipoImpuesto.usuario, edit: true),
-              'activo': DataItemGrid(type: Tipo.boolean, value: tipoImpuesto.isActivo, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.date, value: tipoImpuesto.fechaCreacion, edit: false),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: tipoImpuesto.isActivo, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.date, value: tipoImpuesto.fechaCreacion, edit: false),
             };
           }
 

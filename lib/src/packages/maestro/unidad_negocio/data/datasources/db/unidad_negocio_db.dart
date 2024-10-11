@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/rendering.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
-import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class UnidadNegocioDB {
   Future<Response<dynamic>> getUnidadNegocioDB(UnidadNegocioRequest request) async {
@@ -70,32 +70,32 @@ class UnidadNegocioDB {
     return resp;
   }
 
-  Future<Response<dynamic>> updateUnidadNegocioDB(UnidadNegocioRequest request) async {
+  Future<Response<dynamic>> updateUnidadNegocioDB(EntityUpdate<UnidadNegocioRequest> request) async {
     try {
       final List<String> updateFields = <String>[];
 
-      if (request.nombre != null) {
-        updateFields.add("unineg_nombre = '${request.nombre}'");
+      if (request.entity.nombre != null) {
+        updateFields.add("unineg_nombre = '${request.entity.nombre}'");
       }
-      if (request.isActivo != null) {
-        updateFields.add("unineg_activo = ${request.isActivo}");
+      if (request.entity.isActivo != null) {
+        updateFields.add("unineg_activo = ${request.entity.isActivo}");
       }
-      if (request.empresa != null) {
-        final Response<dynamic> empresa = await getEmpresaCodigoDB(request.empresa!);
+      if (request.entity.empresa != null) {
+        final Response<dynamic> empresa = await getEmpresaCodigoDB(request.entity.empresa!);
         updateFields.add("empresa_codigo = ${empresa.data[0]['empresa_codigo']}");
-        request.empresa = empresa.data[0]['empresa_codigo'];
+        request.entity.empresa = empresa.data[0]['empresa_codigo'];
       }
 
       final String updateFieldsStr = updateFields.join(', ');
       final String sql = """
       UPDATE public.tb_unidadnegocio
       SET  $updateFieldsStr
-      WHERE unineg_codigo = ${request.codigo};""";
+      WHERE unineg_codigo = ${request.entity.codigo};""";
 
       debugPrint("updateDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final Response<dynamic> resp = await getUnidadNegocioDB(request);
+      final Response<dynamic> resp = await getUnidadNegocioDB(request.entity);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");

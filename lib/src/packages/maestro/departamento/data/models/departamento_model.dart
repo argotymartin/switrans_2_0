@@ -6,7 +6,7 @@ class DepartamentoModel extends Departamento {
     required super.nombre,
     required super.pais,
     required super.codigoUsuario,
-    required super.estado,
+    required super.isActivo,
     required super.fechaCreacion,
     super.codigoDane,
   });
@@ -17,7 +17,7 @@ class DepartamentoModel extends Departamento {
         pais: json['codigoPais'],
         codigoUsuario: json['codigoUsuario'],
         codigoDane: json['codigoDane'],
-        estado: json['estado'],
+        isActivo: json['estado'],
         fechaCreacion: json['fechaCreacion'].toString(),
       );
 }

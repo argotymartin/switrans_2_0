@@ -30,6 +30,17 @@ class PaqueteRequestModel extends PaqueteRequest {
     };
   }
 
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'codigo': codigo,
+      'nombre': nombre,
+      'path': path,
+      'visible': isVisible,
+      'activo': isActivo,
+      'icono': icono,
+    };
+  }
+
   factory PaqueteRequestModel.fromMap(Map<String, dynamic> map) => PaqueteRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],

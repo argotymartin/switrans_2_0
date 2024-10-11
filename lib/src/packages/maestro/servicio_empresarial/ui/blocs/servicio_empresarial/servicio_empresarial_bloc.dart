@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 part 'servicio_empresarial_event.dart';
 part 'servicio_empresarial_state.dart';
@@ -53,7 +53,7 @@ class ServicioEmpresarialBloc extends Bloc<ServicioEmpresarialEvent, ServicioEmp
   Future<void> _onUpdateServicioEmpresarial(UpdateServicioEmpresarialEvent event, Emitter<ServicioEmpresarialState> emit) async {
     emit(state.copyWith(status: ServicioEmpresarialStatus.loading));
     final List<DataState<ServicioEmpresarial>> dataStateList = await Future.wait(
-      event.requestList.map((ServicioEmpresarialRequest request) => _repository.updateServicioEmpresarialService(request)),
+      event.requestList.map((EntityUpdate<ServicioEmpresarialRequest> request) => _repository.updateServicioEmpresarialService(request)),
     );
 
     final List<ServicioEmpresarial> serviciosEmpresariales = <ServicioEmpresarial>[];
