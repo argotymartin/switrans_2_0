@@ -121,7 +121,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<UnidadNegocioRequest>> requestList = <EntityUpdate<UnidadNegocioRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final UnidadNegocioRequest request = UnidadNegocioRequestModel.fromMapTable(map);
+              final UnidadNegocioRequest request = UnidadNegocioRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<UnidadNegocioRequest>(id: map["id"], entity: request));
             }
             context.read<UnidadNegocioBloc>().add(UpdateUnidadNegocioEvent(requestList));
@@ -129,12 +129,43 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(UnidadNegocio unidadNegocio) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: unidadNegocio.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: unidadNegocio.nombre, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: unidadNegocio.isActivo, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: unidadNegocio.fechaCreacion, edit: false),
-              'usuario': DataItemGrid(type: Tipo.text, value: unidadNegocio.usuario, edit: false),
-              'empresa': DataItemGrid(type: Tipo.select, value: unidadNegocio.empresa, edit: false, entryMenus: state.entriesEmpresa),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: unidadNegocio.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: unidadNegocio.nombre,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: unidadNegocio.isActivo,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: unidadNegocio.fechaCreacion,
+                edit: false,
+              ),
+              'usuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: unidadNegocio.usuario,
+                edit: false,
+              ),
+              'empresa': DataItemGrid(
+                title: "Empresa",
+                type: Tipo.select,
+                value: unidadNegocio.empresa,
+                edit: false,
+                entryMenus: state.entriesEmpresa,
+              ),
             };
           }
 

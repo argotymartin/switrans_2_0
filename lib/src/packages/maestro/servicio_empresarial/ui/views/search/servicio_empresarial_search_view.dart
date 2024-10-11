@@ -114,7 +114,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<ServicioEmpresarialRequest>> requestList = <EntityUpdate<ServicioEmpresarialRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final ServicioEmpresarialRequest request = ServicioEmpresarialRequestModel.fromTable(map["data"]);
+              final ServicioEmpresarialRequest request = ServicioEmpresarialRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<ServicioEmpresarialRequest>(id: map["id"], entity: request));
             }
             context.read<ServicioEmpresarialBloc>().add(UpdateServicioEmpresarialEvent(requestList));
@@ -122,12 +122,42 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(ServicioEmpresarial servicio) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: servicio.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: servicio.nombre, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: servicio.isActivo, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: servicio.fechaCreacion, edit: false),
-              'fechaModificacion': DataItemGrid(type: Tipo.date, value: servicio.fechaModificacion, edit: false),
-              'usuario': DataItemGrid(type: Tipo.text, value: servicio.usuario, edit: false),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: servicio.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: servicio.nombre,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: servicio.isActivo,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: servicio.fechaCreacion,
+                edit: false,
+              ),
+              'fechaModificacion': DataItemGrid(
+                title: "Fecha Modificacion",
+                type: Tipo.date,
+                value: servicio.fechaModificacion,
+                edit: false,
+              ),
+              'usuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: servicio.usuario,
+                edit: false,
+              ),
             };
           }
 

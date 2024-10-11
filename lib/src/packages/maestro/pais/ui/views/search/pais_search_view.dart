@@ -116,7 +116,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<PaisRequest>> requestList = <EntityUpdate<PaisRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final PaisRequest request = PaisRequestModel.fromTable(map["data"]);
+              final PaisRequest request = PaisRequestModel.fromMap(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(EntityUpdate<PaisRequest>(id: map["id"], entity: request));
             }
@@ -125,11 +125,36 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Pais pais) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: pais.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: pais.nombre, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.text, value: pais.fechaCreacion, edit: false),
-              'usuarioNombre': DataItemGrid(type: Tipo.text, value: pais.usuarioNombre, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: pais.isActivo, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: pais.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: pais.nombre,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.text,
+                value: pais.fechaCreacion,
+                edit: false,
+              ),
+              'usuarioNombre': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: pais.usuarioNombre,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: pais.isActivo,
+                edit: true,
+              ),
             };
           }
 
