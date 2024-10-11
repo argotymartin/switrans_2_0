@@ -125,7 +125,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<MunicipioRequest>> requestList = <EntityUpdate<MunicipioRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final MunicipioRequest request = MunicipioRequestModel.fromTable(map["data"]);
+              final MunicipioRequest request = MunicipioRequestModel.fromMap(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(EntityUpdate<MunicipioRequest>(id: map["id"], entity: request));
             }
@@ -134,14 +134,43 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Municipio municipio) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: municipio.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: municipio.nombre, edit: true),
-              'codigo_dane': DataItemGrid(type: Tipo.text, value: municipio.codigoDane, edit: false),
-              'departamento':
-                  DataItemGrid(type: Tipo.select, value: municipio.departamento, edit: true, entryMenus: state.entriesDepartamentos),
-              'usuario': DataItemGrid(type: Tipo.text, value: municipio.nombreUsuario, edit: true),
-              'fecha_creacion': DataItemGrid(type: Tipo.text, value: municipio.fechaCreacion, edit: false),
-              'activo': DataItemGrid(type: Tipo.boolean, value: municipio.isActivo, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: municipio.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: municipio.nombre,
+                edit: true,
+              ),
+              'codigoDane': DataItemGrid(
+                title: "Codigo Dane",
+                type: Tipo.text,
+                value: municipio.codigoDane,
+                edit: true,
+              ),
+              'pais': DataItemGrid(
+                title: "Departamento",
+                type: Tipo.select,
+                value: municipio.departamento,
+                edit: true,
+                entryMenus: state.entriesDepartamentos,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.text,
+                value: municipio.fechaCreacion,
+                edit: false,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: municipio.isActivo,
+                edit: true,
+              ),
             };
           }
 

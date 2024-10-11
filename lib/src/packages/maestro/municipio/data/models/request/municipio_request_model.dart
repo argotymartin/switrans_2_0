@@ -5,18 +5,18 @@ class MunicipioRequestModel extends MunicipioRequest {
     required super.codigo,
     required super.nombre,
     required super.isActivo,
-    required super.codigoDane,
     required super.fechaCreacion,
+    required super.codigoDane,
     required super.codigoUsuario,
     required super.usuarioNombre,
     required super.departamento,
   });
 
-  factory MunicipioRequestModel.fromTable(Map<String, dynamic> map) {
+  factory MunicipioRequestModel.fromMap(Map<String, dynamic> map) {
     return MunicipioRequestModel(
       codigo: map['codigo'],
       nombre: map['nombre'],
-      isActivo: map['activo'],
+      isActivo: map['isActivo'],
       codigoDane: map['codigoDane'],
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
@@ -47,14 +47,7 @@ class MunicipioRequestModel extends MunicipioRequest {
       'codigoUsuario': codigoUsuario,
       'codigoDane': codigoDane,
       'usuarioNombre': usuarioNombre,
-      'codigoDepartamento': departamento,
-    }..removeWhere((String key, dynamic value) => value == null);
-  }
-
-  Map<String, dynamic> toJsonGet() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'estado': isActivo,
+      'departamento': departamento,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

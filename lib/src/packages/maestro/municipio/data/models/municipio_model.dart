@@ -5,11 +5,11 @@ class MunicipioModel extends Municipio {
     required super.codigo,
     required super.nombre,
     required super.isActivo,
-    required super.codigoDane,
-    required super.departamento,
+    super.codigoDane,
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
+    required super.departamento,
   });
 
   factory MunicipioModel.fromJson(Map<String, dynamic> json) => MunicipioModel(
@@ -17,9 +17,9 @@ class MunicipioModel extends Municipio {
         nombre: json["nombre"],
         isActivo: json["estado"],
         codigoDane: json["codigoDane"],
-        departamento: json["codigoDepartamento"],
-        fechaCreacion: json["fechaCreacion"],
+        fechaCreacion: json["fechaCreacion"].toString(),
         codigoUsuario: json["codigoUsuario"],
         nombreUsuario: json["nombreUsuario"],
+        departamento: json["codigoDepartamento"],
       );
 }
