@@ -16,7 +16,7 @@ class InitializationModuloEvent extends ModuloEvent {
 }
 
 class UpdateModuloEvent extends ModuloEvent {
-  final List<ModuloRequest> requestList;
+  final List<EntityUpdate<ModuloRequest>> requestList;
   const UpdateModuloEvent(this.requestList);
 }
 

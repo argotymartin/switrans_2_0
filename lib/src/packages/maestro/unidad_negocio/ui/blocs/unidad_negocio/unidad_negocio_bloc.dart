@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio_empresa.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
 part 'unidad_negocio_event.dart';
@@ -60,7 +60,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
     emit(state.copyWith(status: UnidadNegocioStatus.loading));
 
     final List<DataState<UnidadNegocio>> dataStateList = await Future.wait(
-      event.requestList.map((UnidadNegocioRequest request) => _repository.updateUnidadNegocioService(request)),
+      event.requestList.map((EntityUpdate<UnidadNegocioRequest> request) => _repository.updateUnidadNegocioService(request)),
     );
 
     final List<UnidadNegocio> unidadNegocios = <UnidadNegocio>[];

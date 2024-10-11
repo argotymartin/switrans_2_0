@@ -3,8 +3,7 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/data/mode
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/servicio_empresarial.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/repositories/abstract_servicio_empresarial_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class ServicioEmpresarialDBImpl extends BaseApiRepository implements AbstractServicioEmpresarialRepository {
   final ServicioEmpresarialDB _servicioEmpresarialDB;
@@ -35,7 +34,7 @@ class ServicioEmpresarialDBImpl extends BaseApiRepository implements AbstractSer
   }
 
   @override
-  Future<DataState<ServicioEmpresarial>> updateServicioEmpresarialService(ServicioEmpresarialRequest request) async {
+  Future<DataState<ServicioEmpresarial>> updateServicioEmpresarialService(EntityUpdate<ServicioEmpresarialRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _servicioEmpresarialDB.updateServicioEmpresarialDB(request));
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data[0];

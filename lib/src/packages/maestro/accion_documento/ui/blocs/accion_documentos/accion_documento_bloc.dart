@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/tipo_documento_accion_documento.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'accion_documento_event.dart';
@@ -61,7 +61,7 @@ class AccionDocumentoBloc extends Bloc<AccionDocumentoEvent, AccionDocumentoStat
     emit(state.copyWith(status: AccionDocumentoStatus.loading));
 
     final List<DataState<AccionDocumento>> dataStateList = await Future.wait(
-      event.requestList.map((AccionDocumentoRequest request) => _repository.updateAccionDocumentosService(request)),
+      event.requestList.map((EntityUpdate<AccionDocumentoRequest> request) => _repository.updateAccionDocumentosService(request)),
     );
 
     final List<AccionDocumento> accionDocumentos = <AccionDocumento>[];

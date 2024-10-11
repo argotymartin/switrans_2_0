@@ -3,8 +3,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/models/tipo
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/request/tipo_impuesto_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/entities/tipo_impuesto.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTipoImpuestoRepository {
   final TipoImpuestoApi _api;
@@ -31,7 +30,7 @@ class TipoImpuestoRepositoryImpl extends BaseApiRepository implements AbstractTi
   }
 
   @override
-  Future<DataState<TipoImpuesto>> updateTipoImpuestoService(TipoImpuestoRequest request) async {
+  Future<DataState<TipoImpuesto>> updateTipoImpuestoService(EntityUpdate<TipoImpuestoRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateTipoImpuestoApi(request));
     if (httpResponse.data != null) {
       final TipoImpuesto response = TipoImpuestoModel.fromJson(httpResponse.data);

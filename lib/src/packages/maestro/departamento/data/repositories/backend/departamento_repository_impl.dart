@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
-import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class DepartamentoRepositoryImpl extends BaseApiRepository implements AbstractDepartamentoRepository {
   final DepartamentoApi _api;
@@ -33,7 +31,7 @@ class DepartamentoRepositoryImpl extends BaseApiRepository implements AbstractDe
   }
 
   @override
-  Future<DataState<Departamento>> updateDepartamentoService(DepartamentoRequest request) async {
+  Future<DataState<Departamento>> updateDepartamentoService(EntityUpdate<DepartamentoRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateDepartamentoApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);

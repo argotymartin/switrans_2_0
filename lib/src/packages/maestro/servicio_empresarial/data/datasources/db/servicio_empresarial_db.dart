@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/domain/entities/request/servicio_empresarial_request.dart';
-import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class ServicioEmpresarialDB {
   Future<Response<dynamic>> getServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
@@ -63,28 +63,28 @@ class ServicioEmpresarialDB {
     return resp;
   }
 
-  Future<Response<dynamic>> updateServicioEmpresarialDB(ServicioEmpresarialRequest request) async {
+  Future<Response<dynamic>> updateServicioEmpresarialDB(EntityUpdate<ServicioEmpresarialRequest> request) async {
     try {
       final DateTime fecha = DateTime.now();
       final List<String> updateFields = <String>[];
 
-      if (request.nombre != null) {
-        updateFields.add("seremp_nombre = '${request.nombre}'");
+      if (request.entity.nombre != null) {
+        updateFields.add("seremp_nombre = '${request.entity.nombre}'");
       }
-      if (request.isActivo != null) {
-        updateFields.add("seremp_es_activo = ${request.isActivo}");
+      if (request.entity.isActivo != null) {
+        updateFields.add("seremp_es_activo = ${request.entity.isActivo}");
       }
 
       final String updateFieldsStr = updateFields.join(', ');
       final String sql = """
       UPDATE public.tb_servicio_empresariales
       SET seremp_fecha_modificacion = '$fecha', $updateFieldsStr
-      WHERE seremp_codigo = ${request.codigo};""";
+      WHERE seremp_codigo = ${request.entity.codigo};""";
 
       debugPrint("updateDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final Response<dynamic> resp = await getServicioEmpresarialDB(request);
+      final Response<dynamic> resp = await getServicioEmpresarialDB(request.entity);
       return resp;
     } on Exception catch (e) {
       debugPrint("Error en updateAccionDocumentosDB: $e");

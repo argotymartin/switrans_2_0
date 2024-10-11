@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'modulo_event.dart';
@@ -60,7 +60,7 @@ class ModuloBloc extends Bloc<ModuloEvent, ModuloState> {
     emit(state.copyWith(status: ModuloStatus.loading));
 
     final List<DataState<Modulo>> dataStateList = await Future.wait(
-      event.requestList.map((ModuloRequest request) => _repository.updateModuloService(request)),
+      event.requestList.map((EntityUpdate<ModuloRequest> request) => _repository.updateModuloService(request)),
     );
 
     final List<Modulo> modulos = <Modulo>[];

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
-import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class AccionDocumentoDB {
   Future<Response<dynamic>> getAccionDocumentosDB(AccionDocumentoRequest request) async {
@@ -72,34 +72,34 @@ class AccionDocumentoDB {
     }
   }
 
-  Future<Response<dynamic>> updateAccionDocumentosDB(AccionDocumentoRequest request) async {
+  Future<Response<dynamic>> updateAccionDocumentosDB(EntityUpdate<AccionDocumentoRequest> request) async {
     try {
       final DateTime fecha = DateTime.now();
       final List<String> updateFields = <String>[];
 
-      if (request.nombre != null) {
-        updateFields.add("accdoc_nombre = '${request.nombre}'");
+      if (request.entity.nombre != null) {
+        updateFields.add("accdoc_nombre = '${request.entity.nombre}'");
       }
-      if (request.tipoDocumento != null) {
-        updateFields.add("documento_codigo = ${request.tipoDocumento!}");
+      if (request.entity.tipoDocumento != null) {
+        updateFields.add("documento_codigo = ${request.entity.tipoDocumento!}");
       }
-      if (request.isActivo != null) {
-        updateFields.add("accdoc_es_activo = ${request.isActivo}");
+      if (request.entity.isActivo != null) {
+        updateFields.add("accdoc_es_activo = ${request.entity.isActivo}");
       }
-      if (request.isNaturalezaInversa != null) {
-        updateFields.add("accdoc_es_naturaleza_inversa = ${request.isNaturalezaInversa}");
+      if (request.entity.isNaturalezaInversa != null) {
+        updateFields.add("accdoc_es_naturaleza_inversa = ${request.entity.isNaturalezaInversa}");
       }
 
       final String updateFieldsStr = updateFields.join(', ');
       final String sql = """
       UPDATE public.tb_accion_documentos
       SET accdoc_fecha_modificacion = '$fecha', $updateFieldsStr
-      WHERE accdoc_codigo = ${request.codigo};""";
+      WHERE accdoc_codigo = ${request.entity.codigo};""";
 
       debugPrint("updateAccionDocumentosDB SQL:  $sql");
       await FunctionsPostgresql.executeQueryDB(sql);
 
-      final Response<dynamic> resp = await getAccionDocumentosDB(request);
+      final Response<dynamic> resp = await getAccionDocumentosDB(request.entity);
       return resp;
     } on Exception catch (e) {
       return FunctionsPostgresql.exception(e);

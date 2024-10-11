@@ -26,7 +26,7 @@ class ModuloRequestModel extends ModuloRequest {
   }
 
   Map<String, dynamic> toJsonPB() {
-    final Map<String, dynamic> data = <String, dynamic>{
+    return <String, dynamic>{
       'modulo_codigo': codigo,
       'modulo_nombre': nombre,
       'modulo_detalles': detalle,
@@ -35,8 +35,7 @@ class ModuloRequestModel extends ModuloRequest {
       'modulo_icono': icono,
       'paquete': paquete,
       'modulo_activo': isActivo,
-    };
-    return data;
+    }..removeWhere((String key, dynamic value) => value == null);
   }
 
   static String toPocketBaseFilter(Map<String, dynamic> map) {

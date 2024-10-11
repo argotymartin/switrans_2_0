@@ -16,7 +16,7 @@ class InitializationUnidadNegocioEvent extends UnidadNegocioEvent {
 }
 
 class UpdateUnidadNegocioEvent extends UnidadNegocioEvent {
-  final List<UnidadNegocioRequest> requestList;
+  final List<EntityUpdate<UnidadNegocioRequest>> requestList;
   const UpdateUnidadNegocioEvent(this.requestList);
 }
 

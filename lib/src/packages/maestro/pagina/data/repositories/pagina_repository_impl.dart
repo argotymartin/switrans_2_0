@@ -6,8 +6,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina_modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/repositories/abstract_pagina_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRepository {
   final PaginaApiPocketBase _api;
@@ -49,7 +48,7 @@ class PaginaRepositoryImpl extends BaseApiRepository implements AbstractPaginaRe
   }
 
   @override
-  Future<DataState<Pagina>> updatePaginaService(PaginaRequest request) async {
+  Future<DataState<Pagina>> updatePaginaService(EntityUpdate<PaginaRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updatePaginaApi(request));
     if (httpResponse.data != null) {
       final Pagina response = PaginaModel.fromJson(httpResponse.data);

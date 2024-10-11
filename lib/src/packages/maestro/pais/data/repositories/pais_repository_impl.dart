@@ -1,8 +1,6 @@
 import 'package:switrans_2_0/src/packages/maestro/pais/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/domain/domain.dart';
-import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisRepository {
   final PaisApi _api;
@@ -31,7 +29,7 @@ class PaisRepositoryImpl extends BaseApiRepository implements AbstractPaisReposi
   }
 
   @override
-  Future<DataState<Pais>> updatePaisService(PaisRequest request) async {
+  Future<DataState<Pais>> updatePaisService(EntityUpdate<PaisRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updatePaisApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
