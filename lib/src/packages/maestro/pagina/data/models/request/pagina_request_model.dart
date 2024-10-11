@@ -26,8 +26,8 @@ class PaginaRequestModel extends PaginaRequest {
         nombre: map['nombre'],
         path: map['path'],
         modulo: map['modulo'],
-        isVisible: map['visible'],
-        isActivo: map['activo'],
+        isVisible: map['isVisible'],
+        isActivo: map['isActivo'],
       );
 
   Map<String, dynamic> toJsonPB() {
@@ -38,7 +38,7 @@ class PaginaRequestModel extends PaginaRequest {
       'modulo': modulo,
       'pagina_visible': isVisible,
       'pagina_activo': isActivo,
-    };
+    }..removeWhere((String key, dynamic value) => value == null);
   }
 
   static String toPocketBaseFilter(Map<String, dynamic> map) {

@@ -17,7 +17,7 @@ class SetAccionDocumentoEvent extends AccionDocumentoEvent {
 }
 
 class UpdateAccionDocumentoEvent extends AccionDocumentoEvent {
-  final List<AccionDocumentoRequest> requestList;
+  final List<EntityUpdate<AccionDocumentoRequest>> requestList;
   const UpdateAccionDocumentoEvent(this.requestList);
 }
 

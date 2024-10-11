@@ -5,7 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina.
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/pagina_modulo.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/repositories/abstract_pagina_repository.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 
 part 'pagina_event.dart';
@@ -59,7 +59,7 @@ class PaginaBloc extends Bloc<PaginaEvent, PaginaState> {
     emit(state.copyWith(status: PaginaStatus.loading));
 
     final List<DataState<Pagina>> dataStateList = await Future.wait(
-      event.requestList.map((PaginaRequest request) => _repository.updatePaginaService(request)),
+      event.requestList.map((EntityUpdate<PaginaRequest> request) => _repository.updatePaginaService(request)),
     );
 
     final List<Pagina> paginas = <Pagina>[];

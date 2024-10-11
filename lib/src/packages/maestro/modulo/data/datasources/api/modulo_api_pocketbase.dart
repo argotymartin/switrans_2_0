@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/models/request/modulo_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
-import 'package:switrans_2_0/src/util/resources/pocketbase/functions_pocketbase.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class ModuloApiPocketBase {
   final Dio _dio;
@@ -31,15 +31,17 @@ class ModuloApiPocketBase {
     return response;
   }
 
-  Future<Response<dynamic>> updateModuloApi(ModuloRequest request) async {
-    final ModuloRequestModel moduloRequestModel = ModuloRequestModel.fromRequestPB(request);
+  Future<Response<dynamic>> updateModuloApi(EntityUpdate<ModuloRequest> request) async {
+    final ModuloRequestModel moduloRequestModel = ModuloRequestModel.fromRequestPB(request.entity);
     final Map<String, dynamic> requestMap = moduloRequestModel.toJsonPB();
-    requestMap["paquete"] = await getPaqueteId(request.paquete!);
+    if (requestMap.containsKey("paquete")) {
+      requestMap["paquete"] = await getPaqueteId(request.entity.paquete!);
+    }
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,
       collection: "modulo",
       field: "modulo_codigo",
-      value: request.codigo!,
+      value: request.id,
     );
     final String url = '$kPocketBaseUrl/api/collections/modulo/records/$id';
 

@@ -6,8 +6,7 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo.
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/modulo_paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/entities/request/modulo_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRepository {
   final ModuloApiPocketBase _api;
@@ -49,7 +48,7 @@ class ModuloRepositoryImpl extends BaseApiRepository implements AbstractModuloRe
   }
 
   @override
-  Future<DataState<Modulo>> updateModuloService(ModuloRequest request) async {
+  Future<DataState<Modulo>> updateModuloService(EntityUpdate<ModuloRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateModuloApi(request));
     if (httpResponse.data != null) {
       final Modulo response = ModuloModel.fromJsonPB(httpResponse.data);

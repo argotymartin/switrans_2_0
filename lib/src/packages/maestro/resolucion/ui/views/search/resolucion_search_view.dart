@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/data/models/request/resolucion_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/inputs_forms/date_picker_input_form.dart';
@@ -157,10 +158,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<ResolucionRequest> requestList = <ResolucionRequest>[];
+            final List<EntityUpdate<ResolucionRequest>> requestList = <EntityUpdate<ResolucionRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final ResolucionRequestModel request = ResolucionRequestModel.fromTable(map);
-              requestList.add(request);
+              final ResolucionRequestModel request = ResolucionRequestModel.fromTable(map["data"]);
+              requestList.add(EntityUpdate<ResolucionRequest>(id: map["id"], entity: request));
             }
             context.read<ResolucionBloc>().add(UpdateResolucionesEvent(requestList));
           }
@@ -169,18 +170,18 @@ class _BluildDataTableState extends State<_BluildDataTable> {
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(type: Tipo.item, value: resolucion.codigo, edit: false),
               'numero': DataItemGrid(type: Tipo.text, value: resolucion.numero, edit: true),
-              'documento':
+              'codigoDocumento':
                   DataItemGrid(type: Tipo.select, value: resolucion.codigoDocumento, entryMenus: state.resolucionesDocumentos, edit: false),
               'fecha': DataItemGrid(type: Tipo.date, value: resolucion.fecha, edit: true),
-              'vigencia': DataItemGrid(type: Tipo.date, value: resolucion.fechaVigencia, edit: false),
-              'rango_inicial': DataItemGrid(type: Tipo.text, value: resolucion.rangoInicial, edit: false),
-              'rango_final': DataItemGrid(type: Tipo.text, value: resolucion.rangoFinal, edit: false),
-              'prefijo': DataItemGrid(type: Tipo.text, value: resolucion.empresaPrefijo, edit: false),
-              'empresa':
+              'fechaVigencia': DataItemGrid(type: Tipo.date, value: resolucion.fechaVigencia, edit: false),
+              'rangoInicial': DataItemGrid(type: Tipo.text, value: resolucion.rangoInicial, edit: false),
+              'rangoFinal': DataItemGrid(type: Tipo.text, value: resolucion.rangoFinal, edit: false),
+              'empresaPrefijo': DataItemGrid(type: Tipo.text, value: resolucion.empresaPrefijo, edit: false),
+              'codigoEmpresa':
                   DataItemGrid(type: Tipo.select, value: resolucion.codigoEmpresa, entryMenus: state.resolucionesEmpresas, edit: false),
               'version': DataItemGrid(type: Tipo.text, value: resolucion.version, edit: false),
-              'estado': DataItemGrid(type: Tipo.boolean, value: resolucion.isActiva, edit: true),
-              'usuario': DataItemGrid(type: Tipo.text, value: resolucion.nombreUsuario, edit: false),
+              'isActiva': DataItemGrid(type: Tipo.boolean, value: resolucion.isActiva, edit: true),
+              'nombreUsuario': DataItemGrid(type: Tipo.text, value: resolucion.nombreUsuario, edit: false),
             };
           }
 

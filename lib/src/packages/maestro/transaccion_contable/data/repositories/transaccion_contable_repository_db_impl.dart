@@ -5,8 +5,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/transaccion_contable.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/transaccion_contable_tipo_impuesto.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/repositories/abstract_transaccion_contable_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class TransaccionContableRepositoryDBImpl extends BaseApiRepository implements AbstractTransaccionContableRepository {
   final TransaccionContableDB _transaccionContableDB;
@@ -40,7 +39,7 @@ class TransaccionContableRepositoryDBImpl extends BaseApiRepository implements A
   }
 
   @override
-  Future<DataState<TransaccionContable>> updateTransaccionContableService(TransaccionContableRequest request) async {
+  Future<DataState<TransaccionContable>> updateTransaccionContableService(EntityUpdate<TransaccionContableRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _transaccionContableDB.updateTransaccionContableDB(request));
     if (httpResponse.data != null) {
       final dynamic dataJson = (httpResponse.data as List<dynamic>).first;

@@ -4,6 +4,7 @@ import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/domain.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -112,7 +113,6 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    final DepartamentoBloc departamentoBloc = context.watch<DepartamentoBloc>();
     return BlocBuilder<DepartamentoBloc, DepartamentoState>(
       builder: (BuildContext context, DepartamentoState state) {
         if (state.status == DepartamentoStatus.consulted) {
@@ -122,14 +122,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           }
 
           void onPressedSave() {
-            final List<DepartamentoRequest> requestList = <DepartamentoRequest>[];
+            final List<EntityUpdate<DepartamentoRequest>> requestList = <EntityUpdate<DepartamentoRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final DepartamentoRequest request = DepartamentoRequestModel.fromTable(map);
-              departamentoBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
+              final DepartamentoRequest request = DepartamentoRequestModel.fromTable(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-              requestList.add(request);
+              requestList.add(EntityUpdate<DepartamentoRequest>(id: map["id"], entity: request));
             }
+            context.read<DepartamentoBloc>().add(UpdateDepartamentoEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Departamento departamento) {
@@ -137,8 +136,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'codigo': DataItemGrid(type: Tipo.item, value: departamento.codigo, edit: false),
               'nombre': DataItemGrid(type: Tipo.text, value: departamento.nombre, edit: true),
               'pais': DataItemGrid(type: Tipo.select, value: departamento.pais, edit: true, entryMenus: state.entriesPaises),
-              'fecha_creacion': DataItemGrid(type: Tipo.text, value: departamento.fechaCreacion, edit: false),
-              'activo': DataItemGrid(type: Tipo.boolean, value: departamento.estado, edit: true),
+              'fechaCreacion': DataItemGrid(type: Tipo.text, value: departamento.fechaCreacion, edit: false),
+              'isActivo': DataItemGrid(type: Tipo.boolean, value: departamento.isActivo, edit: true),
             };
           }
 

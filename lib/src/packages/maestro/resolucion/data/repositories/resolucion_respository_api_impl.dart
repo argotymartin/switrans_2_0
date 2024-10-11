@@ -1,7 +1,6 @@
 import 'package:switrans_2_0/src/packages/maestro/resolucion/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/domain/domain.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class ResolucionRespositoryApiImpl extends BaseApiRepository implements AbstractResolucionRepository {
   final ResolucionApi _resolucionApi;
@@ -31,7 +30,7 @@ class ResolucionRespositoryApiImpl extends BaseApiRepository implements Abstract
   }
 
   @override
-  Future<DataState<Resolucion>> updateResolucionService(ResolucionRequest request) async {
+  Future<DataState<Resolucion>> updateResolucionService(EntityUpdate<ResolucionRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _resolucionApi.updateResolucionesApi(request));
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data['data'];
@@ -47,7 +46,7 @@ class ResolucionRespositoryApiImpl extends BaseApiRepository implements Abstract
     if (httpResponse.data != null) {
       final dynamic resp = httpResponse.data['data'];
       final List<ResolucionDocumento> response =
-      List<ResolucionDocumento>.from(resp.map((dynamic x) => ResolucionDocumentoModel.fromApi(x)));
+          List<ResolucionDocumento>.from(resp.map((dynamic x) => ResolucionDocumentoModel.fromApi(x)));
       return DataSuccess<List<ResolucionDocumento>>(response);
     }
     return DataFailed<List<ResolucionDocumento>>(httpResponse.error!);

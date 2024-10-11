@@ -4,8 +4,7 @@ import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/paquete_mo
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/paquete.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/repositories/abstract_paquete_repository.dart';
-import 'package:switrans_2_0/src/util/resources/base_api.dart';
-import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class PaqueteRepositoryImpl extends BaseApiRepository implements AbstractPaqueteRepository {
   final PaqueteApiPocketBase _api;
@@ -35,7 +34,7 @@ class PaqueteRepositoryImpl extends BaseApiRepository implements AbstractPaquete
   }
 
   @override
-  Future<DataState<Paquete>> updatePaqueteService(PaqueteRequest request) async {
+  Future<DataState<Paquete>> updatePaqueteService(EntityUpdate<PaqueteRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updatePaqueteApi(request));
     if (httpResponse.data != null) {
       final Paquete response = PaqueteModel.fromJson(httpResponse.data);
