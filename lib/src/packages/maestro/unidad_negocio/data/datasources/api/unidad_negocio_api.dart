@@ -3,6 +3,7 @@ import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/request/unidad_negocio_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
 import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
+import 'package:switrans_2_0/src/util/resources/entity_update.dart';
 
 const String endPoint = "api/v1/maestro/unidad_negocios";
 
@@ -26,15 +27,15 @@ class UnidadNegocioApi {
     return response;
   }
 
-  Future<Response<dynamic>> updateUnidadNegociosApi(UnidadNegocioRequest request) async {
-    final UnidadNegocioRequestModel requestModel = UnidadNegocioRequestModel.fromRequest(request);
+  Future<Response<dynamic>> updateUnidadNegociosApi(EntityUpdate<UnidadNegocioRequest> request) async {
+    final UnidadNegocioRequestModel requestModel = UnidadNegocioRequestModel.fromRequest(request.entity);
 
-    final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.codigo}';
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.id}';
     final Map<String, dynamic> params = requestModel.toJson();
     final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
-      final UnidadNegocioRequest unidadNegocioRequest = UnidadNegocioRequest(codigo: request.codigo);
+      final UnidadNegocioRequest unidadNegocioRequest = UnidadNegocioRequest(codigo: request.id);
       response = await getUnidadNegociosApi(unidadNegocioRequest);
     } else {
       response = responseUpdate;

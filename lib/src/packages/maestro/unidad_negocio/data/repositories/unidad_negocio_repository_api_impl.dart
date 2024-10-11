@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class UnidadNegocioRepositoryApiImpl extends BaseApiRepository implements AbstractUnidadNegocioRepository {
   final UnidadNegocioApi _api;
@@ -40,7 +41,7 @@ class UnidadNegocioRepositoryApiImpl extends BaseApiRepository implements Abstra
   }
 
   @override
-  Future<DataState<UnidadNegocio>> updateUnidadNegocioService(UnidadNegocioRequest request) async {
+  Future<DataState<UnidadNegocio>> updateUnidadNegocioService(EntityUpdate<UnidadNegocioRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateUnidadNegociosApi(request));
     if (httpResponse.data != null) {
       final dynamic dataJson = (httpResponse.data as List<dynamic>).first;
