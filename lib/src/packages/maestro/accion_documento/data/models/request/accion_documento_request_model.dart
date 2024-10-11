@@ -10,19 +10,11 @@ class AccionDocumentoRequestModel extends AccionDocumentoRequest {
     super.usuario,
   });
 
-  factory AccionDocumentoRequestModel.fromTable(Map<String, dynamic> map) => AccionDocumentoRequestModel(
-        nombre: map['nombre'],
-        codigo: map['codigo'],
-        tipoDocumento: map['tipo_documento'],
-        isNaturalezaInversa: map['naturaleza_inversa'],
-        isActivo: map['activo'],
-      );
-
   factory AccionDocumentoRequestModel.fromMap(Map<String, dynamic> map) => AccionDocumentoRequestModel(
         nombre: map['nombre'],
         codigo: map['codigo'],
-        tipoDocumento: map['tipo_documento'],
-        isNaturalezaInversa: map['naturaleza_inversa'],
-        isActivo: map['activo'],
+        tipoDocumento: map['tipoDocumento'],
+        isNaturalezaInversa: map['isNaturalezaInversa'],
+        isActivo: map['isActivo'],
       );
 }

@@ -127,7 +127,7 @@ class _BuildDataTableState extends State<_BuildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<PaginaRequest>> requestList = <EntityUpdate<PaginaRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final PaginaRequest request = PaginaRequestModel.fromTable(map["data"]);
+              final PaginaRequest request = PaginaRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<PaginaRequest>(id: map["id"], entity: request));
             }
             context.read<PaginaBloc>().add(UpdatePaginaEvent(requestList));
@@ -135,13 +135,49 @@ class _BuildDataTableState extends State<_BuildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Pagina pagina) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: pagina.codigo, edit: false),
-              'texto': DataItemGrid(type: Tipo.text, value: pagina.texto, edit: true),
-              'path': DataItemGrid(type: Tipo.text, value: pagina.path, edit: false),
-              'modulo': DataItemGrid(type: Tipo.select, value: pagina.modulo, edit: true, entryMenus: state.entriesModulos),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: pagina.fechaCreacion, edit: false),
-              'isVisible': DataItemGrid(type: Tipo.boolean, value: pagina.isVisible, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: pagina.isActivo, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: pagina.codigo,
+                edit: false,
+              ),
+              'texto': DataItemGrid(
+                title: "Texto",
+                type: Tipo.text,
+                value: pagina.texto,
+                edit: true,
+              ),
+              'path': DataItemGrid(
+                title: "Path",
+                type: Tipo.text,
+                value: pagina.path,
+                edit: false,
+              ),
+              'modulo': DataItemGrid(
+                title: "Modulo",
+                type: Tipo.select,
+                value: pagina.modulo,
+                edit: true,
+                entryMenus: state.entriesModulos,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: pagina.fechaCreacion,
+                edit: false,
+              ),
+              'isVisible': DataItemGrid(
+                title: "Visible",
+                type: Tipo.boolean,
+                value: pagina.isVisible,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: pagina.isActivo,
+                edit: true,
+              ),
             };
           }
 

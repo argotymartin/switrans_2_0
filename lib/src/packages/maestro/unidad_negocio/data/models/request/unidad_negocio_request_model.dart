@@ -8,7 +8,7 @@ class UnidadNegocioRequestModel extends UnidadNegocioRequest {
     required super.nombre,
   });
 
-  factory UnidadNegocioRequestModel.fromMapTable(Map<String, dynamic> map) => UnidadNegocioRequestModel(
+  factory UnidadNegocioRequestModel.fromMap(Map<String, dynamic> map) => UnidadNegocioRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
         isActivo: map['activo'],

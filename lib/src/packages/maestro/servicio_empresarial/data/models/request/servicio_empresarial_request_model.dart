@@ -8,7 +8,7 @@ class ServicioEmpresarialRequestModel extends ServicioEmpresarialRequest {
     super.usuario,
   });
 
-  factory ServicioEmpresarialRequestModel.fromTable(Map<String, dynamic> map) => ServicioEmpresarialRequestModel(
+  factory ServicioEmpresarialRequestModel.fromMap(Map<String, dynamic> map) => ServicioEmpresarialRequestModel(
         codigo: map['codigo'],
         isActivo: map['activo'],
         nombre: map['nombre'],

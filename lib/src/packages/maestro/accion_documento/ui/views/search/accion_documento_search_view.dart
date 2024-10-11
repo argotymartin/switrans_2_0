@@ -123,14 +123,55 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento) {
             final List<EntryAutocomplete> entryMenus = state.entriesTiposDocumento;
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: accionDocumento.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: accionDocumento.nombre, edit: true),
-              'tipoCodigo': DataItemGrid(type: Tipo.select, value: accionDocumento.tipoCodigo, edit: true, entryMenus: entryMenus),
-              'isInverso': DataItemGrid(type: Tipo.boolean, value: accionDocumento.isInverso, edit: true),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: accionDocumento.isActivo, edit: true),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaCreacion, edit: false),
-              'fechaActualizacion': DataItemGrid(type: Tipo.date, value: accionDocumento.fechaActualizacion, edit: false),
-              'usuario': DataItemGrid(type: Tipo.text, value: accionDocumento.usuario, edit: false),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: accionDocumento.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: accionDocumento.nombre,
+                edit: true,
+              ),
+              'tipoCodigo': DataItemGrid(
+                title: "Tipo",
+                type: Tipo.select,
+                value: accionDocumento.tipoCodigo,
+                edit: true,
+                entryMenus: entryMenus,
+              ),
+              'isInverso': DataItemGrid(
+                title: "Es Inverso",
+                type: Tipo.boolean,
+                value: accionDocumento.isInverso,
+                edit: true,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: accionDocumento.isActivo,
+                edit: true,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: accionDocumento.fechaCreacion,
+                edit: false,
+              ),
+              'fechaActualizacion': DataItemGrid(
+                title: "Fecha Actualizacion",
+                type: Tipo.date,
+                value: accionDocumento.fechaActualizacion,
+                edit: false,
+              ),
+              'usuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: accionDocumento.usuario,
+                edit: false,
+              ),
             };
           }
 

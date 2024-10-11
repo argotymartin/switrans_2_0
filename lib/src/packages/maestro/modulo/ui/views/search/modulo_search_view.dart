@@ -125,7 +125,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<ModuloRequest>> requestList = <EntityUpdate<ModuloRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final ModuloRequest request = ModuloRequestModel.fromTable(map["data"]);
+              final ModuloRequest request = ModuloRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<ModuloRequest>(id: map["id"], entity: request));
             }
             context.read<ModuloBloc>().add(UpdateModuloEvent(requestList));
@@ -133,15 +133,61 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Modulo modulo) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: modulo.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: modulo.nombre, edit: true),
-              'detalles': DataItemGrid(type: Tipo.text, value: modulo.detalles, edit: true),
-              'path': DataItemGrid(type: Tipo.text, value: modulo.path, edit: false),
-              'icono': DataItemGrid(type: Tipo.text, value: modulo.icono, edit: false),
-              'paquete': DataItemGrid(type: Tipo.select, value: modulo.paquete, edit: false, entryMenus: state.entriesPaquete),
-              'fechaCreacion': DataItemGrid(type: Tipo.date, value: modulo.fechaCreacion, edit: false),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: modulo.isActivo, edit: false),
-              'isVisible': DataItemGrid(type: Tipo.boolean, value: modulo.isVisible, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: modulo.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: modulo.nombre,
+                edit: true,
+              ),
+              'detalles': DataItemGrid(
+                title: "Detalles",
+                type: Tipo.text,
+                value: modulo.detalles,
+                edit: true,
+              ),
+              'path': DataItemGrid(
+                title: "Path",
+                type: Tipo.text,
+                value: modulo.path,
+                edit: false,
+              ),
+              'icono': DataItemGrid(
+                title: "Icono",
+                type: Tipo.text,
+                value: modulo.icono,
+                edit: false,
+              ),
+              'paquete': DataItemGrid(
+                title: "Paquete",
+                type: Tipo.select,
+                value: modulo.paquete,
+                edit: false,
+                entryMenus: state.entriesPaquete,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.date,
+                value: modulo.fechaCreacion,
+                edit: false,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: modulo.isActivo,
+                edit: true,
+              ),
+              'isVisible': DataItemGrid(
+                title: "Visible",
+                type: Tipo.boolean,
+                value: modulo.isVisible,
+                edit: true,
+              ),
             };
           }
 
