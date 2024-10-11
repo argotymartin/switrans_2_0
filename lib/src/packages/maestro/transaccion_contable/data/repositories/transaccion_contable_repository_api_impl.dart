@@ -7,6 +7,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/en
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/repositories/abstract_transaccion_contable_repository.dart';
 import 'package:switrans_2_0/src/util/resources/base_api.dart';
 import 'package:switrans_2_0/src/util/resources/data_state.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 
 class TransaccionContableRepositoryApiImpl extends BaseApiRepository implements AbstractTransaccionContableRepository {
   final TransaccionContableApi _api;
@@ -40,7 +41,7 @@ class TransaccionContableRepositoryApiImpl extends BaseApiRepository implements 
   }
 
   @override
-  Future<DataState<TransaccionContable>> updateTransaccionContableService(TransaccionContableRequest request) async {
+  Future<DataState<TransaccionContable>> updateTransaccionContableService(EntityUpdate<TransaccionContableRequest> request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.updateTransaccionContableApi(request));
     if (httpResponse.data != null) {
       final dynamic dataJson = (httpResponse.data as List<dynamic>).first;

@@ -52,9 +52,7 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/data/repositorie
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/domain/repositories/abstract_tipo_impuesto_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/datasources/api/transaccion_contable_api.dart';
-import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/datasources/db/transaccion_contable_db.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/repositories/transaccion_contable_repository_api_impl.dart';
-import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/repositories/transaccion_contable_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/repositories/abstract_transaccion_contable_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/db/unidad_negocio_db.dart';
