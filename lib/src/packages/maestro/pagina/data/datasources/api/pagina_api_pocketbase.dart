@@ -16,7 +16,7 @@ class PaginaApiPocketBase {
     final String filter = PaginaRequestModelPB.toPocketBaseFilter(requestMap);
     final String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter, "expand": "modulo"};
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 
