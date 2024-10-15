@@ -82,7 +82,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               AutocompleteInputForm(
                 entries: state.entriesDepartamentos,
-                title: "Departamento",
+                title: "DepartamentoS",
                 value: request.departamento,
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
@@ -94,7 +94,6 @@ class _BuildFieldsForm extends StatelessWidget {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 municipioBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-                request.isActivo = true;
                 context.read<MunicipioBloc>().add(SetMunicipioEvent(request));
               }
             },

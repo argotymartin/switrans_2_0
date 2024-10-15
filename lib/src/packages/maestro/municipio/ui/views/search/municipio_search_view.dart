@@ -159,6 +159,12 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 edit: true,
                 entryMenus: state.entriesDepartamentos,
               ),
+              'nombreUsuario': DataItemGrid(
+                title: "Usuario",
+                type: Tipo.text,
+                value: municipio.nombreUsuario,
+                edit: false,
+              ),
               'fechaCreacion': DataItemGrid(
                 title: "Fecha Creacion",
                 type: Tipo.text,
