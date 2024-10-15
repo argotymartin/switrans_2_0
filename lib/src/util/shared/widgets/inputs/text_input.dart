@@ -8,7 +8,7 @@ class TextInput extends StatefulWidget {
   final String hintText;
   final int minLength;
   final int? maxLength;
-  final Widget? icon;
+  final IconData? icon;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
   final TypeInput typeInput;
@@ -44,8 +44,6 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.icon != null) {}
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: isError ? 66 : 38,
@@ -73,18 +71,18 @@ class _TextInputState extends State<TextInput> {
     if (value != null && !isFocusOut) {
       if (value.length < widget.minLength) {
         isError = true;
-        return "El campo debe ser minimo de ${widget.minLength} caracteres";
+        return "El campo debe ser mínimo de ${widget.minLength} caracteres";
       }
 
       if (widget.maxLength != null && value.length > widget.maxLength!) {
         isError = true;
-        return "El campo debe ser maximo de ${widget.maxLength} caracteres";
+        return "El campo debe ser máximo de ${widget.maxLength} caracteres";
       }
 
       if (widget.typeInput == TypeInput.lettersAndNumbers && value.isNotEmpty) {
         if (!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
           isError = true;
-          return "El campo solo permite letras y numeros (ABC123)";
+          return "El campo solo permite letras y números (ABC123)";
         }
       }
 
@@ -98,7 +96,7 @@ class _TextInputState extends State<TextInput> {
       if (widget.typeInput == TypeInput.onlyNumbers && value.isNotEmpty) {
         if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
           isError = true;
-          return "El campo solo permite numeros";
+          return "El campo solo permite números";
         }
       }
     }
@@ -131,7 +129,7 @@ class _TextInputState extends State<TextInput> {
           width: 2,
         ),
       ),
-      prefixIcon: widget.icon ?? const Icon(Icons.abc),
+      prefixIcon: widget.icon != null ? Icon(widget.icon) : const Icon(Icons.abc),
       hintText: widget.hintText.isNotEmpty ? "Ingrese el ${widget.hintText}" : "",
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(

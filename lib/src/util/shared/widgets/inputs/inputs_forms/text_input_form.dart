@@ -7,7 +7,7 @@ class TextInputForm extends StatefulWidget {
   final String? value;
   final int minLength;
   final int? maxLength;
-  final Widget? icon;
+  final IconData? icon;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
   final TypeInput typeInput;

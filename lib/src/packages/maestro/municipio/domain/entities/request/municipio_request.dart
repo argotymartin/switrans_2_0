@@ -5,7 +5,7 @@ class MunicipioRequest {
   String? codigoDane;
   String? fechaCreacion;
   int? codigoUsuario;
-  String? usuarioNombre;
+  String? nombreUsuario;
   int? departamento;
 
   MunicipioRequest({
@@ -15,7 +15,7 @@ class MunicipioRequest {
     this.codigoDane,
     this.fechaCreacion,
     this.codigoUsuario,
-    this.usuarioNombre,
+    this.nombreUsuario,
     this.departamento,
   });
 
@@ -30,7 +30,7 @@ class MunicipioRequest {
     codigoDane = null;
     fechaCreacion = null;
     codigoUsuario = null;
-    usuarioNombre = null;
+    nombreUsuario = null;
     departamento = null;
   }
 }

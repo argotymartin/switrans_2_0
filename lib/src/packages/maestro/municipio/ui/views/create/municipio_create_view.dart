@@ -21,7 +21,7 @@ class MunicipioCreateView extends StatelessWidget {
         }
         if (state.status == MunicipioStatus.succes) {
           final MunicipioRequest request = MunicipioRequest(codigo: state.municipio!.codigo);
-          context.read<MunicipioBloc>().add(GetMunicipioEvent(request));
+          context.read<MunicipioBloc>().add(GetMunicipiosEvent(request));
           context.go('/maestros/municipio/buscar');
         }
       },
@@ -77,12 +77,12 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.onlyNumbers,
                 minLength: 3,
                 maxLength: 3,
-                icon: const Icon(Icons.numbers),
+                icon: Icons.numbers,
                 onChanged: (String result) => request.codigoDane = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
                 entries: state.entriesDepartamentos,
-                title: "DepartamentoS",
+                title: "Departamentos",
                 value: request.departamento,
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,

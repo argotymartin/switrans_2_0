@@ -55,7 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        municipioBloc.add(GetMunicipioEvent(request));
+        municipioBloc.add(GetMunicipiosEvent(request));
       } else {
         municipioBloc.add(const ErrorFormMunicipioEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -129,7 +129,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(EntityUpdate<MunicipioRequest>(id: map["id"], entity: request));
             }
-            context.read<MunicipioBloc>().add(UpdateMunicipioEvent(requestList));
+            context.read<MunicipioBloc>().add(UpdateMunicipiosEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(Municipio municipio) {

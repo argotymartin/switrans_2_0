@@ -8,7 +8,7 @@ class MunicipioRequestModel extends MunicipioRequest {
     required super.fechaCreacion,
     required super.codigoDane,
     required super.codigoUsuario,
-    required super.usuarioNombre,
+    required super.nombreUsuario,
     required super.departamento,
   });
 
@@ -20,7 +20,7 @@ class MunicipioRequestModel extends MunicipioRequest {
       codigoDane: map['codigoDane'],
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
-      usuarioNombre: map['usuarioNombre'],
+      nombreUsuario: map['nombreUsuario'],
       departamento: map['departamento'],
     );
   }
@@ -33,7 +33,7 @@ class MunicipioRequestModel extends MunicipioRequest {
       codigoDane: request.codigoDane,
       fechaCreacion: request.fechaCreacion,
       codigoUsuario: request.codigoUsuario,
-      usuarioNombre: request.usuarioNombre,
+      nombreUsuario: request.nombreUsuario,
       departamento: request.departamento,
     );
   }
@@ -46,7 +46,7 @@ class MunicipioRequestModel extends MunicipioRequest {
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
       'codigoDane': codigoDane,
-      'usuarioNombre': usuarioNombre,
+      'nombreUsuario': nombreUsuario,
       'codigoDepartamento': departamento,
     }..removeWhere((String key, dynamic value) => value == null);
   }

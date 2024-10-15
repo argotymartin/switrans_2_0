@@ -36,8 +36,7 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
       if (backendResponse.success) {
         final dynamic responseData = backendResponse.data;
         if (responseData is List && responseData.isNotEmpty) {
-          final Map<String, dynamic> firstItem = responseData.first as Map<String, dynamic>;
-          final Municipio municipio = MunicipioModel.fromJson(firstItem);
+          final Municipio municipio = MunicipioModel.fromJson(responseData.first);
           return DataSuccess<Municipio>(municipio);
         }
       }
