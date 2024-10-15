@@ -8,12 +8,7 @@ class BackendErrorResponse {
   });
 
   factory BackendErrorResponse.fromJson(Map<String, dynamic> json) => BackendErrorResponse(
-        errorClient: json["errorClient"],
-        errorTrace: json["errorTrace"],
+        errorClient: json["errorClient"] ?? 'Sin Error Client',
+        errorTrace: json["errorTrace"] ?? 'Sin Error Trace',
       );
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        "errorClient": errorClient,
-        "errorTrace": errorTrace,
-      };
 }
