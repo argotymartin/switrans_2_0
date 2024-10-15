@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
-import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/pagina/data/models/request/pagina_request_model_pb.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/entities/request/pagina_request.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
 
@@ -9,19 +9,19 @@ class PaginaApiPocketBase {
   PaginaApiPocketBase(this._dio);
 
   Future<Response<dynamic>> getPaginasApi(PaginaRequest request) async {
-    final PaginaRequestModel requestModel = PaginaRequestModel.fromRequestPB(request);
+    final PaginaRequestModelPB requestModel = PaginaRequestModelPB.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
     requestMap["modulo"] = request.modulo == null ? null : await getModuloId(request.modulo!);
 
-    final String filter = PaginaRequestModel.toPocketBaseFilter(requestMap);
+    final String filter = PaginaRequestModelPB.toPocketBaseFilter(requestMap);
     final String url = '$kPocketBaseUrl/api/collections/pagina/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter, "expand": "modulo"};
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 
   Future<Response<dynamic>> setPaginaApi(PaginaRequest request) async {
-    final PaginaRequestModel requestModel = PaginaRequestModel.fromRequestPB(request);
+    final PaginaRequestModelPB requestModel = PaginaRequestModelPB.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
     requestMap["pagina_codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "pagina", field: "pagina_codigo");
     requestMap["modulo"] = await getModuloId(request.modulo!);
@@ -32,7 +32,7 @@ class PaginaApiPocketBase {
   }
 
   Future<Response<dynamic>> updatePaginaApi(EntityUpdate<PaginaRequest> request) async {
-    final PaginaRequestModel requestModel = PaginaRequestModel.fromRequestPB(request.entity);
+    final PaginaRequestModelPB requestModel = PaginaRequestModelPB.fromRequestPB(request.entity);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
     if (requestMap.containsKey("modulo")) {
       requestMap["modulo"] = await getModuloId(request.entity.modulo!);

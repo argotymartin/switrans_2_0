@@ -3,6 +3,7 @@ import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 enum Tipo { item, text, boolean, select, date }
 
 class DataItemGrid {
+  final String title;
   final Tipo type;
   final dynamic value;
   final bool edit;
@@ -10,6 +11,7 @@ class DataItemGrid {
   final List<EntryAutocomplete>? entryMenus;
 
   DataItemGrid({
+    required this.title,
     required this.type,
     required this.value,
     required this.edit,

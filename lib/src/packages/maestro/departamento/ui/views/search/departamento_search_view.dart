@@ -88,8 +88,8 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               SegmentedInputForm(
                 title: "Activo",
-                value: request.estado,
-                onChanged: (bool? newValue) => request.estado = newValue,
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
               ),
             ],
           ),
@@ -124,7 +124,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
           void onPressedSave() {
             final List<EntityUpdate<DepartamentoRequest>> requestList = <EntityUpdate<DepartamentoRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final DepartamentoRequest request = DepartamentoRequestModel.fromTable(map["data"]);
+              final DepartamentoRequest request = DepartamentoRequestModel.fromMap(map["data"]);
               request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
               requestList.add(EntityUpdate<DepartamentoRequest>(id: map["id"], entity: request));
             }
@@ -133,11 +133,37 @@ class _BluildDataTableState extends State<_BluildDataTable> {
 
           Map<String, DataItemGrid> buildPlutoRowData(Departamento departamento) {
             return <String, DataItemGrid>{
-              'codigo': DataItemGrid(type: Tipo.item, value: departamento.codigo, edit: false),
-              'nombre': DataItemGrid(type: Tipo.text, value: departamento.nombre, edit: true),
-              'pais': DataItemGrid(type: Tipo.select, value: departamento.pais, edit: true, entryMenus: state.entriesPaises),
-              'fechaCreacion': DataItemGrid(type: Tipo.text, value: departamento.fechaCreacion, edit: false),
-              'isActivo': DataItemGrid(type: Tipo.boolean, value: departamento.isActivo, edit: true),
+              'codigo': DataItemGrid(
+                title: "Codigo",
+                type: Tipo.item,
+                value: departamento.codigo,
+                edit: false,
+              ),
+              'nombre': DataItemGrid(
+                title: "Nombre",
+                type: Tipo.text,
+                value: departamento.nombre,
+                edit: true,
+              ),
+              'pais': DataItemGrid(
+                title: "Pais",
+                type: Tipo.select,
+                value: departamento.pais,
+                edit: true,
+                entryMenus: state.entriesPaises,
+              ),
+              'fechaCreacion': DataItemGrid(
+                title: "Fecha Creacion",
+                type: Tipo.text,
+                value: departamento.fechaCreacion,
+                edit: false,
+              ),
+              'isActivo': DataItemGrid(
+                title: "Activo",
+                type: Tipo.boolean,
+                value: departamento.isActivo,
+                edit: true,
+              ),
             };
           }
 

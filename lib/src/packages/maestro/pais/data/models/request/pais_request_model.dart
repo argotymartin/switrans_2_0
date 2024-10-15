@@ -10,11 +10,11 @@ class PaisRequestModel extends PaisRequest {
     required super.usuarioNombre,
   });
 
-  factory PaisRequestModel.fromTable(Map<String, dynamic> map) {
+  factory PaisRequestModel.fromMap(Map<String, dynamic> map) {
     return PaisRequestModel(
       codigo: map['codigo'],
       nombre: map['nombre'],
-      isActivo: map['activo'],
+      isActivo: map['isActivo'],
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
       usuarioNombre: map['usuarioNombre'],
@@ -40,13 +40,6 @@ class PaisRequestModel extends PaisRequest {
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
       'usuarioNombre': usuarioNombre,
-    }..removeWhere((String key, dynamic value) => value == null);
-  }
-
-  Map<String, dynamic> toJsonGet() {
-    return <String, dynamic>{
-      'codigo': codigo,
-      'estado': isActivo,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

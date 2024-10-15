@@ -34,8 +34,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       widget.plutoData.first.forEach((String key, DataItemGrid v) {
         final Tipo tipo = v.type;
         final bool isEdit = v.edit;
-        String tilte = key.toUpperCase().replaceAll("_", " ");
-        tilte = toCapitalCase(tilte);
+        final String tilte = v.title;
 
         if (tipo == Tipo.item) {
           columns.add(
@@ -130,22 +129,23 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
       return columns;
     }
 
-    final Map<String, dynamic> dataColumn = <String, dynamic>{};
+    final Map<int, dynamic> dataMap = <int, dynamic>{};
     List<PlutoRow> buildDataRows(BuildContext context) {
       final List<PlutoRow> dataRows = <PlutoRow>[];
 
       widget.plutoData.asMap().forEach((int index, Map<String, DataItemGrid> dato) {
-        dato.forEach((String key, DataItemGrid value) {
-          dataColumn.addEntries(<String, dynamic>{key: value.value}.entries);
-        });
-        dataColumn.addEntries(<String, String>{'cambios': ''}.entries);
+        final Map<String, dynamic> dataColumn = dato.map((String key, DataItemGrid value) => MapEntry<String, dynamic>(key, value.value));
+        final int keyMap = dato.values.first.value;
+
+        dataColumn['cambios'] = '';
+        dataMap[keyMap] = Map<String, dynamic>.from(dataColumn);
+
         final PlutoRow row = TablePlutoGridDataSource.rowByColumns(buildColumns(context), dataColumn);
         dataRows.add(row);
       });
       return dataRows;
     }
 
-    late int key;
     return Column(
       children: <Widget>[
         CustomPlutoGridTable(
@@ -156,23 +156,22 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
               return;
             }
 
-            final Map<String, dynamic> mapRow = event.row!.cells.map((String cellKey, PlutoCell cell) {
-              if (cellKey == event.row!.cells.keys.first) {
-                key = cell.value;
-              }
+            final PlutoRow row = event.row!;
+            final bool isChecked = event.isChecked!;
+
+            final int key = row.cells.values.first.value;
+            final Map<String, dynamic> mapRow = row.cells.map((String cellKey, PlutoCell cell) {
               return MapEntry<String, dynamic>(cellKey, cell.value);
             });
 
-            if (event.isChecked!) {
-              final Map<String, dynamic> mapDiff = compareJson(dataColumn, mapRow);
-              setState(() {
+            setState(() {
+              if (isChecked) {
+                final Map<String, dynamic> mapDiff = compareJson(dataMap[key], mapRow);
                 listValues.add(<String, dynamic>{'id': key, 'data': mapDiff});
-              });
-            } else {
-              setState(() {
+              } else {
                 listValues.removeWhere((Map<String, dynamic> element) => element['id'] == key);
-              });
-            }
+              }
+            });
 
             if (listValues.isNotEmpty) {
               widget.onRowChecked?.call(listValues);

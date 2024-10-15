@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'package:switrans_2_0/src/config/config.dart';
-import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/request/paquete_request_model.dart';
+import 'package:switrans_2_0/src/packages/maestro/paquete/data/models/request/paquete_request_model_pb.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/domain/entities/request/paquete_request.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
 
@@ -10,18 +10,18 @@ class PaqueteApiPocketBase {
   PaqueteApiPocketBase(this._dio);
 
   Future<Response<dynamic>> getPaquetesApi(PaqueteRequest request) async {
-    final PaqueteRequestModel requestModel = PaqueteRequestModel.fromRequestPB(request);
+    final PaqueteRequestModelPB requestModel = PaqueteRequestModelPB.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
-    final String filter = PaqueteRequestModel.toPocketBaseFilter(requestMap);
+    final String filter = PaqueteRequestModelPB.toPocketBaseFilter(requestMap);
 
     final String url = '$kPocketBaseUrl/api/collections/paquete/records';
     final Map<String, String> queryParameters = <String, String>{"filter": filter};
-    final Response<String> response = await _dio.get('$url', queryParameters: queryParameters);
+    final Response<dynamic> response = await _dio.get('$url', queryParameters: queryParameters);
     return response;
   }
 
   Future<Response<dynamic>> setPaqueteApi(PaqueteRequest request) async {
-    final PaqueteRequestModel requestModel = PaqueteRequestModel.fromRequestPB(request);
+    final PaqueteRequestModelPB requestModel = PaqueteRequestModelPB.fromRequestPB(request);
     final Map<String, dynamic> requestMap = requestModel.toJsonPB();
     requestMap["codigo"] = await FunctionsPocketbase.getMaxCodigoCollection(dio: _dio, collection: "paquete", field: "codigo");
 
@@ -31,8 +31,8 @@ class PaqueteApiPocketBase {
   }
 
   Future<Response<dynamic>> updatePaqueteApi(EntityUpdate<PaqueteRequest> request) async {
-    final PaqueteRequestModel requestModel = PaqueteRequestModel.fromRequestPB(request.entity);
-    final Map<String, dynamic> requestMap = requestModel.toJson();
+    final PaqueteRequestModelPB requestModel = PaqueteRequestModelPB.fromRequestPB(request.entity);
+    final Map<String, dynamic> requestMap = requestModel.toJsonPB();
 
     final String id = await FunctionsPocketbase.getIdCollection(
       dio: _dio,

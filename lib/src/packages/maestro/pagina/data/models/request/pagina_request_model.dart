@@ -10,18 +10,7 @@ class PaginaRequestModel extends PaginaRequest {
     required super.isActivo,
   });
 
-  factory PaginaRequestModel.fromRequestPB(PaginaRequest request) {
-    return PaginaRequestModel(
-      codigo: request.codigo,
-      nombre: request.nombre,
-      path: request.path,
-      modulo: request.modulo,
-      isVisible: request.isVisible,
-      isActivo: request.isActivo,
-    );
-  }
-
-  factory PaginaRequestModel.fromTable(Map<String, dynamic> map) => PaginaRequestModel(
+  factory PaginaRequestModel.fromMap(Map<String, dynamic> map) => PaginaRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
         path: map['path'],
@@ -29,37 +18,4 @@ class PaginaRequestModel extends PaginaRequest {
         isVisible: map['isVisible'],
         isActivo: map['isActivo'],
       );
-
-  Map<String, dynamic> toJsonPB() {
-    return <String, dynamic>{
-      'pagina_codigo': codigo,
-      'pagina_texto': nombre,
-      'pagina_path': path,
-      'modulo': modulo,
-      'pagina_visible': isVisible,
-      'pagina_activo': isActivo,
-    }..removeWhere((String key, dynamic value) => value == null);
-  }
-
-  static String toPocketBaseFilter(Map<String, dynamic> map) {
-    final List<String> conditions = <String>[];
-    if (map["pagina_texto"] != null) {
-      conditions.add('pagina_texto ~ "${map["pagina_texto"]}"');
-    }
-    if (map["pagina_codigo"] != null) {
-      conditions.add('pagina_codigo = ${map["pagina_codigo"]}');
-    }
-    if (map["pagina_visible"] != null) {
-      conditions.add('pagina_visible = ${map["pagina_visible"]}');
-    }
-    if (map["pagina_activo"] != null) {
-      conditions.add('pagina_activo = ${map["pagina_activo"]}');
-    }
-    if (map["modulo"] != null) {
-      conditions.add('modulo = "${map["modulo"]}"');
-    }
-    final String queryString = conditions.isNotEmpty ? conditions.join(' && ') : conditions.join();
-    final String data = queryString.isNotEmpty ? '($queryString)' : '';
-    return data;
-  }
 }

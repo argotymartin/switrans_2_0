@@ -2,7 +2,7 @@ import 'package:switrans_2_0/src/util/resources/backend/backend_error_response.d
 
 class BackendResponse {
   final bool success;
-  final List<dynamic> data;
+  final dynamic data;
   final BackendErrorResponse error;
 
   BackendResponse({
@@ -13,13 +13,7 @@ class BackendResponse {
 
   factory BackendResponse.fromJson(Map<String, dynamic> json) => BackendResponse(
         success: json["success"],
-        data: List<dynamic>.from(json["data"].map((dynamic x) => x)),
+        data: json["data"] is List ? List<dynamic>.from(json["data"].map((dynamic x) => x)) : json["data"] ?? 'No Data',
         error: BackendErrorResponse.fromJson(json["error"]),
       );
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        "success": success,
-        "data": List<dynamic>.from(data.map((dynamic x) => x)),
-        "error": error.toJson(),
-      };
 }
