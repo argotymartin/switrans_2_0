@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:switrans_2_0/src/packages/maestro/municipio/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
@@ -22,8 +21,8 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
   Future<DataState<Municipio>> setMunicipioService(MunicipioRequest request) async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.setMunicipioApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
-      final dynamic responseData = httpResponse.data['data'];
-      final Municipio municipio = MunicipioModel.fromJson(responseData);
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      final Municipio municipio = MunicipioModel.fromJson(backendResponse.data);
       return DataSuccess<Municipio>(municipio);
     }
     return DataFailed<Municipio>(httpResponse.error!);
@@ -49,11 +48,10 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
   @override
   Future<DataState<List<MunicipioDepartamento>>> getDepartamentosService() async {
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDepartamentosApi());
-    if (httpResponse.data != null) {
-      final dynamic responseData = jsonDecode(httpResponse.data);
-      final BackendResponse backendResponse = BackendResponse.fromJson(responseData);
+    if (httpResponse.data != null && httpResponse is DataSuccess) {
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
       final List<MunicipioDepartamento> municipioDepartamentos =
-          List<MunicipioDepartamento>.from(backendResponse.data.map((dynamic x) => MunicipioDepartamentoModel.fromJson(x)));
+      List<MunicipioDepartamento>.from(backendResponse.data.map((dynamic x) => MunicipioDepartamentoModel.fromJson(x)));
       return DataSuccess<List<MunicipioDepartamento>>(municipioDepartamentos);
     }
     return DataFailed<List<MunicipioDepartamento>>(httpResponse.error!);
