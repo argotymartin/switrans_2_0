@@ -16,7 +16,7 @@ class PaisCreateView extends StatelessWidget {
     return BlocConsumer<PaisBloc, PaisState>(
       listener: (BuildContext context, PaisState state) {
         if (state.status == PaisStatus.exception) {
-          CustomToast.showError(context, state.exception!);
+          //CustomToast.showError(context, state.exception!);
         }
 
         if (state.status == PaisStatus.succes) {

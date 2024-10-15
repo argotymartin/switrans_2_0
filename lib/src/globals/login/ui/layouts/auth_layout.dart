@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
-import 'package:switrans_2_0/src/util/shared/widgets/toasts/custom_toasts.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({super.key});
@@ -16,7 +15,7 @@ class AuthLayout extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
           if (state.status == AuthStatus.error) {
-            CustomToast.showErrorLogin(context, state.error!);
+            //CustomToast.showErrorLogin(context, state.error!);
             context.pop();
           }
           if (state.status == AuthStatus.succes) {

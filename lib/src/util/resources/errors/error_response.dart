@@ -5,12 +5,14 @@ import 'package:postgres/postgres.dart';
 import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
 
 class ErrorResponse {
-  final int code;
-  final String title;
-  final String? details;
+  int? code;
+  String title;
+  String content;
+  String? details;
   ErrorResponse({
-    required this.code,
+    required this.content,
     required this.title,
+    this.code,
     this.details,
   });
 
@@ -24,7 +26,7 @@ class ErrorResponse {
     } else if (_isBackendError(errorData)) {
       return _createBackendErrorResponse(errorData);
     } else {
-      return ErrorResponse(code: 400, title: "Error no controlado", details: "");
+      return ErrorResponse(content: "Error no controlado", title: "Error no controlado", details: "");
     }
   }
 
@@ -64,19 +66,19 @@ class ErrorResponse {
 
   // ignore: prefer_constructors_over_static_methods
   static ErrorResponse _createStandardErrorResponse(Map<String, dynamic> errorData) {
-    return ErrorResponse(code: errorData["status"], title: errorData["error"], details: errorData["path"]);
+    return ErrorResponse(content: errorData["error"], code: errorData["status"], title: "Error ", details: errorData["path"]);
   }
 
   // ignore: prefer_constructors_over_static_methods
   static ErrorResponse _createPocketbaseErrorResponse(Map<String, dynamic> errorData, Response<dynamic> response) {
     final String details = errorData["data"].isNotEmpty ? errorData["data"].toString() : response.realUri.path;
 
-    return ErrorResponse(code: errorData["code"], title: errorData["message"], details: details);
+    return ErrorResponse(content: errorData["message"], code: errorData["code"], title: "Error Servicion Pocketbase", details: details);
   }
 
   // ignore: prefer_constructors_over_static_methods
   static ErrorResponse _createBackendErrorResponse(Map<String, dynamic> errorData) {
     final BackendResponse response = BackendResponse.fromJson(errorData);
-    return ErrorResponse(code: 500, title: response.error.errorClient);
+    return ErrorResponse(title: "Ocurrio Un Error", code: 500, content: response.error.errorClient);
   }
 }

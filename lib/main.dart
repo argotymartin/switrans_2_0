@@ -12,6 +12,7 @@ import 'package:switrans_2_0/src/config/share_preferences/preferences.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
+import 'package:toastification/toastification.dart';
 
 Future<void> main() async {
   if (kIsWeb) {
@@ -49,11 +50,13 @@ class MyMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeState theme = context.watch<ThemeCubit>().state;
 
-    return MaterialApp.router(
-      title: 'Switrans 2.0',
-      debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.router,
-      theme: AppTheme(theme.color!, theme.themeMode!).getTheme(context),
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        title: 'Switrans 2.0',
+        debugShowCheckedModeBanner: false,
+        routerConfig: AppRouter.router,
+        theme: AppTheme(theme.color!, theme.themeMode!).getTheme(context),
+      ),
     );
   }
 }

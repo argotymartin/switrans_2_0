@@ -22,6 +22,7 @@ import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/errors/error_response.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 
 class AppRouter {
@@ -33,7 +34,6 @@ class AppRouter {
   bool isSignedIn = false;
   static final GoRouter router = GoRouter(
     initialLocation: "/",
-    //redirect: ValidateRoutes.onValidateAuth,
     navigatorKey: _rootNavigatorKey,
     routes: <RouteBase>[
       GoRoute(
@@ -46,7 +46,10 @@ class AppRouter {
       ),
       GoRoute(
         path: "/error-connection",
-        builder: (_, __) => const ErrorConnectionScreen(),
+        builder: (BuildContext context, GoRouterState state) {
+          final ErrorResponse errorResponse = state.extra! as ErrorResponse;
+          return ErrorConnectionScreen(message: errorResponse.content);
+        },
       ),
       GoRoute(
         path: "/loading",
