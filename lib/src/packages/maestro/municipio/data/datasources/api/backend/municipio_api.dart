@@ -3,8 +3,8 @@ import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/data/data.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/entity_update.dart';
-const String endPoint = "api/v1/maestro/municipios";
 
+const String endPoint = "api/v1/maestro/municipios";
 
 class MunicipioApi {
   final Dio _dio;

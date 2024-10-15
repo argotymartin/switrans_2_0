@@ -51,7 +51,7 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
       final List<MunicipioDepartamento> municipioDepartamentos =
-      List<MunicipioDepartamento>.from(backendResponse.data.map((dynamic x) => MunicipioDepartamentoModel.fromJson(x)));
+          List<MunicipioDepartamento>.from(backendResponse.data.map((dynamic x) => MunicipioDepartamentoModel.fromJson(x)));
       return DataSuccess<List<MunicipioDepartamento>>(municipioDepartamentos);
     }
     return DataFailed<List<MunicipioDepartamento>>(httpResponse.error!);
