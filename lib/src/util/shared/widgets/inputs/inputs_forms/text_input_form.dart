@@ -6,6 +6,8 @@ class TextInputForm extends StatefulWidget {
   final String title;
   final String? value;
   final int minLength;
+  final int? maxLength;
+  final IconData? icon;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
   final TypeInput typeInput;
@@ -21,6 +23,8 @@ class TextInputForm extends StatefulWidget {
     this.minLength = 0,
     this.isFormValid = true,
     this.autofocus = false,
+    this.maxLength,
+    this.icon,
     super.key,
   });
 
@@ -42,6 +46,8 @@ class _TextInputFormState extends State<TextInputForm> {
           controller: widget.controller,
           initialValue: widget.value != null ? widget.value! : "",
           minLength: widget.minLength,
+          maxLength: widget.maxLength,
+          icon: widget.icon,
           onChanged: widget.onChanged,
           hintText: widget.title,
           autofocus: widget.autofocus,
