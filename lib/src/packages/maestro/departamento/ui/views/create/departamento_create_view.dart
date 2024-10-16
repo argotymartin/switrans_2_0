@@ -21,7 +21,7 @@ class DepartamentoCreateView extends StatelessWidget {
         }
         if (state.status == DepartamentoStatus.succes) {
           final DepartamentoRequest request = DepartamentoRequest(codigo: state.departamento!.codigo);
-          context.read<DepartamentoBloc>().add(GetDepartamentoEvent(request));
+          context.read<DepartamentoBloc>().add(GetDepartamentosEvent(request));
           context.go('/maestros/departamento/buscar');
         }
       },
@@ -70,6 +70,15 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 5,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
+              ),
+              TextInputForm(
+                title: "Codigo Dane",
+                value: request.codigoDane,
+                typeInput: TypeInput.onlyNumbers,
+                minLength: 3,
+                maxLength: 3,
+                icon: Icons.numbers,
+                onChanged: (String result) => request.codigoDane = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
                 entries: state.entriesPaises,

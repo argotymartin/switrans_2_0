@@ -4,20 +4,20 @@ class DepartamentoModel extends Departamento {
   DepartamentoModel({
     required super.codigo,
     required super.nombre,
-    required super.pais,
-    required super.codigoUsuario,
     required super.isActivo,
     required super.fechaCreacion,
+    required super.codigoUsuario,
+    required super.pais,
     super.codigoDane,
   });
 
   factory DepartamentoModel.fromJson(Map<String, dynamic> json) => DepartamentoModel(
         codigo: json['codigo'],
         nombre: json['nombre'],
-        pais: json['codigoPais'],
-        codigoUsuario: json['codigoUsuario'],
-        codigoDane: json['codigoDane'],
         isActivo: json['estado'],
+        codigoDane: json['codigoDane'],
         fechaCreacion: json['fechaCreacion'].toString(),
+        codigoUsuario: json['codigoUsuario'],
+        pais: json['codigoPais'],
       );
 }

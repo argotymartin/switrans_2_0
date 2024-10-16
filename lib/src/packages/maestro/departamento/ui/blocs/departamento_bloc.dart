@@ -15,9 +15,9 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
 
   DepartamentoBloc(this._repository) : super(const DepartamentoState().initial()) {
     on<InitialDepartamentoEvent>(_onInitialDepartamento);
-    on<GetDepartamentoEvent>(_onGetDepartamento);
+    on<GetDepartamentosEvent>(_onGetDepartamentos);
     on<SetDepartamentoEvent>(_onSetDepartamento);
-    on<UpdateDepartamentoEvent>(_onUpdateDepartamento);
+    on<UpdateDepartamentosEvent>(_onUpdateDepartamentos);
     on<ErrorFormDepartamentoEvent>(_onErrorFormDepartamento);
     on<CleanFormDepartamentoEvent>(_onCleanFormDepartamento);
   }
@@ -34,7 +34,7 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
     }
   }
 
-  Future<void> _onGetDepartamento(GetDepartamentoEvent event, Emitter<DepartamentoState> emit) async {
+  Future<void> _onGetDepartamentos(GetDepartamentosEvent event, Emitter<DepartamentoState> emit) async {
     emit(state.copyWith(status: DepartamentoStatus.loading));
     final DataState<List<Departamento>> response = await _repository.getDepartamentosService(event.request);
     if (response.data != null) {
@@ -54,7 +54,7 @@ class DepartamentoBloc extends Bloc<DepartamentoEvent, DepartamentoState> {
     }
   }
 
-  Future<void> _onUpdateDepartamento(UpdateDepartamentoEvent event, Emitter<DepartamentoState> emit) async {
+  Future<void> _onUpdateDepartamentos(UpdateDepartamentosEvent event, Emitter<DepartamentoState> emit) async {
     emit(state.copyWith(status: DepartamentoStatus.loading));
 
     final List<DataState<Departamento>> dataStateList = await Future.wait(
