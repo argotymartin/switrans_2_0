@@ -82,7 +82,7 @@ class _BuildFieldsForm extends StatelessWidget {
               ),
               AutocompleteInputForm(
                 entries: state.entriesDepartamentos,
-                title: "Departamentos",
+                title: "Departamento",
                 value: request.departamento,
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
