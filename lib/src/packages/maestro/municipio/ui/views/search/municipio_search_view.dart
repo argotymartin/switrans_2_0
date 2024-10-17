@@ -80,6 +80,15 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.lettersAndNumbers,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
+              TextInputForm(
+                title: "Codigo Dane",
+                value: request.codigoDane,
+                typeInput: TypeInput.onlyNumbers,
+                minLength: 3,
+                maxLength: 3,
+                icon: Icons.numbers,
+                onChanged: (String result) => request.codigoDane = result.isNotEmpty ? result : null,
+              ),
               AutocompleteInputForm(
                 title: "Departamento",
                 entries: state.entriesDepartamentos,

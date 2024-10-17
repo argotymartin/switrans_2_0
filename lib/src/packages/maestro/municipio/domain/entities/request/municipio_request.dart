@@ -20,7 +20,7 @@ class MunicipioRequest {
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || departamento != null || isActivo != null;
+    return codigo != null || nombre != null || departamento != null || isActivo != null || codigoDane != null;
   }
 
   void clean() {
