@@ -43,7 +43,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       'codigoDane': codigoDane,
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
-      'pais': pais,
+      'codigoPais': pais,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

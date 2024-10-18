@@ -69,12 +69,12 @@ class _TextInputState extends State<TextInput> {
     Future<void>.microtask(() => setState(() {}));
     isError = false;
     if (value != null && !isFocusOut) {
-      if (value.length < widget.minLength) {
+      if (value.length < widget.minLength && value.isNotEmpty) {
         isError = true;
         return "El campo debe ser mínimo de ${widget.minLength} caracteres";
       }
 
-      if (widget.maxLength != null && value.length > widget.maxLength!) {
+      if (widget.maxLength != null && value.length > widget.maxLength! && value.isNotEmpty) {
         isError = true;
         return "El campo debe ser máximo de ${widget.maxLength} caracteres";
       }
