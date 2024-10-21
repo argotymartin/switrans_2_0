@@ -10,4 +10,9 @@ class TransaccionContableTipoImpuestoModel extends TransaccionContableTipoImpues
         codigo: map['tipimp_codigo'],
         nombre: map['tipimp_nombre'],
       );
+
+  factory TransaccionContableTipoImpuestoModel.fromJson(Map<String, dynamic> map) => TransaccionContableTipoImpuestoModel(
+        codigo: map['codigo'],
+        nombre: map['nombre'],
+      );
 }

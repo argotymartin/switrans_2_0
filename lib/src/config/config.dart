@@ -13,7 +13,7 @@ void initializeConfig() {
   switch (configParam) {
     case 'local':
       kPocketBaseUrl = 'http://localhost:8090';
-      kBackendBaseUrlERP = 'http://192.168.102.18:10011';
+      kBackendBaseUrlERP = 'http://192.168.102.18:10014';
       kBackendBaseUrlMaestro = 'http://192.168.102.18:10000';
       break;
     case 'develop':

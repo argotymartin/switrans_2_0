@@ -28,9 +28,9 @@ class TransaccionContableModel extends TransaccionContable {
         nombre: map['nombre'],
         sigla: map['sigla'],
         isActivo: map['estado'],
-        tipoimpuesto: map['tipoImpuestoNombre'],
-        usuario: map['usuarioNombre'],
-        secuencia: map['oeden'],
-        fechaCreacion: map['fechaCreacion'].toString(),
+        tipoimpuesto: map['codigoTipoImpuesto'],
+        usuario: map['nombreUsuario'],
+        secuencia: map['orden'],
+        fechaCreacion: map['creacionFecha'].toString(),
       );
 }

@@ -2,10 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/models/request/transaccion_contable_request_model.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/entities/request/transaccion_contable_request.dart';
-import 'package:switrans_2_0/src/util/resources/backend/postgres/functions_postgresql.dart';
 import 'package:switrans_2_0/src/util/resources/entity_update.dart';
 
-const String endPoint = "api/v1/facturas/transacciones_contables";
+const String endPoint = "api/v1/erp/transacciones_contables";
 
 class TransaccionContableApi {
   final Dio _dio;
@@ -41,8 +40,8 @@ class TransaccionContableApi {
   }
 
   Future<Response<dynamic>> getTipoImpuestosApi() async {
-    const String sql = """SELECT TIPIMP_CODIGO, TIPIMP_NOMBRE FROM TB_TIPOIMPUESTO ORDER BY TIPIMP_NOMBRE ASC """;
-    final Response<dynamic> response = await FunctionsPostgresql.executeQueryDB(sql);
+    final String url = '$kBackendBaseUrlERP/$endPoint/tipo_impuestos';
+    final Response<dynamic> response = await _dio.get(url);
     return response;
   }
 }
