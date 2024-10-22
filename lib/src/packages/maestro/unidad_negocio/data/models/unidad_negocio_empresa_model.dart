@@ -3,8 +3,8 @@ import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities
 class UnidadNegocioEmpresaModel extends UnidadNegocioEmpresa {
   UnidadNegocioEmpresaModel({required super.codigo, required super.nombre});
 
-  factory UnidadNegocioEmpresaModel.fromDB(Map<String, dynamic> json) => UnidadNegocioEmpresaModel(
-        codigo: json['empresa_codigo'],
-        nombre: json['empresa_nombre'],
+  factory UnidadNegocioEmpresaModel.fromJson(Map<String, dynamic> json) => UnidadNegocioEmpresaModel(
+        codigo: json['codigo'],
+        nombre: json['nombre'],
       );
 }

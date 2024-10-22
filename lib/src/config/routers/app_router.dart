@@ -22,7 +22,7 @@ import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
 
 class AppRouter {
@@ -75,7 +75,7 @@ class AppRouter {
                 create: (_) => injector<ServicioEmpresarialBloc>()..add(const InitializationServicioEmpresarialEvent()),
               ),
               BlocProvider<UnidadNegocioBloc>(
-                create: (_) => injector<UnidadNegocioBloc>()..add(const InitializationUnidadNegocioEvent()),
+                create: (_) => injector<UnidadNegocioBloc>()..add(const InitialUnidadNegocioEvent()),
               ),
               BlocProvider<PaisBloc>(
                 create: (_) => injector<PaisBloc>()..add(const InitialPaisEvent()),

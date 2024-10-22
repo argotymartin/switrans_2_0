@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/models/request/unidad_negocio_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
-import 'package:switrans_2_0/src/util/resources/entity_update.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -52,7 +51,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        unidadNegocioBloc.add(GetUnidadNegocioEvent(request));
+        unidadNegocioBloc.add(GetUnidadNegociosEvent(request));
       } else {
         unidadNegocioBloc.add(const ErrorFormUnidadNegocioEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -71,17 +70,17 @@ class _BuildFieldsForm extends StatelessWidget {
                 autofocus: true,
                 onChanged: (String result) => request.codigo = result.isNotEmpty ? int.parse(result) : null,
               ),
-              AutocompleteInputForm(
-                entries: state.entriesEmpresa,
-                title: "Empresa",
-                value: request.empresa,
-                onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
-              ),
               TextInputForm(
                 title: "Nombre",
                 value: request.nombre != null ? request.nombre! : "",
                 typeInput: TypeInput.lettersAndNumbers,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
+              ),
+              AutocompleteInputForm(
+                title: "Empresa",
+                entries: state.entriesEmpresas,
+                value: request.empresa,
+                onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
               ),
               SegmentedInputForm(
                 title: "Activo",
@@ -124,7 +123,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               final UnidadNegocioRequest request = UnidadNegocioRequestModel.fromMap(map["data"]);
               requestList.add(EntityUpdate<UnidadNegocioRequest>(id: map["id"], entity: request));
             }
-            context.read<UnidadNegocioBloc>().add(UpdateUnidadNegocioEvent(requestList));
+            context.read<UnidadNegocioBloc>().add(UpdateUnidadNegociosEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(UnidadNegocio unidadNegocio) {
@@ -156,7 +155,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'usuario': DataItemGrid(
                 title: "Usuario",
                 type: Tipo.text,
-                value: unidadNegocio.usuario,
+                value: unidadNegocio.nombreUsuario,
                 edit: false,
               ),
               'empresa': DataItemGrid(
@@ -164,7 +163,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 type: Tipo.select,
                 value: unidadNegocio.empresa,
                 edit: false,
-                entryMenus: state.entriesEmpresa,
+                entryMenus: state.entriesEmpresas,
               ),
             };
           }

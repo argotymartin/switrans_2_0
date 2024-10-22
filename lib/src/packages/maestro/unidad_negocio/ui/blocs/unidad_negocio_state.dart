@@ -6,15 +6,15 @@ class UnidadNegocioState extends Equatable {
   final UnidadNegocioStatus? status;
   final UnidadNegocio? unidadNegocio;
   final List<UnidadNegocio> unidadNegocios;
-  final List<EntryAutocomplete> entriesEmpresa;
+  final List<EntryAutocomplete> entriesEmpresas;
   final DioException? exception;
   final String? error;
   const UnidadNegocioState({
     this.status,
     this.unidadNegocio,
-    this.exception,
     this.unidadNegocios = const <UnidadNegocio>[],
-    this.entriesEmpresa = const <EntryAutocomplete>[],
+    this.entriesEmpresas = const <EntryAutocomplete>[],
+    this.exception,
     this.error,
   });
 
@@ -31,12 +31,12 @@ class UnidadNegocioState extends Equatable {
       UnidadNegocioState(
         status: status ?? this.status,
         unidadNegocio: unidadNegocio ?? this.unidadNegocio,
-        exception: exception ?? this.exception,
         unidadNegocios: unidadNegocios ?? this.unidadNegocios,
-        entriesEmpresa: entriesEmpresa ?? this.entriesEmpresa,
+        entriesEmpresas: entriesEmpresa ?? this.entriesEmpresas,
+        exception: exception ?? this.exception,
         error: error ?? this.error,
       );
 
   @override
-  List<Object?> get props => <Object?>[unidadNegocio, unidadNegocios, entriesEmpresa, exception, error, status];
+  List<Object?> get props => <Object?>[status, unidadNegocio, unidadNegocios, entriesEmpresas, exception, error ];
 }

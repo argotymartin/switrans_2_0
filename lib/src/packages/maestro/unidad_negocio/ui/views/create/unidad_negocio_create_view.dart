@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/blocs/auth/auth_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -21,7 +21,7 @@ class UnidadNegocioCreateView extends StatelessWidget {
         }
         if (state.status == UnidadNegocioStatus.succes) {
           final UnidadNegocioRequest request = UnidadNegocioRequest(codigo: state.unidadNegocio!.codigo);
-          context.read<UnidadNegocioBloc>().add(GetUnidadNegocioEvent(request));
+          context.read<UnidadNegocioBloc>().add(GetUnidadNegociosEvent(request));
           context.go('/maestros/unidad_negocio/buscar');
         }
       },
@@ -73,7 +73,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
-                entries: state.entriesEmpresa,
+                entries: state.entriesEmpresas,
                 title: "Empresa",
                 value: request.empresa,
                 onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
@@ -84,8 +84,8 @@ class _BuildFieldsForm extends StatelessWidget {
             onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
-                unidadNegocioBloc.request.usuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
-                context.read<UnidadNegocioBloc>().add(SetUnidadNegocioEvent(unidadNegocioBloc.request));
+                unidadNegocioBloc.request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
+                context.read<UnidadNegocioBloc>().add(SetUnidadNegocioEvent(request));
               }
             },
             icon: Icons.save,

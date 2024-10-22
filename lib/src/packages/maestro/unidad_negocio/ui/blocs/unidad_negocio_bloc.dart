@@ -1,10 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/request/unidad_negocio_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/entities/unidad_negocio_empresa.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/domain.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
 import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
 
@@ -16,15 +13,15 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
   UnidadNegocioRequest _request = UnidadNegocioRequest();
 
   UnidadNegocioBloc(this._repository) : super(const UnidadNegocioState().initial()) {
-    on<InitializationUnidadNegocioEvent>(_onInitializationUnidadNegocio);
-    on<GetUnidadNegocioEvent>(_onGetUnidadNegocio);
+    on<InitialUnidadNegocioEvent>(_onInitialUnidadNegocio);
+    on<GetUnidadNegociosEvent>(_onGetUnidadNegocios);
     on<SetUnidadNegocioEvent>(_onSetUnidadNegocio);
-    on<UpdateUnidadNegocioEvent>(_onUpdateUnidadNegocio);
+    on<UpdateUnidadNegociosEvent>(_onUpdateUnidadNegocios);
     on<ErrorFormUnidadNegocioEvent>(_onErrorFormUnidadNegocio);
     on<CleanFormUnidadNegocioEvent>(_onCleanFormUnidadNegocio);
   }
 
-  Future<void> _onInitializationUnidadNegocio(InitializationUnidadNegocioEvent event, Emitter<UnidadNegocioState> emit) async {
+  Future<void> _onInitialUnidadNegocio(InitialUnidadNegocioEvent event, Emitter<UnidadNegocioState> emit) async {
     emit(state.copyWith(status: UnidadNegocioStatus.loading));
     final DataState<List<UnidadNegocioEmpresa>> resp = await _repository.getEmpresasService();
     if (resp.data != null) {
@@ -36,7 +33,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
     }
   }
 
-  Future<void> _onGetUnidadNegocio(GetUnidadNegocioEvent event, Emitter<UnidadNegocioState> emit) async {
+  Future<void> _onGetUnidadNegocios(GetUnidadNegociosEvent event, Emitter<UnidadNegocioState> emit) async {
     emit(state.copyWith(status: UnidadNegocioStatus.loading));
     final DataState<List<UnidadNegocio>> response = await _repository.getUnidadNegociosService(event.request);
     if (response.data != null) {
@@ -56,7 +53,7 @@ class UnidadNegocioBloc extends Bloc<UnidadNegocioEvent, UnidadNegocioState> {
     }
   }
 
-  Future<void> _onUpdateUnidadNegocio(UpdateUnidadNegocioEvent event, Emitter<UnidadNegocioState> emit) async {
+  Future<void> _onUpdateUnidadNegocios(UpdateUnidadNegociosEvent event, Emitter<UnidadNegocioState> emit) async {
     emit(state.copyWith(status: UnidadNegocioStatus.loading));
 
     final List<DataState<UnidadNegocio>> dataStateList = await Future.wait(

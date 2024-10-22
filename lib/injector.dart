@@ -59,10 +59,10 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/data
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/data/repositories/transaccion_contable_repository_db_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/domain/repositories/abstract_transaccion_contable_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/db/unidad_negocio_db.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_db_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/datasources/api/backend/unidad_negocio_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/data/repositories/unidad_negocio_repository_api_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/domain/repositories/abstract_unidad_negocio_repository.dart';
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio_bloc.dart';
 
 final GetIt injector = GetIt.instance;
 
@@ -103,8 +103,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractDepartamentoRepository>(DepartamentoRepositoryImpl(injector()));
   injector.registerSingleton<DepartamentoBloc>(DepartamentoBloc(injector()));
 
-  injector.registerSingleton<UnidadNegocioDB>(UnidadNegocioDB());
-  injector.registerSingleton<AbstractUnidadNegocioRepository>(UnidadNegocioRepositoryDBImpl(injector()));
+  injector.registerSingleton<UnidadNegocioApi>(UnidadNegocioApi(injector()));
+  injector.registerSingleton<AbstractUnidadNegocioRepository>(UnidadNegocioRepositoryApiImpl(injector()));
   injector.registerSingleton<UnidadNegocioBloc>(UnidadNegocioBloc(injector()));
 
   injector.registerSingleton<ModuloApiPocketBase>(ModuloApiPocketBase(injector()));

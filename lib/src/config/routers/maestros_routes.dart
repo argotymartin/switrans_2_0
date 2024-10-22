@@ -47,7 +47,7 @@ import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/create/transaccion_contable_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/search/transaccion_contable_search_view.dart';
 
-import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
 

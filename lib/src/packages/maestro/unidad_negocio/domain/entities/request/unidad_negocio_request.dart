@@ -2,26 +2,33 @@ class UnidadNegocioRequest {
   int? codigo;
   String? nombre;
   bool? isActivo;
-  int? usuario;
+  String? fechaCreacion;
+  int? codigoUsuario;
+  String? nombreUsuario;
   int? empresa;
+
 
   UnidadNegocioRequest({
     this.codigo,
     this.nombre,
     this.isActivo,
-    this.usuario,
+    this.fechaCreacion,
+    this.codigoUsuario,
+    this.nombreUsuario,
     this.empresa,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || isActivo != null || usuario != null || empresa != null;
+    return codigo != null || nombre != null || isActivo != null || empresa != null;
   }
 
   void clean() {
     codigo = null;
     nombre = null;
     isActivo = null;
-    usuario = null;
+    fechaCreacion = null;
+    codigoUsuario = null;
+    nombreUsuario = null;
     empresa = null;
   }
 }

@@ -6,16 +6,18 @@ class UnidadNegocioModel extends UnidadNegocio {
     required super.nombre,
     required super.isActivo,
     required super.fechaCreacion,
-    required super.usuario,
+    required super.codigoUsuario,
+    required super.nombreUsuario,
     required super.empresa,
   });
 
-  factory UnidadNegocioModel.fromDB(Map<String, dynamic> map) => UnidadNegocioModel(
-        codigo: map['unineg_codigo'],
-        nombre: map['unineg_nombre'],
-        isActivo: map['unineg_activo'],
-        fechaCreacion: map['unineg_fechacreacion'].toString(),
-        usuario: map['usuario'],
-        empresa: map['empresa'],
+  factory UnidadNegocioModel.fromJson(Map<String, dynamic> map) => UnidadNegocioModel(
+        codigo: map['codigo'],
+        nombre: map['nombre'],
+        isActivo: map['estado'],
+        fechaCreacion: map['fechaCreacion'].toString().replaceAll('T', ' '),
+        codigoUsuario: map["codigoUsuario"],
+        nombreUsuario: map["nombreUsuario"],
+        empresa: map["codigoEmpresa"],
       );
 }

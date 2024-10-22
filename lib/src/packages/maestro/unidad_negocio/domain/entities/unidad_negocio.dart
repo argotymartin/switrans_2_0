@@ -3,15 +3,17 @@ class UnidadNegocio {
   final String nombre;
   final bool isActivo;
   final String fechaCreacion;
-  final String usuario;
-  final int? empresa;
+  final int? codigoUsuario;
+  final String nombreUsuario;
+  final int empresa;
 
   UnidadNegocio({
     required this.codigo,
     required this.nombre,
     required this.isActivo,
     required this.fechaCreacion,
-    required this.usuario,
+    required this.codigoUsuario,
+    required this.nombreUsuario,
     required this.empresa,
   });
 }
