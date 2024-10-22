@@ -10,6 +10,15 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
     required super.tipoImpuesto,
   });
 
+  factory TransaccionContableRequestModel.fromRequest(TransaccionContableRequest request) => TransaccionContableRequestModel(
+        codigo: request.codigo,
+        nombre: request.nombre,
+        sigla: request.sigla,
+        isActivo: request.isActivo,
+        secuencia: request.secuencia,
+        tipoImpuesto: request.tipoImpuesto,
+      );
+
   factory TransaccionContableRequestModel.fromMap(Map<String, dynamic> map) => TransaccionContableRequestModel(
         codigo: map['codigo'],
         nombre: map['nombre'],
@@ -18,4 +27,15 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
         secuencia: map['secuencia'],
         tipoImpuesto: map['tipo_impuesto'],
       );
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'codigo': codigo,
+      'nombre': nombre,
+      'sigla': sigla,
+      'isActivo': isActivo,
+      'secuencia': secuencia,
+      'tipoImpuesto': tipoImpuesto,
+    }..removeWhere((String key, dynamic value) => value == null);
+  }
 }

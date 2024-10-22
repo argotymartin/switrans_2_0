@@ -22,4 +22,15 @@ class TransaccionContableModel extends TransaccionContable {
         secuencia: map['tracon_orden'],
         fechaCreacion: map['tracon_fecha_creacion'].toString(),
       );
+
+  factory TransaccionContableModel.fromJson(Map<String, dynamic> map) => TransaccionContableModel(
+        codigo: map['codigo'],
+        nombre: map['nombre'],
+        sigla: map['sigla'],
+        isActivo: map['estado'],
+        tipoimpuesto: map['codigoTipoImpuesto'],
+        usuario: map['nombreUsuario'],
+        secuencia: map['orden'],
+        fechaCreacion: map['creacionFecha'].toString(),
+      );
 }
