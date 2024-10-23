@@ -43,10 +43,6 @@ import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_im
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/create/tipo_impuesto_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/views/search/tipo_impuesto_search_view.dart';
 
-import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/create/transaccion_contable_create_view.dart';
-import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/views/search/transaccion_contable_search_view.dart';
-
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/create/unidad_negocio_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/views/search/unidad_negocio_search_view.dart';
@@ -63,7 +59,6 @@ class MaestrosRoutes {
       ..._routerServicioEmpresarial(),
       ..._routerUnidadNegocio(),
       ..._routerPaquete(),
-      ..._routerTransaccionContable(),
       ..._routerPagina(),
       ..._routerResolucion(),
       ..._routerPais(),
@@ -242,28 +237,6 @@ class MaestrosRoutes {
         builder: (BuildContext context, GoRouterState state) {
           context.read<PaqueteBloc>().request.clean();
           return const PaqueteSearchView();
-        },
-        redirect: ValidateRoutes.onValidateAuth,
-      ),
-    ];
-  }
-
-  static List<GoRoute> _routerTransaccionContable() {
-    const String modulePath = "transaccion_contable";
-    return <GoRoute>[
-      GoRoute(
-        path: "$packagePath/$modulePath/registrar",
-        builder: (BuildContext context, GoRouterState state) {
-          context.read<TransaccionContableBloc>().request.clean();
-          return const TransaccionContableCreateView();
-        },
-        redirect: ValidateRoutes.onValidateAuth,
-      ),
-      GoRoute(
-        path: "$packagePath/$modulePath/buscar",
-        builder: (BuildContext context, __) {
-          context.read<TransaccionContableBloc>().request.clean();
-          return const TransaccionContableSearchView();
         },
         redirect: ValidateRoutes.onValidateAuth,
       ),
