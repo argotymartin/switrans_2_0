@@ -138,7 +138,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: unidadNegocio.nombre,
-                edit: true,
+                edit: false,
               ),
               'isActivo': DataItemGrid(
                 title: "Activo",
