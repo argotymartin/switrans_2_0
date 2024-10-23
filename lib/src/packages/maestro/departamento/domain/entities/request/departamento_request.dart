@@ -18,7 +18,7 @@ class DepartamentoRequest {
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || pais != null || isActivo != null;
+    return codigo != null || nombre != null || pais != null || isActivo != null || codigoDane != null;
   }
 
   void clean() {

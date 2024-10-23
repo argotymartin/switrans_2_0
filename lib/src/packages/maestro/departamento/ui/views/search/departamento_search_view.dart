@@ -157,7 +157,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               'Codigo Dane': DataItemGrid(
                 title: "Codigo Dane",
                 type: Tipo.text,
-                value: departamento.codigoDane,
+                value: departamento.codigoDane ?? '',
                 edit: false,
               ),
               'pais': DataItemGrid(
