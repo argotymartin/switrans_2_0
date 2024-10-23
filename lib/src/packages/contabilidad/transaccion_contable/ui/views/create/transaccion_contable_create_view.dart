@@ -76,6 +76,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Sigla",
                 value: request.sigla,
                 typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
                 onChanged: (String result) => request.sigla = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(

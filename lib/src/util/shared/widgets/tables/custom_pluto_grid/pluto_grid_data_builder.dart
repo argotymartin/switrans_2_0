@@ -66,14 +66,20 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.select) {
+          double screenWidth = MediaQuery.of(context).size.width;
+          double width = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
+              ? screenWidth * 0.35
+              : screenWidth * 0.25;
+          double minWidth = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
+              ? screenWidth * 0.18
+              : screenWidth * 0.12;
+
           columns.add(
             PlutoColumn(
-              // enableEditingMode: isEdit,
-              //enableAutoEditing: isEdit,
               title: tilte,
               field: key,
-              width: 150,
-              minWidth: 100,
+              width: width,
+              minWidth: minWidth,
               type: PlutoColumnType.text(),
               renderer: (PlutoColumnRendererContext rendererContext) => _BuildFieldAutoComplete(
                 renderContext: rendererContext,
@@ -82,6 +88,7 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
             ),
           );
         }
+
         if (tipo == Tipo.boolean) {
           columns.add(
             PlutoColumn(
@@ -97,9 +104,11 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.date) {
+          double screenWidth = MediaQuery.of(context).size.width;
+          bool isSmallScreen = screenWidth < 600;
           columns.add(
             PlutoColumn(
-              minWidth: 188,
+              minWidth: isSmallScreen ? screenWidth * 0.5 : 300,
               enableEditingMode: false,
               title: tilte,
               field: key,

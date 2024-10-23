@@ -141,7 +141,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: transaccionContable.nombre,
-                edit: true,
+                edit: false,
               ),
               'sigla': DataItemGrid(
                 title: "Sigla",
