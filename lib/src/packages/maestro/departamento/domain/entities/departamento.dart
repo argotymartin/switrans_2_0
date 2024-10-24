@@ -5,6 +5,7 @@ class Departamento {
   final String? codigoDane;
   final String fechaCreacion;
   final int? codigoUsuario;
+  final String? nombrePais;
   final int pais;
 
   Departamento({
@@ -13,6 +14,7 @@ class Departamento {
     required this.isActivo,
     required this.fechaCreacion,
     required this.pais,
+    this.nombrePais,
     this.codigoDane,
     this.codigoUsuario,
   });

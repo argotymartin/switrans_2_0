@@ -5,6 +5,7 @@ class DepartamentoRequest {
   String? codigoDane;
   String? fechaCreacion;
   int? codigoUsuario;
+  String? nombrePais;
   int? pais;
 
   DepartamentoRequest({
@@ -14,6 +15,7 @@ class DepartamentoRequest {
     this.codigoDane,
     this.fechaCreacion,
     this.codigoUsuario,
+    this.nombrePais,
     this.pais,
   });
 
@@ -28,6 +30,7 @@ class DepartamentoRequest {
     codigoDane = null;
     fechaCreacion = null;
     codigoUsuario = null;
+    nombrePais = null;
     pais = null;
   }
 }

@@ -8,6 +8,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
     required super.fechaCreacion,
     required super.codigoDane,
     required super.codigoUsuario,
+    required super.nombrePais,
     required super.pais,
   });
 
@@ -19,6 +20,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       codigoDane: map['codigoDane'],
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
+      nombrePais:  map['nombrePais'],
       pais: map['pais'],
     );
   }
@@ -31,6 +33,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       codigoDane: request.codigoDane,
       fechaCreacion: request.fechaCreacion,
       codigoUsuario: request.codigoUsuario,
+      nombrePais: request.nombrePais,
       pais: request.pais,
     );
   }
