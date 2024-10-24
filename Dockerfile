@@ -2,6 +2,7 @@
 FROM harbor.mct.com.co/front-end/flutter:3.24.3 AS deps
 WORKDIR /app
 COPY pubspec.yaml pubspec.lock ./
+RUN sudo chmod 777 pubspec.lock
 RUN flutter pub get
 RUN flutter precache
 
