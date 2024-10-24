@@ -1,0 +1,35 @@
+services:
+
+  switrans2-app-develop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${STAGE}
+    container_name: switrans2-app-develop
+    ports:
+      - "3000:80"
+  
+  switrans2-backend-develop:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: switrans2-backend-develop
+    volumes:
+      - ./start-backend.sh:/start-backend.sh
+      - ./.env:/app/.env
+    command: ["sh", "/start-backend.sh"]
+    ports:
+      - "${PORT_ERP}:${PORT_ERP}"
+      - "${PORT_MAESTRO}:${PORT_MAESTRO}"
+  
+  switrans2-pocketbase-develop:
+    image: pocketbase:0.22.20
+    container_name: switrans2-pocketbase-develop
+    restart: unless-stopped
+    ports:
+      - "${PORT_PB}:8090"
+    volumes:
+      - ./../db/pocketbase/pb_data:/pb/pb_data
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:${PORT_PB}/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
