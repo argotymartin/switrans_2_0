@@ -26,7 +26,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
   }
 
   factory DepartamentoRequestModel.fromRequest(DepartamentoRequest request) {
-    return DepartamentoRequestModel(
+    return  DepartamentoRequestModel(
       codigo: request.codigo,
       nombre: request.nombre,
       isActivo: request.isActivo,

@@ -220,17 +220,19 @@ Widget _customPopupItemBuilder(BuildContext context, EntryAutocomplete item, boo
 }
 
 Future<List<EntryAutocomplete>> getData(String searchText, List<EntryAutocomplete> entries) async {
+  final String lowerCaseSearchText = searchText.toLowerCase();
+
   final List<EntryAutocomplete> filteredEntries = entries.where((EntryAutocomplete entry) {
-    if (searchText.isNotEmpty && searchText.substring(0, 1) == ';') {
-      final String searchNew = searchText.split(";")[1];
+    if (lowerCaseSearchText.isNotEmpty && lowerCaseSearchText.substring(0, 1) == ';') {
+      final String searchNew = lowerCaseSearchText.split(";")[1];
       return entry.subTitle!.toLowerCase().contains(searchNew);
     }
 
     final RegExp regex = RegExp(r'^[0-9]+$');
-    if (regex.hasMatch(searchText)) {
-      return entry.codigo.toString().contains(searchText);
+    if (regex.hasMatch(lowerCaseSearchText)) {
+      return entry.codigo.toString().contains(lowerCaseSearchText);
     } else {
-      return entry.title.toLowerCase().contains(searchText);
+      return entry.title.toLowerCase().contains(lowerCaseSearchText);
     }
   }).toList();
 

@@ -81,7 +81,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               TextInputForm(
-                title: "Codigo Dane",
+                title: "DANE",
                 value: request.codigoDane,
                 typeInput: TypeInput.onlyNumbers,
                 minLength: 2,
@@ -154,18 +154,17 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 value: departamento.nombre,
                 edit: true,
               ),
-              'Codigo Dane': DataItemGrid(
-                title: "Codigo DANE",
+              'DANE': DataItemGrid(
+                title: "DANE",
                 type: Tipo.text,
                 value: departamento.codigoDane ?? '',
                 edit: false,
               ),
-              'pais': DataItemGrid(
+              'nombrePais': DataItemGrid(
                 title: "Pais",
-                type: Tipo.select,
-                value: departamento.pais,
-                edit: true,
-                entryMenus: state.entriesPaises,
+                type: Tipo.text,
+                value: departamento.nombrePais,
+                edit: false,
               ),
               'fechaCreacion': DataItemGrid(
                 title: "Fecha Creacion",
