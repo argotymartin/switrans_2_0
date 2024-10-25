@@ -1,5 +1,5 @@
 #!/bin/sh
-REPOSITORY_URL=http://192.168.102.18:8081/repository/bem-release-repo/com/mctgroup/backend
+REPOSITORY_URL=https://nexus.mct.com.co/repository/bem-release-repo/com/mctgroup/backend
 
 # Función para imprimir mensajes con formato
 log_info() {

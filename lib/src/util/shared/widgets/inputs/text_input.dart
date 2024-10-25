@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
-enum TypeInput { lettersAndNumbers, lettersAndCaracteres, onlyNumbers }
+enum TypeInput { lettersAndNumbers, lettersAndCaracteres, onlyNumbers , lettersAndNumbersAndNotAccent }
 
 class TextInput extends StatefulWidget {
   final String initialValue;
@@ -83,6 +83,13 @@ class _TextInputState extends State<TextInput> {
         if (!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
           isError = true;
           return "El campo solo permite letras y números (ABC123)";
+        }
+      }
+
+      if (widget.typeInput == TypeInput.lettersAndNumbersAndNotAccent && value.isNotEmpty) {
+        if (!(RegExp(r'^[a-zA-Z0-9 ñÑ&]*$')).hasMatch(value)) {
+          isError = true;
+          return "El campo solo permite letras y números sin tildes";
         }
       }
 

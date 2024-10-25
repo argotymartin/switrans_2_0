@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -68,7 +69,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputForm(
                 title: "Nombre",
                 value: request.nombre,
-                typeInput: TypeInput.lettersAndNumbers,
+                typeInput: TypeInput.lettersAndNumbersAndNotAccent,
                 minLength: 3,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),

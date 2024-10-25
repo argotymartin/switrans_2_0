@@ -160,8 +160,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               ),
               'empresa': DataItemGrid(
                 title: "Empresa",
-                type: Tipo.select,
-                value: unidadNegocio.empresa,
+                type: Tipo.text,
+                value: unidadNegocio.nombreEmpresa,
                 edit: false,
                 entryMenus: state.entriesEmpresas,
               ),

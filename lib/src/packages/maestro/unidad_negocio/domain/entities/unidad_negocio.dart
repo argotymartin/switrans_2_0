@@ -5,6 +5,7 @@ class UnidadNegocio {
   final String fechaCreacion;
   final int? codigoUsuario;
   final String nombreUsuario;
+  final String? nombreEmpresa;
   final int empresa;
 
   UnidadNegocio({
@@ -14,6 +15,7 @@ class UnidadNegocio {
     required this.fechaCreacion,
     required this.codigoUsuario,
     required this.nombreUsuario,
+    required this.nombreEmpresa,
     required this.empresa,
   });
 }

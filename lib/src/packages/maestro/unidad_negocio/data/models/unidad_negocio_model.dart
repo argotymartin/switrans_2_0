@@ -8,6 +8,7 @@ class UnidadNegocioModel extends UnidadNegocio {
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
+    required super.nombreEmpresa,
     required super.empresa,
   });
 
@@ -18,6 +19,7 @@ class UnidadNegocioModel extends UnidadNegocio {
         fechaCreacion: map['fechaCreacion'].toString().replaceAll('T', ' '),
         codigoUsuario: map["codigoUsuario"],
         nombreUsuario: map["nombreUsuario"],
+        nombreEmpresa: map["nombreEmpresa"],
         empresa: map["codigoEmpresa"],
       );
 }
