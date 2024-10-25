@@ -1,5 +1,5 @@
 #!/bin/sh
-REPOSITORY_URL=http://192.168.102.18:8081/repository/bem-release-repo/com/mctgroup/backend
+REPOSITORY_URL=https://nexus.mct.com.co/repository/bem-release-repo/com/mctgroup/backend
 
 # Función para imprimir mensajes con formato
 log_info() {
@@ -27,7 +27,7 @@ check_required_var() {
 download_jar() {
     local url="$1"
     local output="$2"
-    
+
     log_info "Descargando $output desde $url"
     if wget -O "$output" "$url"; then
         log_success "Descarga completada: $output"
@@ -43,7 +43,7 @@ start_java_service() {
     local jar="$1"
     local port="$2"
     local profile="$3"
-    
+
     if [ ! -f "$jar" ]; then
         log_error "No se encuentra el archivo $jar"
         return 1
@@ -51,10 +51,10 @@ start_java_service() {
 
     log_info "Iniciando servicio $jar en puerto $port con perfil $profile"
     java -Dserver.port="$port" -jar "$jar" --spring.profiles.active="$profile" &
-    
+
     # Guardar PID del proceso
     echo $! > "${jar}.pid"
-    
+
     # Esperar para verificar que el servicio inició correctamente
     sleep 5
     if kill -0 $! 2>/dev/null; then
