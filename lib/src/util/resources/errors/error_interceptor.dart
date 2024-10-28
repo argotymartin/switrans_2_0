@@ -77,8 +77,6 @@ class DioErrorInterceptor extends Interceptor {
   Future<void> _handleConectionError(DioException error) async {
     final String content = "${error.error} \nServer: ${error.requestOptions.uri.authority}";
     final ErrorResponse errorResponse = ErrorResponse(title: "Error de Conexion", content: content);
-
-    //await AppRouter.router.push("/error-connection", extra: errorResponse);
     await AppRouter.router.push("/error-connection", extra: errorResponse);
   }
 }
