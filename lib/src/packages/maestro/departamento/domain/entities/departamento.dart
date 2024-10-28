@@ -6,14 +6,14 @@ class Departamento {
   final String fechaCreacion;
   final int? codigoUsuario;
   final String? nombrePais;
-  final int pais;
+  final int codigoPais;
 
   Departamento({
     required this.codigo,
     required this.nombre,
     required this.isActivo,
     required this.fechaCreacion,
-    required this.pais,
+    required this.codigoPais,
     this.nombrePais,
     this.codigoDane,
     this.codigoUsuario,

@@ -14,6 +14,7 @@ class DepartamentoApi {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint';
     final Map<String, dynamic> params = requestModel.toJson();
+
     final Response<dynamic> response = await _dio.get(url, queryParameters: params);
     return response;
   }
