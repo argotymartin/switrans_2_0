@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class BackendErrorResponse {
   final String errorClient;
   final String errorTrace;
@@ -9,6 +11,6 @@ class BackendErrorResponse {
 
   factory BackendErrorResponse.fromJson(Map<String, dynamic> json) => BackendErrorResponse(
         errorClient: json["errorClient"] ?? 'Sin Error Client',
-        errorTrace: json["errorTrace"] ?? 'Sin Error Trace',
+        errorTrace: (json["errorTrace"] is Map) ? jsonEncode(json["errorTrace"]) : json["errorTrace"] ?? 'Sin Error Trace',
       );
 }
