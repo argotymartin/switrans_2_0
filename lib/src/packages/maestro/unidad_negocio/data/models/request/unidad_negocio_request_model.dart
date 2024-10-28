@@ -8,7 +8,7 @@ class UnidadNegocioRequestModel extends UnidadNegocioRequest {
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
-    required super.empresa,
+    required super.codigoEmpresa,
   });
 
   factory UnidadNegocioRequestModel.fromMap(Map<String, dynamic> map) {
@@ -19,7 +19,7 @@ class UnidadNegocioRequestModel extends UnidadNegocioRequest {
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
       nombreUsuario: map['nombreUsuario'],
-      empresa: map['empresa'],
+      codigoEmpresa: map['codigoEmpresa'],
     );
   }
 
@@ -31,7 +31,7 @@ class UnidadNegocioRequestModel extends UnidadNegocioRequest {
       fechaCreacion: request.fechaCreacion,
       codigoUsuario: request.codigoUsuario,
       nombreUsuario: request.nombreUsuario,
-      empresa: request.empresa,
+      codigoEmpresa: request.codigoEmpresa,
     );
   }
 
@@ -43,7 +43,7 @@ class UnidadNegocioRequestModel extends UnidadNegocioRequest {
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
       'nombreUsuario': nombreUsuario,
-      'codigoEmpresa': empresa,
+      'codigoEmpresa': codigoEmpresa,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

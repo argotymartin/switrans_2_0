@@ -6,7 +6,7 @@ class UnidadNegocio {
   final int? codigoUsuario;
   final String nombreUsuario;
   final String? nombreEmpresa;
-  final int empresa;
+  final int codigoEmpresa;
 
   UnidadNegocio({
     required this.codigo,
@@ -16,6 +16,6 @@ class UnidadNegocio {
     required this.codigoUsuario,
     required this.nombreUsuario,
     required this.nombreEmpresa,
-    required this.empresa,
+    required this.codigoEmpresa,
   });
 }

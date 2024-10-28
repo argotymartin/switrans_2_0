@@ -79,8 +79,8 @@ class _BuildFieldsForm extends StatelessWidget {
               AutocompleteInputForm(
                 title: "Empresa",
                 entries: state.entriesEmpresas,
-                value: request.empresa,
-                onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
+                value: request.codigoEmpresa,
+                onChanged: (EntryAutocomplete result) => request.codigoEmpresa = result.codigo,
               ),
               SegmentedInputForm(
                 title: "Activo",

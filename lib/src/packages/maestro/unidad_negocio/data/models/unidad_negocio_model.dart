@@ -9,7 +9,7 @@ class UnidadNegocioModel extends UnidadNegocio {
     required super.codigoUsuario,
     required super.nombreUsuario,
     required super.nombreEmpresa,
-    required super.empresa,
+    required super.codigoEmpresa,
   });
 
   factory UnidadNegocioModel.fromJson(Map<String, dynamic> map) => UnidadNegocioModel(
@@ -20,6 +20,6 @@ class UnidadNegocioModel extends UnidadNegocio {
         codigoUsuario: map["codigoUsuario"],
         nombreUsuario: map["nombreUsuario"],
         nombreEmpresa: map["nombreEmpresa"],
-        empresa: map["codigoEmpresa"],
+        codigoEmpresa: map["codigoEmpresa"],
       );
 }

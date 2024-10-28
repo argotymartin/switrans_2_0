@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -76,8 +75,8 @@ class _BuildFieldsForm extends StatelessWidget {
               AutocompleteInputForm(
                 entries: state.entriesEmpresas,
                 title: "Empresa",
-                value: request.empresa,
-                onChanged: (EntryAutocomplete result) => request.empresa = result.codigo,
+                value: request.codigoEmpresa,
+                onChanged: (EntryAutocomplete result) => request.codigoEmpresa = result.codigo,
               ),
             ],
           ),
