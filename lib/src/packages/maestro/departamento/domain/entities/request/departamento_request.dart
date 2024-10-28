@@ -1,33 +1,36 @@
 class DepartamentoRequest {
   int? codigo;
-  int? codigoUsuario;
-  String? codigoDane;
   String? nombre;
-  int? pais;
-  String? fechaCreacion;
   bool? isActivo;
+  String? codigoDane;
+  String? fechaCreacion;
+  int? codigoUsuario;
+  String? nombrePais;
+  int? codigoPais;
 
   DepartamentoRequest({
     this.codigo,
-    this.codigoUsuario,
-    this.codigoDane,
     this.nombre,
-    this.pais,
-    this.fechaCreacion,
     this.isActivo,
+    this.codigoDane,
+    this.fechaCreacion,
+    this.codigoUsuario,
+    this.nombrePais,
+    this.codigoPais,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || pais != null || isActivo != null;
+    return codigo != null || nombre != null || codigoPais != null || isActivo != null || codigoDane != null;
   }
 
   void clean() {
     codigo = null;
-    codigoUsuario = null;
-    codigoDane = null;
     nombre = null;
-    pais = null;
-    fechaCreacion = null;
     isActivo = null;
+    codigoDane = null;
+    fechaCreacion = null;
+    codigoUsuario = null;
+    nombrePais = null;
+    codigoPais = null;
   }
 }

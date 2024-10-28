@@ -8,7 +8,8 @@ class DepartamentoRequestModel extends DepartamentoRequest {
     required super.fechaCreacion,
     required super.codigoDane,
     required super.codigoUsuario,
-    required super.pais,
+    required super.nombrePais,
+    required super.codigoPais,
   });
 
   factory DepartamentoRequestModel.fromMap(Map<String, dynamic> map) {
@@ -19,7 +20,8 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       codigoDane: map['codigoDane'],
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
-      pais: map['pais'],
+      nombrePais:  map['nombrePais'],
+      codigoPais: map['codigoPais'],
     );
   }
 
@@ -31,7 +33,8 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       codigoDane: request.codigoDane,
       fechaCreacion: request.fechaCreacion,
       codigoUsuario: request.codigoUsuario,
-      pais: request.pais,
+      nombrePais: request.nombrePais,
+      codigoPais: request.codigoPais,
     );
   }
 
@@ -43,7 +46,7 @@ class DepartamentoRequestModel extends DepartamentoRequest {
       'codigoDane': codigoDane,
       'fechaCreacion': fechaCreacion,
       'codigoUsuario': codigoUsuario,
-      'pais': pais,
+      'codigoPais': codigoPais,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

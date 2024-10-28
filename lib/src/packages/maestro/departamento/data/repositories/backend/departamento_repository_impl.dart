@@ -37,8 +37,7 @@ class DepartamentoRepositoryImpl extends BaseApiRepository implements AbstractDe
       if (backendResponse.success) {
         final dynamic responseData = backendResponse.data;
         if (responseData is List && responseData.isNotEmpty) {
-          final Map<String, dynamic> firstItem = responseData.first as Map<String, dynamic>;
-          final Departamento departamento = DepartamentoModel.fromJson(firstItem);
+          final Departamento departamento = DepartamentoModel.fromJson(responseData.first);
           return DataSuccess<Departamento>(departamento);
         }
       }
