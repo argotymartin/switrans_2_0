@@ -10,7 +10,8 @@ class TransaccionContableModel extends TransaccionContable {
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
-    required super.tipoimpuesto,
+    required super.codigoTipoImpuesto,
+    required super.nombreTipoImpuesto,
   });
 
   factory TransaccionContableModel.fromJson(Map<String, dynamic> json) => TransaccionContableModel(
@@ -22,6 +23,7 @@ class TransaccionContableModel extends TransaccionContable {
         fechaCreacion: json['fechaCreacion'].toString(),
         codigoUsuario: json['codigoUsuario'],
         nombreUsuario: json['nombreUsuario'],
-        tipoimpuesto: json['codigoTipoImpuesto'],
+        codigoTipoImpuesto: json['codigoTipoImpuesto'],
+        nombreTipoImpuesto: json['nombreTipoImpuesto'],
       );
 }

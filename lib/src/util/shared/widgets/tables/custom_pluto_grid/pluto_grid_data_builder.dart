@@ -66,11 +66,11 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.select) {
-          double screenWidth = MediaQuery.of(context).size.width;
-          double width = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
+          final double screenWidth = MediaQuery.of(context).size.width;
+          final double width = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
               ? screenWidth * 0.35
               : screenWidth * 0.25;
-          double minWidth = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
+          final double minWidth = (v.entryMenus != null && v.entryMenus!.isNotEmpty)
               ? screenWidth * 0.18
               : screenWidth * 0.12;
 
@@ -104,8 +104,8 @@ class _PlutoGridDataBuilderState extends State<PlutoGridDataBuilder> {
           );
         }
         if (tipo == Tipo.date) {
-          double screenWidth = MediaQuery.of(context).size.width;
-          bool isSmallScreen = screenWidth < 600;
+          final double screenWidth = MediaQuery.of(context).size.width;
+          final bool isSmallScreen = screenWidth < 600;
           columns.add(
             PlutoColumn(
               minWidth: isSmallScreen ? screenWidth * 0.5 : 300,

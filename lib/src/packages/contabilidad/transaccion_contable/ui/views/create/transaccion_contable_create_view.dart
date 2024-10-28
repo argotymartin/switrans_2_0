@@ -82,8 +82,8 @@ class _BuildFieldsForm extends StatelessWidget {
               AutocompleteInputForm(
                 entries: state.entriesTipoImpuestos,
                 title: "Tipo Impuesto",
-                value: request.tipoImpuesto,
-                onChanged: (EntryAutocomplete result) => request.tipoImpuesto = result.codigo,
+                value: request.codigoTipoImpuesto,
+                onChanged: (EntryAutocomplete result) => request.codigoTipoImpuesto = result.codigo,
               ),
             ],
           ),

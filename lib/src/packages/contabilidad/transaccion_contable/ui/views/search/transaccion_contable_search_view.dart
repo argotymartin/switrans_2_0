@@ -28,7 +28,7 @@ class TransaccionContableSearchView extends StatelessWidget {
               physics: const ClampingScrollPhysics(),
               children: <Widget>[
                 const BuildViewDetail(),
-                CardExpansionPanel(title: "Buscar Registros**", icon: Icons.search, child: _BuildFieldsForm(state)),
+                CardExpansionPanel(title: "Buscar Registros", icon: Icons.search, child: _BuildFieldsForm(state)),
                 const _BluildDataTable(),
               ],
             ),
@@ -76,8 +76,8 @@ class _BuildFieldsForm extends StatelessWidget {
               AutocompleteInputForm(
                 entries: state.entriesTipoImpuestos,
                 title: "Tipo Impuesto",
-                value: request.tipoImpuesto,
-                onChanged: (EntryAutocomplete result) => request.tipoImpuesto = result.codigo,
+                value: request.codigoTipoImpuesto,
+                onChanged: (EntryAutocomplete result) => request.codigoTipoImpuesto = result.codigo,
               ),
               TextInputForm(
                 title: "Nombre",
@@ -157,13 +157,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
               ),
               'tipoimpuesto': DataItemGrid(
                 title: "Tipo Impuesto",
-                type: Tipo.select,
-                value: transaccionContable.tipoimpuesto,
+                type: Tipo.text,
+                value: transaccionContable.nombreTipoImpuesto,
                 edit: false,
                 entryMenus: state.entriesTipoImpuestos,
               ),
-              'secuencia': DataItemGrid(
-                title: "Secuencia",
+              'orden': DataItemGrid(
+                title: "Orden",
                 type: Tipo.text,
                 value: transaccionContable.orden,
                 edit: false,

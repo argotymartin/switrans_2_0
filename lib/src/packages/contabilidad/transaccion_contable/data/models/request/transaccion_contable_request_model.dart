@@ -10,7 +10,7 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
-    required super.tipoImpuesto,
+    required super.codigoTipoImpuesto,
   });
 
   factory TransaccionContableRequestModel.fromMap(Map<String, dynamic> map) => TransaccionContableRequestModel(
@@ -22,7 +22,7 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
     codigoUsuario: map['codigoUsuario'],
     nombreUsuario: map['nombreUsuario'],
     orden: map['secuencia'],
-    tipoImpuesto: map['tipo_impuesto'],
+    codigoTipoImpuesto: map['codigoTipoImpuesto'],
   );
 
 
@@ -36,7 +36,7 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
         fechaCreacion: request.fechaCreacion,
         codigoUsuario: request.codigoUsuario,
         nombreUsuario: request.nombreUsuario,
-        tipoImpuesto: request.tipoImpuesto,
+        codigoTipoImpuesto: request.codigoTipoImpuesto,
       );
   }
 
@@ -50,7 +50,7 @@ class TransaccionContableRequestModel extends TransaccionContableRequest {
       'orden': orden,
       'codigoUsuario': codigoUsuario,
       'nombreUsuario': nombreUsuario,
-      'codigoTipoImpuesto': tipoImpuesto,
+      'codigoTipoImpuesto': codigoTipoImpuesto,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

@@ -10,7 +10,6 @@ class TransaccionContableRequest {
   int? codigoTipoImpuesto;
   String? nombreTipoImpuesto;
   bool? estadoTipoImpuesto;
-  int? tipoImpuesto;
 
   TransaccionContableRequest({
     this.codigo,
@@ -24,11 +23,10 @@ class TransaccionContableRequest {
     this.codigoTipoImpuesto,
     this.nombreTipoImpuesto,
     this.estadoTipoImpuesto,
-    this.tipoImpuesto,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || sigla != null || isActivo != null || orden != null || tipoImpuesto != null;
+    return codigo != null || nombre != null || sigla != null || isActivo != null || orden != null || codigoTipoImpuesto != null;
   }
 
   void clean() {
@@ -43,6 +41,5 @@ class TransaccionContableRequest {
     codigoTipoImpuesto = null;
     nombreTipoImpuesto = null;
     estadoTipoImpuesto = null;
-    tipoImpuesto = null;
   }
 }

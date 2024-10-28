@@ -5,7 +5,8 @@ class TransaccionContable {
   final bool isActivo;
   final int orden;
   final String fechaCreacion;
-  final int tipoimpuesto;
+  final int codigoTipoImpuesto;
+  final String nombreTipoImpuesto;
   final int? codigoUsuario;
   final String nombreUsuario;
 
@@ -16,7 +17,8 @@ class TransaccionContable {
     required this.isActivo,
     required this.orden,
     required this.fechaCreacion,
-    required this.tipoimpuesto,
+    required this.codigoTipoImpuesto,
+    required this.nombreTipoImpuesto,
     required this.nombreUsuario,
     this.codigoUsuario,
   });
