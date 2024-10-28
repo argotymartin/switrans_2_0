@@ -14,6 +14,7 @@ import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart'
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
@@ -93,6 +94,9 @@ class AppRouter {
               ),
               BlocProvider<ResolucionBloc>(
                 create: (_) => injector<ResolucionBloc>()..add(const InitializationResolucionEvent()),
+              ),
+              BlocProvider<MunicipioBloc>(
+                create: (_) => injector<MunicipioBloc>()..add(const InitialMunicipioEvent()),
               ),
             ],
             child: MenuLayout(child: child),

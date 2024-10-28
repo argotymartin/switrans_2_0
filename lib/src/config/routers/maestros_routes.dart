@@ -15,6 +15,10 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.da
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/create/modulo_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/views/search/modulo_search_view.dart';
 
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/views/create/municipio_create_view.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/views/search/municipio_search_view.dart';
+
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/blocs/pagina_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/create/pagina_create_view.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/ui/views/search/pagina_search_view.dart';
@@ -63,6 +67,7 @@ class MaestrosRoutes {
       ..._routerPagina(),
       ..._routerResolucion(),
       ..._routerPais(),
+      ..._routerMunicipio(),
     ];
   }
 
@@ -304,6 +309,28 @@ class MaestrosRoutes {
         builder: (BuildContext context, __) {
           context.read<ResolucionBloc>().request.clean();
           return const ResolucionSearchView();
+        },
+        redirect: ValidateRoutes.onValidateAuth,
+      ),
+    ];
+  }
+
+  static List<GoRoute> _routerMunicipio() {
+    const String modulePath = "municipio";
+    return <GoRoute>[
+      GoRoute(
+        path: "$packagePath/$modulePath/registrar",
+        builder: (BuildContext context, GoRouterState state) {
+          context.read<MunicipioBloc>().request.clean();
+          return const MunicipioCreateView();
+        },
+        redirect: ValidateRoutes.onValidateAuth,
+      ),
+      GoRoute(
+        path: "$packagePath/$modulePath/buscar",
+        builder: (BuildContext context, GoRouterState state) {
+          context.read<MunicipioBloc>().request.clean();
+          return const MunicipioSearchView();
         },
         redirect: ValidateRoutes.onValidateAuth,
       ),

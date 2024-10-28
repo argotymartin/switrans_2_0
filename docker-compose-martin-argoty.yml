@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: ${STAGE}
+      args:
+        - ENV=${ENV}
     container_name: switrans2-app-martin-argoty
     ports:
       - "3003:80"

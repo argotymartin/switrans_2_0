@@ -27,6 +27,10 @@ import 'package:switrans_2_0/src/packages/maestro/modulo/data/datasources/api/mo
 import 'package:switrans_2_0/src/packages/maestro/modulo/data/repositories/modulo_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/domain/repositories/abstract_modulo_repository.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/data/datasources/api/backend/municipio_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/data/repositories/backend/municipio_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/datasources/api/pagina_api_pocketbase.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/data/repositories/pagina_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/pagina/domain/pagina_domain.dart';
@@ -133,4 +137,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<ResolucionApi>(ResolucionApi(injector()));
   injector.registerSingleton<AbstractResolucionRepository>(ResolucionRespositoryApiImpl(injector()));
   injector.registerSingleton<ResolucionBloc>(ResolucionBloc(injector()));
+
+  injector.registerSingleton<MunicipioApi>(MunicipioApi(injector()));
+  injector.registerSingleton<AbstractMunicipioRepository>(MunicipioRepositoryImpl(injector()));
+  injector.registerSingleton<MunicipioBloc>(MunicipioBloc(injector()));
 }

@@ -135,7 +135,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                 ),
               ),
               dropdownBuilder: (BuildContext context, EntryAutocomplete? selectedItem) {
-                if (selectedItem != null ) {
+                if (selectedItem != null) {
                   if (entryAutocompleteSelected == null || entryAutocompleteSelected != selectedItem) {
                     entryAutocompleteSelected = selectedItem;
                     widget.onPressed?.call(selectedItem);
@@ -146,9 +146,9 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                         });
                       }
                     });
-                   }
+                  }
                   if (entryAutocompleteSelected == null) {
-                    return const Text("Seleccionar item");
+                    return const Text("Seleccionar item", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12));
                   }
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -179,7 +179,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                     ),
                   );
                 } else {
-                  return const Text("Seleccionar item");
+                  return const Text("Seleccionar item", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12));
                 }
               },
             ),
