@@ -1,22 +1,25 @@
 class AccionDocumento {
   final int codigo;
   final String nombre;
-  final String tipoNombre;
-  final int tipoCodigo;
   final bool isActivo;
   final bool isInverso;
-  final String usuario;
+  final bool isReversible;
   final String fechaCreacion;
-  final String fechaActualizacion;
+  final int codigoUsuario;
+  final String nombreUsuario;
+  final int codigoDocumento;
+  final String nombreDocumento;
+
   AccionDocumento({
     required this.codigo,
     required this.nombre,
-    required this.tipoNombre,
-    required this.tipoCodigo,
     required this.isActivo,
     required this.isInverso,
-    required this.usuario,
+    required this.isReversible,
     required this.fechaCreacion,
-    required this.fechaActualizacion,
+    required this.codigoUsuario,
+    required this.nombreUsuario,
+    required this.codigoDocumento,
+    required this.nombreDocumento,
   });
 }

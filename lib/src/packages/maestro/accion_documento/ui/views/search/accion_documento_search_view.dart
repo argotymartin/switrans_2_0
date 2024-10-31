@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/models/request/accion_documento_request_model.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/data.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/util/resources/resources.dart';
-import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
-import 'package:switrans_2_0/src/util/shared/views/views_shared.dart';
+import 'package:switrans_2_0/src/util/shared/models/entry_autocomplete.dart';
+import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/widgets_shared.dart';
 
@@ -51,7 +52,7 @@ class _BuildFieldsForm extends StatelessWidget {
 
     void onPressed() {
       if (request.hasNonNullField()) {
-        accionDocumentoBloc.add(GetAccionDocumentoEvent(request));
+        accionDocumentoBloc.add(GetAccionDocumentosEvent(request));
       } else {
         accionDocumentoBloc.add(const ErrorFormAccionDocumentoEvent("Por favor diligenciar por lo menos un campo del formulario"));
       }
@@ -76,11 +77,26 @@ class _BuildFieldsForm extends StatelessWidget {
                 typeInput: TypeInput.lettersAndNumbers,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
+              SegmentedInputForm(
+                title: "Activo",
+                value: request.isActivo,
+                onChanged: (bool? newValue) => request.isActivo = newValue,
+              ),
+              SegmentedInputForm(
+                title: "Naturaleza",
+                value: request.isInversa,
+                onChanged: (bool? newValue) => request.isInversa = newValue,
+              ),
+              SegmentedInputForm(
+                title: "Reversible",
+                value: request.isReversible,
+                onChanged: (bool? newValue) => request.isReversible = newValue,
+              ),
               AutocompleteInputForm(
-                entries: state.entriesTiposDocumento,
-                title: "Tipo Documento",
-                value: request.tipoDocumento,
-                onChanged: (EntryAutocomplete result) => request.tipoDocumento = result.codigo,
+                entries: state.entriesDocumentos,
+                title: "Documento",
+                value: request.codigoDocumento,
+                onChanged: (EntryAutocomplete result) => request.codigoDocumento = result.codigo,
               ),
             ],
           ),
@@ -100,28 +116,30 @@ class _BluildDataTable extends StatefulWidget {
 }
 
 class _BluildDataTableState extends State<_BluildDataTable> {
+  List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (BuildContext context, AccionDocumentoState state) {
         if (state.status == AccionDocumentoStatus.consulted) {
-          final List<Map<String, dynamic>> listUpdate = <Map<String, dynamic>>[];
+
           void onRowChecked(List<Map<String, dynamic>> event) {
             listUpdate.clear();
             setState(() => listUpdate.addAll(event));
           }
 
           void onPressedSave() {
-            final List<EntityUpdate<AccionDocumentoRequestModel>> requestList = <EntityUpdate<AccionDocumentoRequestModel>>[];
+            final List<EntityUpdate<AccionDocumentoRequest>> requestList = <EntityUpdate<AccionDocumentoRequest>>[];
             for (final Map<String, dynamic> map in listUpdate) {
-              final AccionDocumentoRequestModel request = AccionDocumentoRequestModel.fromMap(map["data"]);
-              requestList.add(EntityUpdate<AccionDocumentoRequestModel>(id: map["id"], entity: request));
+              final AccionDocumentoRequest request = AccionDocumentoRequestModel.fromMap(map["data"]);
+              request.codigoUsuario = context.read<AuthBloc>().state.auth?.usuario.codigo;
+              requestList.add(EntityUpdate<AccionDocumentoRequest>(id: map["id"], entity: request));
             }
-            context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentoEvent(requestList));
+            context.read<AccionDocumentoBloc>().add(UpdateAccionDocumentosEvent(requestList));
           }
 
           Map<String, DataItemGrid> buildPlutoRowData(AccionDocumento accionDocumento) {
-            final List<EntryAutocomplete> entryMenus = state.entriesTiposDocumento;
             return <String, DataItemGrid>{
               'codigo': DataItemGrid(
                 title: "Codigo",
@@ -133,25 +151,30 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: accionDocumento.nombre,
-                edit: true,
+                edit: false,
               ),
-              'tipoCodigo': DataItemGrid(
-                title: "Tipo",
-                type: Tipo.select,
-                value: accionDocumento.tipoCodigo,
-                edit: true,
-                entryMenus: entryMenus,
-              ),
-              'isInverso': DataItemGrid(
-                title: "Es Inverso",
-                type: Tipo.boolean,
-                value: accionDocumento.isInverso,
-                edit: true,
+              'codigoDocumento': DataItemGrid(
+                title: "Documento",
+                type: Tipo.text,
+                value: accionDocumento.nombreDocumento,
+                edit: false,
               ),
               'isActivo': DataItemGrid(
                 title: "Activo",
                 type: Tipo.boolean,
                 value: accionDocumento.isActivo,
+                edit: true,
+              ),
+              'isInverso': DataItemGrid(
+                title: "Naturaza es Inversa?",
+                type: Tipo.boolean,
+                value: accionDocumento.isInverso,
+                edit: true,
+              ),
+              'isRevesible': DataItemGrid(
+                title: "Es Reversible?",
+                type: Tipo.boolean,
+                value: accionDocumento.isReversible,
                 edit: true,
               ),
               'fechaCreacion': DataItemGrid(
@@ -160,16 +183,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 value: accionDocumento.fechaCreacion,
                 edit: false,
               ),
-              'fechaActualizacion': DataItemGrid(
-                title: "Fecha Actualizacion",
-                type: Tipo.date,
-                value: accionDocumento.fechaActualizacion,
-                edit: false,
-              ),
               'usuario': DataItemGrid(
                 title: "Usuario",
                 type: Tipo.text,
-                value: accionDocumento.usuario,
+                value: accionDocumento.nombreUsuario,
                 edit: false,
               ),
             };

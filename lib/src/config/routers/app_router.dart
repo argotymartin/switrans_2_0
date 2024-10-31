@@ -11,7 +11,7 @@ import 'package:switrans_2_0/src/globals/login/ui/layouts/views/error_connection
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/token_expired_view.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/modulo/ui/blocs/modulo_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/municipio/ui/blocs/municipio_bloc.dart';
@@ -60,7 +60,7 @@ class AppRouter {
             providers: <SingleChildWidget>[
               BlocProvider<FacturaBloc>(create: (_) => injector<FacturaBloc>()),
               BlocProvider<AccionDocumentoBloc>(
-                create: (_) => injector<AccionDocumentoBloc>()..add(const InitializationAccionDocumentoEvent()),
+                create: (_) => injector<AccionDocumentoBloc>()..add(const InitialAccionDocumentoEvent()),
               ),
               BlocProvider<DepartamentoBloc>(
                 create: (_) => injector<DepartamentoBloc>()..add(const InitialDepartamentoEvent()),

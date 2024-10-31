@@ -15,10 +15,10 @@ import 'package:switrans_2_0/src/packages/financiero/factura/data/datasources/ap
 import 'package:switrans_2_0/src/packages/financiero/factura/data/repositories/backend/factura_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/domain/factura_domain.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasources/db/accion_documento_db.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/accion_documento_repository_db_impl.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/datasources/api/backend/accion_documento_api.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/data/repositories/backend/accion_documento_repository_impl.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/datasources/api/backend/departamento_api.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/data/repositories/backend/departamento_repository_impl.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/domain/departamento_domain.dart';
@@ -91,8 +91,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<AbstractTipoImpuestoRepository>(TipoImpuestoRepositoryImpl(injector()));
   injector.registerSingleton<TipoImpuestoBloc>(TipoImpuestoBloc(injector()));
 
-  injector.registerSingleton<AccionDocumentoDB>(AccionDocumentoDB());
-  injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryDBImpl(injector()));
+  injector.registerSingleton<AccionDocumentoApi>(AccionDocumentoApi(injector()));
+  injector.registerSingleton<AbstractAccionDocumentoRepository>(AccionDocumentoRepositoryImpl(injector()));
   injector.registerSingleton<AccionDocumentoBloc>(AccionDocumentoBloc(injector()));
 
   injector.registerSingleton<ServicioEmpresarialDB>(ServicioEmpresarialDB());

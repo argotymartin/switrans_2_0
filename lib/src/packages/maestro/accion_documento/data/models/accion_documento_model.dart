@@ -1,27 +1,29 @@
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/accion_documento_domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/accion_documento.dart';
 
 class AccionDocumentoModel extends AccionDocumento {
   AccionDocumentoModel({
     required super.codigo,
     required super.nombre,
-    required super.tipoNombre,
-    required super.tipoCodigo,
     required super.isActivo,
     required super.isInverso,
-    required super.usuario,
+    required super.isReversible,
     required super.fechaCreacion,
-    required super.fechaActualizacion,
+    required super.codigoUsuario,
+    required super.nombreUsuario,
+    required super.codigoDocumento,
+    required super.nombreDocumento,
   });
 
   factory AccionDocumentoModel.fromJson(Map<String, dynamic> json) => AccionDocumentoModel(
-        codigo: json['accdoc_codigo'],
-        nombre: json['accdoc_nombre'],
-        usuario: json['usuario_nombre'],
-        fechaCreacion: json['accdoc_fecha_creacion'].toString(),
-        fechaActualizacion: json['accdoc_fecha_modificacion'].toString(),
-        tipoNombre: json['documento_nombre'],
-        tipoCodigo: json['documento_codigo'],
-        isActivo: json['accdoc_es_activo'],
-        isInverso: json['accdoc_es_naturaleza_inversa'],
+        codigo: json['codigo'],
+        nombre: json['nombre'],
+        isActivo: json['estado'],
+        isInverso: json['estadoNaturaleza'],
+        isReversible: json['estadoReversible'],
+        fechaCreacion: json['fechaCreacion'].toString(),
+        codigoUsuario: json['codigoUsuario'],
+        nombreUsuario: json['nombreUsuario'],
+        codigoDocumento: json['codigoDocumento'],
+        nombreDocumento: json['nombreDocumento'],
       );
 }

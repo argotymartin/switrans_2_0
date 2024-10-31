@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:switrans_2_0/src/globals/login/ui/login_ui.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/entities/request/accion_documento_request.dart';
-import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/domain/domain.dart';
+import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/models/models_shared.dart';
 import 'package:switrans_2_0/src/util/shared/views/build_view_detail.dart';
 import 'package:switrans_2_0/src/util/shared/widgets/inputs/text_input.dart';
@@ -21,7 +21,7 @@ class AccionDocumentoCreateView extends StatelessWidget {
         }
         if (state.status == AccionDocumentoStatus.succes) {
           final AccionDocumentoRequest request = AccionDocumentoRequest(codigo: state.accionDocumento!.codigo);
-          context.read<AccionDocumentoBloc>().add(GetAccionDocumentoEvent(request));
+          context.read<AccionDocumentoBloc>().add(GetAccionDocumentosEvent(request));
           context.go('/maestros/accion_documentos/buscar');
         }
       },
@@ -53,10 +53,11 @@ class _BuildFieldsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final AccionDocumentoBloc accionDocumentoBloc = context.watch<AccionDocumentoBloc>();
     final AccionDocumentoRequest request = accionDocumentoBloc.request;
-    bool isNaturalezaInversa = false;
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    bool isInversa = false;
+
     return Form(
       key: formKey,
       child: Column(
@@ -73,26 +74,26 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toLowerCase() : null,
               ),
               AutocompleteInputForm(
-                entries: state.entriesTiposDocumento,
+                entries: state.entriesDocumentos,
                 title: "Tipo Documento",
-                value: request.tipoDocumento,
+                value: request.codigoDocumento,
                 isRequired: true,
-                onChanged: (EntryAutocomplete result) => request.tipoDocumento = result.codigo,
+                onChanged: (EntryAutocomplete result) => request.codigoDocumento = result.codigo,
               ),
               SwitchBoxInputForm(
                 title: "Es Naturaleza Inversa",
-                onChanged: (bool value) => isNaturalezaInversa = value,
+                onChanged: (bool value) => isInversa = value,
               ),
             ],
           ),
           FormButton(
-            onPressed: () {
+            onPressed: () async {
               final bool isValid = formKey.currentState!.validate();
               if (isValid) {
                 final AuthBloc authBloc = context.read<AuthBloc>();
-                request.isNaturalezaInversa = isNaturalezaInversa;
-                request.usuario = authBloc.state.auth!.usuario.codigo;
-                accionDocumentoBloc.add(SetAccionDocumentoEvent(request));
+                accionDocumentoBloc.request.codigoUsuario = authBloc.state.auth!.usuario.codigo;
+                request.isInversa = isInversa;
+                context.read<AccionDocumentoBloc>().add(SetAccionDocumentoEvent(request));
               }
             },
             icon: Icons.save,
