@@ -136,6 +136,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 type: Tipo.text,
                 value: pais.nombre,
                 edit: true,
+                typeInput: TypeInput.lettersAndCaracteres,
+                minLength: 3,
               ),
               'fechaCreacion': DataItemGrid(
                 title: "Fecha Creacion",
@@ -147,7 +149,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Usuario",
                 type: Tipo.text,
                 value: pais.usuarioNombre,
-                edit: true,
+                edit: false,
               ),
               'isActivo': DataItemGrid(
                 title: "Activo",

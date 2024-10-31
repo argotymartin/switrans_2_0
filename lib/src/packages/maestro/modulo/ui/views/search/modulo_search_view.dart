@@ -143,18 +143,25 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: modulo.nombre,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 4,
+                width: 220,
                 edit: true,
               ),
               'detalles': DataItemGrid(
                 title: "Detalles",
                 type: Tipo.text,
                 value: modulo.detalles,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 20,
+                width: 400,
                 edit: true,
               ),
               'path': DataItemGrid(
                 title: "Path",
                 type: Tipo.text,
                 value: modulo.path,
+                width: 220,
                 edit: false,
               ),
               'icono': DataItemGrid(
@@ -162,11 +169,13 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 type: Tipo.text,
                 value: modulo.icono,
                 edit: false,
+                width: 120,
               ),
               'paquete': DataItemGrid(
                 title: "Paquete",
                 type: Tipo.select,
                 value: modulo.paquete,
+                width: 220,
                 edit: false,
                 entryMenus: state.entriesPaquete,
               ),
@@ -174,6 +183,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Fecha Creacion",
                 type: Tipo.date,
                 value: modulo.fechaCreacion,
+                width: 220,
                 edit: false,
               ),
               'isActivo': DataItemGrid(
@@ -181,12 +191,14 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 type: Tipo.boolean,
                 value: modulo.isActivo,
                 edit: true,
+                width: 120,
               ),
               'isVisible': DataItemGrid(
                 title: "Visible",
                 type: Tipo.boolean,
                 value: modulo.isVisible,
                 edit: true,
+                width: 120,
               ),
             };
           }
