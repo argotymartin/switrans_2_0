@@ -2,7 +2,7 @@ class AccionDocumento {
   final int codigo;
   final String nombre;
   final bool isActivo;
-  final bool isInverso;
+  final bool isInversa;
   final bool isReversible;
   final String fechaCreacion;
   final int codigoUsuario;
@@ -14,7 +14,7 @@ class AccionDocumento {
     required this.codigo,
     required this.nombre,
     required this.isActivo,
-    required this.isInverso,
+    required this.isInversa,
     required this.isReversible,
     required this.fechaCreacion,
     required this.codigoUsuario,

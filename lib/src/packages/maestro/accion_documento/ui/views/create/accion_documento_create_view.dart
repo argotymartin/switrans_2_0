@@ -56,7 +56,6 @@ class _BuildFieldsForm extends StatelessWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final AccionDocumentoBloc accionDocumentoBloc = context.watch<AccionDocumentoBloc>();
     final AccionDocumentoRequest request = accionDocumentoBloc.request;
-    bool isInversa = false;
 
     return Form(
       key: formKey,
@@ -80,10 +79,6 @@ class _BuildFieldsForm extends StatelessWidget {
                 isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.codigoDocumento = result.codigo,
               ),
-              SwitchBoxInputForm(
-                title: "Es Naturaleza Inversa",
-                onChanged: (bool value) => isInversa = value,
-              ),
             ],
           ),
           FormButton(
@@ -92,7 +87,6 @@ class _BuildFieldsForm extends StatelessWidget {
               if (isValid) {
                 final AuthBloc authBloc = context.read<AuthBloc>();
                 accionDocumentoBloc.request.codigoUsuario = authBloc.state.auth!.usuario.codigo;
-                request.isInversa = isInversa;
                 context.read<AccionDocumentoBloc>().add(SetAccionDocumentoEvent(request));
               }
             },

@@ -164,14 +164,14 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 value: accionDocumento.isActivo,
                 edit: true,
               ),
-              'isInverso': DataItemGrid(
-                title: "Naturaza es Inversa?",
+              'isInversa': DataItemGrid(
+                title: "Naturaleza",
                 type: Tipo.boolean,
-                value: accionDocumento.isInverso,
+                value: accionDocumento.isInversa,
                 edit: true,
               ),
-              'isRevesible': DataItemGrid(
-                title: "Es Reversible?",
+              'isReversible': DataItemGrid(
+                title: "Reversible",
                 type: Tipo.boolean,
                 value: accionDocumento.isReversible,
                 edit: true,
