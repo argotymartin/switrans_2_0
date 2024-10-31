@@ -123,7 +123,6 @@ class _BluildDataTableState extends State<_BluildDataTable> {
     return BlocBuilder<AccionDocumentoBloc, AccionDocumentoState>(
       builder: (BuildContext context, AccionDocumentoState state) {
         if (state.status == AccionDocumentoStatus.consulted) {
-
           void onRowChecked(List<Map<String, dynamic>> event) {
             listUpdate.clear();
             setState(() => listUpdate.addAll(event));

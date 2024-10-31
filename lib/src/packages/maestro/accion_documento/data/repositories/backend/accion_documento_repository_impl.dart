@@ -50,9 +50,9 @@ class AccionDocumentoRepositoryImpl extends BaseApiRepository implements Abstrac
     final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDocumentosApi());
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
-      final List<AccionDocumentoDocumento> AccionDocumentoDocumentos =
+      final List<AccionDocumentoDocumento> accionDocumentoDocumentos =
       List<AccionDocumentoDocumento>.from(backendResponse.data.map((dynamic x) => AccionDocumentoDocumentoModel.fromJson(x)));
-      return DataSuccess<List<AccionDocumentoDocumento>>(AccionDocumentoDocumentos);
+      return DataSuccess<List<AccionDocumentoDocumento>>(accionDocumentoDocumentos);
     }
     return DataFailed<List<AccionDocumentoDocumento>>(httpResponse.error!);
   }
