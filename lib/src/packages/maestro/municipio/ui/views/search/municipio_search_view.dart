@@ -78,6 +78,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Nombre",
                 value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
+                minLength: 5,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
@@ -150,13 +151,16 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Codigo Dane",
                 type: Tipo.text,
                 value: municipio.codigoDane,
+                typeInput: TypeInput.onlyNumbers,
+                minLength: 3,
+                maxLength: 3,
                 edit: true,
               ),
               'departamento': DataItemGrid(
                 title: "Departamento",
-                type: Tipo.select,
-                value: municipio.departamento,
-                edit: true,
+                type: Tipo.text,
+                value: municipio.nombreDepartamento,
+                edit: false,
                 entryMenus: state.entriesDepartamentos,
               ),
               'nombreUsuario': DataItemGrid(

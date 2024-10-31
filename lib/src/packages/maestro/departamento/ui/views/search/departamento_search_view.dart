@@ -152,7 +152,10 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: departamento.nombre,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 5,
                 edit: true,
+                width: 400,
               ),
               'DANE': DataItemGrid(
                 title: "DANE",

@@ -8,7 +8,8 @@ class MunicipioModel extends Municipio {
     required super.fechaCreacion,
     required super.codigoUsuario,
     required super.nombreUsuario,
-    required super.departamento,
+    required super.codigoDepartamento,
+    required super.nombreDepartamento,
     super.codigoDane,
   });
 
@@ -20,6 +21,7 @@ class MunicipioModel extends Municipio {
         fechaCreacion: json["fechaCreacion"].toString(),
         codigoUsuario: json["codigoUsuario"],
         nombreUsuario: json["nombreUsuario"],
-        departamento: json["codigoDepartamento"],
+        codigoDepartamento: json["codigoDepartamento"],
+        nombreDepartamento: json["nombreDepartamento"],
       );
 }

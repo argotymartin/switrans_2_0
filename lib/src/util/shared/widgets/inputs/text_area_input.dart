@@ -5,6 +5,7 @@ class TextAreaInput extends StatefulWidget {
   final String initialValue;
   final String hintText;
   final int minLength;
+  final int maxLength;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
   final TypeInput typeInput;
@@ -12,12 +13,13 @@ class TextAreaInput extends StatefulWidget {
 
   const TextAreaInput({
     required this.typeInput,
+    required this.minLength,
+    required this.maxLength,
     super.key,
     this.controller,
     this.hintText = "",
     this.onChanged,
     this.initialValue = "",
-    this.minLength = 3,
     this.autofocus = false,
   });
 
@@ -60,15 +62,34 @@ class _TextInputState extends State<TextAreaInput> {
     Future<void>.microtask(() => setState(() {}));
     isError = false;
     if (value != null && !isFocusOut) {
-      if (value.length < widget.minLength) {
+      if (value.isNotEmpty && value.length < widget.minLength) {
         isError = true;
         return "El campo debe ser minimo de ${widget.minLength} caracteres";
+      }
+
+      if (value.isNotEmpty && value.length > widget.maxLength) {
+        isError = true;
+        return "El campo debe ser maximo de ${widget.maxLength} caracteres";
       }
 
       if (widget.typeInput == TypeInput.lettersAndNumbers && value.isNotEmpty) {
         if (!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
           isError = true;
           return "El campo solo permite letras y numeros (ABC123)";
+        }
+      }
+
+      if (widget.typeInput == TypeInput.lettersAndCaracteres && value.isNotEmpty) {
+        if (!RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]+$').hasMatch(value)) {
+          isError = true;
+          return "El campo solo permite letras, caracteres especiales y el punto.";
+        }
+      }
+
+      if (widget.typeInput == TypeInput.onlyNumbers && value.isNotEmpty) {
+        if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+          isError = true;
+          return "El campo solo permite números";
         }
       }
     }

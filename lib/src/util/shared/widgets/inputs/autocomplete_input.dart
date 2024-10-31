@@ -10,6 +10,7 @@ class AutocompleteInput extends StatefulWidget {
   final TextEditingController? controller;
   final Function(EntryAutocomplete result)? onPressed;
   final bool isRequired;
+  final bool isPrefixIcon;
   final int? entryCodigoSelected;
 
   const AutocompleteInput({
@@ -17,6 +18,7 @@ class AutocompleteInput extends StatefulWidget {
     required this.onPressed,
     this.controller,
     this.isRequired = false,
+    this.isPrefixIcon = true,
     this.entryCodigoSelected,
     super.key,
   });
@@ -111,7 +113,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                 dropdownSearchDecoration: InputDecoration(
                   fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
-                  prefixIcon: const Icon(Icons.filter_list),
+                  prefixIcon: widget.isPrefixIcon ? const Icon(Icons.filter_list) : null,
                   constraints: const BoxConstraints(maxHeight: 38, minHeight: 20),
                   isDense: true,
                   enabledBorder: OutlineInputBorder(
