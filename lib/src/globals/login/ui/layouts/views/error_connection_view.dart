@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:switrans_2_0/src/config/routers/app_router.dart';
 
 class ErrorConnectionScreen extends StatelessWidget {
-  const ErrorConnectionScreen({super.key});
+  final String message;
+  const ErrorConnectionScreen({required this.message, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,13 @@ class ErrorConnectionScreen extends StatelessWidget {
               color: Colors.blue.shade700,
             ),
           ),
+          Text(
+            message,
+            style: TextStyle(
+              fontSize: size.height * 0.02,
+              color: Colors.grey.shade400,
+            ),
+          ),
           SizedBox(height: size.height * 0.02),
           Text(
             "Por favor, contacte al grupo de soporte tecnico y reporte la novedad",
@@ -40,7 +48,7 @@ class ErrorConnectionScreen extends StatelessWidget {
           SizedBox(height: size.height * 0.01),
           ElevatedButton(
             onPressed: () {
-              context.go("/sign-in");
+              AppRouter.router.push("/sign-in");
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.02),
