@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nested/nested.dart';
 import 'package:switrans_2_0/injector.dart';
+import 'package:switrans_2_0/src/config/routers/contabilidad_routes.dart';
 import 'package:switrans_2_0/src/config/routers/financiero_routes.dart';
 import 'package:switrans_2_0/src/config/routers/maestros_routes.dart';
 import 'package:switrans_2_0/src/config/routers/menu_routes.dart';
@@ -10,6 +11,7 @@ import 'package:switrans_2_0/src/globals/login/ui/layouts/auth_layout.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/error_connection_view.dart';
 import 'package:switrans_2_0/src/globals/login/ui/layouts/views/token_expired_view.dart';
 import 'package:switrans_2_0/src/globals/menu/ui/menu_ui.dart';
+import 'package:switrans_2_0/src/packages/contabilidad/tipo_impuesto/ui/blocs/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/financiero/factura/ui/factura_ui.dart';
 import 'package:switrans_2_0/src/packages/maestro/accion_documento/ui/blocs/accion_documentos/accion_documento_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/departamento/ui/blocs/departamento_bloc.dart';
@@ -20,10 +22,11 @@ import 'package:switrans_2_0/src/packages/maestro/pais/ui/blocs/pais_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/paquete/ui/blocs/paquete_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/resolucion/ui/blocs/resolucion_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/servicio_empresarial/ui/blocs/servicio_empresarial/servicio_empresarial_bloc.dart';
-import 'package:switrans_2_0/src/packages/maestro/tipo_impuesto/ui/blocs/tipo_impuesto/tipo_impuesto_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/transaccion_contable/ui/blocs/transaccion_contable/transaccion_contable_bloc.dart';
 import 'package:switrans_2_0/src/packages/maestro/unidad_negocio/ui/blocs/unidad_negocio/unidad_negocio_bloc.dart';
 import 'package:switrans_2_0/src/util/shared/views/loading_view.dart';
+
+
 
 class AppRouter {
   static const String login = "/sign-in";
@@ -69,7 +72,7 @@ class AppRouter {
                 create: (_) => injector<ModuloBloc>()..add(const InitializationModuloEvent()),
               ),
               BlocProvider<TipoImpuestoBloc>(
-                create: (_) => injector<TipoImpuestoBloc>()..add(const InitializationTipoImpuestoEvent()),
+                create: (_) => injector<TipoImpuestoBloc>()..add(const InitialTipoImpuestoEvent()),
               ),
               BlocProvider<ServicioEmpresarialBloc>(
                 create: (_) => injector<ServicioEmpresarialBloc>()..add(const InitializationServicioEmpresarialEvent()),
@@ -103,6 +106,7 @@ class AppRouter {
           ...MenuRoutes.getRoutesMenu(),
           ...FinancieroRoutes.getRoutesFinanciero(),
           ...MaestrosRoutes.getRoutesMaestros(),
+          ...ContabilidadRoutes.getRoutesContabilidad(),
         ],
       ),
     ],
