@@ -1,8 +1,10 @@
+
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:postgres/postgres.dart';
-import 'package:switrans_2_0/src/util/resources/backend/backend_response.dart';
+import 'package:switrans_2_0/src/util/resources/backend/backend_error_response.dart';
 
 class ErrorResponse {
   int? code;
@@ -78,7 +80,7 @@ class ErrorResponse {
 
   // ignore: prefer_constructors_over_static_methods
   static ErrorResponse _createBackendErrorResponse(Map<String, dynamic> errorData) {
-    final BackendResponse response = BackendResponse.fromJson(errorData);
-    return ErrorResponse(title: "Ocurrio Un Error", code: 500, content: response.error.errorClient);
+    final BackendErrorResponse errorResponse = BackendErrorResponse.fromJson(errorData["error"]);
+    return ErrorResponse(code: 500, title: errorResponse.errorClient, details: errorResponse.errorTrace);
   }
 }

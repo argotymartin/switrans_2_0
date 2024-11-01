@@ -10,9 +10,9 @@ class InitialDepartamentoEvent extends DepartamentoEvent {
   const InitialDepartamentoEvent();
 }
 
-class GetDepartamentoEvent extends DepartamentoEvent {
+class GetDepartamentosEvent extends DepartamentoEvent {
   final DepartamentoRequest request;
-  const GetDepartamentoEvent(this.request);
+  const GetDepartamentosEvent(this.request);
 }
 
 class SetDepartamentoEvent extends DepartamentoEvent {
@@ -20,9 +20,9 @@ class SetDepartamentoEvent extends DepartamentoEvent {
   const SetDepartamentoEvent(this.request);
 }
 
-class UpdateDepartamentoEvent extends DepartamentoEvent {
+class UpdateDepartamentosEvent extends DepartamentoEvent {
   final List<EntityUpdate<DepartamentoRequest>> requestList;
-  const UpdateDepartamentoEvent(this.requestList);
+  const UpdateDepartamentosEvent(this.requestList);
 }
 
 class ErrorFormDepartamentoEvent extends DepartamentoEvent {

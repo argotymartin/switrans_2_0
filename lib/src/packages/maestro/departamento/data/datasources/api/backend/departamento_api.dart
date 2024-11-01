@@ -23,7 +23,6 @@ class DepartamentoApi {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/crear';
     final Map<String, dynamic> params = requestModel.toJson();
-
     final Response<dynamic> response = await _dio.post(url, data: params);
     return response;
   }
@@ -31,8 +30,8 @@ class DepartamentoApi {
   Future<Response<dynamic>> updateDepartamentoApi(EntityUpdate<DepartamentoRequest> request) async {
     final DepartamentoRequestModel requestModel = DepartamentoRequestModel.fromRequest(request.entity);
     final String url = '$kBackendBaseUrlMaestro/$endPoint/actualizar/${request.id}';
-
-    final Response<dynamic> responseUpdate = await _dio.put(url, data: requestModel.toJson());
+    final Map<String, dynamic> params = requestModel.toJson();
+    final Response<dynamic> responseUpdate = await _dio.put(url, data: params);
     final Response<dynamic> response;
     if (responseUpdate.statusCode == 204) {
       final DepartamentoRequest departamentoRequest = DepartamentoRequest(codigo: request.id);
@@ -44,7 +43,7 @@ class DepartamentoApi {
   }
 
   Future<Response<dynamic>> getPaisesApi() async {
-    final String url = '$kBackendBaseUrlMaestro/api/v1/maestro/paises';
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/paises';
     final Response<dynamic> response = await _dio.get('$url');
     return response;
   }

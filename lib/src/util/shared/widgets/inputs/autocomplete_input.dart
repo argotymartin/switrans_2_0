@@ -10,6 +10,7 @@ class AutocompleteInput extends StatefulWidget {
   final TextEditingController? controller;
   final Function(EntryAutocomplete result)? onPressed;
   final bool isRequired;
+  final bool isPrefixIcon;
   final int? entryCodigoSelected;
 
   const AutocompleteInput({
@@ -17,6 +18,7 @@ class AutocompleteInput extends StatefulWidget {
     required this.onPressed,
     this.controller,
     this.isRequired = false,
+    this.isPrefixIcon = true,
     this.entryCodigoSelected,
     super.key,
   });
@@ -111,7 +113,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                 dropdownSearchDecoration: InputDecoration(
                   fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
-                  prefixIcon: const Icon(Icons.filter_list),
+                  prefixIcon: widget.isPrefixIcon ? const Icon(Icons.filter_list) : null,
                   constraints: const BoxConstraints(maxHeight: 38, minHeight: 20),
                   isDense: true,
                   enabledBorder: OutlineInputBorder(
@@ -220,17 +222,19 @@ Widget _customPopupItemBuilder(BuildContext context, EntryAutocomplete item, boo
 }
 
 Future<List<EntryAutocomplete>> getData(String searchText, List<EntryAutocomplete> entries) async {
+  final String lowerCaseSearchText = searchText.toLowerCase();
+
   final List<EntryAutocomplete> filteredEntries = entries.where((EntryAutocomplete entry) {
-    if (searchText.isNotEmpty && searchText.substring(0, 1) == ';') {
-      final String searchNew = searchText.split(";")[1];
+    if (lowerCaseSearchText.isNotEmpty && lowerCaseSearchText.substring(0, 1) == ';') {
+      final String searchNew = lowerCaseSearchText.split(";")[1];
       return entry.subTitle!.toLowerCase().contains(searchNew);
     }
 
     final RegExp regex = RegExp(r'^[0-9]+$');
-    if (regex.hasMatch(searchText)) {
-      return entry.codigo.toString().contains(searchText);
+    if (regex.hasMatch(lowerCaseSearchText)) {
+      return entry.codigo.toString().contains(lowerCaseSearchText);
     } else {
-      return entry.title.toLowerCase().contains(searchText);
+      return entry.title.toLowerCase().contains(lowerCaseSearchText);
     }
   }).toList();
 

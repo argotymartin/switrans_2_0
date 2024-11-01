@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:switrans_2_0/src/config/config.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
 
 class CustomPlutoGridTable extends StatelessWidget {
@@ -20,11 +21,16 @@ class CustomPlutoGridTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late PlutoGridStateManager stateManager;
-    const double rowHeight = 48;
+    const double rowHeight = 56;
     const double titleHeight = 48;
+    const double footerHeight = 96;
+    const double scrollbarThickness = 16;
+    final int pageSize = rows.length >= 9 ? 10 : rows.length;
     final double columnFilterHeight = columnFilter ? 36 : 0;
+    final double totalWidth = columns.fold(0, (double sum, PlutoColumn element) => sum + element.width);
+    final double width = MediaQuery.of(context).size.width - kWidthSidebar - 48;
     return Container(
-      height: (rowHeight * (rows.length + 1)) + (titleHeight + columnFilterHeight),
+      height: (rowHeight * pageSize) + (titleHeight + columnFilterHeight + scrollbarThickness + footerHeight),
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: PlutoGrid(
         columns: columns,
@@ -37,6 +43,10 @@ class CustomPlutoGridTable extends StatelessWidget {
         },
         onRowChecked: onRowChecked,
         mode: PlutoGridMode.select,
+        createFooter: (PlutoGridStateManager stateManager) {
+          stateManager.setPageSize(pageSize, notify: false);
+          return PlutoPagination(stateManager);
+        },
         configuration: PlutoGridConfiguration.dark(
           enableMoveHorizontalInEditing: true,
           enableMoveDownAfterSelecting: true,
@@ -62,9 +72,9 @@ class CustomPlutoGridTable extends StatelessWidget {
                   rowColor: AppTheme.colorThemePrimary,
                   oddRowColor: AppTheme.colorThemePrimary.withOpacity(0.8),
                   checkedColor: Theme.of(context).colorScheme.inversePrimary,
-                  activatedColor: Theme.of(context).colorScheme.onPrimary,
+                  activatedColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.8),
                   gridBackgroundColor: AppTheme.colorThemePrimary,
-                  activatedBorderColor: Theme.of(context).colorScheme.primary,
+                  activatedBorderColor: Colors.transparent,
                   columnHeight: titleHeight,
                   iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   menuBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -75,10 +85,14 @@ class CustomPlutoGridTable extends StatelessWidget {
                   evenRowColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   gridBorderColor: Theme.of(context).colorScheme.primary,
                 ),
-          columnSize: const PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale),
+          columnSize: PlutoGridColumnSizeConfig(autoSizeMode: totalWidth <= width ? PlutoAutoSizeMode.scale : PlutoAutoSizeMode.none),
           scrollbar: const PlutoGridScrollbarConfig(
             longPressDuration: Duration.zero,
-            onlyDraggingThumb: false,
+            scrollbarThickness: scrollbarThickness,
+            isAlwaysShown: true,
+            enableScrollAfterDragEnd: false,
+            scrollbarRadius: Radius.circular(20),
+            scrollbarThicknessWhileDragging: scrollbarThickness,
           ),
           localeText: const PlutoGridLocaleText.spanish(),
         ),

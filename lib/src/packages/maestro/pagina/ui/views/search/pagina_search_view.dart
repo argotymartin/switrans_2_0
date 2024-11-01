@@ -77,6 +77,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 title: "Nombre",
                 value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
+                minLength: 3,
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
@@ -158,6 +159,7 @@ class _BuildDataTableState extends State<_BuildDataTable> {
                 type: Tipo.select,
                 value: pagina.modulo,
                 edit: true,
+                width: 320,
                 entryMenus: state.entriesModulos,
               ),
               'fechaCreacion': DataItemGrid(

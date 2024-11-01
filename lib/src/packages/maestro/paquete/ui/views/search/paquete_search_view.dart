@@ -138,6 +138,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Nombre",
                 type: Tipo.text,
                 value: paquete.nombre,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 5,
                 edit: true,
               ),
               'path': DataItemGrid(
@@ -150,6 +152,8 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 title: "Icono",
                 type: Tipo.text,
                 value: paquete.icono,
+                typeInput: TypeInput.lettersAndNumbers,
+                minLength: 5,
                 edit: true,
               ),
               'fechaCreacion': DataItemGrid(

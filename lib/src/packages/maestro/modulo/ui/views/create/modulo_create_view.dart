@@ -88,7 +88,7 @@ class _BuildFieldsForm extends StatelessWidget {
               TextInputForm(
                 title: "Detalle Modulo",
                 value: request.detalle,
-                typeInput: TypeInput.lettersAndNumbers,
+                typeInput: TypeInput.lettersAndCaracteres,
                 minLength: 20,
                 onChanged: (String result) => request.detalle = result.isNotEmpty ? result : null,
               ),
