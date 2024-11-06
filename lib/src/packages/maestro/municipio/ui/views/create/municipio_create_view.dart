@@ -55,6 +55,7 @@ class _BuildFieldsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     final MunicipioBloc municipioBloc = context.watch<MunicipioBloc>();
     final MunicipioRequest request = municipioBloc.request;
     return Form(
@@ -66,10 +67,14 @@ class _BuildFieldsForm extends StatelessWidget {
             children: <Widget>[
               TextInputForm(
                 title: "Nombre",
-                value: request.nombre,
+                value: state.nombre ?? '',
                 typeInput: TypeInput.lettersAndNumbers,
                 minLength: 5,
-                onChanged: (String result) => request.nombre = result.isNotEmpty ? result.toUpperCase() : null,
+                onChanged: (String result) {
+                  municipioBloc.add(UpdateNombreEvent(result));
+                  request.nombre = result;
+                },
+                autofocus: true,
               ),
               TextInputForm(
                 title: "Codigo Dane",
@@ -81,11 +86,29 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.codigoDane = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
-                entries: state.entriesDepartamentos,
+                title: 'Pais',
+                entries: state.municipioPaises,
+                value: request.codigoPais,
+                onChanged: (EntryAutocomplete result) {
+                  request.codigoPais = result.codigo;
+                  if (result.codigo != null) {
+                    final MunicipioPais resultPais = MunicipioPais(
+                      codigo: result.codigo!,
+                      nombre: result.title,
+                    );
+                    municipioBloc.add(SelectMunicipioPaisEvent(resultPais));
+                  }
+                  if (result.codigo == null) {
+                    municipioBloc.add(const CleanSelectMunicipioPaisEvent());
+                  }
+                },
+              ),
+              AutocompleteInputForm(
+                entries: state.municipioDepartamentos,
                 title: "Departamentos",
-                value: request.departamento,
+                value: request.codigoDepartamento,
                 isRequired: true,
-                onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
+                onChanged: (EntryAutocomplete result) => request.codigoDepartamento = result.codigo,
               ),
             ],
           ),

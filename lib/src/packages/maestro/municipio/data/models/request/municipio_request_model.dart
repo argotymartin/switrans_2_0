@@ -9,7 +9,9 @@ class MunicipioRequestModel extends MunicipioRequest {
     required super.codigoDane,
     required super.codigoUsuario,
     required super.nombreUsuario,
-    required super.departamento,
+    required super.codigoDepartamento,
+    required super.codigoPais,
+
   });
 
   factory MunicipioRequestModel.fromMap(Map<String, dynamic> map) {
@@ -21,7 +23,8 @@ class MunicipioRequestModel extends MunicipioRequest {
       fechaCreacion: map['fechaCreacion'],
       codigoUsuario: map['codigoUsuario'],
       nombreUsuario: map['nombreUsuario'],
-      departamento: map['departamento'],
+      codigoDepartamento: map['departamento'],
+      codigoPais: map['pais'],
     );
   }
 
@@ -34,7 +37,8 @@ class MunicipioRequestModel extends MunicipioRequest {
       fechaCreacion: request.fechaCreacion,
       codigoUsuario: request.codigoUsuario,
       nombreUsuario: request.nombreUsuario,
-      departamento: request.departamento,
+      codigoDepartamento: request.codigoDepartamento,
+      codigoPais: request.codigoPais,
     );
   }
 
@@ -47,7 +51,8 @@ class MunicipioRequestModel extends MunicipioRequest {
       'codigoUsuario': codigoUsuario,
       'codigoDane': codigoDane,
       'nombreUsuario': nombreUsuario,
-      'codigoDepartamento': departamento,
+      'codigoDepartamento': codigoDepartamento,
+      'codigoPais': codigoPais,
     }..removeWhere((String key, dynamic value) => value == null);
   }
 }

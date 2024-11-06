@@ -5,5 +5,7 @@ abstract class AbstractMunicipioRepository {
   Future<DataState<List<Municipio>>> getMunicipiosService(MunicipioRequest request);
   Future<DataState<Municipio>> setMunicipioService(MunicipioRequest request);
   Future<DataState<Municipio>> updateMunicipioService(EntityUpdate<MunicipioRequest> request);
-  Future<DataState<List<MunicipioDepartamento>>> getDepartamentosService();
+  Future<DataState<List<MunicipioPais>>> getPaisesService();
+  Future<DataState<List<MunicipioDepartamento>>> getDepartamentosService(MunicipioPais request);
+
 }

@@ -41,9 +41,16 @@ class MunicipioApi {
     return response;
   }
 
-  Future<Response<dynamic>> getDepartamentosApi() async {
-    final String url = '$kBackendBaseUrlMaestro/$endPoint/departamentos';
+  Future<Response<dynamic>> getPaisesApi() async {
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/paises';
     final Response<dynamic> response = await _dio.get('$url');
+    return response;
+  }
+
+  Future<Response<dynamic>> getDepartamentosApi(MunicipioPais request) async {
+    final String url = '$kBackendBaseUrlMaestro/$endPoint/departamentos';
+    final Map<String, dynamic> params = <String, dynamic>{"codigoPais": request.codigo};
+    final Response<dynamic> response = await _dio.get(url, data: params);
     return response;
   }
 }

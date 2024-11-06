@@ -8,6 +8,8 @@ class Municipio {
   final int? codigoUsuario;
   final String nombreUsuario;
   final String? codigoDane;
+  final int? codigoPais;
+  final String? nombrePais;
 
   Municipio({
     required this.codigo,
@@ -19,5 +21,7 @@ class Municipio {
     required this.nombreUsuario,
     this.codigoUsuario,
     this.codigoDane,
+    this.codigoPais,
+    this.nombrePais,
   });
 }

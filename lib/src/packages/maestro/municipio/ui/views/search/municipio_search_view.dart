@@ -82,10 +82,29 @@ class _BuildFieldsForm extends StatelessWidget {
                 onChanged: (String result) => request.nombre = result.isNotEmpty ? result : null,
               ),
               AutocompleteInputForm(
-                title: "Departamento",
-                entries: state.entriesDepartamentos,
-                value: request.departamento,
-                onChanged: (EntryAutocomplete result) => request.departamento = result.codigo,
+                title: 'Pais',
+                entries: state.municipioPaises,
+                value: request.codigoPais,
+                onChanged: (EntryAutocomplete result) {
+                  request.codigoPais = result.codigo;
+                  if (result.codigo != null) {
+                    final MunicipioPais resultPais = MunicipioPais(
+                      codigo: result.codigo!,
+                      nombre: result.title,
+                    );
+                    municipioBloc.add(SelectMunicipioPaisEvent(resultPais));
+                  }
+                  if (result.codigo == null) {
+                    municipioBloc.add(const CleanSelectMunicipioPaisEvent());
+                  }
+                },
+              ),
+              AutocompleteInputForm(
+                entries: state.municipioDepartamentos,
+                title: "Departamentos",
+                value: request.codigoDepartamento,
+                isRequired: true,
+                onChanged: (EntryAutocomplete result) => request.codigoDepartamento = result.codigo,
               ),
               SegmentedInputForm(
                 title: "Activo",
@@ -161,7 +180,7 @@ class _BluildDataTableState extends State<_BluildDataTable> {
                 type: Tipo.text,
                 value: municipio.nombreDepartamento,
                 edit: false,
-                entryMenus: state.entriesDepartamentos,
+                entryMenus: state.municipioDepartamentos,
               ),
               'nombreUsuario': DataItemGrid(
                 title: "Usuario",

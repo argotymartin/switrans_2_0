@@ -6,7 +6,8 @@ class MunicipioRequest {
   String? fechaCreacion;
   int? codigoUsuario;
   String? nombreUsuario;
-  int? departamento;
+  int? codigoDepartamento;
+  int? codigoPais;
 
   MunicipioRequest({
     this.codigo,
@@ -16,11 +17,12 @@ class MunicipioRequest {
     this.fechaCreacion,
     this.codigoUsuario,
     this.nombreUsuario,
-    this.departamento,
+    this.codigoDepartamento,
+    this.codigoPais,
   });
 
   bool hasNonNullField() {
-    return codigo != null || nombre != null || departamento != null || isActivo != null;
+    return codigo != null || nombre != null || codigoDepartamento != null || codigoPais != null || isActivo != null;
   }
 
   void clean() {
@@ -31,6 +33,7 @@ class MunicipioRequest {
     fechaCreacion = null;
     codigoUsuario = null;
     nombreUsuario = null;
-    departamento = null;
+    codigoDepartamento = null;
+    codigoPais = null;
   }
 }

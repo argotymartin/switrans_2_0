@@ -12,24 +12,46 @@ part 'municipio_state.dart';
 class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   final AbstractMunicipioRepository _repository;
   MunicipioRequest _request = MunicipioRequest();
+
   MunicipioBloc(this._repository) : super(const MunicipioState().initial()) {
     on<InitialMunicipioEvent>(_onInitialMunicipio);
     on<GetMunicipiosEvent>(_onGetMunicipios);
     on<SetMunicipioEvent>(_onSetMunicipio);
     on<UpdateMunicipiosEvent>(_onUpdateMunicipios);
     on<ErrorFormMunicipioEvent>(_onErrorFormMunicipio);
+    on<SelectMunicipioPaisEvent>(_onSelectMunicipioPais);
     on<CleanFormMunicipioEvent>(_onCleanFormMunicipio);
+    on<UpdateNombreEvent>(_onUpdateNombre);
   }
 
   Future<void> _onInitialMunicipio(InitialMunicipioEvent event, Emitter<MunicipioState> emit) async {
-    emit(state.copyWith(status: MunicipioStatus.loading));
-    final DataState<List<MunicipioDepartamento>> resp = await _repository.getDepartamentosService();
-    if (resp.data != null) {
-      final List<EntryAutocomplete> entriesDepartamentos =
-          resp.data!.map((MunicipioDepartamento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
-      emit(state.copyWith(status: MunicipioStatus.initial, entriesDepartamentos: entriesDepartamentos));
+    emit(state.copyWith(status: MunicipioStatus.loading, municipioDepartamentos: <EntryAutocomplete>[]));
+    final DataState<List<MunicipioPais>> paisesResponse = await _repository.getPaisesService();
+    if (paisesResponse.data != null) {
+      final List<EntryAutocomplete> municipioPaises =
+          paisesResponse.data!.map((MunicipioPais t) => EntryAutocomplete(title: t.nombre, codigo: t.codigo)).toList();
+      emit(
+        state.copyWith(
+          municipioPaises: municipioPaises,
+          status: MunicipioStatus.initial,
+        ),
+      );
     } else {
-      emit(state.copyWith(status: MunicipioStatus.exception, exception: resp.error));
+      emit(state.copyWith(status: MunicipioStatus.exception, exception: paisesResponse.error));
+    }
+  }
+
+  Future<void> _onSelectMunicipioPais(SelectMunicipioPaisEvent event, Emitter<MunicipioState> emit) async {
+    emit(state.copyWith(status: MunicipioStatus.loading));
+
+    final DataState<List<MunicipioDepartamento>> departamentosResponse = await _repository.getDepartamentosService(event.municipioPais);
+
+    if (departamentosResponse is DataSuccess && departamentosResponse.data != null) {
+      final List<EntryAutocomplete> municipioDepartamentos =
+          departamentosResponse.data!.map((MunicipioDepartamento e) => EntryAutocomplete(title: e.nombre, codigo: e.codigo)).toList();
+      emit(state.copyWith(municipioDepartamentos: municipioDepartamentos, status: MunicipioStatus.initial));
+    } else {
+      emit(state.copyWith(status: MunicipioStatus.exception, exception: departamentosResponse.error));
     }
   }
 
@@ -89,6 +111,11 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   Future<void> _onCleanFormMunicipio(CleanFormMunicipioEvent event, Emitter<MunicipioState> emit) async {
     request.clean();
     emit(state.copyWith(status: MunicipioStatus.initial, municipios: <Municipio>[], error: ""));
+  }
+
+  Future<void> _onUpdateNombre(UpdateNombreEvent event, Emitter<MunicipioState> emit) async {
+    final String nombre = event.nombre.toUpperCase();
+    emit(state.copyWith(nombre: nombre));
   }
 
   MunicipioRequest get request => _request;

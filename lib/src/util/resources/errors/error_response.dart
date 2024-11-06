@@ -75,12 +75,12 @@ class ErrorResponse {
   static ErrorResponse _createPocketbaseErrorResponse(Map<String, dynamic> errorData, Response<dynamic> response) {
     final String details = errorData["data"].isNotEmpty ? errorData["data"].toString() : response.realUri.path;
 
-    return ErrorResponse(content: errorData["message"], code: errorData["code"], title: "Error Servicion Pocketbase", details: details);
+    return ErrorResponse(content: errorData["message"], code: errorData["code"], title: "Error Servicio Pocketbase", details: details);
   }
 
   // ignore: prefer_constructors_over_static_methods
   static ErrorResponse _createBackendErrorResponse(Map<String, dynamic> errorData) {
     final BackendErrorResponse errorResponse = BackendErrorResponse.fromJson(errorData["error"]);
-    return ErrorResponse(code: 500, title: errorResponse.errorClient, details: errorResponse.errorTrace);
+    return ErrorResponse(code: 500, title: errorResponse.errorClient, details: errorResponse.errorTrace, content: 'Error en el servidor');
   }
 }

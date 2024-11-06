@@ -45,8 +45,8 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
   }
 
   @override
-  Future<DataState<List<MunicipioDepartamento>>> getDepartamentosService() async {
-    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDepartamentosApi());
+  Future<DataState<List<MunicipioDepartamento>>> getDepartamentosService(MunicipioPais request) async {
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getDepartamentosApi(request));
     if (httpResponse.data != null && httpResponse is DataSuccess) {
       final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
       final List<MunicipioDepartamento> municipioDepartamentos =
@@ -54,5 +54,17 @@ class MunicipioRepositoryImpl extends BaseApiRepository implements AbstractMunic
       return DataSuccess<List<MunicipioDepartamento>>(municipioDepartamentos);
     }
     return DataFailed<List<MunicipioDepartamento>>(httpResponse.error!);
+  }
+
+  @override
+  Future<DataState<List<MunicipioPais>>> getPaisesService() async {
+    final DataState<dynamic> httpResponse = await getStateOf(request: () => _api.getPaisesApi());
+    if (httpResponse.data != null && httpResponse is DataSuccess) {
+      final BackendResponse backendResponse = BackendResponse.fromJson(httpResponse.data);
+      final List<MunicipioPais> municipioPaises =
+          List<MunicipioPais>.from(backendResponse.data.map((dynamic x) => MunicipioPaisModel.fromJson(x)));
+      return DataSuccess<List<MunicipioPais>>(municipioPaises);
+    }
+    return DataFailed<List<MunicipioPais>>(httpResponse.error!);
   }
 }

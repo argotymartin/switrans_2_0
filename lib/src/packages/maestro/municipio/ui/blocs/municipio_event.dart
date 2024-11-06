@@ -33,3 +33,17 @@ class ErrorFormMunicipioEvent extends MunicipioEvent {
 class CleanFormMunicipioEvent extends MunicipioEvent {
   const CleanFormMunicipioEvent();
 }
+
+class SelectMunicipioPaisEvent extends MunicipioEvent {
+  final MunicipioPais municipioPais;
+  const SelectMunicipioPaisEvent(this.municipioPais);
+}
+
+class CleanSelectMunicipioPaisEvent extends MunicipioEvent {
+  const CleanSelectMunicipioPaisEvent();
+}
+
+class UpdateNombreEvent extends MunicipioEvent {
+  final String nombre;
+  const UpdateNombreEvent(this.nombre);
+}
