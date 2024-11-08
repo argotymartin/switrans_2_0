@@ -8,6 +8,7 @@ class TextInput extends StatefulWidget {
   final String hintText;
   final int minLength;
   final int? maxLength;
+  final bool? isRequired;
   final IconData? icon;
   final TextEditingController? controller;
   final Function(String result)? onChanged;
@@ -25,6 +26,7 @@ class TextInput extends StatefulWidget {
     this.icon,
     this.maxLength,
     this.autofocus = false,
+    this.isRequired = false,
   });
 
   @override
@@ -68,39 +70,56 @@ class _TextInputState extends State<TextInput> {
   String? onValidator(String? value) {
     Future<void>.microtask(() => setState(() {}));
     isError = false;
-    if (value != null && !isFocusOut) {
-      if (value.length < widget.minLength && value.isNotEmpty) {
+
+    if (_isFieldRequired(value)) {
+      isError = true;
+      return "!El campo es requerido";
+    }
+
+    if (value != null && !isFocusOut && value.isNotEmpty) {
+      if (_isBelowMinLength(value)) {
         isError = true;
         return "El campo debe ser mínimo de ${widget.minLength} caracteres";
       }
 
-      if (widget.maxLength != null && value.length > widget.maxLength! && value.isNotEmpty) {
+      if (_isAboveMaxLength(value)) {
         isError = true;
         return "El campo debe ser máximo de ${widget.maxLength} caracteres";
       }
 
-      if (widget.typeInput == TypeInput.lettersAndNumbers && value.isNotEmpty) {
-        if (!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
-          isError = true;
-          return "El campo solo permite letras y números (ABC123)";
-        }
-      }
-
-      if (widget.typeInput == TypeInput.lettersAndCaracteres && value.isNotEmpty) {
-        if (!RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]+$').hasMatch(value)) {
-          isError = true;
-          return "El campo solo permite letras, caracteres especiales y el punto.";
-        }
-      }
-
-      if (widget.typeInput == TypeInput.onlyNumbers && value.isNotEmpty) {
-        if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-          isError = true;
-          return "El campo solo permite números";
-        }
+      final String? typeError = _validateType(value);
+      if (typeError != null) {
+        isError = true;
+        return typeError;
       }
     }
     return null;
+  }
+
+  bool _isFieldRequired(String? value) {
+    return (value == null || value.isEmpty) && widget.isRequired!;
+  }
+
+  bool _isBelowMinLength(String value) {
+    return value.length < widget.minLength;
+  }
+
+  bool _isAboveMaxLength(String value) {
+    return widget.maxLength != null && value.length > widget.maxLength!;
+  }
+
+  String? _validateType(String value) {
+    if (widget.typeInput case TypeInput.lettersAndNumbers) {
+      return !RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value) ? "El campo solo permite letras y números (ABC123)" : null;
+    } else if (widget.typeInput case TypeInput.lettersAndCaracteres) {
+      return !RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]+$').hasMatch(value)
+          ? "El campo solo permite letras, caracteres especiales y el punto."
+          : null;
+    } else if (widget.typeInput case TypeInput.onlyNumbers) {
+      return !RegExp(r'^[0-9]+$').hasMatch(value) ? "El campo solo permite números" : null;
+    } else {
+      return null;
+    }
   }
 
   InputDecoration buildInputDecoration(BuildContext context) {

@@ -13,6 +13,7 @@ class TextInputForm extends StatefulWidget {
   final TypeInput typeInput;
   final bool isFormValid;
   final bool autofocus;
+  final bool isRequired;
 
   const TextInputForm({
     required this.title,
@@ -25,6 +26,7 @@ class TextInputForm extends StatefulWidget {
     this.autofocus = false,
     this.maxLength,
     this.icon,
+    this.isRequired = false,
     super.key,
   });
 
@@ -36,6 +38,7 @@ class _TextInputFormState extends State<TextInputForm> {
   String validator = "";
   @override
   Widget build(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -47,6 +50,7 @@ class _TextInputFormState extends State<TextInputForm> {
           initialValue: widget.value != null ? widget.value! : "",
           minLength: widget.minLength,
           maxLength: widget.maxLength,
+          isRequired: widget.isRequired,
           icon: widget.icon,
           onChanged: widget.onChanged,
           hintText: widget.title,

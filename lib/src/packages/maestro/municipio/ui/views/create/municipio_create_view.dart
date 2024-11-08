@@ -72,7 +72,7 @@ class _BuildFieldsForm extends StatelessWidget {
                 minLength: 5,
                 onChanged: (String result) {
                   municipioBloc.add(UpdateNombreEvent(result));
-                  request.nombre = result;
+                  request.nombre = result.isNotEmpty ? result : null;
                 },
                 autofocus: true,
               ),
