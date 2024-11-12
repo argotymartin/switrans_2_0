@@ -25,7 +25,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
 
   Future<void> _onInitialMunicipio(InitialMunicipioEvent event, Emitter<MunicipioState> emit) async {
     emit(state
-        .copyWith(status: MunicipioStatus.loading,));
+        .copyWith(status: MunicipioStatus.loading),);
     final DataState<List<MunicipioPais>> paisesResponse = await _repository.getPaisesService();
     if (paisesResponse.data != null) {
       final List<EntryAutocomplete> municipioPaises =
