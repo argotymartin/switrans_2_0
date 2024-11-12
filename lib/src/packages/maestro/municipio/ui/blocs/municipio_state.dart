@@ -10,7 +10,6 @@ class MunicipioState extends Equatable {
   final List<EntryAutocomplete> municipioPaises;
   final DioException? exception;
   final String error;
-  final String? nombre;
 
   const MunicipioState({
     this.status,
@@ -20,7 +19,6 @@ class MunicipioState extends Equatable {
     this.municipioPaises = const <EntryAutocomplete>[],
     this.exception,
     this.error = "",
-    this.nombre,
   });
 
   MunicipioState initial() => const MunicipioState(status: MunicipioStatus.initial);
@@ -33,7 +31,6 @@ class MunicipioState extends Equatable {
     List<EntryAutocomplete>? municipioPaises,
     DioException? exception,
     String? error,
-    String? nombre,
   }) =>
       MunicipioState(
         status: status ?? this.status,
@@ -43,18 +40,16 @@ class MunicipioState extends Equatable {
         municipioPaises: municipioPaises ?? this.municipioPaises,
         exception: exception ?? this.exception,
         error: error ?? this.error,
-        nombre: nombre ?? this.nombre,
       );
 
   @override
   List<Object?> get props => <Object?>[
-    status,
-    municipio,
-    municipios,
-    municipioDepartamentos,
-    municipioPaises,
-    exception,
-    error,
-    nombre,
-  ];
+        status,
+        municipio,
+        municipios,
+        municipioDepartamentos,
+        municipioPaises,
+        exception,
+        error,
+      ];
 }

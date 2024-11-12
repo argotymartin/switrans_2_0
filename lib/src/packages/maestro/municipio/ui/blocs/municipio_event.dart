@@ -42,8 +42,3 @@ class SelectMunicipioPaisEvent extends MunicipioEvent {
 class CleanSelectMunicipioPaisEvent extends MunicipioEvent {
   const CleanSelectMunicipioPaisEvent();
 }
-
-class UpdateNombreEvent extends MunicipioEvent {
-  final String nombre;
-  const UpdateNombreEvent(this.nombre);
-}

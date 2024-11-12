@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:switrans_2_0/src/config/themes/app_theme.dart';
+import 'package:switrans_2_0/src/util/resources/formatters/upper_case_formatter.dart';
 
 enum TypeInput { lettersAndNumbers, lettersAndCaracteres, onlyNumbers }
 
@@ -60,12 +62,14 @@ class _TextInputState extends State<TextInput> {
           validator: onValidator,
           decoration: buildInputDecoration(context),
           keyboardType: TextInputType.text,
+          inputFormatters: <TextInputFormatter>[UpperCaseFormatter()],
           autovalidateMode: AutovalidateMode.onUserInteraction,
           style: TextStyle(color: AppTheme.colorTextTheme, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ),
     );
   }
+
 
   String? onValidator(String? value) {
     Future<void>.microtask(() => setState(() {}));

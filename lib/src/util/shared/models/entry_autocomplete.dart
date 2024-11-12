@@ -6,6 +6,7 @@ class EntryAutocomplete {
   final String? subTitle;
   final Widget? details;
 
+
   EntryAutocomplete({
     required this.title,
     this.subTitle,

@@ -21,11 +21,11 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
     on<ErrorFormMunicipioEvent>(_onErrorFormMunicipio);
     on<SelectMunicipioPaisEvent>(_onSelectMunicipioPais);
     on<CleanFormMunicipioEvent>(_onCleanFormMunicipio);
-    on<UpdateNombreEvent>(_onUpdateNombre);
   }
 
   Future<void> _onInitialMunicipio(InitialMunicipioEvent event, Emitter<MunicipioState> emit) async {
-    emit(state.copyWith(status: MunicipioStatus.loading, municipioDepartamentos: <EntryAutocomplete>[]));
+    emit(state
+        .copyWith(status: MunicipioStatus.loading,));
     final DataState<List<MunicipioPais>> paisesResponse = await _repository.getPaisesService();
     if (paisesResponse.data != null) {
       final List<EntryAutocomplete> municipioPaises =
@@ -42,7 +42,7 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   }
 
   Future<void> _onSelectMunicipioPais(SelectMunicipioPaisEvent event, Emitter<MunicipioState> emit) async {
-    emit(state.copyWith(status: MunicipioStatus.loading));
+    emit(state.copyWith(status: MunicipioStatus.loading, municipioDepartamentos: <EntryAutocomplete>[]));
 
     final DataState<List<MunicipioDepartamento>> departamentosResponse = await _repository.getDepartamentosService(event.municipioPais);
 
@@ -111,11 +111,6 @@ class MunicipioBloc extends Bloc<MunicipioEvent, MunicipioState> {
   Future<void> _onCleanFormMunicipio(CleanFormMunicipioEvent event, Emitter<MunicipioState> emit) async {
     request.clean();
     emit(state.copyWith(status: MunicipioStatus.initial, municipios: <Municipio>[], error: ""));
-  }
-
-  Future<void> _onUpdateNombre(UpdateNombreEvent event, Emitter<MunicipioState> emit) async {
-    final String nombre = event.nombre.toUpperCase();
-    emit(state.copyWith(nombre: nombre));
   }
 
   MunicipioRequest get request => _request;

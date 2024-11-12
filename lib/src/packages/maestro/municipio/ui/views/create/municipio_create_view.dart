@@ -67,11 +67,11 @@ class _BuildFieldsForm extends StatelessWidget {
             children: <Widget>[
               TextInputForm(
                 title: "Nombre",
-                value: state.nombre ?? '',
+                value: request.nombre,
                 typeInput: TypeInput.lettersAndNumbers,
+                isRequired: true,
                 minLength: 5,
                 onChanged: (String result) {
-                  municipioBloc.add(UpdateNombreEvent(result));
                   request.nombre = result.isNotEmpty ? result : null;
                 },
                 autofocus: true,
@@ -104,10 +104,9 @@ class _BuildFieldsForm extends StatelessWidget {
                 },
               ),
               AutocompleteInputForm(
-                entries: state.municipioDepartamentos,
-                title: "Departamentos",
+                title: 'Departamento',
+                entries: request.codigoPais == null ? <EntryAutocomplete>[] : state.municipioDepartamentos,
                 value: request.codigoDepartamento,
-                isRequired: true,
                 onChanged: (EntryAutocomplete result) => request.codigoDepartamento = result.codigo,
               ),
             ],

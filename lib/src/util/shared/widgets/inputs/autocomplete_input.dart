@@ -40,10 +40,10 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
     isError = false;
     _focusNode = FocusNode();
     controller = widget.controller ?? TextEditingController();
-
     if (widget.entryCodigoSelected != null) {
       if (widget.entries.isNotEmpty) {
-        entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected);
+        entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected,
+            orElse: () => EntryAutocomplete(title: "Seleccionar item"),);
       }
     }
     filteredEntries = widget.entries.take(8).toList();
