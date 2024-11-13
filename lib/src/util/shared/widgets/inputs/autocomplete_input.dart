@@ -42,11 +42,24 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
     controller = widget.controller ?? TextEditingController();
     if (widget.entryCodigoSelected != null) {
       if (widget.entries.isNotEmpty) {
-        entryAutocompleteSelected = widget.entries.firstWhere((EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected,
-            orElse: () => EntryAutocomplete(title: "Seleccionar item"),);
+        entryAutocompleteSelected = widget.entries.firstWhere(
+          (EntryAutocomplete e) => e.codigo == widget.entryCodigoSelected,
+          orElse: () => EntryAutocomplete(title: seleccionarItemText().data.toString()),
+        );
       }
     }
     filteredEntries = widget.entries.take(8).toList();
+  }
+
+  Text seleccionarItemText() {
+    return const Text(
+      "Seleccionar item",
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+      ),
+    );
   }
 
   @override
@@ -149,9 +162,6 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                       }
                     });
                   }
-                  if (entryAutocompleteSelected == null) {
-                    return const Text("Seleccionar item", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12));
-                  }
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
@@ -181,7 +191,7 @@ class _AutocompleteInputState extends State<AutocompleteInput> {
                     ),
                   );
                 } else {
-                  return const Text("Seleccionar item", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 12));
+                  return seleccionarItemText();
                 }
               },
             ),
