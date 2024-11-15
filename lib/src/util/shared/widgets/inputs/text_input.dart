@@ -120,7 +120,7 @@ class _TextInputState extends State<TextInput> {
           ? "El campo solo permite letras, caracteres especiales y el punto."
           : null;
     } else if (widget.typeInput case TypeInput.onlyNumbers) {
-      return !RegExp(r'^[0-9]+$').hasMatch(value) ? "El campo solo permite números" : null;
+      return !RegExp(r'^-?\d+(\.\d+)?$').hasMatch(value) ? "El campo solo permite números, punto y signo negativo" : null;
     } else {
       return null;
     }

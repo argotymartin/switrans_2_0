@@ -1,9 +1,12 @@
+
 class MunicipioRequest {
   int? codigo;
   String? nombre;
   bool? isActivo;
   String? codigoDane;
   String? fechaCreacion;
+  double? latitud;
+  double? longitud;
   int? codigoUsuario;
   String? nombreUsuario;
   int? codigoDepartamento;
@@ -19,6 +22,8 @@ class MunicipioRequest {
     this.nombreUsuario,
     this.codigoDepartamento,
     this.codigoPais,
+    this.latitud,
+    this.longitud,
   });
 
   bool hasNonNullField() {
@@ -31,6 +36,8 @@ class MunicipioRequest {
     isActivo = null;
     codigoDane = null;
     fechaCreacion = null;
+    latitud = null;
+    longitud = null;
     codigoUsuario = null;
     nombreUsuario = null;
     codigoDepartamento = null;

@@ -3,6 +3,8 @@ class Municipio {
   final String nombre;
   final bool isActivo;
   final String fechaCreacion;
+  final double? latitud;
+  final double? longitud;
   final int codigoDepartamento;
   final String nombreDepartamento;
   final int? codigoUsuario;
@@ -19,6 +21,8 @@ class Municipio {
     required this.codigoDepartamento,
     required this.nombreDepartamento,
     required this.nombreUsuario,
+    this.latitud,
+    this.longitud,
     this.codigoUsuario,
     this.codigoDane,
     this.codigoPais,
